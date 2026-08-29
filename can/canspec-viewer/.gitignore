@@ -1,0 +1,6 @@
+node_modules/
+dist/
+*.local
+
+# Generated CAN data — never commit on source branches; CI publishes it to gh-pages only
+canspec-data.json
