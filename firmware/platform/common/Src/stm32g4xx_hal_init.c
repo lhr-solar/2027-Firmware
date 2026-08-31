@@ -26,7 +26,7 @@ void HAL_MspInit(void){
 }
 
 /**
-  * @brief System Clock Configuration
+  * @brief Default System Clock Configuration (80 MHz, HSE)
   * @retval None
   */
 __weak void SystemClock_Config(void)

@@ -1,7 +1,7 @@
+/* Keeping this header for LEGACY code */
+
 #ifndef STM32xx_HAL_H
 #define STM32xx_HAL_H
-
-/* Keeping this header for legacy code */
 
 // STM32
 #if defined(STM32G4xx)
@@ -9,7 +9,7 @@
     #include "stm32g4xx_hal.h"
     #include "stm32g4xx_hal_conf.h"
 #else
-    #error "No valid STM32 series defined. Please define either STM32F4xx, STM32L4xx, or STM32G4xx."
+    #error "No valid STM32 series defined. Current support is only for STM32G4xx series."
 #endif
 
 // FreeRTOS
