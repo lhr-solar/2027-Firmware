@@ -10,6 +10,9 @@ project(
     LANGUAGES C
 )
 
+# set stuff --- can set compile commands generation
+
+
 # create executable from set of source files
 add_executable(MyProg
   platform/tests/Src/adc_test.c
