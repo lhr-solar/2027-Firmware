@@ -1,11 +1,16 @@
 # Top level CMake directives
+
+# cmake -B build -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake
+# CMAKE_SOURCE_DIR -> firmware/
+# CMAKE_BINARY_DIR -> firmware/build/
+
 cmake_minimum_required(VERSION 3.2.0) 
 
 project(
     App
     VERSION 1.0.0
     DESCRIPTION "APP"
-    LANGUAGES C ASM
+    LANGUAGES C ASM # asm for startup file
 )
 
 ### Set parameters
@@ -47,19 +52,19 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 ### Add libraries
-## stm/ + common/
+## stm/
 file(GLOB HAL_SOURCES
     "platform/stm/STM32G4xx_HAL_Driver/Src/*.c"
     "platform/stm/stm32g4xx_hal_timebase_tim.c"
     "platform/stm/system_stm32g4xx.c"
-    "platform/common/Src/*.c"
+    "platform/common/Src/*.c" # hal_init, sysmem, syscalls
 )
 add_library(hal STATIC ${HAL_SOURCES})
 target_include_directories(hal PUBLIC
     "platform/stm/CMSIS/Device/ST/STM32G4xx/Include" # includes all port headers (might change ltr)
     "platform/stm/CMSIS/Include"
     "platform/stm/STM32G4xx_HAL_Driver/Inc"
-    "platform/common/Inc"
+    "platform/common/Inc" # hal_conf
 )
 
 ## middleware/ 
@@ -153,6 +158,10 @@ set(LINKER_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/platform/stm/stm32g473/STM32G473X
 
 target_compile_options(App PRIVATE ${ARM_MCU_FLAGS})
 
+set_target_properties(App PROPERTIES 
+    SUFFIX ".elf"
+)
+
 target_link_options(App PRIVATE
     ${ARM_MCU_FLAGS}
     -T${LINKER_SCRIPT}
@@ -169,3 +178,21 @@ target_link_libraries(App
   psp
   utils
 )
+
+# Generate .hex and .bin post build
+add_custom_command(TARGET App POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:App> ${CMAKE_CURRENT_BINARY_DIR}/App.bin
+    COMMENT "Generating binary image: App.bin"
+)
+add_custom_command(TARGET App POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:App> ${CMAKE_CURRENT_BINARY_DIR}/App.hex
+    COMMENT "Generating Intel HEX image: App.hex"
+)
+
+# must have jolly good message
+string(ASCII 27 Esc)
+set(ColorReset "${Esc}[0m")
+set(ColorGreen "${Esc}[32m")
+set(ColorBoldGreen "${Esc}[1;32m")
+
+message(STATUS "${ColorBoldGreen}=== Jolly good! ===${ColorReset}")
