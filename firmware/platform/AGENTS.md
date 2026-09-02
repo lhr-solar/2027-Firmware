@@ -16,10 +16,9 @@ API signature.
 | `psp/` | **Editable** | Platform support package — LHR's peripheral drivers |
 | `drivers/` | **Editable** | Off-chip device drivers |
 | `utils/` | **Editable** | Small reusable helpers |
-| `common/` | **Editable** | HAL init, RTOS config, newlib stubs |
+| `common/` | **Editable** | Used to modify middleware/HAL configurations |
 | `tests/` | **Editable** | On-target hardware test programs |
-| `stm/CMSIS/` | **READ-ONLY** | Arm CMSIS headers |
-| `stm/STM32G4xx_HAL_Driver/` | **READ-ONLY** | ST HAL |
+| `stm/` | **READ-ONLY** | Arm CMSIS headers, STM32 HAL |
 | `middleware/FreeRTOS-Kernel/` | **READ-ONLY** | FreeRTOS |
 | `middleware/TinyUSB/` | **READ-ONLY** | TinyUSB stack |
 | `middleware/FatFs/` | **READ-ONLY** | FatFs |
