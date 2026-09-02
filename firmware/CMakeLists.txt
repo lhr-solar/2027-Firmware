@@ -143,40 +143,48 @@ target_link_libraries(drivers
 
 
 ### Exec / link libs
-set(TEST "blinky" CACHE STRING "Name of test")
+# Single App target -- its source is picked at configure time via -DTEST=<name>,
+# which maps to platform/tests/Src/<name>_test.c. Always produces App.elf/.bin/.hex,
+# so there's never more than one test binary in the build dir at a time.
+set(TEST "blinky" CACHE STRING "Name of test (platform/tests/Src/<TEST>_test.c)")
 set(TEST_SOURCE "platform/tests/Src/${TEST}_test.c")
-set(STARTUP_SOURCE "platform/stm/stm32g473/startup_stm32g473xx.s")
 
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${TEST_SOURCE}")
-    message(FATAL_ERROR "Test source file not found: ${TEST_SOURCE}")
+    file(GLOB TEST_SOURCES CONFIGURE_DEPENDS "platform/tests/Src/*.c")
+    set(AVAILABLE_TESTS "")
+    # get list of all tests
+    foreach(SRC ${TEST_SOURCES})
+        get_filename_component(NAME ${SRC} NAME_WE)
+        string(REGEX REPLACE "_test$" "" NAME ${NAME})
+        list(APPEND AVAILABLE_TESTS ${NAME})
+    endforeach()
+    list(SORT AVAILABLE_TESTS)
+    list(JOIN AVAILABLE_TESTS ", " AVAILABLE_TESTS)
+    message(FATAL_ERROR "Unknown TEST '${TEST}' -- no ${TEST_SOURCE}.\nAvailable: ${AVAILABLE_TESTS}")
 endif()
 
-add_executable(App ${TEST_SOURCE} ${STARTUP_SOURCE})
-target_include_directories(App PRIVATE platform/tests/Inc )
-
+set(STARTUP_SOURCE "platform/stm/stm32g473/startup_stm32g473xx.s")
 set(LINKER_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/platform/stm/stm32g473/STM32G473XXx_FLASH.ld")
 
+add_executable(App ${TEST_SOURCE} ${STARTUP_SOURCE})
+target_include_directories(App PRIVATE platform/tests/Inc)
 target_compile_options(App PRIVATE ${ARM_MCU_FLAGS})
-
-set_target_properties(App PROPERTIES 
-    SUFFIX ".elf"
-)
+set_target_properties(App PROPERTIES SUFFIX ".elf")
 
 target_link_options(App PRIVATE
     ${ARM_MCU_FLAGS}
     -T${LINKER_SCRIPT}
     -Wl,-Map=${CMAKE_CURRENT_BINARY_DIR}/App.map,--cref
     -Wl,--gc-sections
-    # -nostdlib
     -nodefaultlibs
 )
 
 target_link_libraries(App
-  hal
-  middleware
-  drivers
-  psp
-  utils
+    hal
+    middleware
+    drivers
+    psp
+    utils
 )
 
 # Generate .hex and .bin post build
