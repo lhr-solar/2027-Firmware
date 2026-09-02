@@ -47,5 +47,25 @@ yet (root `AGENTS.md` §5), so creating the first board means proposing a
 directory layout and build integration. Get human sign-off on both before
 generating files.
 
+
+## Hardware vetting
+
+Every board in this tree must declare its **package** — STM32G473CET6 (LQFP48)
+or STM32G473VET6 (LQFP100) — in its README and in a comment at the top of its
+pin configuration. The two packages expose different pins: LQFP48 has no port D
+or E and only part of port C.
+
+Before writing or reviewing any pin configuration or peripheral init, check it
+against the matching file in [`references/`](../../references/). Verify the pin
+exists in that package, that the signal is on that pin, and that the AF number
+is the right one *for that pin* — a peripheral sits at different AF numbers on
+different pins, and picking the wrong one compiles fine and silently produces a
+dead peripheral. Root [`AGENTS.md`](../../AGENTS.md) §2 has the full procedure;
+it is mandatory, not advisory.
+
+For this tree specifically: a mis-muxed pin on BPS or HV is not a dead
+peripheral, it is a protection path that never fires. Pin vetting is part of the
+safety review, not a separate formality.
+
 Ownership: see `.github/CODEOWNERS` (per-folder routing is currently suppressed
 but records the intended owner).

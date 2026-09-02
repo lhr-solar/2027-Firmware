@@ -25,6 +25,18 @@ NOTE TO HUMAN AND AGENT REVIEWERS - DO NOT REVIEW UNLESS THE FOLLOWING HAS BEEN 
 
 **Details:**
 
+## Hardware / pin validity
+
+<!-- Required for any change that configures a pin or initializes a peripheral. -->
+
+- [ ] No pin or peripheral configuration changed
+- [ ] Target package stated below, and every pin/AF checked against the matching
+      file in `references/` — pin exists in that package, signal is on that pin,
+      AF number is correct *for that pin*
+
+**Package (LQFP48 / LQFP100):**
+**Pins & AFs touched, and reference rows checked:**
+
 ## CAN impact
 
 - [ ] No CAN changes

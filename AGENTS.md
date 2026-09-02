@@ -44,9 +44,16 @@ missing piece. Building the missing piece is fine when that *is* the task.
 
 ## 2. Hardware and domain context
 
-- **MCU:** STM32G473 (Arm Cortex-M4F, FPU, 170 MHz). Linker script and startup
-  under `firmware/platform/stm/stm32g473/`. It is currently the only supported
-  part — do not assume another STM32 family works without checking.
+- **MCU:** STM32G473 (Arm Cortex-M4F, FPU, 170 MHz), used in **two packages**:
+  - **STM32G473CET6 — LQFP48**, 38 GPIO, ports A/B/C/F/G (partial)
+  - **STM32G473VET6 — LQFP100**, 86 GPIO, ports A/B/C/D/E/F/G
+
+  Same die, same peripherals, **different pins available**. A pin that exists on
+  LQFP100 may simply not be bonded out on LQFP48 — PC10/PC11/PC12, PD*, and PE*
+  are the common traps. Always know which package a board uses before assigning
+  a pin. Linker script and startup are under `firmware/platform/stm/stm32g473/`.
+  No other STM32 family is supported — do not assume F4/L4 knowledge carries
+  over (see "Pin and alternate-function vetting" below for why this bites).
 - **RTOS:** FreeRTOS kernel, statically allocated. Existing drivers use static
   tasks/queues/semaphores (`StaticTask_t`, `StaticQueue_t`, `StaticSemaphore_t`)
   with `configMINIMAL_STACK_SIZE` stacks. Match that; avoid heap allocation in
@@ -58,6 +65,48 @@ missing piece. Building the missing piece is fine when that *is* the task.
   before writing message code — they are not interchangeable.
 - **Other middleware in-tree:** TinyUSB (CDC), FatFs (SD card logging),
   `nanoprintf` (the `printf.h` shim in `psp/`).
+
+### Pin and alternate-function vetting — mandatory
+
+`references/` holds the **hardware ground truth** for both packages, transcribed
+from *STM32G473xB/xC/xE datasheet DS12712 Rev 5*:
+
+| File | Part |
+|---|---|
+| `references/stm32g473cet_lqfp48_alternate_functions.md` | STM32G473CET6, LQFP48, 38 GPIO |
+| `references/stm32g473vet_lqfp100_alternate_functions.md` | STM32G473VET6, LQFP100, 86 GPIO |
+
+Each is a table of one row per GPIO pin: port name, physical package pin number,
+then the signal available at each of AF0–AF15 (`-` means nothing is mapped
+there). An AF-number-to-peripheral-family legend precedes the table.
+
+**Any change that configures a pin or initializes a peripheral must be checked
+against these files before it is written, and again in review.** Concretely, for
+every `GPIO_InitTypeDef` / `HAL_GPIO_Init` site, every `init.Alternate =
+GPIO_AFn_PERIPH`, and every peripheral instance a board claims to use:
+
+1. **Does the pin exist in the target package?** LQFP48 has no port D or E, and
+   only part of port C. A pin valid on LQFP100 may not be bonded out on LQFP48.
+2. **Is that signal actually on that pin at that AF number?** Look up the pin's
+   row and read the `AFn` column. The signal must match the peripheral being
+   configured, including direction (`_TX` vs `_RX`).
+3. **Is the AF number right for *this* pin?** A peripheral often appears at
+   different AF numbers on different pins. `GPIO_AF8_LPUART1` and
+   `GPIO_AF12_LPUART1` both exist in ST's HAL and both compile — only one is
+   correct for any given pin. **The compiler cannot catch this.** There is no
+   build in this repo and no static check; the pin simply muxes to the wrong
+   function and the peripheral is silently dead.
+4. **Grep before assigning.** To find every pin that can carry a signal:
+   `grep -E '^\| P' references/<file>.md | grep FDCAN1_RX`
+
+**Do not port pin mappings from STM32F4 or other families.** This is the single
+most common defect in this codebase's history — F4 and G4 place the same
+peripherals on different pins at different AF numbers, and the F4 mapping
+compiles cleanly against the G4 HAL. `psp/Src/UART.c` currently carries three
+such defects (UART4, UART5, LPUART1); see `firmware/platform/AGENTS.md`.
+
+If a required mapping is not in `references/`, say so and stop — do not fall
+back on recollection of the datasheet.
 
 ### CAN networks
 
@@ -105,6 +154,7 @@ to make a build or test pass.
 │   ├── PULL_REQUEST_TEMPLATE.md
 │   └── workflows/          ← build-firmware.yml, test-can-matrix.yml (stubs)
 ├── .claude/                ← Claude Code settings + slash commands
+├── references/             ← MCU hardware ground truth (pin/AF tables). See §6
 ├── can/                    ← CAN spec & tooling.  See can/AGENTS.md
 │   ├── dbc/                ← one .dbc per physical bus (all empty today)
 │   ├── codegen/            ← DBC → C header generation + validators (stubs)
@@ -255,21 +305,24 @@ published by CI to `gh-pages`; generated site artifacts must never land on
 1. **Do not invent state.** If the DBCs are empty, the codegen is a stub, and
    there is no build, say that. Never present a stub as working, and never
    report a change as building or tested when nothing compiled it.
-2. **Vendored code is read-only.** `firmware/platform/stm/`,
+2. **Vet every pin and peripheral init against `references/`.** Non-optional,
+   on every review and every change that configures hardware. See §6.
+3. **Vendored code is read-only.** `firmware/platform/stm/`,
    `middleware/FreeRTOS-Kernel/`, `middleware/TinyUSB/`, `middleware/FatFs/`,
    and `stm/CMSIS/` are upstream. Do not edit them without explicit human
    approval; if a change there is genuinely required, isolate it and call it out
    as a patch that must survive the next upstream bump.
-3. **Safety code is not refactor fodder.** See §2 for what counts.
-4. **Scope discipline.** Do the task asked. Do not opportunistically reformat,
+4. **Safety code is not refactor fodder.** See §2 for what counts.
+5. **Scope discipline.** Do the task asked. Do not opportunistically reformat,
    rename, add changelogs, or "fix" adjacent files — including obvious-looking
    typos such as `telemetry_bebug.dbc` or the `Surpress` in a commit message. A
    filename is referenced by tooling and CI; flag it, let a human decide.
-5. **CAN IDs are a shared, contended resource.** Never assign or change one
+6. **CAN IDs are a shared, contended resource.** Never assign or change one
    without checking every DBC in `can/dbc/` for collisions. See `can/AGENTS.md`.
-6. **Prefer the platform over reimplementation.** Before writing a peripheral
+7. **Prefer the platform over reimplementation.** Before writing a peripheral
    routine in board code, check `firmware/platform/psp/` and `drivers/` for an
    existing one.
-7. **Ask when the answer changes the work.** Board naming, CAN ID allocation,
+8. **Ask when the answer changes the work.** Board naming, CAN ID allocation,
    build layout, and anything touching BPS/HV fault behavior are human calls.
-8. When you finish, state plainly what you verified and what you did not.
+9. **Report honestly.** When you finish, state plainly what you verified and
+   what you did not.

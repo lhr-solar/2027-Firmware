@@ -22,7 +22,10 @@ Gather and report:
    (root `AGENTS.md` §6).
 7. **DBC content**: for each file in `can/dbc/`, its size and message count
    (`grep -c '^BO_ '`).
-8. `git status` and the last few commits.
+8. **Hardware references present and current**:
+   `ls references/` — confirm a pin/AF file exists for every package in use, and
+   note the datasheet revision each cites (`grep -h 'DS[0-9]' references/*.md`).
+9. `git status` and the last few commits.
 
 Then give a short summary in this shape: what is real, what is a stub, what
 changed since the state recorded in `AGENTS.md`. **If anything contradicts

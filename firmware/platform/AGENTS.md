@@ -72,6 +72,41 @@ treatment.
 conflicts, required init ordering — write them down. They are invisible in the
 code and expensive to rediscover on a bench.
 
+## Pin and alternate-function vetting
+
+Root [`AGENTS.md`](../../AGENTS.md) §2 makes vetting every pin and peripheral
+init against `references/` mandatory. It applies here with one wrinkle specific
+to this tree.
+
+**`psp/` and `drivers/` are package-agnostic but not pin-agnostic.** They ship
+default pin mappings inside `HAL_*_MspInit`-style functions — `psp/Src/UART.c`
+picks the pins for every UART instance. Those defaults must be valid on the
+**part**, and any board whose schematic routes a peripheral elsewhere must
+override them rather than silently inherit a wrong mapping. When you touch one:
+
+- check the pin and AF number against **both** package files in `references/`
+- if a default is only valid on LQFP100, say so in a comment beside it — a
+  board on LQFP48 will not have that pin at all
+- treat a change to a default mapping as a change to every board, per the
+  shared-infrastructure rule at the top of this file
+
+### Known defects in `psp/Src/UART.c`
+
+Verified against `references/` (DS12712 Rev 5) on 2026-09-02 — **not yet
+fixed.** All three are STM32F4 pin mappings left in the STM32G4 path; each
+compiles cleanly against the G4 HAL and each leaves the peripheral dead.
+
+| Site | Code says | STM32G473 actually has |
+|---|---|---|
+| `UART.c:251` | UART4 on PA0/PA1, `GPIO_AF8_UART4` | UART4_TX/RX exist **only** on PC10/PC11 at **AF5**; UART4 is not on PA0/PA1 at any AF |
+| `UART.c:270` | UART5 on PC12/PD2, `GPIO_AF8_UART5` | correct pins, wrong AF — UART5_TX PC12 / UART5_RX PD2 are **AF5** |
+| `UART.c:344` | LPUART1 on PA2/PA3, `GPIO_AF8_LPUART1` | correct pins, wrong AF — LPUART1_TX/RX on PA2/PA3 are **AF12**. `GPIO_AF8_LPUART1` is valid, but only on PB10/PB11, PB12/PB13, PC0/PC1 |
+
+Do not copy these mappings into new code, and do not "fix" them as a drive-by:
+`psp/` is shared by every board, the repo has no build to verify against, and
+the owner in `.github/CODEOWNERS` should sign off. Flag them if you are working
+nearby.
+
 ## `tests/` is not a unit-test suite
 
 `tests/Src/*.c` are **on-target hardware test programs**: one `main()` per file,

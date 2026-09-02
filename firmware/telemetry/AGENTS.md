@@ -40,4 +40,24 @@ See [`firmware/platform/AGENTS.md`](../platform/AGENTS.md). `DAqCAN.dbc` and
 There is no CMake build yet (root `AGENTS.md` §5). Get human sign-off on board
 layout and build integration before generating files.
 
+
+## Hardware vetting
+
+Every board in this tree must declare its **package** — STM32G473CET6 (LQFP48)
+or STM32G473VET6 (LQFP100) — in its README and in a comment at the top of its
+pin configuration. The two packages expose different pins: LQFP48 has no port D
+or E and only part of port C.
+
+Before writing or reviewing any pin configuration or peripheral init, check it
+against the matching file in [`references/`](../../references/). Verify the pin
+exists in that package, that the signal is on that pin, and that the AF number
+is the right one *for that pin* — a peripheral sits at different AF numbers on
+different pins, and picking the wrong one compiles fine and silently produces a
+dead peripheral. Root [`AGENTS.md`](../../AGENTS.md) §2 has the full procedure;
+it is mandatory, not advisory.
+
+For this tree specifically: check the SD-card SPI, UART, and ADC pins against
+the package file before wiring them up — `psp/` ships default mappings that may
+not match this board's schematic.
+
 Ownership: see `.github/CODEOWNERS`.
