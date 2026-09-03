@@ -25,7 +25,7 @@ all: configure
 	cmake --build $(BUILD_DIR) --target App
 
 configure:
-	cmake -B $(BUILD_DIR) -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DBOARD=$(BOARD)
+	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DBOARD=$(BOARD)
 
 flash: all
 	st-flash write $(BUILD_DIR)/App.bin $(FLASH_ADDRESS)
