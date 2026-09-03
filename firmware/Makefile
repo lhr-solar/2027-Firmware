@@ -9,9 +9,10 @@
 # always reconfigures so the previous test's binary is replaced, not kept
 # alongside it.
 
-BUILD_DIR    := build
-TOOLCHAIN    := ../toolchain.cmake
-OPENOCD_CFG  := platform/openocd-stm32g4x.cfg
+BUILD_DIR      := build
+TOOLCHAIN      := ../toolchain.cmake
+OPENOCD_CFG    := platform/openocd-stm32g4x.cfg
+FLASH_ADDRESS  := 0x8000000
 
 TEST ?= blinky
 
@@ -24,11 +25,12 @@ configure:
 	cmake -B $(BUILD_DIR) -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST)
 
 flash: all
-	openocd -f $(OPENOCD_CFG) -c "program $(BUILD_DIR)/App.elf verify reset exit"
+	st-flash write $(BUILD_DIR)/App.bin $(FLASH_ADDRESS)
 
 debug: all
 	openocd -f $(OPENOCD_CFG) &
-	arm-none-eabi-gdb $(BUILD_DIR)/App.elf -ex "target extended-remote localhost:3333"
+	gdb-multiarch $(BUILD_DIR)/App.elf -ex "target extended-remote localhost:3333"
 
 clean:
 	rm -rf $(BUILD_DIR)
+	
