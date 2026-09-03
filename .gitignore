@@ -5,7 +5,6 @@ compile_commands.json
 
 # Build Artifacts
 firmware/build/
-**/build/
 
 # Python
 *venv

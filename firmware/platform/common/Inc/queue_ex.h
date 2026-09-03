@@ -1,6 +1,8 @@
 #ifndef QUEUE_EX_H
 #define QUEUE_EX_H
 
+/**** IMPLEMENTS CIRCULAR BUFFERING FOR RTOS QUEUES ****/
+
 #define xQueueSendCircularBuffer( xQueue, pvItemToQueue, xTicksToWait, QUEUE_ITEM_SIZE ) \
     do { \
         taskENTER_CRITICAL(); \
