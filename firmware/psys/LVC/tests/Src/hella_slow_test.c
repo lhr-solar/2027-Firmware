@@ -1,6 +1,7 @@
 #include "stm32xx_hal.h"
 #include "pinDefs.h"
 #include "fake.h"
+#include "include_me_please.h"
 
 int main(){
     HAL_Init();
@@ -16,8 +17,10 @@ int main(){
     HAL_GPIO_Init(LED_PORT, &led_config); // initialize GPIOA with led_config
 
     while(1){
+        #ifdef RUN
         HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
-        HAL_Delay(500);
+        #endif
+        HAL_Delay(2000);
     }
 
     return 0;
