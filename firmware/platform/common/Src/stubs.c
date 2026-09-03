@@ -1,8 +1,5 @@
 #include <stdint.h>
 
-// This is load bearing
-void _init(){}
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
 void HardFault_Handler(){

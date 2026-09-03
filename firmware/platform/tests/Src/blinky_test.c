@@ -35,6 +35,7 @@ void Heartbeat_Clock_Init() {
 
 int main(){
     HAL_Init();
+    SystemClock_Config();
 
     GPIO_InitTypeDef led_config = {
         .Mode = GPIO_MODE_OUTPUT_PP,
