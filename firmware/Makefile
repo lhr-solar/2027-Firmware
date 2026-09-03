@@ -16,7 +16,7 @@ FLASH_ADDRESS  := 0x8000000
 
 TEST ?= blinky
 
-.PHONY: all configure flash debug clean
+.PHONY: all configure flash clean
 
 all: configure
 	cmake --build $(BUILD_DIR) --target App
@@ -26,10 +26,6 @@ configure:
 
 flash: all
 	st-flash write $(BUILD_DIR)/App.bin $(FLASH_ADDRESS)
-
-debug: all
-	openocd -f $(OPENOCD_CFG) &
-	gdb-multiarch $(BUILD_DIR)/App.elf -ex "target extended-remote localhost:3333"
 
 clean:
 	rm -rf $(BUILD_DIR)
