@@ -1,4 +1,5 @@
-# Top level CMake directives
+### Top level CMake directives
+## Config hardcoded for G473 series MCUS
 cmake_minimum_required(VERSION 3.2.0) 
 
 project(
@@ -90,14 +91,32 @@ set(APP_INCLUDE_DIRS
     "platform/drivers/Inc"
 )
 
+### Compile Tests
+# unsupported tests
+set(DISABLED_TESTS
+    can
+    can_isr
+    can_mt
+    can_queueSet
+)
+
 # cache blinky at first -> if recompiled with TEST variable then overwrites the last cached var
 set(TEST "blinky" CACHE STRING "Name of test (platform/tests/Src/<TEST>_test.c)")
 set(TEST_SOURCE "platform/tests/Src/${TEST}_test.c")
 
+# check if test exists
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${TEST_SOURCE}")
     message(FATAL_ERROR "Unknown TEST '${TEST}' -- no ${TEST_SOURCE}.")
 endif()
 
+# check if test is disabled for g473
+list(FIND DISABLED_TESTS "${TEST}" TEST_DISABLED_INDEX)
+if(NOT TEST_DISABLED_INDEX EQUAL -1)
+    message(FATAL_ERROR "TEST '${TEST}' is disabled on this board -- see DISABLED_TESTS in CMakeLists.txt.")
+endif()
+
+
+### Compile and link source exec
 set(STARTUP_SOURCE "platform/stm/stm32g473/startup_stm32g473xx.s") # only asm source
 set(LINKER_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/platform/stm/stm32g473/STM32G473XXx_FLASH.ld")
 
