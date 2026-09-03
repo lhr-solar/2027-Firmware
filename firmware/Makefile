@@ -19,16 +19,21 @@ else
 TEST := $(if $(TEST),$(TEST),app)
 endif
 
-.PHONY: all configure flash clean
+.PHONY: all configure flash clean dump-symbols
 
+# requires generating build files every build
 all: configure
 	cmake --build $(BUILD_DIR) --target App
 
 configure:
 	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DBOARD=$(BOARD)
 
-flash: all
+flash: 
 	st-flash write $(BUILD_DIR)/App.bin $(FLASH_ADDRESS)
+
+# dump elf debug symbols to see what got linked
+dump-symbols:
+	objdump -x build/App.elf
 
 clean:
 	rm -rf $(BUILD_DIR)
