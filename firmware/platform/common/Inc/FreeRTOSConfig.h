@@ -151,4 +151,7 @@ standard names. */
 // Adds reentrancy structures to each thread for stdlib functions
 #define configUSE_NEWLIB_REENTRANT 1
 
+// Use FreeRTOS default static allocators
+#define configKERNEL_PROVIDED_STATIC_MEMORY 1
+
 #endif /* FREERTOS_CONFIG_H */

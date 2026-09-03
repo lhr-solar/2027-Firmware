@@ -14,7 +14,8 @@ set(CMAKE_OBJCOPY arm-none-eabi-objcopy)
 set(CMAKE_SIZE arm-none-eabi-size)
 
 # load bearing
-set(CMAKE_EXE_LINKER_FLAGS "--specs=nosys.specs" CACHE INTERNAL "")
+# workaround the try compile test 
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)

@@ -1,9 +1,4 @@
 # Top level CMake directives
-
-# cmake -B build -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake
-# CMAKE_SOURCE_DIR -> firmware/
-# CMAKE_BINARY_DIR -> firmware/build/
-
 cmake_minimum_required(VERSION 3.2.0) 
 
 project(
@@ -50,124 +45,73 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-
-### Add libraries
+### Grab sources
 ## stm/
 file(GLOB HAL_SOURCES
     "platform/stm/STM32G4xx_HAL_Driver/Src/*.c"
-    "platform/stm/stm32g4xx_hal_timebase_tim.c"
     "platform/stm/system_stm32g4xx.c"
+    "platform/stm/stm32g4xx_hal_timebase_tim.c"
     "platform/common/Src/*.c" # hal_init, sysmem, syscalls
 )
-add_library(hal STATIC ${HAL_SOURCES})
-target_include_directories(hal PUBLIC
-    "platform/stm/CMSIS/Device/ST/STM32G4xx/Include" # includes all port headers (might change ltr)
-    "platform/stm/CMSIS/Include"
-    "platform/stm/STM32G4xx_HAL_Driver/Inc"
-    "platform/common/Inc" # hal_conf
-)
+list(FILTER HAL_SOURCES EXCLUDE REGEX "_template\\.c$") # ignore template files
 
-## middleware/ 
-# FreeRTOS
-file(GLOB FREERTOS_SOURCES 
+## middleware/
+file(GLOB FREERTOS_SOURCES
     "platform/middleware/FreeRTOS-Kernel/*.c"
     "platform/middleware/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/*.c"
 )
-add_library(FreeRTOS STATIC ${FREERTOS_SOURCES})
-target_include_directories(FreeRTOS PUBLIC
-    platform/middleware/FreeRTOS-Kernel/include
-    platform/middleware/FreeRTOS-Kernel/portable/GCC/ARM_CM4F
-    platform/common/Inc # FreeRTOSConfig.h
-)
-# FatFS
 file(GLOB FATFS_SOURCES "platform/middleware/FatFs/Src/*.c")
-add_library(FatFS STATIC ${FATFS_SOURCES})
-target_include_directories(FatFS PUBLIC 
-    platform/middleware/FatFs/Inc
-    platform/common/Inc
-
-    # just fucking kill me
-    platform/drivers/Inc
-    platform/stm/CMSIS/Device/ST/STM32G4xx/Include
-    platform/stm/CMSIS/Include
-    platform/stm/STM32G4xx_HAL_Driver/Inc
-    platform/middleware/FreeRTOS-Kernel/include
-    platform/middleware/FreeRTOS-Kernel/portable/GCC/ARM_CM4F
-    
-)
 # TinyUSB
 # TODO: in TinyUSB integration PR
 
-add_library(middleware INTERFACE)
-target_link_libraries(middleware INTERFACE
-    FreeRTOS
-    FatFS
-)
-# Include header-only libs (nanoprintf)
-target_include_directories(middleware INTERFACE
-    platform/middleware 
-)
-
 ## psp/
 file(GLOB PSP_SOURCES "platform/psp/Src/*.c")
-add_library(psp STATIC ${PSP_SOURCES})
-target_include_directories(psp PUBLIC platform/psp/Inc)
-target_link_libraries(psp
-    PUBLIC
-        hal
-        middleware
-)
 
 ## utils/
 file(GLOB UTILS_SOURCES CONFIGURE_DEPENDS "platform/utils/Src/*.c")
-add_library(utils STATIC ${UTILS_SOURCES})
-target_include_directories(utils PUBLIC platform/utils/Inc)
-target_link_libraries(utils
-    PUBLIC
-        hal
-        middleware
-)
 
 ## drivers/
 file(GLOB DRIVERS_SOURCES CONFIGURE_DEPENDS "platform/drivers/Src/*.c")
-add_library(drivers STATIC ${DRIVERS_SOURCES})
-target_include_directories(drivers PUBLIC platform/drivers/Inc)
-target_link_libraries(drivers
-    PUBLIC
-        hal
-        middleware
-)
 
 ## bootloader/
 # TODO: in bootloader PR
 
+set(APP_INCLUDE_DIRS
+    "platform/stm/CMSIS/Device/ST/STM32G4xx/Include" # includes all port headers (might change ltr)
+    "platform/stm/CMSIS/Include"
+    "platform/stm/STM32G4xx_HAL_Driver/Inc"
+    "platform/common/Inc" # hal_conf, FreeRTOSConfig.h
+    "platform/middleware/FreeRTOS-Kernel/include"
+    "platform/middleware/FreeRTOS-Kernel/portable/GCC/ARM_CM4F"
+    "platform/middleware/FatFs/Inc"
+    "platform/middleware" # header-only libs (nanoprintf)
+    "platform/psp/Inc"
+    "platform/utils/Inc"
+    "platform/drivers/Inc"
+)
 
-### Exec / link libs
-# Single App target -- its source is picked at configure time via -DTEST=<name>,
-# which maps to platform/tests/Src/<name>_test.c. Always produces App.elf/.bin/.hex,
-# so there's never more than one test binary in the build dir at a time.
+# cache blinky at first -> if recompiled with TEST variable then overwrites the last cached var
 set(TEST "blinky" CACHE STRING "Name of test (platform/tests/Src/<TEST>_test.c)")
 set(TEST_SOURCE "platform/tests/Src/${TEST}_test.c")
 
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${TEST_SOURCE}")
-    file(GLOB TEST_SOURCES CONFIGURE_DEPENDS "platform/tests/Src/*.c")
-    set(AVAILABLE_TESTS "")
-    # get list of all tests
-    foreach(SRC ${TEST_SOURCES})
-        get_filename_component(NAME ${SRC} NAME_WE)
-        string(REGEX REPLACE "_test$" "" NAME ${NAME})
-        list(APPEND AVAILABLE_TESTS ${NAME})
-    endforeach()
-    list(SORT AVAILABLE_TESTS)
-    list(JOIN AVAILABLE_TESTS ", " AVAILABLE_TESTS)
-    message(FATAL_ERROR "Unknown TEST '${TEST}' -- no ${TEST_SOURCE}.\nAvailable: ${AVAILABLE_TESTS}")
+    message(FATAL_ERROR "Unknown TEST '${TEST}' -- no ${TEST_SOURCE}.")
 endif()
 
-set(STARTUP_SOURCE "platform/stm/stm32g473/startup_stm32g473xx.s")
+set(STARTUP_SOURCE "platform/stm/stm32g473/startup_stm32g473xx.s") # only asm source
 set(LINKER_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/platform/stm/stm32g473/STM32G473XXx_FLASH.ld")
 
-add_executable(App ${TEST_SOURCE} ${STARTUP_SOURCE})
-target_include_directories(App PRIVATE platform/tests/Inc)
+add_executable(App
+    ${TEST_SOURCE}
+    ${STARTUP_SOURCE}
+    ${HAL_SOURCES}
+    ${FREERTOS_SOURCES}
+    ${FATFS_SOURCES}
+    ${PSP_SOURCES}
+    ${UTILS_SOURCES}
+    ${DRIVERS_SOURCES}
+)
+target_include_directories(App PRIVATE platform/tests/Inc ${APP_INCLUDE_DIRS})
 target_compile_options(App PRIVATE ${ARM_MCU_FLAGS})
 set_target_properties(App PROPERTIES SUFFIX ".elf")
 
@@ -177,14 +121,6 @@ target_link_options(App PRIVATE
     -Wl,-Map=${CMAKE_CURRENT_BINARY_DIR}/App.map,--cref
     -Wl,--gc-sections
     -nodefaultlibs
-)
-
-target_link_libraries(App
-    hal
-    middleware
-    drivers
-    psp
-    utils
 )
 
 # Generate .hex and .bin post build
