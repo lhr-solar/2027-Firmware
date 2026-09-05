@@ -1,6 +1,6 @@
 ### Top level CMake directives
 ## Config hardcoded for G473 series MCUS
-cmake_minimum_required(VERSION 3.28.0) # somewhat arbitrary (wsl install)
+cmake_minimum_required(VERSION 3.25.3) 
 
 project(
     App
