@@ -45,7 +45,7 @@ add_executable(App
     ${UTILS_SOURCES}
     ${DRIVERS_SOURCES}
 )
-target_include_directories(App PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tests/Inc ${PLATFORM_INCLUDE_DIRS})
+target_include_directories(App PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/Inc ${PLATFORM_INCLUDE_DIRS})
 
 build_firmware(App)
 post_build(App)

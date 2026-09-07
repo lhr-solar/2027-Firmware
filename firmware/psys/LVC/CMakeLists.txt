@@ -41,7 +41,7 @@ add_executable(LVC
     ${UTILS_SOURCES}
     ${DRIVERS_SOURCES}
 )
-target_include_directories(LVC PRIVATE ${PLATFORM_INCLUDE_DIRS} ${BOARD_INCLUDE_DIRS})
+target_include_directories(LVC PUBLIC ${PLATFORM_INCLUDE_DIRS} ${BOARD_INCLUDE_DIRS})
 
 build_firmware(LVC)
 post_build(LVC)

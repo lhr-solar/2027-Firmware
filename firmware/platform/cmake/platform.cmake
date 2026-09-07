@@ -69,10 +69,10 @@ set(PLATFORM_INCLUDE_DIRS
 ### build_firmware(<target>)
 ### Applies the compile/link recipe 
 function(build_firmware TARGET_NAME)
-    target_compile_options(${TARGET_NAME} PRIVATE ${ARM_MCU_FLAGS})
+    target_compile_options(${TARGET_NAME} PUBLIC ${ARM_MCU_FLAGS})
     set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".elf")
 
-    target_link_options(${TARGET_NAME} PRIVATE
+    target_link_options(${TARGET_NAME} PUBLIC
         ${ARM_MCU_FLAGS}
         -T${LINKER_SCRIPT}
         -Wl,-Map=${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.map,--cref
