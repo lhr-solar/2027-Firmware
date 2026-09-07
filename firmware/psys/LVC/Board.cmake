@@ -1,19 +1,26 @@
 ### LV Carrier Config
-# Folders to look for entry points in --- only one source gets linked
+# paths below are relative to this board's own CMakeLists.txt (firmware/psys/LVC/)
 include_guard()
 
-set(ENTRY_POINTS
-    "psys/LVC/core/Src"
-    "psys/LVC/tests/Src"
+### SOURCES (*.c)
+# path to file containing production code
+set(BOARD_PROD_SOURCE
+    "core/Src/app.c"
+)
+# path to directory containing tests
+set(BOARD_TEST_SOURCE_DIR
+    "tests/Src"
+)
+# Drivers/modules that are ALWAYS linked
+file(GLOB BOARD_OTHER_SOURCES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_LIST_DIR}/drivers/Src/*.c" # drivers/
 )
 
-# Drivers/modules that are ALWAYS linked
-file(GLOB BOARD_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/psys/LVC/drivers/Src/*.c")
-
+### INCLUDES (*.h)
 # Populate with all the includes ...
 set(BOARD_INCLUDE_DIRS
-    psys/LVC/core/Inc
-    psys/LVC/drivers/Inc
-    psys/LVC/config/Inc
-    psys/LVC/tests/Inc
+    ${CMAKE_CURRENT_LIST_DIR}/core/Inc
+    ${CMAKE_CURRENT_LIST_DIR}/drivers/Inc
+    ${CMAKE_CURRENT_LIST_DIR}/config/Inc
+    ${CMAKE_CURRENT_LIST_DIR}/tests/Inc
 )

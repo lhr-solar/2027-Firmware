@@ -3,7 +3,7 @@
 !.vscode/c_cpp_properties.json
 compile_commands.json
 
-# Build Artifacts
+# Build Artifacts (platform and boards)
 **/build/
 
 # Python
