@@ -36,16 +36,16 @@ add_link_options(${ARM_MCU_FLAGS})
 
 ### Grab platform-wide sources (shared by every entry point)
 ## middleware/
-file(GLOB FREERTOS_SOURCES
+file(GLOB FREERTOS_SOURCES CONFIGURE_DEPENDS
     "${PLATFORM_DIR}/middleware/FreeRTOS-Kernel/*.c"
     "${PLATFORM_DIR}/middleware/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/*.c"
 )
-file(GLOB FATFS_SOURCES "${PLATFORM_DIR}/middleware/FatFs/Src/*.c")
+file(GLOB FATFS_SOURCES CONFIGURE_DEPENDS "${PLATFORM_DIR}/middleware/FatFs/Src/*.c")
 # TinyUSB
 # TODO: in TinyUSB integration PR
 
 ## psp/
-file(GLOB PSP_SOURCES "${PLATFORM_DIR}/psp/Src/*.c")
+file(GLOB PSP_SOURCES CONFIGURE_DEPENDS "${PLATFORM_DIR}/psp/Src/*.c")
 ## utils/
 file(GLOB UTILS_SOURCES CONFIGURE_DEPENDS "${PLATFORM_DIR}/utils/Src/*.c")
 ## drivers/
