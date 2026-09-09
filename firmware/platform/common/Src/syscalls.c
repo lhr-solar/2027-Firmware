@@ -30,8 +30,9 @@
 #include <sys/times.h>
 #include <time.h>
 
-#include "UART.h"
-#include "portmacro.h"
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif
 
 extern int __io_putchar(int ch) __attribute__((weak));
 extern int __io_getchar(void) __attribute__((weak));

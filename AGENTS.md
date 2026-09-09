@@ -28,14 +28,14 @@ stub for working code, and do not describe stubs as implemented.
 
 | Path | Real state |
 |---|---|
-| `firmware/platform/` | **Real.** Ported, substantial C. The only working code here. |
-| `firmware/psys/`, `firmware/controls/`, `firmware/telemetry/` | README-only. No sources, no boards started. |
+| `firmware/platform/` | **Real.** Ported, substantial C. |
+| `firmware/psys/`, `firmware/controls/`, `firmware/telemetry/` | README-only, except one dummy board folder under `psys/` used to prove out the build. No real vehicle board firmware exists yet. |
 | `can/dbc/*.dbc` | All 8 files are **0 bytes**. No messages defined yet. |
 | `can/codegen/*.py` | Every entry point raises `NotImplementedError`. |
 | `can/canspec-viewer/` | Real React/Vite source; depends on DBCs that do not exist yet. |
 | `.github/workflows/*.yml` | Jobs exist but bodies are `echo "TODO: ..."`. |
 | `flake.nix` | 0 bytes. |
-| CMake build | **Does not exist anywhere in the tree.** See §5. |
+| CMake build | **Real.** `firmware/CMakeLists.txt` + `firmware/Makefile`. See §5. |
 
 If a task depends on one of these, say so plainly rather than inventing the
 missing piece. Building the missing piece is fine when that *is* the task.
@@ -160,8 +160,10 @@ to make a build or test pass.
 │   ├── codegen/            ← DBC → C header generation + validators (stubs)
 │   └── canspec-viewer/     ← React/Vite single-file CAN spec browser
 └── firmware/
+    ├── CMakeLists.txt      ← the one CMake entry point for every board + platform test. See §5
+    ├── Makefile            ← wraps cmake/ninja + st-flash/objdump. See §5
     ├── platform/           ← shared HAL/RTOS/driver platform.  See firmware/platform/AGENTS.md
-    ├── psys/               ← power systems boards (stub)
+    ├── psys/               ← power systems boards (one dummy board folder; rest are stubs)
     ├── controls/           ← controls boards (stub)
     └── telemetry/          ← telemetry boards (stub)
 ```
@@ -193,25 +195,38 @@ for that specific change.
 
 ## 5. Building, flashing, testing
 
-**There is no build system in this repository yet.** No Makefile, no
-`CMakeLists.txt`, no toolchain file. Nothing in this repo currently compiles.
-Do not fabricate build or flash commands, and do not claim a change builds.
+CMake + Ninja, wrapped by `make`, cross-compiling with `arm-none-eabi-gcc`
+(`toolchain.cmake` at repo root) for STM32G473. All commands below run from
+`firmware/`. `firmware/CMakeLists.txt` is the **only** CMake entry point —
+there is no separate tree per board.
 
-The decided direction is **CMake + `arm-none-eabi-gcc`**, cross-compiling to
-STM32G473. `compile_commands.json` is already gitignored, anticipating CMake's
-`CMAKE_EXPORT_COMPILE_COMMANDS`. When the build lands it should provide, at
-minimum:
+```bash
+make TEST=<test>               # platform test, no board (default TEST=blinky)
+make BOARD=<BOARD>             # board build, default TEST=app (app = that board's real production firmware, not a test)
+make BOARD=<BOARD> TEST=<test> # <test> is a source file under that board's own entry-point dirs
+make flash                    # st-flash write build/App.bin 0x8000000
+make dump-symbols             # objdump -x build/App.elf -- confirm what actually linked
+make clean
+```
 
-- a toolchain file pinning `arm-none-eabi-gcc` with the correct
-  `-mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard` flags,
-- one CMake target per board, each linking the shared platform,
-- the linker script at `firmware/platform/stm/stm32g473/STM32G473XXx_FLASH.ld`,
-- an OpenOCD flash target using the configs in §2.
+Equivalent from inside a board dir (`BOARD` implicit, `firmware/psys/<BOARD>/Makefile`
+is a pure forwarder to the top-level one):
 
-If you are asked to add the build, propose the layout and get human sign-off
-before generating dozens of files. Until it exists, verify C changes by careful
-reading and by keeping them consistent with surrounding code — and say
-explicitly in your summary that the change is **unbuilt and unverified**.
+```bash
+cd firmware/psys/<BOARD> && make TEST=<test>
+```
+
+Every invocation reconfigures (`cmake -B build` reruns before every build), so
+switching `BOARD`/`TEST` is always safe — no stale cache. Output is always
+`build/App.{elf,bin,hex}`; the exec name is not board-parameterized, only its
+contents are.
+
+**Debugging whether something actually linked:** `make dump-symbols` runs
+`objdump -x build/App.elf` — check it for the symbol/object file you expect.
+For more detail, `build/App.map` (generated every build) is the full linker
+map. "Unknown BOARD"/"Unknown TEST" build errors mean the
+`psys/<BOARD>/Board.cmake` file or the test source file doesn't exist where
+expected.
 
 ### What *can* be run today
 
@@ -226,9 +241,10 @@ python3 can/canspec-viewer/export_canspec_json.py -o ./canspec-data.json
 ```
 
 `firmware/platform/tests/` holds **on-target hardware test programs**, one
-`main()` per file, flashed to a dev board and observed over UART/USB. They are
-not host unit tests and there is no test runner. See
-`firmware/platform/AGENTS.md`.
+`main()` per file, flashed to a dev board and observed over UART/USB. They
+build via the commands above but there is still no host test runner or
+assertions framework — a successful build/flash is not the same as a test
+passing on hardware. See `firmware/platform/AGENTS.md`.
 
 ---
 
