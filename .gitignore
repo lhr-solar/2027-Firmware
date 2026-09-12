@@ -18,8 +18,8 @@ __pycache__/
 *.swp
 compile_commands.json
 
-# Nix
-flake.lock
+# Nix / devenv
+.devenv*
 
 # Documentation toolset
 docs/doxygen/
@@ -32,3 +32,24 @@ can/dbc/**/*.ldb
 
 # Arduino-cli files
 .arduino*
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml

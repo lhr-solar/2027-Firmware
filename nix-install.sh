@@ -1,4 +1,4 @@
-    #!/usr/bin/env bash
+#!/usr/bin/env bash
 set -e
 
 # Colors
@@ -117,6 +117,14 @@ fi
 if [[ "$OS" == "Linux" ]]; then
     sudo apt-get update -o Acquire::Retries=3
     sudo apt-get install -y --fix-missing nix-bin || true
+fi
+
+# Install devenv through nix
+if ! command -v devenv &>/dev/null; then
+    echo -e "${YELLOW}Installing devenv...${NC}"
+    nix profile install nixpkgs#devenv
+else
+    echo -e "${GREEN}devenv is already installed.${NC}"
 fi
 
 # --- Add shell prompt hook for flakes ---
