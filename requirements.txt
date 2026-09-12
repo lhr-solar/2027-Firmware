@@ -1,2 +1,0 @@
-# Dependencies for Python
-cantools

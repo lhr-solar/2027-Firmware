@@ -60,11 +60,12 @@ in
     echo "Dev environment loaded!"
   '';
 
-  # `devenv --profile python shell` 
+  # `devenv --profile python shell`
   profiles.python.module = {
     languages.python.enable = true;
     languages.python.version = "3.10";
     languages.python.venv.enable = true;
-    languages.python.venv.requirements = ./requirements.txt;
+    languages.python.uv.enable = true;
+    languages.python.uv.sync.enable = true;
   };
 }
