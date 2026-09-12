@@ -23,8 +23,7 @@
             pkgs.gcc
             pkgs.clang
             pkgs.clang-tools
-            pkgs.lld
-            pkgs.bear
+            pkgs.lld 
             pkgs.cmake
             pkgs.ninja
             pkgs.pkg-config
@@ -39,8 +38,8 @@
             pkgs.parallel
             pkgs.sl
             pkgs.gcc-arm-embedded
-            python
             pkgs.openocd
+            python
           ];
 
           # Extra debug/flash tools, only if available
@@ -49,8 +48,8 @@
               pkgs.gdb
               pkgs.stlink
             ] else if pkgs.stdenv.isDarwin then [
+              pkgs.lldb # gdb issues on mac
               pkgs.stlink
-              pkgs.lldb
             ] else [];
 
           # Remove nulls
