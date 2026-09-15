@@ -1,3 +1,6 @@
+# default shell as bash
+shell: bash
+
 # cachix maintains nix devenv forks
 inputs:
   nixpkgs:
