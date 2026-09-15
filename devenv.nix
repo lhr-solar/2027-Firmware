@@ -19,6 +19,7 @@ let
     pkgs.pkg-config
     pkgs.ncurses
     pkgs.picocom
+    pkgs.minicom
     pkgs.git
     pkgs.wget
     pkgs.gnupg
