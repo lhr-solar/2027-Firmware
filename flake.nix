@@ -2,7 +2,7 @@
   description = "LHRs Embedded Dev";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
   };
 
   outputs = { self, nixpkgs }:
@@ -16,7 +16,7 @@
           # arm-none-eabi toolchain (may not exist everywhere)
           armGcc = pkgs.gcc-arm-embedded or null;
 
-          python = pkgs.python310.withPackages (ps: with ps; [ ps.pip ]);
+          python = pkgs.python311;
 
           # Base packages (common to all)
           basePackages = [
@@ -30,6 +30,7 @@
             pkgs.pkg-config
             pkgs.ncurses
             pkgs.picocom
+            pkgs.minicom
             pkgs.git
             pkgs.wget
             pkgs.gnupg
@@ -40,6 +41,7 @@
             pkgs.sl
             pkgs.gcc-arm-embedded
             python
+            pkgs.uv
             pkgs.openocd
           ];
 

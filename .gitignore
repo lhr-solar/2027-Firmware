@@ -21,6 +21,9 @@ compile_commands.json
 # Nix
 flake.lock
 
+# direnv
+.direnv*
+
 # Documentation toolset
 docs/doxygen/
 site/*
