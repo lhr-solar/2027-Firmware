@@ -1,4 +1,4 @@
-    #!/usr/bin/env bash
+#!/usr/bin/env bash
 set -e
 
 # Colors
@@ -8,14 +8,6 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 OS="$(uname -s)"
-
-# Check for root/sudo (Linux only)
-if [[ "$OS" == "Linux" && $EUID -ne 0 ]]; then
-    echo "This script must be run as root or with sudo privileges."
-    echo "please run with sudo. For example:"
-    echo "sudo ./nix_install.sh"
-    exit 1
-fi
 
 echo -e "${GREEN}Checking Nix installation...${NC}"
 
@@ -119,6 +111,18 @@ if [[ "$OS" == "Linux" ]]; then
     sudo apt-get install -y --fix-missing nix-bin || true
 fi
 
+# use nix-direnv, faster nix packages within direnv
+echo -e "${GREEN}Setting up direnv...${NC}"
+command -v direnv &>/dev/null || nix profile install nixpkgs#direnv
+[ -f "$HOME/.nix-profile/share/nix-direnv/direnvrc" ] || nix profile install nixpkgs#nix-direnv
+# setup direnv.toml so nix env populates on cd 
+# hide env diff to mute boatload of console output
+mkdir -p "$HOME/.config/direnv"
+grep -qF nix-direnv/direnvrc "$HOME/.config/direnv/direnvrc" 2>/dev/null ||
+    echo 'source "$HOME/.nix-profile/share/nix-direnv/direnvrc"' >> "$HOME/.config/direnv/direnvrc"
+grep -q hide_env_diff "$HOME/.config/direnv/direnv.toml" 2>/dev/null ||
+    printf '[global]\nhide_env_diff = true\n' >> "$HOME/.config/direnv/direnv.toml"
+
 # --- Add shell prompt hook for flakes ---
 USER_SHELL="$(basename "$SHELL")"
 
@@ -129,36 +133,42 @@ if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
 fi
 # End Nix
 '
+# direnv bash
+DIRENV_SNIPPET_BASH='
+# direnv
+eval "$(direnv hook bash)"
+# End direnv
+'
+# direnv zsh
+DIRENV_SNIPPET_ZSH='
+# direnv
+eval "$(direnv hook zsh)"
+# End direnv
+'
 
 add_snippet_if_missing() {
-    local file="$1"
-    if [ -f "$file" ]; then
-        if ! grep -q "nix-daemon.sh" "$file" 2>/dev/null; then
-            echo -e "${YELLOW}Adding Nix init to $file...${NC}"
-            echo "$NIX_SNIPPET" >> "$file"
-        else
-            echo -e "${GREEN}Nix already configured in $file.${NC}"
-        fi
-    fi
+    local file="$1" marker="$2" snippet="$3"
+    [ -f "$file" ] && ! grep -q "$marker" "$file" 2>/dev/null && echo "$snippet" >> "$file"
+    return 0
 }
-
-echo -e "${GREEN}Configuring shell integration for: $USER_SHELL${NC}"
 
 case "$USER_SHELL" in
     zsh)
-        add_snippet_if_missing "$HOME/.zshrc"
+        add_snippet_if_missing "$HOME/.zshrc" "nix-daemon.sh" "$NIX_SNIPPET"
+        add_snippet_if_missing "$HOME/.zshrc" "direnv hook" "$DIRENV_SNIPPET_ZSH"
         ;;
     bash)
-        add_snippet_if_missing "$HOME/.bashrc"
+        add_snippet_if_missing "$HOME/.bashrc" "nix-daemon.sh" "$NIX_SNIPPET"
+        add_snippet_if_missing "$HOME/.bashrc" "direnv hook" "$DIRENV_SNIPPET_BASH"
         ;;
     *)
         echo -e "${YELLOW}Unknown shell ($USER_SHELL). Falling back to ~/.profile${NC}"
-        add_snippet_if_missing "$HOME/.profile"
+        add_snippet_if_missing "$HOME/.profile" "nix-daemon.sh" "$NIX_SNIPPET"
         ;;
 esac
 
 # Optional: also add to ~/.profile for broader compatibility (login shells, SSH, etc.)
-add_snippet_if_missing "$HOME/.profile"
+add_snippet_if_missing "$HOME/.profile" "nix-daemon.sh" "$NIX_SNIPPET"
 
 # Reload current shell config
 echo -e "${YELLOW}Reloading shell configuration...${NC}"
