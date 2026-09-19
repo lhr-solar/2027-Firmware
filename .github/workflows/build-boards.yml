@@ -1,0 +1,88 @@
+# Build every board target: each board's production app plus each of its tests.
+name: build-firmware
+on:
+  push:
+    paths:
+      - 'firmware/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/build-firmware.yml'
+      - '.github/actions/setup-dev-env/**'
+      - '.github/scripts/gen_matrix.py'
+  pull_request:
+    paths:
+      - 'firmware/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/build-firmware.yml'
+      - '.github/actions/setup-dev-env/**'
+      - '.github/scripts/gen_matrix.py'
+
+concurrency:
+  group: build-firmware-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    name: discover board targets
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gen
+        name: Generate matrix
+        run: |
+          echo "matrix=$(python3 .github/scripts/gen_matrix.py --kind boards)" >> "$GITHUB_OUTPUT"
+          python3 .github/scripts/gen_matrix.py --kind boards --format markdown >> "$GITHUB_STEP_SUMMARY"
+
+  build:
+    needs: discover
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-dev-env
+
+      - name: Build ${{ matrix.name }}
+        run: direnv exec . make -C ${{ matrix.dir }} TEST=${{ matrix.test }}
+
+      - name: Report size
+        run: |
+          {
+            echo "### ${{ matrix.name }}"
+            echo '```'
+            direnv exec . arm-none-eabi-size ${{ matrix.dir }}/build/${{ matrix.target }}.elf
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.id }}
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            ${{ matrix.dir }}/build/${{ matrix.target }}.elf
+            ${{ matrix.dir }}/build/${{ matrix.target }}.bin
+            ${{ matrix.dir }}/build/${{ matrix.target }}.hex
+            ${{ matrix.dir }}/build/${{ matrix.target }}.map
+
+  dev-env-macos:
+    name: dev-env (macos)
+    runs-on: macos-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-dev-env
+      - name: Verify toolchain
+        run: |
+          direnv exec . arm-none-eabi-gcc --version
+          direnv exec . cmake --version
+          direnv exec . ninja --version
+          direnv exec . uv --version
+          direnv exec . python -c "import cantools; print('cantools', cantools.__version__)"
