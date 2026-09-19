@@ -3,9 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    # pin stlink to an old nixpkgs for mac users
+    nixpkgs-stlink-pin.url = "github:NixOS/nixpkgs/nixos-23.11";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, nixpkgs-stlink-pin }:
     let
       systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
 
@@ -44,15 +46,18 @@
             pkgs.uv
             pkgs.openocd
           ];
+ 
+          # unroll stlink package from pin
+          stlink_pkg = (import nixpkgs-stlink-pin { inherit system; }).stlink;
 
           # Extra debug/flash tools, only if available
           debugPackages =
             if pkgs.stdenv.isLinux then [
               pkgs.gdb
-              pkgs.stlink
+              stlink_pkg
             ] else if pkgs.stdenv.isDarwin then [
-              pkgs.stlink
               pkgs.lldb
+              stlink_pkg
             ] else [];
 
           # Remove nulls
