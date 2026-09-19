@@ -2,10 +2,12 @@
   description = "LHRs Embedded Dev";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    # source of the stlink 1.7.0 recipe only (nothing else is taken from it)
+    nixpkgs-stlink-pin.url = "github:NixOS/nixpkgs/nixos-23.11";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, nixpkgs-stlink-pin }:
     let
       systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
 
@@ -16,7 +18,7 @@
           # arm-none-eabi toolchain (may not exist everywhere)
           armGcc = pkgs.gcc-arm-embedded or null;
 
-          python = pkgs.python310.withPackages (ps: with ps; [ ps.pip ]);
+          python = pkgs.python311;
 
           # Base packages (common to all)
           basePackages = [
@@ -30,6 +32,7 @@
             pkgs.pkg-config
             pkgs.ncurses
             pkgs.picocom
+            pkgs.minicom
             pkgs.git
             pkgs.wget
             pkgs.gnupg
@@ -40,17 +43,25 @@
             pkgs.sl
             pkgs.gcc-arm-embedded
             python
+            pkgs.uv
             pkgs.openocd
           ];
+
+          stlink_pkg = (pkgs.callPackage
+            "${nixpkgs-stlink-pin}/pkgs/development/tools/misc/stlink/default.nix" { }
+          ).overrideAttrs (old: {
+            # 1.7.0's CMakeLists predates CMake 4 (dropped cmake_minimum_required < 3.5)
+            cmakeFlags = old.cmakeFlags ++ [ "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" ];
+          });
 
           # Extra debug/flash tools, only if available
           debugPackages =
             if pkgs.stdenv.isLinux then [
               pkgs.gdb
-              pkgs.stlink
+              stlink_pkg
             ] else if pkgs.stdenv.isDarwin then [
-              pkgs.stlink
               pkgs.lldb
+              stlink_pkg
             ] else [];
 
           # Remove nulls
