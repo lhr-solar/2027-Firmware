@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    # pin stlink to an old nixpkgs for mac users
+    # source of the stlink 1.7.0 recipe only (nothing else is taken from it)
     nixpkgs-stlink-pin.url = "github:NixOS/nixpkgs/nixos-23.11";
   };
 
@@ -46,9 +46,13 @@
             pkgs.uv
             pkgs.openocd
           ];
- 
-          # unroll stlink package from pin
-          stlink_pkg = (import nixpkgs-stlink-pin { inherit system; }).stlink;
+
+          stlink_pkg = (pkgs.callPackage
+            "${nixpkgs-stlink-pin}/pkgs/development/tools/misc/stlink/default.nix" { }
+          ).overrideAttrs (old: {
+            # 1.7.0's CMakeLists predates CMake 4 (dropped cmake_minimum_required < 3.5)
+            cmakeFlags = old.cmakeFlags ++ [ "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" ];
+          });
 
           # Extra debug/flash tools, only if available
           debugPackages =
