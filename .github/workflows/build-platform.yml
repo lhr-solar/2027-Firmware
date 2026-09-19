@@ -1,0 +1,73 @@
+# Build every platform test binary (firmware/platform/tests/Src/*_test.c).
+name: build-platform
+on:
+  push:
+    paths:
+      - 'firmware/platform/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/test-platform.yml'
+      - '.github/actions/setup-dev-env/**'
+      - '.github/scripts/gen_matrix.py'
+  pull_request:
+    paths:
+      - 'firmware/platform/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/test-platform.yml'
+      - '.github/actions/setup-dev-env/**'
+      - '.github/scripts/gen_matrix.py'
+
+concurrency:
+  group: test-platform-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    name: discover platform tests
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gen
+        name: Generate matrix
+        run: |
+          echo "matrix=$(python3 .github/scripts/gen_matrix.py --kind platform)" >> "$GITHUB_OUTPUT"
+          python3 .github/scripts/gen_matrix.py --kind platform --format markdown >> "$GITHUB_STEP_SUMMARY"
+
+  build:
+    needs: discover
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-dev-env
+
+      - name: Build ${{ matrix.name }}
+        run: direnv exec . make -C ${{ matrix.dir }} TEST=${{ matrix.test }}
+
+      - name: Report size
+        run: |
+          {
+            echo "### ${{ matrix.name }}"
+            echo '```'
+            direnv exec . arm-none-eabi-size ${{ matrix.dir }}/build/${{ matrix.target }}.elf
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.id }}
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            ${{ matrix.dir }}/build/${{ matrix.target }}.elf
+            ${{ matrix.dir }}/build/${{ matrix.target }}.bin
+            ${{ matrix.dir }}/build/${{ matrix.target }}.hex
+            ${{ matrix.dir }}/build/${{ matrix.target }}.map
