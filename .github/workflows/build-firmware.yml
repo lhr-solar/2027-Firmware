@@ -3,9 +3,62 @@ name: build-firmware
 on:
   push:
   pull_request:
+
+concurrency:
+  group: build-firmware-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  dev-env:
+    name: dev-env (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
     steps:
       - uses: actions/checkout@v4
-      - run: echo "TODO - build firmware targets"
+      - name: Install Nix (flakes enabled)
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: Show Nix version
+        run: |
+          nix --version
+          nix config show experimental-features
+
+      - name: Install direnv + nix-direnv
+        run: |
+          nix profile install nixpkgs#direnv nixpkgs#nix-direnv
+          echo "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.nix-profile/bin:$PATH"
+          mkdir -p "$HOME/.config/direnv"
+          echo 'source "$HOME/.nix-profile/share/nix-direnv/direnvrc"' >> "$HOME/.config/direnv/direnvrc"
+          printf '[global]\nhide_env_diff = true\n' >> "$HOME/.config/direnv/direnv.toml"
+          direnv --version
+
+      - name: Build dev shell
+        run: nix develop --print-build-logs --command true
+
+      - name: Load dev environment via direnv
+        run: |
+          direnv allow .
+          direnv exec . true
+
+      - name: Verify toolchain
+        run: |
+          direnv exec . arm-none-eabi-gcc --version
+          direnv exec . cmake --version
+          direnv exec . ninja --version
+          direnv exec . openocd --version
+          direnv exec . uv --version
+          direnv exec . python --version
+          direnv exec . python -c "import cantools; print('cantools', cantools.__version__)"
+
+      - name: Build firmware targets
+        run: direnv exec . echo "TODO - build firmware targets"
