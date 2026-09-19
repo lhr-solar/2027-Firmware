@@ -1,0 +1,42 @@
+name: Set up firmware dev environment
+description: >
+  Installs Nix with flakes, direnv + nix-direnv, and realizes this repo's dev
+  shell
+
+runs:
+  using: composite
+  steps:
+    - name: Install Nix (flakes enabled)
+      uses: cachix/install-nix-action@v31
+      with:
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+          accept-flake-config = true
+
+    - name: Cache Nix store
+      uses: nix-community/cache-nix-action@v6
+      with:
+        primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.nix', 'flake.lock', 'uv.lock') }}
+        restore-prefixes-first-match: nix-${{ runner.os }}-
+
+    - name: Install direnv + nix-direnv
+      shell: bash
+      run: |
+        nix profile install nixpkgs#direnv nixpkgs#nix-direnv
+        # GITHUB_PATH only applies to later steps, so export it here as well.
+        echo "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
+        export PATH="$HOME/.nix-profile/bin:$PATH"
+        mkdir -p "$HOME/.config/direnv"
+        echo 'source "$HOME/.nix-profile/share/nix-direnv/direnvrc"' >> "$HOME/.config/direnv/direnvrc"
+        printf '[global]\nhide_env_diff = true\n' >> "$HOME/.config/direnv/direnv.toml"
+        direnv --version
+
+    - name: Build dev shell
+      shell: bash
+      run: nix develop --print-build-logs --command true
+
+    - name: Load dev environment via direnv
+      shell: bash
+      run: |
+        direnv allow .
+        direnv exec . true
