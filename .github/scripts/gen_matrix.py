@@ -149,10 +149,28 @@ def platform_matrix(root: Path) -> list[dict]:
                   target, test, "platform", "platform") for test in tests]
 
 
+def os_label(runner: str) -> str:
+    return runner.removesuffix("-latest")
+
+
+def with_runners(matrix: list[dict], runners: list[str]) -> list[dict]:
+    multi = len(runners) > 1
+    out: list[dict] = []
+    for item in matrix:
+        for runner in runners:
+            entry = dict(item, os=runner)
+            if multi:
+                label = os_label(runner)
+                entry["name"] = f"{item['name']} ({label})"
+                entry["id"] = f"{item['id']}-{label}"
+            out.append(entry)
+    return out
+
+
 def as_markdown(matrix: list[dict]) -> str:
     lines = [f"### {len(matrix)} target(s)", "",
-             "| target | directory | TEST |", "| --- | --- | --- |"]
-    lines += [f"| {e['name']} | `{e['dir']}` | `{e['test'] or '(prod)'}` |"
+             "| target | directory | TEST | runner |", "| --- | --- | --- | --- |"]
+    lines += [f"| {e['name']} | `{e['dir']}` | `{e['test'] or '(prod)'}` | `{e['os']}` |"
               for e in matrix]
     return "\n".join(lines)
 
@@ -166,6 +184,9 @@ def main() -> None:
                         choices=("json", "pretty", "markdown"),
                         help="json (default, single line for GITHUB_OUTPUT), "
                              "pretty (indented), markdown (step summary table)")
+    parser.add_argument("--os", default="ubuntu-latest",
+                        help="comma-separated runner labels; every target is "
+                             "built on every runner (default: ubuntu-latest)")
     parser.add_argument("--repo-root", type=Path, default=None,
                         help="defaults to the repo this script lives in")
     args = parser.parse_args()
@@ -173,7 +194,12 @@ def main() -> None:
     # Script lives in .github/scripts/, so the repo root is two levels up.
     root = (args.repo_root or Path(__file__).resolve().parent.parent.parent).resolve()
 
+    runners = [o.strip() for o in args.os.split(",") if o.strip()]
+    if not runners:
+        fail("--os must name at least one runner label")
+
     matrix = boards_matrix(root) if args.kind == "boards" else platform_matrix(root)
+    matrix = with_runners(matrix, runners)
 
     if args.format == "markdown":
         print(as_markdown(matrix))

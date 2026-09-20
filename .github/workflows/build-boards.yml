@@ -1,12 +1,12 @@
-# Build every board target: each board's production app plus each of its tests.
-name: build-firmware
+# Build every board target: each board's production app plus each of its tests
+name: build-boards
 on:
   push:
     paths:
       - 'firmware/**'
       - 'flake.nix'
       - 'flake.lock'
-      - '.github/workflows/build-firmware.yml'
+      - '.github/workflows/build-boards.yml'
       - '.github/actions/setup-dev-env/**'
       - '.github/scripts/gen_matrix.py'
   pull_request:
@@ -14,12 +14,12 @@ on:
       - 'firmware/**'
       - 'flake.nix'
       - 'flake.lock'
-      - '.github/workflows/build-firmware.yml'
+      - '.github/workflows/build-boards.yml'
       - '.github/actions/setup-dev-env/**'
       - '.github/scripts/gen_matrix.py'
 
 concurrency:
-  group: build-firmware-${{ github.ref }}
+  group: build-boards-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -33,14 +33,14 @@ jobs:
       - id: gen
         name: Generate matrix
         run: |
-          echo "matrix=$(python3 .github/scripts/gen_matrix.py --kind boards)" >> "$GITHUB_OUTPUT"
-          python3 .github/scripts/gen_matrix.py --kind boards --format markdown >> "$GITHUB_STEP_SUMMARY"
+          echo "matrix=$(python3 .github/scripts/gen_matrix.py --kind boards --os ubuntu-latest,macos-latest)" >> "$GITHUB_OUTPUT"
+          python3 .github/scripts/gen_matrix.py --kind boards --os ubuntu-latest,macos-latest --format markdown >> "$GITHUB_STEP_SUMMARY"
 
   build:
     needs: discover
     name: ${{ matrix.name }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
@@ -62,6 +62,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
+        if: matrix.os == 'ubuntu-latest'
         with:
           name: ${{ matrix.id }}
           retention-days: 14
@@ -71,18 +72,3 @@ jobs:
             ${{ matrix.dir }}/build/${{ matrix.target }}.bin
             ${{ matrix.dir }}/build/${{ matrix.target }}.hex
             ${{ matrix.dir }}/build/${{ matrix.target }}.map
-
-  dev-env-macos:
-    name: dev-env (macos)
-    runs-on: macos-latest
-    timeout-minutes: 90
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-dev-env
-      - name: Verify toolchain
-        run: |
-          direnv exec . arm-none-eabi-gcc --version
-          direnv exec . cmake --version
-          direnv exec . ninja --version
-          direnv exec . uv --version
-          direnv exec . python -c "import cantools; print('cantools', cantools.__version__)"
