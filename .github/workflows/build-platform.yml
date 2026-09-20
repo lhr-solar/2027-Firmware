@@ -2,6 +2,7 @@
 name: build-platform
 on:
   push:
+    branches: [main]
     paths:
       - 'firmware/platform/**'
       - 'flake.nix'
