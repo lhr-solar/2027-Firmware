@@ -34,8 +34,8 @@ jobs:
       - id: gen
         name: Generate matrix
         run: |
-          echo "matrix=$(python3 .github/scripts/gen_matrix.py --kind platform --os ubuntu-latest,macos-latest)" >> "$GITHUB_OUTPUT"
-          python3 .github/scripts/gen_matrix.py --kind platform --os ubuntu-latest,macos-latest --format markdown >> "$GITHUB_STEP_SUMMARY"
+          echo "matrix=$(python3 .github/scripts/gen_matrix.py --kind platform --os ubuntu-latest)" >> "$GITHUB_OUTPUT"
+          python3 .github/scripts/gen_matrix.py --kind platform --os ubuntu-latest --format markdown >> "$GITHUB_STEP_SUMMARY"
 
   build:
     needs: discover
