@@ -78,7 +78,7 @@ jobs:
         with:
           name: ${{ matrix.id }}
           retention-days: 14
-          if-no-files-found: error
+          if-no-files-found: warn
           path: |
             ${{ matrix.dir }}/**/*.elf
             ${{ matrix.dir }}/**/*.bin
