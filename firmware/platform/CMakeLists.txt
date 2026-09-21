@@ -21,7 +21,7 @@ set(DISABLED_TESTS
     can_isr
     can_mt
     can_queueSet
-    tusb_cdc
+    tusb_cdc # aarav chud
 )
 
 # check if test is disabled for g473
