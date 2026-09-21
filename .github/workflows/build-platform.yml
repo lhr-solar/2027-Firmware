@@ -51,14 +51,15 @@ jobs:
       - uses: ./.github/actions/setup-dev-env
 
       - name: Build ${{ matrix.name }}
-        run: direnv exec . make -C ${{ matrix.dir }} TEST=${{ matrix.test }}
+        run: direnv exec . ${{ matrix.cmd }}
 
       - name: Report size
         run: |
           {
             echo "### ${{ matrix.name }}"
             echo '```'
-            direnv exec . arm-none-eabi-size ${{ matrix.dir }}/build/${{ matrix.target }}.elf
+            find ${{ matrix.dir }} -name '*.elf' -print0 \
+              | xargs -0 -r direnv exec . arm-none-eabi-size
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -69,7 +70,7 @@ jobs:
           retention-days: 14
           if-no-files-found: error
           path: |
-            ${{ matrix.dir }}/build/${{ matrix.target }}.elf
-            ${{ matrix.dir }}/build/${{ matrix.target }}.bin
-            ${{ matrix.dir }}/build/${{ matrix.target }}.hex
-            ${{ matrix.dir }}/build/${{ matrix.target }}.map
+            ${{ matrix.dir }}/**/*.elf
+            ${{ matrix.dir }}/**/*.bin
+            ${{ matrix.dir }}/**/*.hex
+            ${{ matrix.dir }}/**/*.map

@@ -2,16 +2,21 @@
 """
 Generate GitHub Actions build matrices from discovered firmware targets.
 
-This repo has two kinds of buildable thing, discovered differently:
+Two kinds of target, discovered differently:
 
   boards    firmware/<subteam>/<BOARD>/, marked by a Board.cmake. Each board
-            builds its production app (TEST="", entry point from
-            BOARD_PROD_SOURCE) plus one binary per test in
-            BOARD_TEST_SOURCE_DIR.
-  platform  firmware/platform/ -- the shared HAL/RTOS layer. No production
-            app; it builds one binary per tests/Src/*_test.c.
+            gets exactly two jobs, both owner-defined entry points:
+              prod   -> make prod-all
+              tests  -> make test-all
+            A rule mentioned only in .PHONY does not count as defined.
+            The board owner controls what those do, so boards with variants
+            (board number etc.) need no change here.
+  platform  firmware/platform/ -- the shared HAL/RTOS layer. One job per
+            tests/Src/*_test.c, honouring DISABLED_TESTS in its CMakeLists.txt
+            (building a disabled test is a configure-time FATAL_ERROR).
 
-Output is a JSON array suitable for strategy.matrix.include.
+Output is a JSON array suitable for strategy.matrix.include. Every entry has
+the same keys: name, id, dir, cmd, blocked, os.
 """
 
 import argparse
@@ -21,7 +26,11 @@ import sys
 from pathlib import Path
 
 TEST_SUFFIX = "_test.c"
+# owner-defined make targets CI drives each board through
 PROD_TARGET = "prod-all"
+TEST_TARGET = "test-all"
+ENTRY_POINTS = ((PROD_TARGET, "prod", "production firmware"),
+                (TEST_TARGET, "tests", "all tests"))
 
 
 def fail(msg: str) -> None:
@@ -36,57 +45,30 @@ def read(path: Path) -> str:
         fail(f"cannot read {path}: {exc}")
 
 
-def strip_comments(text: str) -> str:
-    return re.sub(r"#[^\n]*", "", text)
-
-
 def cmake_set_values(text: str, var: str) -> list[str]:
-    """Return the tokens of a `set(<var> ...)` block, quotes stripped.
+    """Tokens of a `set(<var> ...)` block, comments stripped and quotes removed.
 
     Anchored on `set(` so it does not also match the `list(FIND DISABLED_TESTS
-    ...)` lookup that lives a few lines below the real declaration.
+    ...)` lookup a few lines below the declaration.
     """
     match = re.search(rf"\bset\s*\(\s*{re.escape(var)}\s(?P<body>[^)]*)\)", text)
     if not match:
         return []
-    return [tok.strip('"') for tok in strip_comments(match.group("body")).split()]
+    body = re.sub(r"#[^\n]*", "", match.group("body"))
+    return [tok.strip('"') for tok in body.split()]
 
 
-def cmake_project_name(cmakelists: Path) -> str:
-    """The CMake target name, which is what the build outputs are named."""
-    match = re.search(r"\bproject\s*\(\s*([A-Za-z0-9_]+)", read(cmakelists))
-    if not match:
-        fail(f"no project() name found in {cmakelists}")
-    return match.group(1)
-
-
-def find_tests(test_dir: Path, disabled: set[str]) -> list[str]:
-    if not test_dir.is_dir():
-        return []
-    found = {p.name[: -len(TEST_SUFFIX)] for p in test_dir.glob(f"*{TEST_SUFFIX}")}
-    return sorted(found - disabled)
-
-
-def makefile_has_target(makefile: Path, target: str) -> bool:
-    if not makefile.is_file():
-        return False
-    return bool(re.search(rf"^{re.escape(target)}\s*:(?!=)",
-                          read(makefile), re.MULTILINE))
-
-
-def entry(name: str, ident: str, directory: Path, root: Path, target: str,
-          test: str, kind: str, subteam: str, make_args: str,
+def entry(name: str, ident: str, directory: str, cmd: str,
           blocked: str = "") -> dict:
     return {
         "name": name,
         "id": ident,
-        "dir": directory.relative_to(root).as_posix(),
-        "target": target,
-        "test": test,
-        "make_args": make_args,
+        "dir": directory,
+        # exactly what CI runs, from the repo root
+        "cmd": cmd,
+        # non-empty means this target cannot be built, and why; the key is
+        # always present so the workflow's `!= ''` guard is unambiguous
         "blocked": blocked,
-        "kind": kind,
-        "subteam": subteam,
     }
 
 
@@ -95,59 +77,31 @@ def boards_matrix(root: Path) -> list[dict]:
     if not firmware.is_dir():
         fail(f"no firmware/ directory at {firmware}")
 
-    # <subteam>/<BOARD>/Board.cmake. Stale build trees never contain one, but
-    # filter defensively so a local build dir can't inject a phantom board.
-    board_dirs = sorted(
-        p.parent for p in firmware.glob("*/*/Board.cmake")
-        if "build" not in p.parts
-    )
+    board_dirs = sorted(p.parent for p in firmware.glob("*/*/Board.cmake")
+                        if "build" not in p.parts)
     if not board_dirs:
         fail(f"no boards found under {firmware} (looked for */*/Board.cmake)")
 
     matrix: list[dict] = []
     for board_dir in board_dirs:
-        board = board_dir.name
-        subteam = board_dir.parent.name
-        cmakelists = board_dir / "CMakeLists.txt"
-        if not cmakelists.is_file():
-            fail(f"{board} has Board.cmake but no CMakeLists.txt")
+        board, subteam = board_dir.name, board_dir.parent.name
+        rel = board_dir.relative_to(root).as_posix()
 
-        target = cmake_project_name(cmakelists)
-        disabled = set(cmake_set_values(read(cmakelists), "DISABLED_TESTS"))
-        board_cmake = read(board_dir / "Board.cmake")
-
-        # Production app. The board's CMakeLists FATAL_ERRORs on a missing
-        # entry point; catching it here fails one fast job instead of every
-        # job in the matrix.
-        prod = cmake_set_values(board_cmake, "BOARD_PROD_SOURCE")
-        if not prod:
-            fail(f"{board}/Board.cmake does not set BOARD_PROD_SOURCE")
-        if not (board_dir / prod[0]).is_file():
-            fail(f"{board}: BOARD_PROD_SOURCE points at missing {prod[0]}")
         makefile = board_dir / "Makefile"
-        if not makefile.is_file():
-            blocked = f"{board} has no Makefile, so there is no prod-all target to run"
-        elif not makefile_has_target(makefile, PROD_TARGET):
-            blocked = (f"{board}/Makefile defines no '{PROD_TARGET}' target "
-                       f"(production firmware cannot be built)")
-        else:
-            blocked = ""
-        matrix.append(entry(f"{board} / prod", f"{subteam}-{board}-prod",
-                            board_dir, root, target, "", "board", subteam,
-                            make_args=PROD_TARGET, blocked=blocked))
+        text = read(makefile) if makefile.is_file() else None
 
-        # Board tests, from the directory the board itself declares.
-        test_dirs = cmake_set_values(board_cmake, "BOARD_TEST_SOURCE_DIR")
-        if not test_dirs:
-            print(f"warning: {board} sets no BOARD_TEST_SOURCE_DIR", file=sys.stderr)
-            continue
-        tests = find_tests(board_dir / test_dirs[0], disabled)
-        if not tests:
-            print(f"warning: no tests found in {board}/{test_dirs[0]}", file=sys.stderr)
-        for test in tests:
-            matrix.append(entry(f"{board} / {test}", f"{subteam}-{board}-{test}",
-                                board_dir, root, target, test, "board", subteam,
-                                make_args=f"TEST={test}"))
+        for target, label, desc in ENTRY_POINTS:
+            if text is None:
+                blocked = (f"{board} has no Makefile -- CI builds {desc} with "
+                           f"'make {target}' (see firmware/psys/LVC/Makefile)")
+            elif not re.search(rf"^{re.escape(target)}\s*:(?!=)", text, re.MULTILINE):
+                blocked = (f"{board}/Makefile defines no '{target}' target -- CI "
+                           f"builds {desc} with it (see firmware/psys/LVC/Makefile)")
+            else:
+                blocked = ""
+            matrix.append(entry(f"{board} / {label}",
+                                f"{subteam}-{board}-{label}", rel,
+                                f"make -C {rel} {target}", blocked))
     return matrix
 
 
@@ -157,51 +111,66 @@ def platform_matrix(root: Path) -> list[dict]:
     if not cmakelists.is_file():
         fail(f"no platform CMakeLists.txt at {cmakelists}")
 
-    target = cmake_project_name(cmakelists)
     disabled = set(cmake_set_values(read(cmakelists), "DISABLED_TESTS"))
-    tests = find_tests(platform / "tests" / "Src", disabled)
+    test_dir = platform / "tests" / "Src"
+    if not test_dir.is_dir():
+        fail(f"no platform test directory at {test_dir}")
+    tests = sorted({p.name[: -len(TEST_SUFFIX)]
+                    for p in test_dir.glob(f"*{TEST_SUFFIX}")} - disabled)
     if not tests:
-        fail(f"no buildable tests in {platform / 'tests' / 'Src'}")
+        fail(f"no buildable tests in {test_dir}")
     if disabled:
         print(f"note: skipping DISABLED_TESTS: {', '.join(sorted(disabled))}",
               file=sys.stderr)
 
-    return [entry(f"platform / {test}", f"platform-{test}", platform, root,
-                  target, test, "platform", "platform",
-                  make_args=f"TEST={test}") for test in tests]
+    rel = platform.relative_to(root).as_posix()
+    return [entry(f"platform / {t}", f"platform-{t}", rel,
+                  f"make -C {rel} TEST={t}") for t in tests]
 
 
 def os_label(runner: str) -> str:
+    """ubuntu-latest -> ubuntu; macos-14 -> macos-14."""
     return runner.removesuffix("-latest")
 
 
 def with_runners(matrix: list[dict], runners: list[str]) -> list[dict]:
+    """Cross every target with every runner.
+
+    This has to happen here rather than as a second `os:` key in the workflow:
+    GitHub merges `include` objects into the base matrix instead of taking a
+    product with it, so `{os: [a, b], include: <targets>}` silently collapses
+    to two jobs rather than 2 x len(targets).
+
+    Names and ids only gain an OS suffix when there is more than one runner,
+    so single-runner output is unchanged.
+    """
     multi = len(runners) > 1
     out: list[dict] = []
     for item in matrix:
         for runner in runners:
-            entry = dict(item, os=runner)
+            new = dict(item, os=runner)
             if multi:
                 label = os_label(runner)
-                entry["name"] = f"{item['name']} ({label})"
-                entry["id"] = f"{item['id']}-{label}"
-            out.append(entry)
+                new["name"] = f"{item['name']} ({label})"
+                new["id"] = f"{item['id']}-{label}"
+            out.append(new)
     return out
 
 
 def as_markdown(matrix: list[dict]) -> str:
     lines = [f"### {len(matrix)} target(s)", "",
-             "| target | directory | make | runner | status |",
-             "| --- | --- | --- | --- | --- |"]
-    lines += [f"| {e['name']} | `{e['dir']}` | `make {e['make_args']}` | "
-              f"`{e['os']}` | {'**BLOCKED** -- ' + e['blocked'] if e['blocked'] else 'ok'} |"
+             "| target | command | runner | status |",
+             "| --- | --- | --- | --- |"]
+    lines += [f"| {e['name']} | `{e['cmd']}` | `{e['os']}` | "
+              f"{'**BLOCKED** -- ' + e['blocked'] if e['blocked'] else 'ok'} |"
               for e in matrix]
     return "\n".join(lines)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--kind", required=True, choices=("boards", "platform"),
                         help="which set of targets to enumerate")
     parser.add_argument("--format", default="json",
@@ -216,7 +185,8 @@ def main() -> None:
     args = parser.parse_args()
 
     # Script lives in .github/scripts/, so the repo root is two levels up.
-    root = (args.repo_root or Path(__file__).resolve().parent.parent.parent).resolve()
+    root = (args.repo_root
+            or Path(__file__).resolve().parent.parent.parent).resolve()
 
     runners = [o.strip() for o in args.os.split(",") if o.strip()]
     if not runners:

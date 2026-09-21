@@ -48,20 +48,20 @@ jobs:
         include: ${{ fromJSON(needs.discover.outputs.matrix) }}
     steps:
       # Check that make rules are configured properly for CI before nix setup
-      - name: Check production build entry point
+      - name: Check board build entry points
         if: matrix.blocked != ''
         env:
           REASON: ${{ matrix.blocked }}
           BOARD_DIR: ${{ matrix.dir }}
         run: |
-          echo "::error title=Missing prod-all target::$REASON"
+          echo "::error title=Board build entry point missing::$REASON"
           exit 1
 
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dev-env
 
       - name: Build ${{ matrix.name }}
-        run: direnv exec . make -C ${{ matrix.dir }} ${{ matrix.make_args }}
+        run: direnv exec . ${{ matrix.cmd }}
 
       - name: Report size
         run: |
