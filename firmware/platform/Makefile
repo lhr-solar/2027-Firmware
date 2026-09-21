@@ -31,4 +31,4 @@ clean:
 
 # For CI - builds all tests, fails if any failed
 test-all:
-	./build-all-tests.sh
+	./build_all_tests.sh

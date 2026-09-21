@@ -38,4 +38,4 @@ prod-all:
 
 # For CI - builds all tests for all instances of this board
 test-all:
-	./build-all-tests.sh
+	./build_all_tests.sh
