@@ -1,5 +1,5 @@
 # Build every board target: each board's production app plus each of its tests
-name: build-boards
+name: build_boards
 on:
   push:
     branches: [main]

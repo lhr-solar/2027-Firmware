@@ -1,5 +1,5 @@
 # Build every platform test binary (firmware/platform/tests/Src/*_test.c).
-name: build-platform
+name: build_platform
 on:
   push:
     branches: [main]
