@@ -1,0 +1,86 @@
+# Build every board target: each board's production app plus each of its tests
+name: build_boards
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'firmware/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/build_boards.yml'
+      - '.github/actions/setup-dev-env/**'
+      - '.github/scripts/gen_matrix.py'
+  pull_request:
+    paths:
+      - 'firmware/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/build_boards.yml'
+      - '.github/actions/setup-dev-env/**'
+      - '.github/scripts/gen_matrix.py'
+
+concurrency:
+  group: build-boards-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    name: discover board targets
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gen
+        name: Generate matrix
+        run: |
+          echo "matrix=$(python3 .github/scripts/gen_matrix.py --os ubuntu-latest)" >> "$GITHUB_OUTPUT"
+          python3 .github/scripts/gen_matrix.py --os ubuntu-latest --format markdown >> "$GITHUB_STEP_SUMMARY"
+
+  build:
+    needs: discover
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    steps:
+      # Check that make rules are configured properly for CI before nix setup
+      - name: Check board build entry points
+        if: matrix.blocked != ''
+        env:
+          REASON: ${{ matrix.blocked }}
+          BOARD_DIR: ${{ matrix.dir }}
+        run: |
+          echo "::error title=Board build entry point missing::$REASON"
+          exit 1
+
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-dev-env
+
+      - name: Build ${{ matrix.name }}
+        run: direnv exec . ${{ matrix.cmd }}
+
+      - name: Report size
+        run: |
+          {
+            echo "### ${{ matrix.name }}"
+            echo '```'
+            find ${{ matrix.dir }} -name '*.elf' -print0 \
+              | xargs -0 -r direnv exec . arm-none-eabi-size
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          name: ${{ matrix.id }}
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            ${{ matrix.dir }}/**/*.elf
+            ${{ matrix.dir }}/**/*.bin
+            ${{ matrix.dir }}/**/*.hex
+            ${{ matrix.dir }}/**/*.map

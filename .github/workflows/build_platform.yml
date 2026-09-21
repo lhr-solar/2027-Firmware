@@ -1,0 +1,62 @@
+# Build every platform test (firmware/platform/tests/Src/*_test.c)
+name: build_platform
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'firmware/platform/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/build_platform.yml'
+      - '.github/actions/setup-dev-env/**'
+      - '.github/scripts/gen_matrix.py'
+  pull_request:
+    paths:
+      - 'firmware/platform/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/build_platform.yml'
+      - '.github/actions/setup-dev-env/**'
+      - '.github/scripts/gen_matrix.py'
+
+concurrency:
+  group: build-platform-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-all:
+    name: platform / tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-dev-env
+
+      - name: Build all platform tests
+        run: direnv exec . make -C firmware/platform test-all
+
+      - name: Report size
+        run: |
+          {
+            echo "### platform / tests (${{ matrix.os }})"
+            echo '```'
+            find firmware/platform -name '*.elf' -print0 \
+              | xargs -0 -r direnv exec . arm-none-eabi-size
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: success() && matrix.os == 'ubuntu-latest'
+        with:
+          name: platform-tests
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            firmware/platform/**/*.elf
+            firmware/platform/**/*.bin
+            firmware/platform/**/*.hex
+            firmware/platform/**/*.map

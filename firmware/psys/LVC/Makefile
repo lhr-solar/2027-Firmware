@@ -6,7 +6,7 @@ TOOLCHAIN := ../../platform/cmake/toolchain.cmake
 
 TEST ?=
 
-.PHONY: all configure flash erase dump-symbols dump_size clean
+.PHONY: all prod-all configure flash erase dump-symbols dump_size clean test-all
 
 all: configure
 	cmake --build $(BUILD_DIR) --target LVC
@@ -28,3 +28,14 @@ dump_size: configure
 
 clean:
 	cmake --build $(BUILD_DIR) --target clean
+
+# For CI - builds production firmware for all instances of this board
+prod-all:
+	cmake -B $(BUILD_DIR)/build1 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST)
+	cmake -B $(BUILD_DIR)/build2 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST)
+	cmake --build $(BUILD_DIR)/build1 --target LVC	
+	cmake --build $(BUILD_DIR)/build2 --target LVC
+
+# For CI - builds all tests for all instances of this board
+test-all:
+	./build_all_tests.sh
