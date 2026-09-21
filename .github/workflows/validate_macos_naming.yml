@@ -1,0 +1,26 @@
+name: validate_macos_naming
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'firmware/**'
+      - '.github/workflows/validate_macos_naming.yml'
+      - '.github/scripts/validate_macos_naming.sh'
+  pull_request:
+    paths:
+      - 'firmware/**'
+      - '.github/workflows/validate_macos_naming.yml'
+      - '.github/scripts/validate_macos_naming.sh'
+
+concurrency:
+  group: validate-macos-naming-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: validate-macos-naming
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: .github/scripts/validate_macos_naming.sh

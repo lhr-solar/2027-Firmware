@@ -7,7 +7,7 @@ on:
       - 'firmware/**'
       - 'flake.nix'
       - 'flake.lock'
-      - '.github/workflows/build-boards.yml'
+      - '.github/workflows/build_boards.yml'
       - '.github/actions/setup-dev-env/**'
       - '.github/scripts/gen_matrix.py'
   pull_request:
@@ -15,7 +15,7 @@ on:
       - 'firmware/**'
       - 'flake.nix'
       - 'flake.lock'
-      - '.github/workflows/build-boards.yml'
+      - '.github/workflows/build_boards.yml'
       - '.github/actions/setup-dev-env/**'
       - '.github/scripts/gen_matrix.py'
 
