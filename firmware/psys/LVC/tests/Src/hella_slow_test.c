@@ -20,7 +20,7 @@ int main(){
         #ifdef RUN
         HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
         #endif
-        HAL_Delay(2000)
+        HAL_Delay(2000);
     }
 
     return 0;
