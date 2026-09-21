@@ -8,8 +8,9 @@
     python3 firmware/new_board.py psys LVC --description "LV Carrier"
 
 Creates firmware/<system>/<board>/ with config/, core/, drivers/, tests/, a
-Board.cmake, CMakeLists.txt and Makefile. The source files are created empty,
-except core/Src/app.c, which gets a main() that only loops.
+Board.cmake, CMakeLists.txt and Makefile (rendered from firmware/templates/).
+The source files are created empty, except core/Src/app.c, which gets a main()
+that only loops.
 A "system" is any folder directly under firmware/ that is not in NOT_SYSTEMS.
 """
 import argparse
@@ -20,9 +21,10 @@ from functools import partial
 from pathlib import Path
 
 FIRMWARE = Path(__file__).resolve().parent
+TEMPLATES = FIRMWARE / "templates"
 
-# firmware/ folders that are not systems: shared code, the bootloader, cmake output
-NOT_SYSTEMS = {"platform", "bootloader", "build"}
+# firmware/ folders that are not systems: shared code, the bootloader, cmake output, board templates
+NOT_SYSTEMS = {"platform", "bootloader", "build", "templates"}
 
 # ---------------------------------------------------------------- colors
 # ANSI, off when piped or when NO_COLOR is set; symbols fall back to ASCII
@@ -45,134 +47,20 @@ cyan = partial(paint, "1;36")
 magenta = partial(paint, "1;35")
 
 # ------------------------------------------------------------- templates
-# @KEY@ placeholders (not $KEY): the CMake text is full of ${...}.
+# CMakeLists.txt, Board.cmake and Makefile are rendered from firmware/templates/.
+# Placeholders are @KEY@ (not $KEY: the CMake text is full of ${...}):
+#   @BOARD@     board name, used for the folder and the CMake target
+#   @DESC@      human-readable description
+#   @SYSTEM@    system folder, e.g. psys
+#   @PLATFORM@  relative path from the board folder to firmware/platform
+FROM_TEMPLATE = {  # generated file -> template it is rendered from
+    "CMakeLists.txt": "CMakeLists.txt.in",
+    "Board.cmake": "Board.cmake.in",
+    "Makefile": "Makefile.in",
+}
+
+# everything else is written as-is
 FILES = {}
-
-FILES["CMakeLists.txt"] = """\
-### @DESC@ board build
-## Config hardcoded for G473 series MCUS
-cmake_minimum_required(VERSION 3.25.3)
-
-project(
-    @BOARD@
-    VERSION 1.0.0
-    DESCRIPTION "@DESC@"
-    LANGUAGES C ASM # asm for startup file
-)
-
-include(${CMAKE_CURRENT_LIST_DIR}/@PLATFORM@/cmake/platform.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/@PLATFORM@/cmake/stm32.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/@PLATFORM@/cmake/post_build.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/@PLATFORM@/cmake/custom_commands.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/Board.cmake)
-
-# set test to default to build prod
-set(TEST "" CACHE STRING "Name of test to build, empty for production app")
-if("${TEST}" STREQUAL "")
-    set(BOARD_ENTRY_POINT "${CMAKE_CURRENT_SOURCE_DIR}/${BOARD_PROD_SOURCE}")
-else()
-    set(BOARD_ENTRY_POINT "${CMAKE_CURRENT_SOURCE_DIR}/${BOARD_TEST_SOURCE_DIR}/${TEST}_test.c")
-endif()
-
-if(NOT EXISTS "${BOARD_ENTRY_POINT}")
-    message(FATAL_ERROR "Unknown TEST '${TEST}' -- no ${BOARD_ENTRY_POINT}.")
-endif()
-
-### Compile and link source exec
-add_executable(@BOARD@
-    # board specific
-    ${BOARD_ENTRY_POINT}
-    ${BOARD_OTHER_SOURCES}
-    # platform
-    ${STARTUP_SOURCE}
-    ${HAL_SOURCES}
-    ${FREERTOS_SOURCES}
-    ${FATFS_SOURCES}
-    ${PSP_SOURCES}
-    ${UTILS_SOURCES}
-    ${DRIVERS_SOURCES}
-)
-target_include_directories(@BOARD@ PUBLIC ${PLATFORM_INCLUDE_DIRS} ${BOARD_INCLUDE_DIRS})
-
-build_firmware(@BOARD@)
-post_build(@BOARD@)
-
-# external commands
-add_flash_target(@BOARD@)
-add_dump_symbols_target(@BOARD@)
-add_dump_size_target(@BOARD@)
-add_erase_target()
-
-# must have jolly good message
-string(ASCII 27 Esc)
-set(ColorReset "${Esc}[0m")
-set(ColorBoldGreen "${Esc}[1;32m")
-
-message(STATUS "${ColorBoldGreen}=== Jolly good! ===${ColorReset}")
-"""
-
-FILES["Board.cmake"] = """\
-### @DESC@ Config
-# paths below are relative to this board's own CMakeLists.txt (firmware/@SYSTEM@/@BOARD@/)
-include_guard()
-
-### SOURCES (*.c)
-# path to file containing production code
-set(BOARD_PROD_SOURCE
-    "core/Src/app.c"
-)
-# path to directory containing tests
-set(BOARD_TEST_SOURCE_DIR
-    "tests/Src"
-)
-# Drivers/modules that are ALWAYS linked
-file(GLOB BOARD_OTHER_SOURCES CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_LIST_DIR}/drivers/Src/*.c" # drivers/
-)
-
-### INCLUDES (*.h)
-# Populate with all the includes ...
-set(BOARD_INCLUDE_DIRS
-    ${CMAKE_CURRENT_LIST_DIR}/core/Inc
-    ${CMAKE_CURRENT_LIST_DIR}/drivers/Inc
-    ${CMAKE_CURRENT_LIST_DIR}/config/Inc
-    ${CMAKE_CURRENT_LIST_DIR}/tests/Inc
-)
-"""
-
-# make recipes need a real tab, so @TAB@ is swapped in (editors love to eat them)
-FILES["Makefile"] = """\
-# @BOARD@ board build
-# thin wrapper -- every target just calls cmake
-
-BUILD_DIR := build
-TOOLCHAIN := @PLATFORM@/cmake/toolchain.cmake
-
-TEST ?=
-
-.PHONY: all configure flash erase dump-symbols dump_size clean
-
-all: configure
-@TAB@cmake --build $(BUILD_DIR) --target @BOARD@
-
-configure:
-@TAB@cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST)
-
-flash: configure
-@TAB@cmake --build $(BUILD_DIR) --target flash
-
-erase: configure
-@TAB@cmake --build $(BUILD_DIR) --target erase
-
-dump-symbols: configure
-@TAB@cmake --build $(BUILD_DIR) --target dump-symbols
-
-dump_size: configure
-@TAB@cmake --build $(BUILD_DIR) --target dump_size
-
-clean:
-@TAB@cmake --build $(BUILD_DIR) --target clean
-"""
 
 # Source files are left empty, except app.c: it gets a bare main so a new board
 # links out of the box (Board.cmake points at it, and CMakeLists.txt errors at
@@ -245,10 +133,24 @@ def choose_system(options):
     return find_system(answer, options, True)
 
 
-def render(text, values):
+def load_templates():
+    files = {}
+    for rel, name in FROM_TEMPLATE.items():
+        try:
+            with open(TEMPLATES / name, encoding="utf-8") as f:  # text mode: CRLF checkouts read as LF
+                files[rel] = f.read()
+        except FileNotFoundError:
+            sys.exit("missing template: %s" % (TEMPLATES / name).relative_to(FIRMWARE.parent).as_posix())
+    if re.search(r"^ +\S", files["Makefile"], re.M):
+        sys.exit("firmware/templates/%s has space-indented lines -- make recipes need tabs" % FROM_TEMPLATE["Makefile"])
+    files.update(FILES)
+    return files
+
+
+def render(name, text, values):
     unknown = set(re.findall(r"@([A-Z_]+)@", text)) - set(values)
     if unknown:
-        sys.exit("internal error: template uses unknown placeholder(s): %s" % ", ".join(sorted(unknown)))
+        sys.exit("%s uses unknown placeholder(s): %s" % (name, ", ".join(sorted(unknown))))
     for key, val in values.items():
         text = text.replace("@%s@" % key, val)
     return text
@@ -274,6 +176,7 @@ def main():
     parser.add_argument("board", nargs="?", help="board name, used for the folder and CMake target (e.g. LVC)")
     parser.add_argument("--description", help='human-readable name, e.g. "LV Carrier" (default: board name)')
     args = parser.parse_args()
+    files = load_templates()  # before any question: a broken template should fail first
 
     prompting = not (args.system and args.board)
     if prompting:
@@ -319,13 +222,14 @@ def main():
         "DESC": desc,
         "SYSTEM": system,
         "PLATFORM": os.path.relpath(FIRMWARE / "platform", dest).replace(os.sep, "/"),
-        "TAB": "\t",
     }
-    for rel, template in FILES.items():
+    # render everything before writing anything: a bad template must not leave a half-made board
+    rendered = {rel: render(rel, text, values) for rel, text in files.items()}
+    for rel, text in rendered.items():
         path = dest / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         with open(path, "w", newline="\n") as f:  # LF on every OS
-            f.write(render(template, values))
+            f.write(text)
         folder, name = os.path.split(path.relative_to(FIRMWARE.parent).as_posix())
         print("  %s %s%s" % (green(CHECK), dim(folder + "/"), name))
 
