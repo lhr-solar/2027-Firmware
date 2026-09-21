@@ -21,6 +21,7 @@ import sys
 from pathlib import Path
 
 TEST_SUFFIX = "_test.c"
+PROD_TARGET = "prod-all"
 
 
 def fail(msg: str) -> None:
@@ -66,14 +67,24 @@ def find_tests(test_dir: Path, disabled: set[str]) -> list[str]:
     return sorted(found - disabled)
 
 
+def makefile_has_target(makefile: Path, target: str) -> bool:
+    if not makefile.is_file():
+        return False
+    return bool(re.search(rf"^{re.escape(target)}\s*:(?!=)",
+                          read(makefile), re.MULTILINE))
+
+
 def entry(name: str, ident: str, directory: Path, root: Path, target: str,
-          test: str, kind: str, subteam: str) -> dict:
+          test: str, kind: str, subteam: str, make_args: str,
+          blocked: str = "") -> dict:
     return {
         "name": name,
         "id": ident,
         "dir": directory.relative_to(root).as_posix(),
         "target": target,
         "test": test,
+        "make_args": make_args,
+        "blocked": blocked,
         "kind": kind,
         "subteam": subteam,
     }
@@ -113,8 +124,17 @@ def boards_matrix(root: Path) -> list[dict]:
             fail(f"{board}/Board.cmake does not set BOARD_PROD_SOURCE")
         if not (board_dir / prod[0]).is_file():
             fail(f"{board}: BOARD_PROD_SOURCE points at missing {prod[0]}")
+        makefile = board_dir / "Makefile"
+        if not makefile.is_file():
+            blocked = f"{board} has no Makefile, so there is no prod-all target to run"
+        elif not makefile_has_target(makefile, PROD_TARGET):
+            blocked = (f"{board}/Makefile defines no '{PROD_TARGET}' target "
+                       f"(production firmware cannot be built)")
+        else:
+            blocked = ""
         matrix.append(entry(f"{board} / prod", f"{subteam}-{board}-prod",
-                            board_dir, root, target, "", "board", subteam))
+                            board_dir, root, target, "", "board", subteam,
+                            make_args=PROD_TARGET, blocked=blocked))
 
         # Board tests, from the directory the board itself declares.
         test_dirs = cmake_set_values(board_cmake, "BOARD_TEST_SOURCE_DIR")
@@ -126,7 +146,8 @@ def boards_matrix(root: Path) -> list[dict]:
             print(f"warning: no tests found in {board}/{test_dirs[0]}", file=sys.stderr)
         for test in tests:
             matrix.append(entry(f"{board} / {test}", f"{subteam}-{board}-{test}",
-                                board_dir, root, target, test, "board", subteam))
+                                board_dir, root, target, test, "board", subteam,
+                                make_args=f"TEST={test}"))
     return matrix
 
 
@@ -146,7 +167,8 @@ def platform_matrix(root: Path) -> list[dict]:
               file=sys.stderr)
 
     return [entry(f"platform / {test}", f"platform-{test}", platform, root,
-                  target, test, "platform", "platform") for test in tests]
+                  target, test, "platform", "platform",
+                  make_args=f"TEST={test}") for test in tests]
 
 
 def os_label(runner: str) -> str:
@@ -169,8 +191,10 @@ def with_runners(matrix: list[dict], runners: list[str]) -> list[dict]:
 
 def as_markdown(matrix: list[dict]) -> str:
     lines = [f"### {len(matrix)} target(s)", "",
-             "| target | directory | TEST | runner |", "| --- | --- | --- | --- |"]
-    lines += [f"| {e['name']} | `{e['dir']}` | `{e['test'] or '(prod)'}` | `{e['os']}` |"
+             "| target | directory | make | runner | status |",
+             "| --- | --- | --- | --- | --- |"]
+    lines += [f"| {e['name']} | `{e['dir']}` | `make {e['make_args']}` | "
+              f"`{e['os']}` | {'**BLOCKED** -- ' + e['blocked'] if e['blocked'] else 'ok'} |"
               for e in matrix]
     return "\n".join(lines)
 

@@ -6,10 +6,12 @@ TOOLCHAIN := ../../platform/cmake/toolchain.cmake
 
 TEST ?=
 
-.PHONY: all configure flash erase dump-symbols dump_size clean
+.PHONY: all prod-all configure flash erase dump-symbols dump_size clean
 
 all: configure
 	cmake --build $(BUILD_DIR) --target LVC
+
+prod-all: all	
 
 configure:
 	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST)

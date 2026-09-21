@@ -34,8 +34,8 @@ jobs:
       - id: gen
         name: Generate matrix
         run: |
-          echo "matrix=$(python3 .github/scripts/gen_matrix.py --kind boards --os ubuntu-latest)" >> "$GITHUB_OUTPUT"
-          python3 .github/scripts/gen_matrix.py --kind boards --os ubuntu-latest --format markdown >> "$GITHUB_STEP_SUMMARY"
+          echo "matrix=$(python3 .github/scripts/gen_matrix.py --kind boards --os ubuntu-latest,macos-latest)" >> "$GITHUB_OUTPUT"
+          python3 .github/scripts/gen_matrix.py --kind boards --os ubuntu-latest,macos-latest --format markdown >> "$GITHUB_STEP_SUMMARY"
 
   build:
     needs: discover
@@ -47,18 +47,29 @@ jobs:
       matrix:
         include: ${{ fromJSON(needs.discover.outputs.matrix) }}
     steps:
+      # Check that make rules are configured properly for CI before nix setup
+      - name: Check production build entry point
+        if: matrix.blocked != ''
+        env:
+          REASON: ${{ matrix.blocked }}
+          BOARD_DIR: ${{ matrix.dir }}
+        run: |
+          echo "::error title=Missing prod-all target::$REASON"
+          exit 1
+
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dev-env
 
       - name: Build ${{ matrix.name }}
-        run: direnv exec . make -C ${{ matrix.dir }} TEST=${{ matrix.test }}
+        run: direnv exec . make -C ${{ matrix.dir }} ${{ matrix.make_args }}
 
       - name: Report size
         run: |
           {
             echo "### ${{ matrix.name }}"
             echo '```'
-            direnv exec . arm-none-eabi-size ${{ matrix.dir }}/build/${{ matrix.target }}.elf
+            find ${{ matrix.dir }} -name '*.elf' -print0 \
+              | xargs -0 -r direnv exec . arm-none-eabi-size
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -69,7 +80,7 @@ jobs:
           retention-days: 14
           if-no-files-found: error
           path: |
-            ${{ matrix.dir }}/build/${{ matrix.target }}.elf
-            ${{ matrix.dir }}/build/${{ matrix.target }}.bin
-            ${{ matrix.dir }}/build/${{ matrix.target }}.hex
-            ${{ matrix.dir }}/build/${{ matrix.target }}.map
+            ${{ matrix.dir }}/**/*.elf
+            ${{ matrix.dir }}/**/*.bin
+            ${{ matrix.dir }}/**/*.hex
+            ${{ matrix.dir }}/**/*.map
