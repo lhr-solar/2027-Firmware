@@ -1,4 +1,4 @@
-# Build every platform test binary (firmware/platform/tests/Src/*_test.c).
+# Build every platform test (firmware/platform/tests/Src/*_test.c)
 name: build_platform
 on:
   push:
@@ -24,53 +24,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  discover:
-    name: discover platform tests
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.gen.outputs.matrix }}
-    steps:
-      - uses: actions/checkout@v4
-      - id: gen
-        name: Generate matrix
-        run: |
-          echo "matrix=$(python3 .github/scripts/gen_matrix.py --kind platform --os ubuntu-latest,macos-latest)" >> "$GITHUB_OUTPUT"
-          python3 .github/scripts/gen_matrix.py --kind platform --os ubuntu-latest,macos-latest --format markdown >> "$GITHUB_STEP_SUMMARY"
-
-  build:
-    needs: discover
-    name: ${{ matrix.name }}
+  test-all:
+    name: platform / tests (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(needs.discover.outputs.matrix) }}
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dev-env
 
-      - name: Build ${{ matrix.name }}
-        run: direnv exec . ${{ matrix.cmd }}
+      - name: Build all platform tests
+        run: direnv exec . make -C firmware/platform test-all
 
       - name: Report size
         run: |
           {
-            echo "### ${{ matrix.name }}"
+            echo "### platform / tests (${{ matrix.os }})"
             echo '```'
-            find ${{ matrix.dir }} -name '*.elf' -print0 \
+            find firmware/platform -name '*.elf' -print0 \
               | xargs -0 -r direnv exec . arm-none-eabi-size
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
-        if: matrix.os == 'ubuntu-latest'
+        if: success() && matrix.os == 'ubuntu-latest'
         with:
-          name: ${{ matrix.id }}
+          name: platform-tests
           retention-days: 14
           if-no-files-found: error
           path: |
-            ${{ matrix.dir }}/**/*.elf
-            ${{ matrix.dir }}/**/*.bin
-            ${{ matrix.dir }}/**/*.hex
-            ${{ matrix.dir }}/**/*.map
+            firmware/platform/**/*.elf
+            firmware/platform/**/*.bin
+            firmware/platform/**/*.hex
+            firmware/platform/**/*.map

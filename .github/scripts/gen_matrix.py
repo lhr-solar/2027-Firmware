@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
 """
-Generate GitHub Actions build matrices from discovered firmware targets.
+Generate the GitHub Actions board build matrix.
 
-Two kinds of target, discovered differently:
+Boards are firmware/<subteam>/<BOARD>/ directories, marked by a Board.cmake.
+Each board gets exactly two jobs, both owner-defined make targets:
 
-  boards    firmware/<subteam>/<BOARD>/, marked by a Board.cmake. Each board
-            gets exactly two jobs, both owner-defined entry points:
-              prod   -> make prod-all
-              tests  -> make test-all
-            A rule mentioned only in .PHONY does not count as defined.
-            The board owner controls what those do, so boards with variants
-            (board number etc.) need no change here.
-  platform  firmware/platform/ -- the shared HAL/RTOS layer. One job per
-            tests/Src/*_test.c, honouring DISABLED_TESTS in its CMakeLists.txt
-            (building a disabled test is a configure-time FATAL_ERROR).
+  prod   -> make prod-all
+  tests  -> make test-all
 
-Output is a JSON array suitable for strategy.matrix.include. Every entry has
-the same keys: name, id, dir, cmd, blocked, os.
+The board owner controls what those do, so boards with several production
+variants need no change here. A rule mentioned only in .PHONY does not count
+as defined; a board missing either target has that one job fail with an
+explanation, while its other job still runs.
+
+The platform builds all its tests in a single job and needs no matrix, so it
+is not handled here -- see .github/workflows/build-platform.yml.
+
+Output is a JSON array for strategy.matrix.include. Every entry has the same
+keys: name, id, dir, cmd, blocked, os.
 """
 
 import argparse
@@ -25,7 +26,6 @@ import re
 import sys
 from pathlib import Path
 
-TEST_SUFFIX = "_test.c"
 # owner-defined make targets CI drives each board through
 PROD_TARGET = "prod-all"
 TEST_TARGET = "test-all"
@@ -43,19 +43,6 @@ def read(path: Path) -> str:
         return path.read_text(encoding="utf-8")
     except OSError as exc:
         fail(f"cannot read {path}: {exc}")
-
-
-def cmake_set_values(text: str, var: str) -> list[str]:
-    """Tokens of a `set(<var> ...)` block, comments stripped and quotes removed.
-
-    Anchored on `set(` so it does not also match the `list(FIND DISABLED_TESTS
-    ...)` lookup a few lines below the declaration.
-    """
-    match = re.search(rf"\bset\s*\(\s*{re.escape(var)}\s(?P<body>[^)]*)\)", text)
-    if not match:
-        return []
-    body = re.sub(r"#[^\n]*", "", match.group("body"))
-    return [tok.strip('"') for tok in body.split()]
 
 
 def entry(name: str, ident: str, directory: str, cmd: str,
@@ -105,29 +92,6 @@ def boards_matrix(root: Path) -> list[dict]:
     return matrix
 
 
-def platform_matrix(root: Path) -> list[dict]:
-    platform = root / "firmware" / "platform"
-    cmakelists = platform / "CMakeLists.txt"
-    if not cmakelists.is_file():
-        fail(f"no platform CMakeLists.txt at {cmakelists}")
-
-    disabled = set(cmake_set_values(read(cmakelists), "DISABLED_TESTS"))
-    test_dir = platform / "tests" / "Src"
-    if not test_dir.is_dir():
-        fail(f"no platform test directory at {test_dir}")
-    tests = sorted({p.name[: -len(TEST_SUFFIX)]
-                    for p in test_dir.glob(f"*{TEST_SUFFIX}")} - disabled)
-    if not tests:
-        fail(f"no buildable tests in {test_dir}")
-    if disabled:
-        print(f"note: skipping DISABLED_TESTS: {', '.join(sorted(disabled))}",
-              file=sys.stderr)
-
-    rel = platform.relative_to(root).as_posix()
-    return [entry(f"platform / {t}", f"platform-{t}", rel,
-                  f"make -C {rel} TEST={t}") for t in tests]
-
-
 def os_label(runner: str) -> str:
     """ubuntu-latest -> ubuntu; macos-14 -> macos-14."""
     return runner.removesuffix("-latest")
@@ -171,8 +135,6 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--kind", required=True, choices=("boards", "platform"),
-                        help="which set of targets to enumerate")
     parser.add_argument("--format", default="json",
                         choices=("json", "pretty", "markdown"),
                         help="json (default, single line for GITHUB_OUTPUT), "
@@ -192,7 +154,7 @@ def main() -> None:
     if not runners:
         fail("--os must name at least one runner label")
 
-    matrix = boards_matrix(root) if args.kind == "boards" else platform_matrix(root)
+    matrix = boards_matrix(root)
     matrix = with_runners(matrix, runners)
 
     if args.format == "markdown":

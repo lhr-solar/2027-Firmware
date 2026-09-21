@@ -6,7 +6,7 @@ TOOLCHAIN := cmake/toolchain.cmake
 
 TEST ?= blinky
 
-.PHONY: all configure flash erase dump-symbols dump_size clean
+.PHONY: all test-all configure flash erase dump-symbols dump_size clean
 
 all: configure
 	cmake --build $(BUILD_DIR) --target App
@@ -28,3 +28,7 @@ dump_size: configure
 
 clean:
 	cmake --build $(BUILD_DIR) --target clean
+
+# For CI - builds all tests, fails if any failed
+test-all:
+	./build-all-tests.sh

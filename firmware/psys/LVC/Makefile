@@ -6,7 +6,7 @@ TOOLCHAIN := ../../platform/cmake/toolchain.cmake
 
 TEST ?=
 
-.PHONY: all prod-all configure flash erase dump-symbols dump_size clean
+.PHONY: all prod-all configure flash erase dump-symbols dump_size clean test-all
 
 all: configure
 	cmake --build $(BUILD_DIR) --target LVC
