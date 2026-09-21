@@ -8,7 +8,8 @@
     python3 firmware/new_board.py psys LVC --description "LV Carrier"
 
 Creates firmware/<system>/<board>/ with config/, core/, drivers/, tests/, a
-Board.cmake, CMakeLists.txt and Makefile. The source files are created empty.
+Board.cmake, CMakeLists.txt and Makefile. The source files are created empty,
+except core/Src/app.c, which gets a main() that only loops.
 A "system" is any folder directly under firmware/ that is not in NOT_SYSTEMS.
 """
 import argparse
@@ -173,10 +174,18 @@ clean:
 @TAB@cmake --build $(BUILD_DIR) --target clean
 """
 
-# Source files are left empty. core/Src/app.c must exist: Board.cmake points at
-# it and CMakeLists.txt errors at configure time without it.
-for rel in ("config/Inc/pinDefs.h", "core/Inc/app.h", "core/Src/app.c"):
+# Source files are left empty, except app.c: it gets a bare main so a new board
+# links out of the box (Board.cmake points at it, and CMakeLists.txt errors at
+# configure time without it).
+for rel in ("config/Inc/pinDefs.h", "core/Inc/app.h"):
     FILES[rel] = ""
+
+FILES["core/Src/app.c"] = """\
+int main(void) {
+    while (1) {
+    }
+}
+"""
 
 # folders with nothing to put in them yet (git does not track empty folders)
 for rel in ("drivers/Inc", "drivers/Src", "tests/Inc", "tests/Src"):
