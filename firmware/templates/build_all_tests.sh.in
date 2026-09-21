@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# CI runs this to build all LVC tests
+# CI runs this to build all @BOARD@ tests
 # ravi is a chud
 set -eu
 

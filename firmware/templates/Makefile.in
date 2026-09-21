@@ -6,7 +6,7 @@ TOOLCHAIN := @PLATFORM@/cmake/toolchain.cmake
 
 TEST ?=
 
-.PHONY: all configure flash erase dump-symbols dump_size clean
+.PHONY: all prod-all configure flash erase dump-symbols dump_size clean test-all
 
 all: configure
 	cmake --build $(BUILD_DIR) --target @BOARD@
@@ -28,3 +28,10 @@ dump_size: configure
 
 clean:
 	cmake --build $(BUILD_DIR) --target clean
+
+# For CI - builds the production firmware
+prod-all: all
+
+# For CI - builds every test in tests/Src
+test-all:
+	./build_all_tests.sh
