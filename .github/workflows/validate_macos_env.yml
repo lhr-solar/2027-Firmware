@@ -1,0 +1,36 @@
+# Build nix environment on macos
+
+name: validate_macos_env
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'uv.lock'
+      - 'pyproject.toml'
+      - '.envrc'
+      - '.github/workflows/validate_macos_env.yml'
+      - '.github/actions/setup-dev-env/**'
+  pull_request:
+    paths:
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'uv.lock'
+      - 'pyproject.toml'
+      - '.envrc'
+      - '.github/workflows/validate_macos_env.yml'
+      - '.github/actions/setup-dev-env/**'
+
+concurrency:
+  group: validate-macos-env-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: validate-macos-env
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-dev-env
