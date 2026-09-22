@@ -1,7 +1,7 @@
 # The build workflows are matrices, so their job names are generated and cannot
 # be named in a branch protection rule. Make this the only required check to gate PRs
 
-name: aarav_chud
+name: collect_build_results
 on:
   push:
     branches: [main]
