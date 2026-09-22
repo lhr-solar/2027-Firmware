@@ -1,0 +1,16 @@
+# @DESC@
+
+<!-- one or two sentences: what this board does -->
+
+**MCU:** TODO -- STM32G473CET6 (LQFP48) or STM32G473VET6 (LQFP100)
+
+**KiCad:** <!-- link to the schematic/PCB project -->
+
+## Folders
+
+| Folder | Contents |
+|---|---|
+| `config/` | Pin and peripheral definitions for this board (`pinDefs.h`) |
+| `core/` | Board production code, `core/Src/app.c` |
+| `drivers/` | Board-specific drivers, always linked in |
+| `tests/` | One `main()` per file; each builds with `make TEST=<name>` |
