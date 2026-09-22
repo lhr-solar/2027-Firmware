@@ -1,0 +1,33 @@
+# The build workflows are matrices, so their job names are generated and cannot
+# be named in a branch protection rule. Make this the only required check to gate PRs
+
+name: collect_build_results
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: aarav_chud-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  aarav_chud:
+    name: aarav_chud
+    runs-on: ubuntu-latest
+    timeout-minutes: 125
+    permissions:
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect workflow results
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          EVENT: ${{ github.event_name }}
+          TIMEOUT_MINUTES: 120
+          WORKFLOWS: |
+            build_boards.yml
+            build_platform.yml
+            validate_macos_naming.yml
+        run: .github/scripts/collect_ci.py
