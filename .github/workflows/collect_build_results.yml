@@ -8,12 +8,12 @@ on:
   pull_request:
 
 concurrency:
-  group: aarav_chud-${{ github.ref }}
+  group: collect_build_results-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  aarav_chud:
-    name: aarav_chud
+  collect_build_results:
+    name: collect_build_results
     runs-on: ubuntu-latest
     timeout-minutes: 125
     permissions:
