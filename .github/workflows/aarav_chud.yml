@@ -8,12 +8,12 @@ on:
   pull_request:
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: aarav_chud-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  ci:
-    name: ci
+  aarav_chud:
+    name: aarav_chud
     runs-on: ubuntu-latest
     timeout-minutes: 125
     permissions:
