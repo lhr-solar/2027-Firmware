@@ -30,4 +30,5 @@ jobs:
             build_boards.yml
             build_platform.yml
             validate_macos_naming.yml
+            validate_macos_env.yml
         run: .github/scripts/collect_ci.py
