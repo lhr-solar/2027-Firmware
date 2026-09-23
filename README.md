@@ -10,24 +10,24 @@ This guide should give you a good idea of how to navigate the codebase and build
 
 A monorepo is just like it sounds. One repo to rule them all. Prior to a monorepo we had separate code repositories with firmware for each board. A monorepo lets us better enforce common standards and utilties for all firmware that runs on the car.
 
-#### Installation
+### Installation
 Hopefully this is painless 💔
 
-We currently use Nix to create standardized environments to develop in. You'll notice looking in the `flake.nix` file that there are a lot of required packages. However, with Nix we can define them once and build  the same environment across machines. This is important since we need to support WSL and macOS users on the team.
+We currently use [Nix](https://nixos.org/guides/how-nix-works/) to create standardized environments to develop in. You'll notice looking in the `flake.nix` file that there are a lot of required packages. However, with Nix we can define them once and build  the same environment across machines. This is important since we need to support Windows (WSL), Linux, and macOS users on the team.
 
 To start off, run the nix install script **with root access**. It needs root priveleges to create files and edit shell scripts.
 ```
 sudo ./nix_install.sh
 ```
-This will probably take ~5-10 minutes. If it takes longer, touch some grass and come back.
+This will probably take 5-10 minutes. If it takes longer, touch some grass and come back.
 
 Once that's done, run 
 ```
-direnv allow
+direnv allow .
 ```
 Direnv is an extension to your shell that will automatically start a Nix environment when you enter the monorepo directory. This is pretty convenient since you won't have to run `nix develop` manually.
 
-If you've followed the last 2 steps properly then when you open a new terminal window and cd (changedir) into the monorepo you should see
+If you've followed the last 2 steps properly then when you open a new terminal window and cd (change directory) into the monorepo you should see
 ```
 direnv: loading ~/LHR/2027-Firmware/.envrc
 direnv: using flake
@@ -35,11 +35,11 @@ direnv: nix-direnv: Using cached dev shell
 ARM cross-compiler available
 Dev environment loaded for x86_64-linux!
 ```
-That's all the setup you need! If you're experiencing difficulties, ping Ravi Shah (monorepo on-call) in the #software channel. He's eager to help out and get his name out there.
+That's all the setup you need! If you're experiencing difficulties, ping Aarav Mahesh (monorepo on-call) in the [#software channel](https://lhrsol.slack.com/archives/C44RUHW1Z). He's eager to help out and get his name out there.
 
 Behind the scenes, your environment now has python libraries, microcontroller utilities, a compiler, and more loaded in. Pretty neat.
 
-#### Structure
+### Structure
 
 It's important at a high level to understand how the monorepo is laid out. 
 
@@ -84,7 +84,7 @@ Other folders to be aware of ...
 `bootloader/` - USB and CAN bootloader source   
 `templates/` - templates for autogenerating board build files 
 
-#### Building Firmware
+### Building Firmware
 
 One of the first things to understand is how code is built in C.
 
@@ -127,7 +127,7 @@ This should run the build system and generate a binary with your production code
 
 You should see a new folder called `build/` was created. This is where the build system stores the created binary and other build files. If you ever want to delete your build folder and start anew run `make clean`.
 
-#### Flashing
+### Flashing
 
 "Flash" just means to put the binary you compiled onto the memory of the MCU. Once the chip has been flashed/programmed its contents will persist through power cycles.
 
