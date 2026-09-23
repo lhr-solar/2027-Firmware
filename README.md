@@ -151,9 +151,25 @@ Flashing code can be finnicky. Some good commands to note:
 
 Additionally, make sure not to unplug the MCU connection while flashing or otherwise mess with the board, as this can cause flashing to fail or potentially brick the MCU.
 
-### Lifecyle of a Pull Request
-- cover how to make a pull request, draft vs ready to review, codeowners, review process, merging
-### CI Pipeline
+### Contributing :DD
+
+#### What's a Pull Request?
+blah blah blah smth smth
+explain branches at a high level
+branch naming.......
+
+#### Pull Request Entry Criteria
+idk
+fill out the checklist and shi
+how to make a PR
+draft vs ready to review
+
+#### Code Review
+codeowners
+review process
+merging
+
+#### CI Pipeline
 - prob incorporated in the previous section? i.e. builds need to pass in the PR lol
 - most important is a high level description of what's being built (all tests, all board prod code in nix env)
 
