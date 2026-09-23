@@ -153,9 +153,16 @@ Additionally, make sure not to unplug the MCU connection while flashing or other
 
 ### Contributing :DD
 
+So you want to write some code...
+
 #### What's a Pull Request?
+If you try to push code to main, you'll be met with some nasty error message to the tune of "djdjdjdjjdj." This is because we enforce several guidelines for our safety-critical codebase to ensure we're confident in all of our production software.
+
+https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request
+
 blah blah blah smth smth
 explain branches at a high level
+merging main into branch and why
 branch naming.......
 
 #### Pull Request Entry Criteria
