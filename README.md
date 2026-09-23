@@ -1,5 +1,7 @@
 # 2027 Firmware Monorepo
 
+[![collect_build_results](https://github.com/lhr-solar/2027-Firmware/actions/workflows/collect_build_results.yml/badge.svg)](https://github.com/lhr-solar/2027-Firmware/actions/workflows/collect_build_results.yml)
+
 Welcome to the LHRs firmware monorepo! 😊
 
 This guide should give you a good idea of how to navigate the codebase and build your first program.
