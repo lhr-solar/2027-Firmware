@@ -13,4 +13,4 @@
 | `config/` | Pin and peripheral definitions for this board (`pinDefs.h`) |
 | `core/` | Board production code, `core/Src/app.c` |
 | `drivers/` | Board-specific drivers, always linked in |
-| `tests/` | One `main()` per file; each builds with `make TEST=<name>` |
+| `tests/` | One `main()` per file; each builds with `make TEST=<name>`. Omit `_test` from the file name |
