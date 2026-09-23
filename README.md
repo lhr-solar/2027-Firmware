@@ -4,7 +4,7 @@
 
 Welcome to the LHRs firmware monorepo! 😊
 
-This guide should give you a good idea of how to navigate the codebase and build your first program.
+This guide should give you a good idea of how to navigate the codebase and build your first program. We highly recommend you read through this before starting firmware development - it'll save you a lot of hassle later on :)
 
 ## Getting Started
 
@@ -54,7 +54,7 @@ firmware/
 └── telemetry/   # telemetry boards
 ...
 ```
-Board firmware are subfolders of its system. For example, `psys/LVC` would contain LV Carrier firmware or `controls/VCU` would be for Vehicle Control Unit firmware. Try to use a concise name of the board.
+Each board's firmware lives in subfolders of its system named using its acronym. For example, `psys/LVC` would contain LV Carrier firmware or `controls/VCU` would be for Vehicle Control Unit firmware. Make sure to use a concise acronym here.
 
 We've tried to make the setup of a new folder straightforward with the `new_board.py` script in the `firmware/` directory. It's a simple (totally not clauded) utility for creating a board subfolder.
 
@@ -64,7 +64,7 @@ python new_board.py
 ```
 This should prompt you with some questions about your board and create a folder for you to start writing firmware in!
 
-Ex: if I made LVC, a power systems board
+For example, if I made LVC, a power systems board, the following would be generated:
 
 ```
 firmware/psys/LVC
@@ -77,12 +77,12 @@ firmware/psys/LVC
 ├── drivers/
 └── tests/
 ```
-Don't worry too much about these files mean just yet. We'll get there in the "**Building Firmware**" section. 
+Don't worry too much about what these files mean just yet. We'll get there in the "**Building Firmware**" section. 
 
-Other folders to be aware of ...
-`platform/` - shared libraries for firmware development
+Other folders to be aware of ...  
+`platform/` - shared libraries for firmware development  
 `bootloader/` - USB and CAN bootloader source   
-`templates/` - templates for autogenerating board build files 
+`templates/` - templates for autogenerating board build files  
 
 ### Building Firmware
 
