@@ -88,10 +88,10 @@ Other folders to be aware of ...
 
 One of the first things to understand is how code is built in C.
 
-__Source files__ (.c): Source files contain code that handles the majority of your logic. You'll see these files in the `Src/` folders. Source files also may contain a `main()` function, the entry point into your program.
-__Header files__ (.h): Header files contain declarations to software components that will be used in your source files. You'll see these files in the `Inc/` folders. 
-__Object files__ (.o): Object files are intermediate files generated after compiling your code. Don't worry too much about these; you probably will never see them anyway.
-__Binaries__ (.elf, .bin): Binaries are the end product of this process. They contain the machine code that the MCU can understand and run. `.elf` files and `.bin` files are both types of binaries. However, `.elf` files also have debug symbols that are useful when running debuggers.
+__Source files__ (.c): Source files contain code that handles the majority of your logic. You'll see these files in the `Src/` folders. Source files also may contain a `main()` function, the entry point into your program.  
+__Header files__ (.h): Header files contain declarations to software components that will be used in your source files. You'll see these files in the `Inc/` folders.  
+__Object files__ (.o): Object files are intermediate files generated after compiling your code. Don't worry too much about these; you probably will never see them anyway.  
+__Binaries__ (.elf, .bin): Binaries are the end product of this process. They contain the machine code that the MCU can understand and run. `.elf` files and `.bin` files are both types of binaries. However, `.elf` files also have debug symbols that are useful when running debuggers.  
 
 At a high level
 
