@@ -37,7 +37,7 @@ Dev environment loaded for x86_64-linux!
 ```
 That's all the setup you need! If you're experiencing difficulties, ping Aarav Mahesh (monorepo on-call) in the [#software channel](https://lhrsol.slack.com/archives/C44RUHW1Z). He's eager to help out and get his name out there.
 
-Behind the scenes, your environment now has python libraries, microcontroller utilities, a compiler, and more loaded in. Pretty neat.
+Behind the scenes, your environment now has python libraries, microcontroller (MCU) utilities, a compiler, and more loaded in. Pretty neat.
 
 ### Structure
 
@@ -125,30 +125,37 @@ make
 ```
 This should run the build system and generate a binary with your production code! The code itself is just an empty `main()` function, but hey at least it worked.
 
-You should see a new folder called `build/` was created. This is where the build system stores the created binary and other build files. If you ever want to delete your build folder and start anew run `make clean`.
+You should see a new folder called `build/` was created. This is where the build system stores the created binary and other build files. These files always stay on your local and are never pushed to the repository - other team members simply run the build commands on their machines. If you ever want to delete your build folder and start anew run `make clean`.
 
 ### Flashing
 
-"Flash" just means to put the binary you compiled onto the memory of the MCU. Once the chip has been flashed/programmed its contents will persist through power cycles.
+"Flash" just means to write the binary you compiled into the memory of the MCU. Once the chip has been flashed, your program will persist through power cycles.
 
 In your board folder, you can easily flash a binary by running
 ```
 make flash
 ```
-Currently,this calls STM's `st-flash` command under the hood and writes your code to address `0x08000000`, the start of user flash. This should change soon when our bootloader setup is done. Flashing may take a while depending on code size but you should see a _"Jolly good"_ message once your flash is complete. 
+Make sure you've successfully built your production code or test program before attempting to flash.
+
+Currently,this calls STM's `st-flash` command under the hood and writes your code to address `0x08000000`, the start of user flash. This should change soon when our bootloader setup is done. Flashing may take a while depending on code size but you should see a _"Jolly good"_ message once your flash is complete.
 
 Now, if you press the reset button on your board, your code starts running! Wow. Very cool.
 
-Note: for boards with multiple physical boards on the car (i.e. lighting) you will need to run `make flash board_num=<number>` to specify which board's binary to flash. 
+Note: for boards with multiple physical boards on the car (i.e. lighting or sensor boards) you will need to run `make flash BOARD_NUM=<number>` to specify which board's binary to flash. 
 
-**Troubleshooting**
+#### Troubleshooting
 Flashing code can be finnicky. Some good commands to note:
 
-`st-info --probe` - prints out valid STM debuggers. If you don't see an MCU family and flash size printed out, something is very wrong.
-`st-flash --erase` - erases user flash on the MCU. Nice way to reset when flashing code is completely bricked and you have no clue why.
+- `st-info --probe` - prints out valid STM debuggers. If you don't see an MCU family and flash size printed out, something is very wrong.
+- `st-flash --erase` - erases user flash on the MCU. Nice way to reset when flashing code is completely bricked and you have no clue why.
+
+Additionally, make sure not to unplug the MCU connection while flashing or otherwise mess with the board, as this can cause flashing to fail or potentially brick the MCU.
 
 ### Lifecyle of a Pull Request
 - cover how to make a pull request, draft vs ready to review, codeowners, review process, merging
 ### CI Pipeline
 - prob incorporated in the previous section? i.e. builds need to pass in the PR lol
 - most important is a high level description of what's being built (all tests, all board prod code in nix env)
+
+### Debugging
+TODO: want debug setup here? GDB/openocd + other strategies?
