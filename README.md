@@ -158,22 +158,17 @@ So you want to write some code...
 #### Where to Start
 To start contributing, create a branch off of main by running `git switch -C <branch_name>`. We use branches to keep each change to the repository isolated for easier reviews and cleaner history.
 
+When naming branches... TODO
+
 If you try to push code directly to main, you'll be met with some nasty error message to the tune of `! [remote rejected] main -> main (push declined due to repository rule violations)`. This is because we enforce several guidelines for our safety-critical codebase to ensure we're confident in all of our production software.
 
-https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request
-
-blah blah blah smth smth
-explain branches at a high level
-merging main into branch and why
-branch naming.......
+If someone else makes a major change to `main`, we may require you to incorporate those changes into your feature branch to ensure it's compatible with the new changes. To do this, run `git fetch origin && git merge origin/main`. If this command fails due to merge conflicts, remember you have Aarav Mahesh on call. Feel free to ping him repeatedly in #software.
 
 #### What's a Pull Request?
-
+When you're ready to incorporate your changes into main, you can create a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request). This
 
 #### Pull Request Entry Criteria
-idk
 fill out the checklist and shi
-how to make a PR
 draft vs ready to review
 
 #### Code Review
