@@ -155,8 +155,10 @@ Additionally, make sure not to unplug the MCU connection while flashing or other
 
 So you want to write some code...
 
-#### What's a Pull Request?
-If you try to push code to main, you'll be met with some nasty error message to the tune of "djdjdjdjjdj." This is because we enforce several guidelines for our safety-critical codebase to ensure we're confident in all of our production software.
+#### Where to Start
+To start contributing, create a branch off of main by running `git switch -C <branch_name>`. We use branches to keep each change to the repository isolated for easier reviews and cleaner history.
+
+If you try to push code directly to main, you'll be met with some nasty error message to the tune of `! [remote rejected] main -> main (push declined due to repository rule violations)`. This is because we enforce several guidelines for our safety-critical codebase to ensure we're confident in all of our production software.
 
 https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request
 
@@ -164,6 +166,9 @@ blah blah blah smth smth
 explain branches at a high level
 merging main into branch and why
 branch naming.......
+
+#### What's a Pull Request?
+
 
 #### Pull Request Entry Criteria
 idk
@@ -179,6 +184,9 @@ merging
 #### CI Pipeline
 - prob incorporated in the previous section? i.e. builds need to pass in the PR lol
 - most important is a high level description of what's being built (all tests, all board prod code in nix env)
+
+#### AI Usage Guidelines
+Can't blame claude when the battery blows up. Pretty self explanatory...
 
 ### Debugging
 TODO: want debug setup here? GDB/openocd + other strategies?
