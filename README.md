@@ -174,7 +174,8 @@ If someone else makes a major change to `main`, we may require you to incorporat
 When you're ready to incorporate your changes into main, you can create a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) (PR). This creates a page on Github where you can explain the changes you made, request and respond to reviews, and ensure your code meets standards before merging it into `main`.
 
 ### Pull Request Entry Criteria
-We recommend creating a PR immediately when you push your first commit to a new feature branch.
+> [!IMPORTANT]
+> We recommend creating a PR immediately when you push your first commit to a new feature branch.
 
 By default, PRs will be created in a **Draft** state, which signifies that your code is unfinished and not yet ready for review. When you're ready, click "Ready for review" on your PR page. This will automatically request relevant reviews, although you can always add reviewers as needed.
 
@@ -215,7 +216,7 @@ Continuous Integration (CI) allows us to automatically run builds and tests when
 - Check formatting across the codebase
 - Statically analyze all code for potential bugs 
 
-Your PR must be passing (green check mark) before Github will allow you to merge to main. If you see a red x instead, click on it and investigate what failed - the build output will provide a useful starting point.
+Your PR must be passing (✅) before Github will allow you to merge to main. If you see ❌ instead, click on it and investigate what failed - the build output will provide a useful starting point.
 
-### AI Usage Guidelines
+### AI Usage Guidelines 🤯
 Can't blame claude when the battery blows up. Pretty self explanatory...you can blame Lakshay Gupta though.
