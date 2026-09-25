@@ -84,7 +84,7 @@ Other folders to be aware of ...
 - `bootloader/` - USB and CAN bootloader source   
 - `templates/` - templates for autogenerating board build files  
 
-### Building Firmware
+### Building Firmware 🏗️
 
 One of the first things to understand is how code is built in C.
 
@@ -127,7 +127,7 @@ This should run the build system and generate a binary with your production code
 
 You should see a new folder called `build/` was created. This is where the build system stores the created binary and other build files. These files always stay on your local and are never pushed to the repository - other team members simply run the build commands on their machines. If you ever want to delete your build folder and start anew run `make clean`.
 
-### Flashing
+### Flashing ⚡
 
 "Flash" just means to write the binary you compiled into the memory of the MCU. Once the chip has been flashed, your program will persist through power cycles.
 
@@ -174,14 +174,14 @@ If someone else makes a major change to `main`, we may require you to incorporat
 When you're ready to incorporate your changes into main, you can create a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) (PR). This creates a page on Github where you can explain the changes you made, request and respond to reviews, and ensure your code meets standards before merging it into `main`.
 
 ### Pull Request Entry Criteria
-> [!IMPORTANT]
+> [!CAUTION]
 > We recommend creating a PR immediately when you push your first commit to a new feature branch.
 
 By default, PRs will be created in a **Draft** state, which signifies that your code is unfinished and not yet ready for review. When you're ready, click "Ready for review" on your PR page. This will automatically request relevant reviews, although you can always add reviewers as needed.
 
 Before requesting a code review, you **must** fill out the auto-generated [checklist](https://github.com/lhr-solar/2027-Firmware/blob/main/.github/PULL_REQUEST_TEMPLATE.md) in your PR description. This checklist ensures you're following our development guidelines for implementing safety-critical functionality for our vehicles.
 
-### Code Review
+### Code Review 🔍
 When you mark a PR as **Ready**, you'll see one or more reviewers are automatically requested with a message like `requested a review from <name> as a code owner`. Assigning code owners allows us to require certain people to review changes to specific parts of the codebase. The most obvious example here is that system leads are the code owners for their system's folder, and must approve every PR that touches it. You can find the latest source of truth in the [CODEOWNERS](https://github.com/lhr-solar/2027-Firmware/blob/main/.github/CODEOWNERS) file.
 
 Once you request any additional reviewers, send a message in the [#elc-reviews channel](https://lhrsol.slack.com/archives/C07SD0CADQR) with the following format:
@@ -206,7 +206,7 @@ Finally, we require at least two approving reviews prior to a merge, so make sur
 
 One last thing to mention - AI is your friend throughout the code review process. It can catch things from glaring bugs to more subtle design issues and should be used as a gate before requesting human review (i.e. AI should say your code is mostly good to go before you ask someone to take a look). The Claude `/code-review` skill is particularly useful here, although always use your own judgement on what actually needs to be fixed.
 
-### CI Pipeline
+### CI Pipeline 🧪
 Continuous Integration (CI) allows us to automatically run builds and tests when you push code to a branch. For this repo, we run workflows to test the following:
 
 - Check that the Nix development environment installs and loads properly
