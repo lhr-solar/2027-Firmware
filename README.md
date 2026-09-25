@@ -36,7 +36,7 @@ direnv: nix-direnv: Using cached dev shell
 ARM cross-compiler available
 Dev environment loaded for x86_64-linux!
 ```
-That's all the setup you need! If you're experiencing difficulties, ping Aarav Mahesh (monorepo on-call) in the [#software channel](https://lhrsol.slack.com/archives/C44RUHW1Z). He's eager to help out and get his name out there.
+That's all the setup you need! If you're experiencing difficulties, ping Ravi Shah (monorepo on-call) in the [#software channel](https://lhrsol.slack.com/archives/C44RUHW1Z). He's eager to help out and get his name out there.
 
 Behind the scenes, your environment now has python libraries, microcontroller (MCU) utilities, a compiler, and more loaded in. Pretty neat.
 
