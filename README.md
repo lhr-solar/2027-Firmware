@@ -149,7 +149,8 @@ Flashing code can be finnicky. Some good commands to note:
 - `st-info --probe` - prints out valid STM debuggers. If you don't see an MCU family and flash size printed out, something is very wrong.
 - `st-flash --erase` - erases user flash on the MCU. Nice way to reset when flashing code is completely bricked and you have no clue why.
 
-Additionally, make sure not to unplug the MCU connection while flashing or otherwise mess with the board, as this can cause flashing to fail or potentially brick the MCU.
+> [!CAUTION]
+> Additionally, make sure not to unplug the MCU connection while flashing or otherwise mess with the board, as this can cause flashing to fail or potentially brick the MCU.
 
 ## Contributing :DD
 
@@ -166,7 +167,8 @@ dev/SYSTEM-descriptive-feature-name
 
 Here, "SYSTEM" would be PSYS or VCAT, and the remaining hyphenated portion should clearly and concisely describe the changes you're making on this branch - for example, `dev/PSYS-blow-up-battery`. Keep branch names short and sweet, you can always elaborate on changes in the pull request description.
 
-If you try to push code directly to the main branch, you'll be met with some nasty error message to the tune of `! [remote rejected] main -> main (push declined due to repository rule violations)`. This is because we enforce several guidelines for our safety-critical codebase to ensure we're confident in all of our production software.
+> [!WARNING]
+> If you try to push code directly to the main branch, you'll be met with some nasty error message to the tune of `! [remote rejected] main -> main (push declined due to repository rule violations)`. This is because we enforce several guidelines for our safety-critical codebase to ensure we're confident in all of our production software.
 
 If someone else makes a major change to `main`, we may require you to incorporate those changes into your feature branch to ensure it's compatible with the new changes. To do this, run `git pull && git merge origin/main`. **You should be running this often during active development to prevent extensive conflicts.** If this command fails due to merge conflicts, remember you have Aarav Mahesh on call. Feel free to ping him repeatedly in #software.
 
@@ -174,7 +176,7 @@ If someone else makes a major change to `main`, we may require you to incorporat
 When you're ready to incorporate your changes into main, you can create a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) (PR). This creates a page on Github where you can explain the changes you made, request and respond to reviews, and ensure your code meets standards before merging it into `main`.
 
 ### Pull Request Entry Criteria
-> [!CAUTION]
+> [!TIP]
 > We recommend creating a PR immediately when you push your first commit to a new feature branch.
 
 By default, PRs will be created in a **Draft** state, which signifies that your code is unfinished and not yet ready for review. When you're ready, click "Ready for review" on your PR page. This will automatically request relevant reviews, although you can always add reviewers as needed.
@@ -216,7 +218,8 @@ Continuous Integration (CI) allows us to automatically run builds and tests when
 - Check formatting across the codebase
 - Statically analyze all code for potential bugs 
 
-Your PR must be passing (✅) before Github will allow you to merge to main. If you see ❌ instead, click on it and investigate what failed - the build output will provide a useful starting point.
+> [!TIP]
+> Your PR must be passing (✅) before Github will allow you to merge to main. If you see ❌ instead, click on it and investigate what failed - the build output will provide a useful starting point.
 
 ### AI Usage Guidelines 🤯
 Can't blame claude when the battery blows up. Pretty self explanatory...you can blame Lakshay Gupta though.
