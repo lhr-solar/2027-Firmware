@@ -17,19 +17,19 @@ Hopefully this is painless 💔
 We currently use [Nix](https://nixos.org/guides/how-nix-works/) to create standardized environments to develop in. You'll notice looking in the `flake.nix` file that there are a lot of required packages. However, with Nix we can define them once and build  the same environment across machines. This is important since we need to support Windows (WSL), Linux, and macOS users on the team.
 
 To start off, run the nix install script **with root access**. It needs root priveleges to create files and edit shell scripts.
-```
+```bash
 sudo ./nix_install.sh
 ```
 This will probably take 5-10 minutes. If it takes longer, touch some grass and come back.
 
 Once that's done, run 
-```
+```bash
 direnv allow .
 ```
 Direnv is an extension to your shell that will automatically start a Nix environment when you enter the monorepo directory. This is pretty convenient since you won't have to run `nix develop` manually.
 
 If you've followed the last 2 steps properly then when you open a new terminal window and cd (change directory) into the monorepo you should see
-```
+```bash
 direnv: loading ~/LHR/2027-Firmware/.envrc
 direnv: using flake
 direnv: nix-direnv: Using cached dev shell
@@ -60,7 +60,7 @@ Each board's firmware lives in subfolders of its system named using its acronym.
 We've tried to make the setup of a new folder straightforward with the `new_board.py` script in the `firmware/` directory. It's a simple (totally not clauded) utility for creating a board subfolder.
 
 In `firmware/`, run 
-```python3
+```bash
 python new_board.py
 ```
 This should prompt you with some questions about your board and create a folder for you to start writing firmware in!
@@ -121,7 +121,7 @@ The default structure for a board folder contains `core/`, `config/`, `tests/`, 
 - `config/` contains header files to configure parameters in your firmware. A common example is to map MCU pins you'll be using to specific functions.
 
 In your board folder, run
-```
+```bash
 make
 ```
 This should run the build system and generate a binary with your production code! The code itself is just an empty `main()` function, but hey at least it worked.
