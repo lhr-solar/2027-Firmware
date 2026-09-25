@@ -170,10 +170,16 @@ Here, "SYSTEM" would be PSYS or VCAT, and the remaining hyphenated portion shoul
 > [!WARNING]
 > If you try to push code directly to the main branch, you'll be met with some nasty error message to the tune of `! [remote rejected] main -> main (push declined due to repository rule violations)`. This is because we enforce several guidelines for our safety-critical codebase to ensure we're confident in all of our production software.
 
-If someone else makes a major change to `main`, we may require you to incorporate those changes into your feature branch to ensure it's compatible with the new changes. To do this, run `git pull && git merge origin/main`. **You should be running this often during active development to prevent extensive conflicts.** If this command fails due to merge conflicts, remember you have Aarav Mahesh on call. Feel free to ping him repeatedly in #software.
+If someone else makes a major change to `main`, we may require you to incorporate those changes into your feature branch to ensure it's compatible with the new changes. To do this, first run `git switch main && git pull`. Then run `git switch <your-branch> && git merge origin/main`. **You should be running this often during active development to prevent extensive conflicts.** If this command fails due to merge conflicts, remember you have Aarav Mahesh on call. Feel free to ping him repeatedly in #software.
+
+> [!TIP]
+> Make sure to commit often and push to Github every time you make an important change - you don't want to lose progress if your computer gets cooked.
 
 ### What's a Pull Request?
 When you're ready to incorporate your changes into main, you can create a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) (PR). This creates a page on Github where you can explain the changes you made, request and respond to reviews, and ensure your code meets standards before merging it into `main`.
+
+> [!TIP]
+> Keep PRs small and focused - each one should only target a specific facet of your board's code rather than trying to achieve everything at once. This makes things easier to review and iterate upon, which ultimately speeds up the development process. **If you try to do too much in one PR, you will be asked to break it up.**
 
 ### Pull Request Entry Criteria
 > [!TIP]
@@ -189,7 +195,6 @@ When you mark a PR as **Ready**, you'll see one or more reviewers are automatica
 Once you request any additional reviewers, send a message in the [#elc-reviews channel](https://lhrsol.slack.com/archives/C07SD0CADQR) with the following format:
 
 ```
-<PR Title>
 <PR Link>
 @mention each reviewer
 ```
@@ -197,12 +202,14 @@ Once you request any additional reviewers, send a message in the [#elc-reviews c
 For example,
 
 ```
-Autogenerate Board Folders
 https://github.com/lhr-solar/2027-Firmware/pull/25
 @Ravi @Lakshay
 ```
 
-When you review code, you can choose to either Approve, Request Changes, or simply leave comments on the PR. Whenever you receive feedback, aim to turn around fixes as quickly and thoroughly as possible. Do not resolve your reviewers' PR comments; instead, ping them to review again and verify that changes have been implemented properly. Also, don't be afraid of requesting reviews often - iterating quickly is only possible with consistent feedback :)
+> [!TIP]
+> Make sure to enable the Github integration on Slack to allow for automatic link previews.
+
+When you review code, you can choose to either Approve, Request Changes, or simply leave comments on the PR. Whenever you receive feedback, aim to turn around fixes as quickly and thoroughly as possible. **Do not resolve your reviewers' PR comments**; instead, ping them to review again and verify that changes have been implemented properly. Also, don't be afraid of requesting reviews often - iterating quickly is only possible with consistent feedback :)
 
 Finally, we require at least two approving reviews prior to a merge, so make sure to work with your reviewers to meet this requirement.
 
