@@ -137,7 +137,7 @@ make flash
 ```
 Make sure you've successfully built your production code or test program before attempting to flash.
 
-Currently,this calls STM's `st-flash` command under the hood and writes your code to address `0x08000000`, the start of user flash. This should change soon when our bootloader setup is done. Flashing may take a while depending on code size but you should see a _"Jolly good"_ message once your flash is complete.
+Currently, this calls STM's `st-flash` command under the hood and writes your code to address `0x08000000`, the start of user flash. This should change soon when our bootloader setup is done. Flashing may take a while depending on code size but you should see a _"Jolly good"_ message once your flash is complete.
 
 Now, if you press the reset button on your board, your code starts running! Wow. Very cool.
 
@@ -160,7 +160,9 @@ To start contributing, create a branch off of main by running `git switch -C <br
 
 When naming branches use the following naming convention:
 
-`dev/SYSTEM-descriptive-feature-name`
+```
+dev/SYSTEM-descriptive-feature-name
+```
 
 Here, "SYSTEM" would be PSYS or VCAT, and the remaining hyphenated portion should clearly and concisely describe the changes you're making on this branch - for example, `dev/PSYS-blow-up-battery`. Keep branch names short and sweet, you can always elaborate on changes in the pull request description.
 
@@ -169,23 +171,27 @@ If you try to push code directly to the main branch, you'll be met with some nas
 If someone else makes a major change to `main`, we may require you to incorporate those changes into your feature branch to ensure it's compatible with the new changes. To do this, run `git pull && git merge origin/main`. **You should be running this often during active development to prevent extensive conflicts.** If this command fails due to merge conflicts, remember you have Aarav Mahesh on call. Feel free to ping him repeatedly in #software.
 
 #### What's a Pull Request?
-When you're ready to incorporate your changes into main, you can create a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request). This
+When you're ready to incorporate your changes into main, you can create a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) (PR). This creates a page on Github where you can explain the changes you made, request and respond to reviews, and ensure your code meets standards before merging it into `main`.
 
 #### Pull Request Entry Criteria
-fill out the checklist and shi
-draft vs ready to review
+We recommend creating a PR immediately when you push your first commit to a new feature branch.
+
+By default, PRs will be created in a **Draft** state, which signifies that your code is unfinished and not yet ready for review. When you're ready, click "Ready for review" on your PR page. This will automatically request relevant reviews, although you can always add reviewers as needed.
+
+Before requesting a code review, you **must** fill out the auto-generated [checklist](https://github.com/lhr-solar/2027-Firmware/blob/main/.github/PULL_REQUEST_TEMPLATE.md) in your PR description. This checklist ensures you're following our development guidelines for implementing safety-critical functionality for our vehicles.
 
 #### Code Review
 codeowners
 review process
 merging
+AI review
 
 #### CI Pipeline
 - prob incorporated in the previous section? i.e. builds need to pass in the PR lol
 - most important is a high level description of what's being built (all tests, all board prod code in nix env)
 
 #### AI Usage Guidelines
-Can't blame claude when the battery blows up. Pretty self explanatory...
+Can't blame claude when the battery blows up. Pretty self explanatory...you can blame Lakshay Gupta though.
 
 ### Debugging
 TODO: want debug setup here? GDB/openocd + other strategies?
