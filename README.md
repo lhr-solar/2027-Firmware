@@ -206,8 +206,16 @@ Finally, we require at least two approving reviews prior to a merge, so make sur
 One last thing to mention - AI is your friend throughout the code review process. It can catch things from glaring bugs to more subtle design issues and should be used as a gate before requesting human review (i.e. AI should say your code is mostly good to go before you ask someone to take a look). The Claude `/code-review` skill is particularly useful here, although always use your own judgement on what actually needs to be fixed.
 
 #### CI Pipeline
-- prob incorporated in the previous section? i.e. builds need to pass in the PR lol
-- most important is a high level description of what's being built (all tests, all board prod code in nix env)
+Continuous Integration (CI) allows us to automatically run builds and tests when you push code to a branch. For this repo, we run workflows to test the following:
+
+- Check that the Nix development environment installs and loads properly
+- Build our shared platform code and associated tests
+- Build each board's production code
+- Build each board's unit tests
+- Check formatting across the codebase
+- Statically analyze all code for potential bugs 
+
+Your PR must be passing (green check mark) before Github will allow you to merge to main. If you see a red x instead, click on it and investigate what failed - the build output will provide a useful starting point.
 
 #### AI Usage Guidelines
 Can't blame claude when the battery blows up. Pretty self explanatory...you can blame Lakshay Gupta though.
