@@ -181,10 +181,29 @@ By default, PRs will be created in a **Draft** state, which signifies that your 
 Before requesting a code review, you **must** fill out the auto-generated [checklist](https://github.com/lhr-solar/2027-Firmware/blob/main/.github/PULL_REQUEST_TEMPLATE.md) in your PR description. This checklist ensures you're following our development guidelines for implementing safety-critical functionality for our vehicles.
 
 #### Code Review
-codeowners
-review process
-merging
-AI review
+When you mark a PR as **Ready**, you'll see one or more reviewers are automatically requested with a message like `requested a review from <name> as a code owner`. Assigning code owners allows us to require certain people to review changes to specific parts of the codebase. The most obvious example here is that system leads are the code owners for their system's folder, and must approve every PR that touches it. You can find the latest source of truth in the [CODEOWNERS](https://github.com/lhr-solar/2027-Firmware/blob/main/.github/CODEOWNERS) file.
+
+Once you request any additional reviewers, send a message in the [#elc-reviews channel](https://lhrsol.slack.com/archives/C07SD0CADQR) with the following format:
+
+```
+<PR Title>
+<PR Link>
+@mention each reviewer
+```
+
+For example,
+
+```
+Autogenerate Board Folders
+https://github.com/lhr-solar/2027-Firmware/pull/25
+@Ravi @Lakshay
+```
+
+When you review code, you can choose to either Approve, Request Changes, or simply leave comments on the PR. Whenever you receive feedback, aim to turn around fixes as quickly and thoroughly as possible. Do not resolve your reviewers' PR comments; instead, ping them to review again and verify that changes have been implemented properly. Also, don't be afraid of requesting reviews often - iterating quickly is only possible with consistent feedback :)
+
+Finally, we require at least two approving reviews prior to a merge, so make sure to work with your reviewers to meet this requirement.
+
+One last thing to mention - AI is your friend throughout the code review process. It can catch things from glaring bugs to more subtle design issues and should be used as a gate before requesting human review (i.e. AI should say your code is mostly good to go before you ask someone to take a look). The Claude `/code-review` skill is particularly useful here, although always use your own judgement on what actually needs to be fixed.
 
 #### CI Pipeline
 - prob incorporated in the previous section? i.e. builds need to pass in the PR lol
