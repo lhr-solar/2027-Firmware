@@ -1,4 +1,4 @@
-# 2027 Firmware Monorepo
+# 2027 LHRs Firmware Monorepo ☀️
 
 [![collect_build_results](https://github.com/lhr-solar/2027-Firmware/actions/workflows/collect_build_results.yml/badge.svg)](https://github.com/lhr-solar/2027-Firmware/actions/workflows/collect_build_results.yml)
 
@@ -6,9 +6,9 @@ Welcome to the LHRs firmware monorepo! 😊
 
 This guide should give you a good idea of how to navigate the codebase and build your first program. We highly recommend you read through this before starting firmware development - it'll save you a lot of hassle later on :)
 
-## Getting Started
+## Getting Started 🐣
 
-A monorepo is just like it sounds. One repo to rule them all. Prior to a monorepo we had separate code repositories with firmware for each board. A monorepo lets us better enforce common standards and utilties for all firmware that runs on the car.
+A monorepo is just like it sounds. One repo to rule them all. Prior to a monorepo we had separate code repositories with firmware for each board. A monorepo lets us better enforce common standards and provide utilties for all firmware that runs on the car.
 
 ### Installation
 Hopefully this is painless 💔
@@ -151,11 +151,11 @@ Flashing code can be finnicky. Some good commands to note:
 
 Additionally, make sure not to unplug the MCU connection while flashing or otherwise mess with the board, as this can cause flashing to fail or potentially brick the MCU.
 
-### Contributing :DD
+## Contributing :DD
 
 So you want to write some code...
 
-#### Where to Start
+### Where to Start
 To start contributing, create a branch off of main by running `git switch -C <branch_name>`. We use branches to keep each change to the repository isolated for easier reviews and cleaner history.
 
 When naming branches use the following naming convention:
@@ -170,17 +170,17 @@ If you try to push code directly to the main branch, you'll be met with some nas
 
 If someone else makes a major change to `main`, we may require you to incorporate those changes into your feature branch to ensure it's compatible with the new changes. To do this, run `git pull && git merge origin/main`. **You should be running this often during active development to prevent extensive conflicts.** If this command fails due to merge conflicts, remember you have Aarav Mahesh on call. Feel free to ping him repeatedly in #software.
 
-#### What's a Pull Request?
+### What's a Pull Request?
 When you're ready to incorporate your changes into main, you can create a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) (PR). This creates a page on Github where you can explain the changes you made, request and respond to reviews, and ensure your code meets standards before merging it into `main`.
 
-#### Pull Request Entry Criteria
+### Pull Request Entry Criteria
 We recommend creating a PR immediately when you push your first commit to a new feature branch.
 
 By default, PRs will be created in a **Draft** state, which signifies that your code is unfinished and not yet ready for review. When you're ready, click "Ready for review" on your PR page. This will automatically request relevant reviews, although you can always add reviewers as needed.
 
 Before requesting a code review, you **must** fill out the auto-generated [checklist](https://github.com/lhr-solar/2027-Firmware/blob/main/.github/PULL_REQUEST_TEMPLATE.md) in your PR description. This checklist ensures you're following our development guidelines for implementing safety-critical functionality for our vehicles.
 
-#### Code Review
+### Code Review
 When you mark a PR as **Ready**, you'll see one or more reviewers are automatically requested with a message like `requested a review from <name> as a code owner`. Assigning code owners allows us to require certain people to review changes to specific parts of the codebase. The most obvious example here is that system leads are the code owners for their system's folder, and must approve every PR that touches it. You can find the latest source of truth in the [CODEOWNERS](https://github.com/lhr-solar/2027-Firmware/blob/main/.github/CODEOWNERS) file.
 
 Once you request any additional reviewers, send a message in the [#elc-reviews channel](https://lhrsol.slack.com/archives/C07SD0CADQR) with the following format:
@@ -205,7 +205,7 @@ Finally, we require at least two approving reviews prior to a merge, so make sur
 
 One last thing to mention - AI is your friend throughout the code review process. It can catch things from glaring bugs to more subtle design issues and should be used as a gate before requesting human review (i.e. AI should say your code is mostly good to go before you ask someone to take a look). The Claude `/code-review` skill is particularly useful here, although always use your own judgement on what actually needs to be fixed.
 
-#### CI Pipeline
+### CI Pipeline
 Continuous Integration (CI) allows us to automatically run builds and tests when you push code to a branch. For this repo, we run workflows to test the following:
 
 - Check that the Nix development environment installs and loads properly
@@ -217,8 +217,5 @@ Continuous Integration (CI) allows us to automatically run builds and tests when
 
 Your PR must be passing (green check mark) before Github will allow you to merge to main. If you see a red x instead, click on it and investigate what failed - the build output will provide a useful starting point.
 
-#### AI Usage Guidelines
+### AI Usage Guidelines
 Can't blame claude when the battery blows up. Pretty self explanatory...you can blame Lakshay Gupta though.
-
-### Debugging
-TODO: want debug setup here? GDB/openocd + other strategies?
