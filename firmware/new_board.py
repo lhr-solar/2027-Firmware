@@ -8,8 +8,8 @@
     python3 firmware/new_board.py psys LVC --description "LV Carrier"
 
 Creates firmware/<system>/<board>/ with config/, core/, drivers/, tests/, a
-Board.cmake, CMakeLists.txt, Makefile and build_all_tests.sh (rendered from
-firmware/templates/).
+Board.cmake, CMakeLists.txt, Makefile, build_all_tests.sh and README.md
+(rendered from firmware/templates/).
 The source files are created empty, except core/Src/app.c, which gets a main()
 that only loops.
 A "system" is any folder directly under firmware/ that is not in NOT_SYSTEMS.
@@ -60,6 +60,7 @@ FROM_TEMPLATE = {  # generated file -> template it is rendered from
     "Board.cmake": "Board.cmake.in",
     "Makefile": "Makefile.in",
     "build_all_tests.sh": "build_all_tests.sh.in",
+    "README.md": "README.md.in",
 }
 
 # everything else is written as-is
