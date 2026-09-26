@@ -102,7 +102,7 @@ Src/*.c ─┐      ╔═════════╗                  ╔══
 Inc/*.h ─┘      ╚═════════╝                  ╚══════╝
 ```
 
-Every `.c` file is compiled on its own into a `.o`. `.h` files are inlined (copy-pasted) into `.c` files that choose to `#include` them. After code is compiled, linking combines sources to generate one final binary.
+Every `.c` file is compiled on its own into a `.o` file. `.h` files are inlined (copy-pasted) into `.c` files that choose to `#include` them. After code is compiled, linking combines sources to generate one final binary.
 
 This will make more sense as you start to look at existing code and write your own. It's nice to know, for example, what a `linker error` means when you stumble upon it.
 
@@ -116,7 +116,7 @@ You'll also see a `Makefile`. A [makefile](https://makefiletutorial.com/) contai
 
 The default structure for a board folder contains `core/`, `config/`, `tests/`, and `drivers/`. 
 - `core/` contains your production code - this is the full application that is ultimately what is flashed onto the car. **Run with** `make`, `make all`, or `make prod-all` (for boards with multiple instances on the vehicle - common for sensor boards)
-- `tests/` contains test files - prior to writing production code you'll want to write small tests to prove out various parts of your firmware. All source files here should end with `_test.c`. **Run with** `make TEST=<test>`. Omit the `_test.c` part of the file name when running the command.
+- `tests/` contains test files - prior to writing production code you'll want to write small tests to prove out various parts of your firmware. All source files here should end with `_test.c`. **Run with** `make TEST=<test>`. Omit the `_test.c` part of the file name when running the command. For example, `make TEST=blinky` will build a test with source `blinky_test.c`. 
 - `drivers/` contains libraries you write to interface with hardware components (ICs, COTS devices, PHYs, etc.). There isn't a solid line in the sand about what a driver is, but it's a nice way to modularize your code.
 - `config/` contains header files to configure parameters in your firmware. A common example is to map MCU pins you'll be using to specific functions.
 
@@ -234,6 +234,8 @@ Continuous Integration (CI) allows us to automatically run builds and tests when
 
 > [!TIP]
 > Your PR must be passing (✅) before Github will allow you to merge to main. If you see ❌ instead, click on it and investigate what failed - the build output will provide a useful starting point.
+ 👇  👇  👇 
+![alt text](assets/ci_green.png)
 
 ### AI Usage Guidelines 🤯
 ---
