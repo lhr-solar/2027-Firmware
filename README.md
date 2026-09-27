@@ -173,7 +173,7 @@ Here, "SYSTEM" would be PSYS or VCAT, and the remaining hyphenated portion shoul
 > [!WARNING]
 > If you try to push code directly to the main branch, you'll be met with some nasty error message to the tune of `! [remote rejected] main -> main (push declined due to repository rule violations)`. This is because we enforce several guidelines for our safety-critical codebase to ensure we're confident in all of our production software.
 
-If someone else makes a major change to `main`, we may require you to incorporate those changes into your feature branch to ensure it's compatible with the new changes. To do this, first run `git switch main && git pull`. Then run `git switch <your-branch> && git merge origin/main`. **You should be running this often during active development to prevent extensive conflicts.** If this command fails due to merge conflicts, remember you have Aarav Mahesh on call. Feel free to ping him repeatedly in #software.
+If someone else makes a major change to `main`, we may require you to incorporate those changes into your feature branch to ensure it's compatible with the new changes. To do this, first run `git switch main && git pull`. Then run `git switch <your-branch> && git merge main`. **You should be running this often during active development to prevent extensive conflicts.** If this command fails due to merge conflicts, remember you have Aarav Mahesh on call. Feel free to ping him repeatedly in #software.
 
 > [!TIP]
 > Make sure to commit often and push to Github every time you make an important change - you don't want to lose progress if your computer gets cooked.
