@@ -53,6 +53,7 @@ post_build(App)
 
 # external commands
 add_flash_target(App)
+add_flash_usb_target(App)
 add_dump_symbols_target(App)
 add_dump_size_target(App)
 add_erase_target()

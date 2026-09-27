@@ -6,7 +6,7 @@ TOOLCHAIN := ../../platform/cmake/toolchain.cmake
 
 TEST ?=
 
-.PHONY: all prod-all configure flash erase dump-symbols dump_size clean test-all
+.PHONY: all prod-all configure flash flash-usb erase dump-symbols dump_size clean test-all
 
 all: configure
 	cmake --build $(BUILD_DIR) --target LVC
@@ -16,6 +16,9 @@ configure:
 
 flash: configure
 	cmake --build $(BUILD_DIR) --target flash
+
+flash-usb: configure
+	cmake --build $(BUILD_DIR) --target flash-usb
 
 erase: configure
 	cmake --build $(BUILD_DIR) --target erase
