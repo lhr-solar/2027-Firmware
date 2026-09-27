@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 set -e
 
+# NOTE: The STM32 Cube Programmer CLI cannot detect new USB devices unless you
+# add it as a rule to udev (monitors perms of devices you have plugged in).
+#
+# Run the following:
+#
+#   echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", MODE="0666"' \
+#     | sudo tee /etc/udev/rules.d/99-stm32-dfu.rules
+#   sudo udevadm control --reload-rules && sudo udevadm trigger
+
 # Usage: ./flash_usb.sh <file> <address>
 # Example: ./flash_usb.sh build/App.bin 0x08000000
 
@@ -54,10 +63,13 @@ fi
 # ----------------------------
 echo "🔌 Detecting USB DFU device..."
 
-# strip ANSI color codes (STM32CubeProgrammer emits them even when piped)
-# before parsing, so no escape sequence ends up stuck to the parsed port
-PORT=$("$STM32PROG" -l usb 2>&1 | sed -E 's/\x1b\[[0-9;]*[a-zA-Z]//g' \
-    | awk -F: '/Port/ {gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2; exit}')
+# strip ANSI color codes first (STM32CubeProgrammer emits them even when
+# piped), then just take the last word of the Device Index line -- e.g.
+# "  Device Index           : USB1" -> "usb1"
+PORT=$("$STM32PROG" -l usb 2>&1 | awk '
+    { gsub(/\x1b\[[0-9;]*[a-zA-Z]/, "") }
+    /Device Index/ { print tolower($NF); exit }
+')
 
 if [[ -z "$PORT" ]]; then
     echo "❌ ERROR: No USB DFU device found!"
