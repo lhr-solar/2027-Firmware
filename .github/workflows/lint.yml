@@ -1,9 +1,8 @@
-# TODO: MAKE BOTH GATING
-
 # Static analysis and formatting
-#   clang-tidy:   gating -- rebuilds every platform test and board target with TIDY=ON;
+#   clang-tidy:   rebuilds every platform test and board target with TIDY=ON;
 #                 a finding listed in .clang-tidy WarningsAsErrors fails the build
-#   clang-format: advisory -- reports drift against .clang-format, never fails
+#   clang-format: runs `make format-check` for the platform and every board;
+#                 any drift from .clang-format fails the job
 name: lint
 on:
   push:
@@ -36,35 +35,44 @@ concurrency:
 
 jobs:
   format:
-    name: clang-format (advisory)
+    name: clang-format
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       # nix pins the clang-format version -- its output differs between releases
       - uses: ./.github/actions/setup-dev-env
-
       - name: Check formatting
         run: |
-          # .clang-format-ignore keeps vendored trees out
-          git ls-files -z '*.c' '*.h' \
-            | xargs -0 -r direnv exec . clang-format --dry-run 2> format.log || true
-          files=$(grep -oE '^[^:]+\.[ch]:[0-9]+:[0-9]+: warning' format.log | cut -d: -f1 | sort -u)
-          count=$(printf '%s' "$files" | grep -c . || true)
+          : > format.log
+          failed=""
+          for dir in firmware/platform $(dirname firmware/*/*/Board.cmake); do
+            echo "::group::format-check $dir"
+            if ! direnv exec . make -C "$dir" format-check 2>&1 | tee -a format.log; then
+              failed="$failed $dir"
+            fi
+            echo "::endgroup::"
+          done
+
+          files=$(grep -oE '^[^:]+\.[ch]:[0-9]+:[0-9]+: error: code should be clang-formatted' format.log \
+            | cut -d: -f1 | sed "s|^$PWD/||" | sort -u || true)  # no matches is the clean case
           {
-            echo "### clang-format (advisory)"
-            if [ "$count" -eq 0 ]; then
+            echo "### clang-format"
+            if [ -z "$failed" ]; then
               echo "All files match \`.clang-format\`."
             else
-              echo "$count file(s) differ from \`.clang-format\`. Not enforced yet;"
-              echo "run \`make format\` in the platform or board directory to fix."
+              echo "\`make format-check\` failed in:$failed"
+              echo
+              echo "Run \`make format\` in each of those directories and commit the result."
               echo '```'
-              echo "$files" | sed "s|^$PWD/||"
+              echo "$files"
               echo '```'
             fi
           } >> "$GITHUB_STEP_SUMMARY"
-          if [ "$count" -ne 0 ]; then
-            echo "::warning title=clang-format::$count file(s) differ from .clang-format (advisory, see job summary)"
+
+          if [ -n "$failed" ]; then
+            echo "::error title=clang-format::make format-check failed in:$failed (see job summary)"
+            exit 1
           fi
 
   tidy-platform:

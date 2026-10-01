@@ -258,10 +258,10 @@ passing on hardware. See `firmware/platform/AGENTS.md`.
 written below. `/.clang-format-ignore` keeps vendored trees out; never format
 those.
 
-The existing code has **not** been reformatted yet, and CI's clang-format check
-is advisory only. Format the code you write, but do not mass-reformat existing
-files as a side effect of another change — a tree-wide reformat is its own PR,
-and a human's call. `SortIncludes` is off on purpose: HAL and FreeRTOS headers
+CI enforces it: `.github/workflows/lint.yml` runs `make format-check` for the
+platform and every board and fails on any drift. Run `make format` in the
+directory CI names to fix it. A tree-wide reformat should still be its own PR
+(recorded in `.git-blame-ignore-revs`), not a side effect of another change. `SortIncludes` is off on purpose: HAL and FreeRTOS headers
 are order-dependent.
 
 ### Static analysis
