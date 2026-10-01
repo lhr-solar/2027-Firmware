@@ -138,6 +138,8 @@ Serial Wire Debug is a protocol that uses the MCU's debugger to flash contents t
 
 The preferred method to do this is using an ST-Link. ST-Links are USB dongles that can translate flash instructions into the SWD protocol. The other end of the dongle will need to be connected to your board's SWD header. The `3V3`, `GND`, `SWDIO`, and `SWCLK` pins are needed and should be connected from the dongle to the header via wires.
 
+Make sure to attach the `STM32 STLink` in WSL so you can talk to it!
+
 Once the hardware is hooked up correctly, you can easily flash by running
 ```
 make flash
@@ -152,11 +154,39 @@ Note: for boards with multiple physical boards on the car (i.e. lighting or sens
 
 #### Flashing via USB
 
-Another method to flash is using USB/DFU (device firmware upgrade). This is more convenient since you only need a USB-C cable to flash. Getting started with this is a bit more involved.
+Note: This is **not** using our custom USB bootloader. 
+
+Another method to flash is using USB/DFU (device firmware upgrade). This is more convenient since you only need a USB-C cable to flash. Getting started with this is a bit more involved though.
 
 You'll need the `STM32CubeProgrammer` executable. You can download it from [here](https://www.st.com/en/development-tools/stm32cubeprog.html). Remember to select the Linux version if you're using WSL, not Windows! 
 
-Once you unzip the install, you should see a folder called `STMicroelectronics`. On WSL, you'll want to move this into your home (`~`) directory.
+If you're on a Mac, you can just unzip and run the setup executable and CubeProgrammer should be correctly installed.
+
+If you're on WSL, you'll need to do the following
+- Copy the setup folder with all of its contents into your WSL filesystem
+- Inside the setup folder, run `chmod +x SetupSTM32CubeProgrammer-2.23.0.linux` and `chmod -R +x jre/bin` to get permissions for running the executable
+- Finally run `./SetupSTM32CubeProgrammer-2.23.0.linux` and complete the instructions in the pop-up window
+
+Note that `2.23.0` is the most recent version at the time these docs were written. Replace as needed.
+
+With CubeProgrammer installed, we're almost there. We just need to make sure CubeProgrammer has permissions to view and access our USB port. 
+
+Run
+```bash
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", MODE="0666"' \
+        | sudo tee /etc/udev/rules.d/99-stm32-dfu.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+This creates a `udev` rule granting read/write access to any USB device with vendor ID`0483` and product ID `df11`. These are the [specific IDs](https://devicehunt.com/view/type/usb/vendor/0483/device/DF11) for ST reports when it's USB/DFU bootloader is running.
+
+Now, if you put your MCU in "BOOT" and hook up a USB-C cable to your board, you should see a `STM32 Bootloader` device being advertised. Make sure to attach this on WSL.
+
+Just like before, there's one easy command to flash
+```
+make flash-usb
+```
+Once your code is flashed, flip the BOOT switch and press reset to see your code run!
 
 #### Troubleshooting
 ---
