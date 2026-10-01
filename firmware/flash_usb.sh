@@ -74,7 +74,7 @@ PORT=$("$STM32PROG" -l usb 2>&1 | awk '
 if [[ -z "$PORT" ]]; then
     echo "❌ ERROR: No USB DFU device found!"
     echo "   Make sure the board is connected over USB and in DFU mode"
-    echo "   (BOOT0 held during reset)."
+    echo "   (i.e. Boot switch in BOOT / BOOT0 held during reset)."
     exit 1
 fi
 
