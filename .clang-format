@@ -45,7 +45,4 @@ IncludeBlocks: Preserve
 # keep Doxygen blocks and long register-description comments intact
 ReflowComments: false
 MaxEmptyLinesToKeep: 2
-
-# Fix trailing comments
-AlignTrailingComments: true
 ...
