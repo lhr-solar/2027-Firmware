@@ -44,6 +44,7 @@ jobs:
       - uses: ./.github/actions/setup-dev-env
       - name: Check formatting
         run: |
+          set -o pipefail
           : > format.log
           failed=""
           for dir in firmware/platform $(dirname firmware/*/*/Board.cmake); do
