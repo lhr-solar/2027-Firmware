@@ -207,6 +207,8 @@ make BOARD=<BOARD> TEST=<test> # <test> is a source file under that board's own 
 make flash                    # st-flash write build/App.bin 0x8000000
 make dump-symbols             # objdump -x build/App.elf -- confirm what actually linked
 make clean
+make TIDY=ON ...           # same build, with clang-tidy on LHR sources (CI gates on this)
+make format                   # clang-format LHR sources in place; format-check reports drift
 ```
 
 Equivalent from inside a board dir (`BOARD` implicit, `firmware/psys/<BOARD>/Makefile`
@@ -252,14 +254,23 @@ passing on hardware. See `firmware/platform/AGENTS.md`.
 
 ### Formatting
 
-A `.clang-format` is planned but **not yet present**. Before formatting any C
-code, check for it:
+`/.clang-format` is authoritative for LHR-authored C — follow it over anything
+written below. `/.clang-format-ignore` keeps vendored trees out; never format
+those.
 
-- **If `/.clang-format` exists**, it is authoritative — parse it and follow it
-  over anything written below.
-- **If it does not exist**, match the style of the surrounding file. Do not
-  reformat existing code, do not run a formatter with guessed settings, and do
-  not introduce a `.clang-format` unless a human asks for one.
+CI enforces it: `.github/workflows/lint.yml` runs `make format-check` for the
+platform and every board and fails on any drift. Run `make format` in the
+directory CI names to fix it. A tree-wide reformat should still be its own PR
+(recorded in `.git-blame-ignore-revs`), not a side effect of another change. `SortIncludes` is off on purpose: HAL and FreeRTOS headers
+are order-dependent.
+
+### Static analysis
+
+`/.clang-tidy` is enforced in CI (`.github/workflows/lint.yml`), which rebuilds
+every platform test and board target with `TIDY=ON`. Run it locally with
+`make TIDY=ON ...` from `firmware/platform/` or a board directory. Do not add a
+`NOLINT` or drop a check to get a build green without saying why — in `psys/`
+and `controls/`, a finding is a possible safety defect until shown otherwise.
 
 Observed conventions in LHR-authored C (`psp/`, `drivers/`, `utils/`,
 `common/`), for matching surrounding code — descriptive, not binding:
