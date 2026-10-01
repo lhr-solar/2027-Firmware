@@ -1,0 +1,29 @@
+---
+Checks: >
+  -*,
+  clang-analyzer-*,
+  # -clang-analyzer-core.FixedAddressDereference,
+  # -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  bugprone-*,
+  # -bugprone-easily-swappable-parameters,
+  # -bugprone-narrowing-conversions,
+  # -bugprone-implicit-widening-of-multiplication-result,
+  # -bugprone-reserved-identifier,
+  # -bugprone-assignment-in-if-condition,
+  cert-*,
+  cppcoreguidelines-*,
+  misc-definitions-in-headers,
+  misc-misleading-indentation,
+  misc-redundant-expression,
+  modernize-*,
+  performance-*,
+  portability-*,
+  readability-*,
+
+WarningsAsErrors: '*'
+
+HeaderFilterRegex: '.*/firmware/.*'
+ExcludeHeaderFilterRegex: '.*/firmware/platform/(stm|middleware)/.*'
+SystemHeaders: false
+FormatStyle: file
+...

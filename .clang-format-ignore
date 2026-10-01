@@ -1,0 +1,5 @@
+# Paths clang-format must never touch
+firmware/platform/stm/**
+firmware/platform/middleware/**
+**/build/**
+can/**

@@ -6,13 +6,15 @@ TOOLCHAIN := ../../platform/cmake/toolchain.cmake
 
 TEST ?=
 
-.PHONY: all prod-all configure flash erase dump-symbols dump_size clean test-all
+TIDY ?= OFF
+
+.PHONY: all prod-all configure flash erase dump-symbols dump_size clean test-all format format-check
 
 all: configure
 	cmake --build $(BUILD_DIR) --target LVC
 
 configure:
-	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST)
+	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY)
 
 flash: configure
 	cmake --build $(BUILD_DIR) --target flash
@@ -29,10 +31,17 @@ dump_size: configure
 clean:
 	cmake --build $(BUILD_DIR) --target clean
 
+# clang-format, see .clang-format at repo root
+format: configure
+	cmake --build $(BUILD_DIR) --target format
+
+format-check: configure
+	cmake --build $(BUILD_DIR) --target format-check
+
 # For CI - builds production firmware for all instances of this board
 prod-all:
-	cmake -B $(BUILD_DIR)/build1 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST)
-	cmake -B $(BUILD_DIR)/build2 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST)
+	cmake -B $(BUILD_DIR)/build1 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY)
+	cmake -B $(BUILD_DIR)/build2 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY)
 	cmake --build $(BUILD_DIR)/build1 --target LVC	
 	cmake --build $(BUILD_DIR)/build2 --target LVC
 

@@ -13,6 +13,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/../../platform/cmake/platform.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../../platform/cmake/stm32.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../../platform/cmake/post_build.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../../platform/cmake/custom_commands.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../../platform/cmake/lint.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/Board.cmake)
 
 # set test to default to build prod
@@ -45,12 +46,14 @@ target_include_directories(LVC PUBLIC ${PLATFORM_INCLUDE_DIRS} ${BOARD_INCLUDE_D
 
 build_firmware(LVC)
 post_build(LVC)
+lint(LVC)
 
 # external commands
 add_flash_target(LVC)
 add_dump_symbols_target(LVC)
 add_dump_size_target(LVC)
 add_erase_target()
+add_format_targets(${CMAKE_CURRENT_SOURCE_DIR})
 
 # must have jolly good message
 string(ASCII 27 Esc)

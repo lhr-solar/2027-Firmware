@@ -1,0 +1,51 @@
+# LHRS firmware C style
+---
+Language: Cpp
+BasedOnStyle: LLVM
+
+IndentWidth: 4
+ContinuationIndentWidth: 4
+UseTab: Never
+ColumnLimit: 100
+
+# opening brace on the same line, for functions and blocks alike
+BreakBeforeBraces: Attach
+IndentCaseLabels: true
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never
+
+# pointer star binds to the type: EMC2305_HandleTypeDef* chip
+PointerAlignment: Left
+DerivePointerAlignment: false
+
+# Space configurations
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false
+SpacesInAngles: false
+SpacesInConditionalStatement: false
+SpacesInContainerLiterals: false
+SpacesInCStyleCastParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+
+# register/pin #define tables read better aligned
+AlignConsecutiveMacros: Consecutive
+AlignTrailingComments: true
+
+SortIncludes: Never
+IncludeBlocks: Preserve
+
+# keep Doxygen blocks and long register-description comments intact
+ReflowComments: false
+MaxEmptyLinesToKeep: 2
+
+# Fix trailing comments
+AlignTrailingComments: true
+...
