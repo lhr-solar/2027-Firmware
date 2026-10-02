@@ -6,7 +6,7 @@ TOOLCHAIN := cmake/toolchain.cmake
 
 TEST ?= blinky
 
-.PHONY: all test-all configure flash erase dump-symbols dump_size clean
+.PHONY: all test-all configure flash flash-usb erase dump-symbols dump_size clean
 
 all: configure
 	cmake --build $(BUILD_DIR) --target App
@@ -16,6 +16,9 @@ configure:
 
 flash: configure
 	cmake --build $(BUILD_DIR) --target flash
+
+flash-usb: configure
+	cmake --build $(BUILD_DIR) --target flash-usb
 
 erase: configure
 	cmake --build $(BUILD_DIR) --target erase
