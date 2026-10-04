@@ -132,17 +132,61 @@ You should see a new folder called `build/` was created. This is where the build
 ---
 "Flash" just means to write the binary you compiled into the memory of the MCU. Once the chip has been flashed, your program will persist through power cycles.
 
-In your board folder, you can easily flash a binary by running
+#### Flashing via Serial Wire Debug (SWD)
+
+Serial Wire Debug is a protocol that uses the MCU's debugger to flash contents to the chip. This is useful because we don't need to put the MCU into "BOOT" mode manually (i.e. using a switch).
+
+The preferred method to do this is using an ST-Link. ST-Links are USB dongles that can translate flash instructions into the SWD protocol. The other end of the dongle will need to be connected to your board's SWD header. The `3V3`, `GND`, `SWDIO`, and `SWCLK` pins are needed and should be connected from the dongle to the header via wires.
+
+Make sure to attach the `STM32 STLink` in WSL so you can talk to it!
+
+Once the hardware is hooked up correctly, you can easily flash by running
 ```
 make flash
 ```
 Make sure you've successfully built your production code or test program before attempting to flash.
 
-Currently, this calls STM's `st-flash` command under the hood and writes your code to address `0x08000000`, the start of user flash. This should change soon when our bootloader setup is done. Flashing may take a while depending on code size but you should see a _"Jolly good"_ message once your flash is complete.
+This calls STM's `st-flash` command under the hood and writes your code to address `0x08000000`, the start of user flash. Flashing may take a while depending on code size but you should see a _"Jolly good"_ message once your flash is complete.
 
 Now, if you press the reset button on your board, your code starts running! Wow. Very cool.
 
 Note: for boards with multiple physical boards on the car (i.e. lighting or sensor boards) you will need to run `make flash BOARD_NUM=<number>` to specify which board's binary to flash. 
+
+#### Flashing via USB
+
+Note: This is **not** using our custom USB bootloader. 
+
+Another method to flash is using USB/DFU (device firmware upgrade). This is more convenient since you only need a USB-C cable to flash. Getting started with this is a bit more involved though.
+
+You'll need the `STM32CubeProgrammer` executable. You can download it from [here](https://www.st.com/en/development-tools/stm32cubeprog.html). Remember to select the Linux version if you're using WSL, not Windows! 
+
+If you're on a Mac, you can just unzip and run the setup executable and CubeProgrammer should be correctly installed.
+
+If you're on WSL, you'll need to do the following
+- Copy the setup folder with all of its contents into your WSL filesystem
+- Inside the setup folder, run `chmod +x SetupSTM32CubeProgrammer-2.23.0.linux` and `chmod -R +x jre/bin` to get permissions for running the executable
+- Finally run `./SetupSTM32CubeProgrammer-2.23.0.linux` and complete the instructions in the pop-up window
+
+Note that `2.23.0` is the most recent version at the time these docs were written. Replace as needed.
+
+With CubeProgrammer installed, we're almost there. We just need to make sure CubeProgrammer has permissions to view and access our USB port. 
+
+Run
+```bash
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", MODE="0666"' \
+        | sudo tee /etc/udev/rules.d/99-stm32-dfu.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+This creates a `udev` rule granting read/write access to any USB device with vendor ID`0483` and product ID `df11`. These are the [specific IDs](https://devicehunt.com/view/type/usb/vendor/0483/device/DF11) for ST reports when it's USB/DFU bootloader is running.
+
+Now, if you put your MCU in "BOOT" and hook up a USB-C cable to your board, you should see a `STM32 Bootloader` device being advertised. Make sure to attach this on WSL.
+
+Just like before, there's one easy command to flash
+```
+make flash-usb
+```
+Once your code is flashed, flip the BOOT switch and press reset to see your code run!
 
 #### Troubleshooting
 ---
@@ -150,6 +194,7 @@ Flashing code can be finnicky. Some good commands to note:
 
 - `st-info --probe` - prints out valid STM debuggers. If you don't see an MCU family and flash size printed out, something is very wrong.
 - `st-flash --erase` - erases user flash on the MCU. Nice way to reset when flashing code is completely bricked and you have no clue why.
+- If you're getting `STM32_Programmer_CLI not found at ...` you don't have the executable in the right path. Refer to the `flash_usb.sh` script under the "Detect OS" section for the proper paths.
 
 > [!CAUTION]
 > Additionally, make sure not to unplug the MCU connection while flashing or otherwise mess with the board, as this can cause flashing to fail or potentially brick the MCU.
@@ -173,7 +218,7 @@ Here, "SYSTEM" would be PSYS or VCAT, and the remaining hyphenated portion shoul
 > [!WARNING]
 > If you try to push code directly to the main branch, you'll be met with some nasty error message to the tune of `! [remote rejected] main -> main (push declined due to repository rule violations)`. This is because we enforce several guidelines for our safety-critical codebase to ensure we're confident in all of our production software.
 
-If someone else makes a major change to `main`, we may require you to incorporate those changes into your feature branch to ensure it's compatible with the new changes. To do this, first run `git switch main && git pull`. Then run `git switch <your-branch> && git merge origin/main`. **You should be running this often during active development to prevent extensive conflicts.** If this command fails due to merge conflicts, remember you have Aarav Mahesh on call. Feel free to ping him repeatedly in #software.
+If someone else makes a major change to `main`, we may require you to incorporate those changes into your feature branch to ensure it's compatible with the new changes. To do this, first run `git switch main && git pull`. Then run `git switch <your-branch> && git merge main`. **You should be running this often during active development to prevent extensive conflicts.** If this command fails due to merge conflicts, remember you have Aarav Mahesh on call. Feel free to ping him repeatedly in #software.
 
 > [!TIP]
 > Make sure to commit often and push to Github every time you make an important change - you don't want to lose progress if your computer gets cooked.

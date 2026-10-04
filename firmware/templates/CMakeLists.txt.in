@@ -50,6 +50,7 @@ lint(@BOARD@)
 
 # external commands
 add_flash_target(@BOARD@)
+add_flash_usb_target(@BOARD@)
 add_dump_symbols_target(@BOARD@)
 add_dump_size_target(@BOARD@)
 add_erase_target()
