@@ -50,6 +50,7 @@ lint(LVC)
 
 # external commands
 add_flash_target(LVC)
+add_flash_usb_target(LVC)
 add_dump_symbols_target(LVC)
 add_dump_size_target(LVC)
 add_erase_target()

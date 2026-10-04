@@ -8,7 +8,7 @@ TEST ?= blinky
 
 TIDY ?= OFF
 
-.PHONY: all test-all configure flash erase dump-symbols dump_size clean format format-check
+.PHONY: all test-all configure flash flash-usb erase dump-symbols dump_size clean format format-check
 
 all: configure
 	cmake --build $(BUILD_DIR) --target App
@@ -18,6 +18,9 @@ configure:
 
 flash: configure
 	cmake --build $(BUILD_DIR) --target flash
+
+flash-usb: configure
+	cmake --build $(BUILD_DIR) --target flash-usb
 
 erase: configure
 	cmake --build $(BUILD_DIR) --target erase
