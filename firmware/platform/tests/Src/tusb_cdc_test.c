@@ -1,8 +1,9 @@
 // TinyUSB Dual Port CDC Example
-
+// interfaces directly with tinyUSB CDC functions
 #include "stm32xx_hal.h"
 #include "tusb.h"
 
+/* USB Handle */
 PCD_HandleTypeDef hpcd_USB_FS;
 
 static void MX_USB_PCD_Init(void);
@@ -24,12 +25,12 @@ static void echo_serial_port(uint8_t itf, uint8_t buf[], uint32_t count) {
 
 // Mount
 void tud_mount_cb(void) {
-  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
+  // HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
 }
 
 // Unmount
 void tud_umount_cb(void) {
-  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
+  // HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
 }
 
 static void cdc_task(void *pvParameters) {
@@ -236,12 +237,4 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* hpcd)
 void USBWakeUp_IRQHandler(void)
 {
   tud_int_handler(0);
-}
-
-void Error_Handler(void)
-{
-  while (1)
-  {
-    // chud about
-  }
 }

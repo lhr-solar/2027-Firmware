@@ -21,7 +21,6 @@ set(DISABLED_TESTS
     can_isr
     can_mt
     can_queueSet
-    tusb_cdc # aarav chud
 )
 
 # check if test is disabled for g473
@@ -42,6 +41,7 @@ add_executable(App
     ${HAL_SOURCES}
     ${FREERTOS_SOURCES}
     ${FATFS_SOURCES}
+    ${TINYUSB_SOURCES}
     ${PSP_SOURCES}
     ${UTILS_SOURCES}
     ${DRIVERS_SOURCES}
