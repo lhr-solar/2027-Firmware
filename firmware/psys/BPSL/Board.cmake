@@ -14,6 +14,7 @@ set(BOARD_TEST_SOURCE_DIR
 # Drivers/modules that are ALWAYS linked
 file(GLOB BOARD_OTHER_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_LIST_DIR}/drivers/Src/*.c" # drivers/
+    "${CMAKE_CURRENT_LIST_DIR}/core/Src/common.c" # board-wide Error_Handler, SystemClock_Config
 )
 
 ### INCLUDES (*.h)
