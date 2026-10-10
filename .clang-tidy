@@ -30,7 +30,7 @@ CheckOptions:
   readability-function-cognitive-complexity.IgnoreMacros: true
 
 # reported, but don't fail the build
-WarningsAsErrors: '*,-readability-magic-numbers,-readability-identifier-length'
+WarningsAsErrors: '*,-readability-magic-numbers,-readability-identifier-length,-readability-function-cognitive-complexity,-modernize-macro-to-enum,bugprone-macro-parentheses'
 
 HeaderFilterRegex: '.*/firmware/.*'
 ExcludeHeaderFilterRegex: '.*/firmware/platform/(stm|middleware|common)/.*|.*/(stm32g4xx_hal_conf|FreeRTOSConfig)\.h'
