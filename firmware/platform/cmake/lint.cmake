@@ -6,7 +6,7 @@ option(CLANG_TIDY "Run clang-tidy on LHRS-authored sources while building" OFF)
 
 # vendored, read-only upstream code -- never linted or formatted
 # keep in sync with .clang-format-ignore
-set(VENDORED_REGEX "/firmware/platform/(stm|middleware)/")
+set(VENDORED_REGEX "/firmware/platform/(stm|middleware|common)/")
 
 ### lint(<target>)
 function(lint TARGET_NAME)
