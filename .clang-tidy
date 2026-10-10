@@ -2,28 +2,35 @@
 Checks: >
   -*,
   clang-analyzer-*,
-  # -clang-analyzer-core.FixedAddressDereference,
-  # -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  -clang-analyzer-core.FixedAddressDereference,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
   bugprone-*,
-  # -bugprone-easily-swappable-parameters,
-  # -bugprone-narrowing-conversions,
-  # -bugprone-implicit-widening-of-multiplication-result,
-  # -bugprone-reserved-identifier,
-  # -bugprone-assignment-in-if-condition,
   cert-*,
+  -cert-dcl37-c,
+  -cert-dcl51-cpp,
   cppcoreguidelines-*,
+  -cppcoreguidelines-avoid-non-const-global-variables,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-narrowing-conversions,
+  -cppcoreguidelines-macro-to-enum,
   misc-definitions-in-headers,
   misc-misleading-indentation,
   misc-redundant-expression,
   modernize-*,
   performance-*,
+  -performance-no-int-to-ptr,
   portability-*,
-  readability-*,
+  readability-*
+
+CheckOptions:
+  bugprone-reserved-identifier.AllowedIdentifiers: '^_(close|execve|exit|fork|fstat|getpid|isatty|kill|link|lseek|open|read|sbrk|stat|times|unlink|wait|write|end|estack|Min_Stack_Size|[HCDAM]FSR|MMAR|BFAR)$;^__(env|io_getchar|io_putchar|sbrk_heap_end|weak)$'
+  # don't charge a function for branches hidden inside macro expansions
+  readability-function-cognitive-complexity.IgnoreMacros: true
 
 WarningsAsErrors: '*'
 
 HeaderFilterRegex: '.*/firmware/.*'
-ExcludeHeaderFilterRegex: '.*/firmware/platform/(stm|middleware)/.*'
+ExcludeHeaderFilterRegex: '.*/firmware/platform/(stm|middleware)/.*|.*/(stm32g4xx_hal_conf|FreeRTOSConfig)\.h'
 SystemHeaders: false
 FormatStyle: file
 ...
