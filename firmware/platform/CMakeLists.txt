@@ -13,6 +13,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/platform.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/stm32.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/post_build.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/custom_commands.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/lint.cmake)
 
 ### Compile Tests
 # unsupported tests on the g473
@@ -50,6 +51,7 @@ target_include_directories(App PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/Inc ${PL
 
 build_firmware(App)
 post_build(App)
+lint(App)
 
 # external commands
 add_flash_target(App)
@@ -57,6 +59,12 @@ add_flash_usb_target(App)
 add_dump_symbols_target(App)
 add_dump_size_target(App)
 add_erase_target()
+add_format_targets(
+    ${CMAKE_CURRENT_SOURCE_DIR}/psp
+    ${CMAKE_CURRENT_SOURCE_DIR}/drivers
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests
+)
 
 # must have jolly good message
 string(ASCII 27 Esc)
