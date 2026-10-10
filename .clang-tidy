@@ -19,8 +19,8 @@ Checks: >
   modernize-*,
   performance-*,
   -performance-no-int-to-ptr,
-  portability-*,
-  readability-*
+  readability-*,
+  -readability-redundant-declaration
 
 CheckOptions:
   bugprone-reserved-identifier.AllowedIdentifiers: '^_(close|execve|exit|fork|fstat|getpid|isatty|kill|link|lseek|open|read|sbrk|stat|times|unlink|wait|write|end|estack|Min_Stack_Size|[HCDAM]FSR|MMAR|BFAR)$;^__(env|io_getchar|io_putchar|sbrk_heap_end|weak)$'
@@ -30,7 +30,7 @@ CheckOptions:
 WarningsAsErrors: '*'
 
 HeaderFilterRegex: '.*/firmware/.*'
-ExcludeHeaderFilterRegex: '.*/firmware/platform/(stm|middleware)/.*|.*/(stm32g4xx_hal_conf|FreeRTOSConfig)\.h'
+ExcludeHeaderFilterRegex: '.*/firmware/platform/(stm|middleware|common)/.*|.*/(stm32g4xx_hal_conf|FreeRTOSConfig)\.h'
 SystemHeaders: false
 FormatStyle: file
 ...
