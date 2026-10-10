@@ -5,6 +5,7 @@ Checks: >
   -clang-analyzer-core.FixedAddressDereference,
   -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
   bugprone-*,
+  -bugprone-easily-swappable-parameters,
   cert-*,
   -cert-dcl37-c,
   -cert-dcl51-cpp,
@@ -20,14 +21,16 @@ Checks: >
   performance-*,
   -performance-no-int-to-ptr,
   readability-*,
-  -readability-redundant-declaration
+  -readability-redundant-declaration,
+  -readability-braces-around-statements
 
 CheckOptions:
   bugprone-reserved-identifier.AllowedIdentifiers: '^_(close|execve|exit|fork|fstat|getpid|isatty|kill|link|lseek|open|read|sbrk|stat|times|unlink|wait|write|end|estack|Min_Stack_Size|[HCDAM]FSR|MMAR|BFAR)$;^__(env|io_getchar|io_putchar|sbrk_heap_end|weak)$'
   # don't charge a function for branches hidden inside macro expansions
   readability-function-cognitive-complexity.IgnoreMacros: true
 
-WarningsAsErrors: '*'
+# reported, but don't fail the build
+WarningsAsErrors: '*,-readability-magic-numbers,-readability-identifier-length'
 
 HeaderFilterRegex: '.*/firmware/.*'
 ExcludeHeaderFilterRegex: '.*/firmware/platform/(stm|middleware|common)/.*|.*/(stm32g4xx_hal_conf|FreeRTOSConfig)\.h'

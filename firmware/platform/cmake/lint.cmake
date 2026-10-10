@@ -63,7 +63,7 @@ function(add_format_targets)
     list(FILTER FORMAT_SOURCES EXCLUDE REGEX "/build/")
     list(FILTER FORMAT_SOURCES EXCLUDE REGEX "${VENDORED_REGEX}")
 
-    add_custom_target(format
+    add_custom_target(formatf
         COMMAND ${CLANG_FORMAT_EXE} -i ${FORMAT_SOURCES}
         COMMENT "clang-format: rewriting sources in place"
         VERBATIM
