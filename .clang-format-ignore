@@ -2,4 +2,3 @@
 firmware/platform/stm/**
 firmware/platform/middleware/**
 **/build/**
-can/**
