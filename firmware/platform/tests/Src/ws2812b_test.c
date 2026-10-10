@@ -241,10 +241,10 @@ void MX_DMA_Init(void)
 }
 
 
-void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* tim_pwmHandle)
+void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* htim)
 {
 
-  if(tim_pwmHandle->Instance==htim4.Instance)
+  if(htim->Instance==htim4.Instance)
   {
     /* TIM4 clock enable */
     __HAL_RCC_TIM4_CLK_ENABLE();
@@ -265,7 +265,7 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* tim_pwmHandle)
       Error_Handler();
     }
 
-    __HAL_LINKDMA(tim_pwmHandle,hdma[TIM_DMA_ID_CC1],hdma_tim4_ch1);
+    __HAL_LINKDMA(htim,hdma[TIM_DMA_ID_CC1],hdma_tim4_ch1);
   }
 }
 
@@ -326,16 +326,16 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
 
 }
 
-void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* tim_pwmHandle)
+void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* htim)
 {
 
-  if(tim_pwmHandle->Instance==TIM4)
+  if(htim->Instance==TIM4)
   {
     /* Peripheral clock disable */
     __HAL_RCC_TIM4_CLK_DISABLE();
 
     /* TIM4 DMA DeInit */
-    HAL_DMA_DeInit(tim_pwmHandle->hdma[TIM_DMA_ID_CC1]);
+    HAL_DMA_DeInit(htim->hdma[TIM_DMA_ID_CC1]);
   }
 }
 #elif defined(STM32F4xx)
@@ -346,7 +346,7 @@ void MX_DMA_Init(void)
 {
 }
 
-void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* tim_pwmHandle)
+void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* htim)
 {
 
 }
@@ -359,7 +359,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle){
 
 }
 
-void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* tim_pwmHandle){
+void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* htim){
 
 }
 
@@ -371,7 +371,7 @@ void MX_DMA_Init(void)
 {
 }
 
-void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* tim_pwmHandle)
+void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* htim)
 {
 
 }
@@ -384,7 +384,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle){
 
 }
 
-void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* tim_pwmHandle){
+void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* htim){
 
 }
 #endif

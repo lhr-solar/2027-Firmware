@@ -271,8 +271,7 @@ every platform test and board target with `TIDY=ON`. Run it locally with
 `make TIDY=ON ...` from `firmware/platform/` or a board directory. Do not add a
 `NOLINT` or drop a check to get a build green without saying why — in `psys/`, `controls/`, and `telemetry`, a finding is a possible safety defect until shown otherwise.
 
-Observed conventions in LHR-authored C (`psp/`, `drivers/`, `utils/`,
-`common/`), for matching surrounding code — descriptive, not binding:
+Observed conventions in LHR-authored C (`psp/`, `drivers/`, `utils/`), for matching surrounding code — descriptive, not binding:
 
 - 4-space indent, spaces not tabs
 - opening brace on the same line, for functions and blocks alike

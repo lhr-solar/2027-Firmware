@@ -63,7 +63,6 @@ add_format_targets(
     ${CMAKE_CURRENT_SOURCE_DIR}/psp
     ${CMAKE_CURRENT_SOURCE_DIR}/drivers
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/common
     ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
 
