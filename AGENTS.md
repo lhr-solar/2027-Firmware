@@ -269,8 +269,7 @@ are order-dependent.
 `/.clang-tidy` is enforced in CI (`.github/workflows/lint.yml`), which rebuilds
 every platform test and board target with `TIDY=ON`. Run it locally with
 `make TIDY=ON ...` from `firmware/platform/` or a board directory. Do not add a
-`NOLINT` or drop a check to get a build green without saying why — in `psys/`
-and `controls/`, a finding is a possible safety defect until shown otherwise.
+`NOLINT` or drop a check to get a build green without saying why — in `psys/`, `controls/`, and `telemetry`, a finding is a possible safety defect until shown otherwise.
 
 Observed conventions in LHR-authored C (`psp/`, `drivers/`, `utils/`,
 `common/`), for matching surrounding code — descriptive, not binding:
