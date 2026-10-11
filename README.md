@@ -199,6 +199,14 @@ Flashing code can be finnicky. Some good commands to note:
 > [!CAUTION]
 > Additionally, make sure not to unplug the MCU connection while flashing or otherwise mess with the board, as this can cause flashing to fail or potentially brick the MCU.
 
+### Linting 🧼
+---
+A linter is a tool that analyzes your code to find potential bugs, syntax issues, and stylistic (formatting) discrepancies. We use `clang-tidy` and `clang-format` to lint our codebase. Linters run as part of our CI build (more on that below), but you can also run them manually as follows:
+
+- `make TIDY=ON`: this will run `clang-tidy` to expose potential issues with your code. Anything flagged as an error is critical and must be fixed prior to running your code in a safety-critical environment. Warnings are less critical but you should still read and understand them - some might be important to implement!
+- `make format-check`: this checks your code for formatting and stylistic issues, which is important to ensure all of our code looks consistent and readable.
+- `make format`: same as above, but this actually reformats source/header files in place to correct formatting issues.
+
 ## Contributing :DD
 
 So you want to write some code...
