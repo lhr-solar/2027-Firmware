@@ -1,5 +1,6 @@
 # Platform test build
-# thin wrapper -- every target just calls cmake
+# only `make` configures and builds; every other target works on the
+# existing build and fails if there isn't one
 
 BUILD_DIR := build
 TOOLCHAIN := cmake/toolchain.cmake
@@ -14,19 +15,19 @@ all: configure
 configure:
 	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST)
 
-flash: configure
+flash:
 	cmake --build $(BUILD_DIR) --target flash
 
-flash-usb: configure
+flash-usb:
 	cmake --build $(BUILD_DIR) --target flash-usb
 
-erase: configure
+erase:
 	cmake --build $(BUILD_DIR) --target erase
 
-dump-symbols: configure
+dump-symbols:
 	cmake --build $(BUILD_DIR) --target dump-symbols
 
-dump_size: configure
+dump_size:
 	cmake --build $(BUILD_DIR) --target dump_size
 
 clean:

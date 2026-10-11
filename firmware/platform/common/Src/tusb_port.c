@@ -1,5 +1,4 @@
-// Platform glue for TinyUSB
-// i think imma delete this when we make USB PSP
+// i think imma delete/move this when we make USB PSP
 
 #include "stm32g4xx.h"
 #include "tusb.h"
