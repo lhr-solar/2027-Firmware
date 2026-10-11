@@ -203,7 +203,7 @@ int main(void) {
     hfdcan1->Init.AutoRetransmission = DISABLE;
     hfdcan1->Init.TransmitPause = DISABLE;
     hfdcan1->Init.ProtocolException = DISABLE;
-    hfdcan1->Init.NominalPrescaler = 20;
+    hfdcan1->Init.NominalPrescaler = 24;
     hfdcan1->Init.NominalSyncJumpWidth = 1;
     hfdcan1->Init.NominalTimeSeg1 = 13;
     hfdcan1->Init.NominalTimeSeg2 = 2;
