@@ -14,6 +14,9 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/stm32.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/post_build.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/custom_commands.cmake)
 
+# test to build -- cached, so it sticks until -DTEST=<name> changes it
+set(TEST blinky CACHE STRING "Platform test to build (tests/Src/<TEST>_test.c)")
+
 ### Compile Tests
 # unsupported tests on the g473
 set(DISABLED_TESTS
@@ -21,7 +24,6 @@ set(DISABLED_TESTS
     can_isr
     can_mt
     can_queueSet
-    tusb_cdc # aarav chud
 )
 
 # check if test is disabled for g473
@@ -42,6 +44,7 @@ add_executable(App
     ${HAL_SOURCES}
     ${FREERTOS_SOURCES}
     ${FATFS_SOURCES}
+    ${TINYUSB_SOURCES}
     ${PSP_SOURCES}
     ${UTILS_SOURCES}
     ${DRIVERS_SOURCES}

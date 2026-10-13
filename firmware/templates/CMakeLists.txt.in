@@ -37,6 +37,7 @@ add_executable(@BOARD@
     ${HAL_SOURCES}
     ${FREERTOS_SOURCES}
     ${FATFS_SOURCES}
+    ${TINYUSB_SOURCES}
     ${PSP_SOURCES}
     ${UTILS_SOURCES}
     ${DRIVERS_SOURCES}

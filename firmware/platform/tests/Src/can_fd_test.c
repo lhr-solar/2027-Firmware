@@ -311,7 +311,7 @@ int main(void) {
   hfdcan1->Init.AutoRetransmission = ENABLE;
   hfdcan1->Init.TransmitPause = DISABLE;
   hfdcan1->Init.ProtocolException = DISABLE;
-  hfdcan1->Init.NominalPrescaler = 20;
+  hfdcan1->Init.NominalPrescaler = 24;
   hfdcan1->Init.NominalSyncJumpWidth = 1;
   hfdcan1->Init.NominalTimeSeg1 = 13;
   hfdcan1->Init.NominalTimeSeg2 = 2;
@@ -362,7 +362,7 @@ int main(void) {
   hfdcan2->Init.AutoRetransmission = ENABLE;
   hfdcan2->Init.TransmitPause = DISABLE;
   hfdcan2->Init.ProtocolException = DISABLE;
-  hfdcan2->Init.NominalPrescaler = 20;
+  hfdcan2->Init.NominalPrescaler = 24;
   hfdcan2->Init.NominalSyncJumpWidth = 1;
   hfdcan2->Init.NominalTimeSeg1 = 13;
   hfdcan2->Init.NominalTimeSeg2 = 2;
@@ -414,7 +414,7 @@ int main(void) {
   hfdcan3->Init.AutoRetransmission = ENABLE;
   hfdcan3->Init.TransmitPause = DISABLE;
   hfdcan3->Init.ProtocolException = DISABLE;
-  hfdcan3->Init.NominalPrescaler = 20;
+  hfdcan3->Init.NominalPrescaler = 24;
   hfdcan3->Init.NominalSyncJumpWidth = 1;
   hfdcan3->Init.NominalTimeSeg1 = 13;
   hfdcan3->Init.NominalTimeSeg2 = 2;
