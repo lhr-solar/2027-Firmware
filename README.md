@@ -201,11 +201,18 @@ Flashing code can be finnicky. Some good commands to note:
 
 ### Linting 🧼
 ---
-A linter is a tool that analyzes your code to find potential bugs, syntax issues, and stylistic (formatting) discrepancies. We use `clang-tidy` and `clang-format` to lint our codebase. Linters run as part of our CI build (more on that below), but you can also run them manually as follows:
+A linter is a tool that analyzes your code to find potential bugs, syntax issues, and stylistic (formatting) discrepancies. We use `clang-tidy` and `clang-format` to lint our codebase.
 
-- `make TIDY=ON`: this will run `clang-tidy` to expose potential issues with your code. Anything flagged as an error is critical and must be fixed prior to running your code in a safety-critical environment. Warnings are less critical but you should still read and understand them - some might be important to implement!
+These all run as part of the `lint` workflow in Github CI.
+
+If you see a `lint / clang-format` CI job fail, that means your code formatting doesn't match our rules. Run `make format-check` and `make-format` as explained below to check and fix stylistic issues.
+
 - `make format-check`: this checks your code for formatting and stylistic issues, which is important to ensure all of our code looks consistent and readable.
 - `make format`: same as above, but this actually reformats source/header files in place to correct formatting issues.
+
+If you see a `lint / clang-tidy` CI job fail, there's a deeper error with your code. Open the job output on Github and search for "error" to see which lines are problematic. You can also run `make TIDY=ON` locally as shown below for the same checks.
+
+- `make TIDY=ON`: this will run `clang-tidy` to expose potential issues with your code. Anything flagged as an error is critical and must be fixed prior to running your code in a safety-critical environment. Warnings are less critical but you should still read and understand them - some might be important to implement!
 
 ## Contributing :DD
 
