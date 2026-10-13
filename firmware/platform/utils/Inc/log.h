@@ -5,16 +5,22 @@
  * @details
  *   #include "printf.h"   // platform printf, must come first
  *   #include "log.h"
- *   LOG_INFO("pack voltage %d mV", mv);
- *   LOG_INFO_EVERY_N(15, "still alive, tick %lu", ticks);
+ *
+ * Usage:
+ *   LOG_DEBUG / LOG_INFO / LOG_ERROR(fmt, ...)       cyan / green / red, one line per call.
+ *   LOG_*_EVERY_N(n, fmt, ...)    prints on the 1st call, then every nth call, per call site.
+ *   LOG_*_EVERY_MS(ms, fmt, ...)  prints on the 1st call, then at most once per ms milliseconds,
+ *                                 per call site.
+ *   Output format: "[<rtos tick>] LEVEL message\r\n".
  *
  * Notes:
- *  - fmt must be a string literal (it is concatenated with prefix/suffix so each
- *    log line is ONE printf call and cannot interleave with another task's line).
- *  - Not ISR-safe: platform printf takes a mutex.
+ *  - NOT ISR-safe, including the rate-limited variants: they take mutexes and can block.
+ *    Defer to a task (flag, queue, xTaskNotifyFromISR) and log from there.
+ *  - fmt must be a string literal.
  *  - Raw printf( is a compile error in any file that includes this header.
- *  - Set the floor with -DLOG_LEVEL=LOG_LEVEL_INFO; lower levels compile to nothing.
+ *  - Set the floor with -DLOG_LEVEL=LOG_LEVEL_INFO or #define LOG_LEVEL LOG_LEVEL_ERROR; lower levels compile to nothing.
  */
+
 #pragma once
 
 #include <stdint.h>
