@@ -40,7 +40,10 @@ static void success_handler(void) {
     // blinky
 
     GPIO_InitTypeDef led_config = {
-        .Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = GPIO_PIN_5};
+        .Mode = GPIO_MODE_OUTPUT_PP,
+        .Pull = GPIO_NOPULL,
+        .Pin = GPIO_PIN_5,
+    };
 
     // enable clock for GPIOA
     HAL_GPIO_Init(GPIOA, &led_config); // initialize GPIOA with led_config
@@ -56,8 +59,10 @@ void TestQueueFull(void* pvParameters) {
     // Set bkpt in error_handler();
     uint32_t reading = 0;
 
-    ADC_ChannelConfTypeDef sConfig = {.Channel = ADC_CHANNEL_1,
-                                      .SamplingTime = ADC_SAMPLETIME_3CYCLES};
+    ADC_ChannelConfTypeDef sConfig = {
+        .Channel = ADC_CHANNEL_1,
+        .SamplingTime = ADC_SAMPLETIME_3CYCLES,
+    };
 
     // read once
     for (int i = 0; i < 10; i++) {
@@ -88,11 +93,12 @@ void TestADC1(void* pvParameters) {
     // Set bkpt in error_handler();
     uint32_t reading = 0;
 
-    ADC_ChannelConfTypeDef sConfig = {.Channel = ADC_CHANNEL_1,
+    ADC_ChannelConfTypeDef sConfig = {
+        .Channel = ADC_CHANNEL_1,
 #ifdef ADC_SAMPLETIME_3CYCLES
-                                      .SamplingTime = ADC_SAMPLETIME_3CYCLES
+        .SamplingTime = ADC_SAMPLETIME_3CYCLES,
 #else
-                                      .SamplingTime = ADC_SAMPLETIME_2CYCLES_5
+        .SamplingTime = ADC_SAMPLETIME_2CYCLES_5,
 #endif
     };
 
@@ -117,11 +123,12 @@ void TestADC2(void* pvParameters) {
     // Set bkpt in error_handler();
     uint32_t reading = 0;
 
-    ADC_ChannelConfTypeDef sConfig = {.Channel = ADC_CHANNEL_1,
+    ADC_ChannelConfTypeDef sConfig = {
+        .Channel = ADC_CHANNEL_1,
     #ifdef ADC_SAMPLETIME_3CYCLES
-                                      .SamplingTime = ADC_SAMPLETIME_3CYCLES
+        .SamplingTime = ADC_SAMPLETIME_3CYCLES,
     #else
-                                      .SamplingTime = ADC_SAMPLETIME_2CYCLES_5
+        .SamplingTime = ADC_SAMPLETIME_2CYCLES_5,
     #endif
     };
 
@@ -147,11 +154,12 @@ void TestADC3(void* pvParameters) {
     // Set bkpt in error_handler();
     uint32_t reading = 0;
 
-    ADC_ChannelConfTypeDef sConfig = {.Channel = ADC_CHANNEL_1,
+    ADC_ChannelConfTypeDef sConfig = {
+        .Channel = ADC_CHANNEL_1,
     #ifdef ADC_SAMPLETIME_3CYCLES
-                                      .SamplingTime = ADC_SAMPLETIME_3CYCLES
+        .SamplingTime = ADC_SAMPLETIME_3CYCLES,
     #else
-                                      .SamplingTime = ADC_SAMPLETIME_2CYCLES_5
+        .SamplingTime = ADC_SAMPLETIME_2CYCLES_5,
     #endif
     };
 

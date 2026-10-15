@@ -1,10 +1,22 @@
 #include "stm32xx_hal.h"
 #include "SevenSegment.h"
 
-static GPIO_InitTypeDef led_configA = {.Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = 0};
-static GPIO_InitTypeDef led_configB = {.Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = 0};
+static GPIO_InitTypeDef led_configA = {
+    .Mode = GPIO_MODE_OUTPUT_PP,
+    .Pull = GPIO_NOPULL,
+    .Pin = 0,
+};
+static GPIO_InitTypeDef led_configB = {
+    .Mode = GPIO_MODE_OUTPUT_PP,
+    .Pull = GPIO_NOPULL,
+    .Pin = 0,
+};
 
-static GPIO_InitTypeDef led_configC = {.Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = 0};
+static GPIO_InitTypeDef led_configC = {
+    .Mode = GPIO_MODE_OUTPUT_PP,
+    .Pull = GPIO_NOPULL,
+    .Pin = 0,
+};
 
 const led_t seven_segment_led[NUMBER_SEVEN_SEGMENTS][NUMBER_SEGMENTS] = {{{GPIO_PIN_10, GPIOB},
                                                                           {GPIO_PIN_1, GPIOB},

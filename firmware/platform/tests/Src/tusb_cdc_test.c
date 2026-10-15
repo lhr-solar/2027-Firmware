@@ -75,7 +75,10 @@ int main() {
     MX_USB_PCD_Init();
 
     // init tinyusb
-    tusb_rhport_init_t dev_init = {.role = TUSB_ROLE_DEVICE, .speed = TUSB_SPEED_AUTO};
+    tusb_rhport_init_t dev_init = {
+        .role = TUSB_ROLE_DEVICE,
+        .speed = TUSB_SPEED_AUTO,
+    };
     tusb_init(BOARD_TUD_RHPORT, &dev_init);
 
     xTaskCreateStatic(poll_events, "Poll Event Queue", configMINIMAL_STACK_SIZE, (void*)1,
@@ -111,7 +114,10 @@ static void MX_GPIO_Init(void) {
 
     // heartbeat
     GPIO_InitTypeDef led_config = {
-        .Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = GPIO_PIN_0};
+        .Mode = GPIO_MODE_OUTPUT_PP,
+        .Pull = GPIO_NOPULL,
+        .Pin = GPIO_PIN_0,
+    };
     HAL_GPIO_Init(GPIOA, &led_config);
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, 0);
 }

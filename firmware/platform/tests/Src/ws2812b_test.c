@@ -27,7 +27,10 @@ StackType_t TaskStack[configMINIMAL_STACK_SIZE];
 
 void Profiler_Init() {
     GPIO_InitTypeDef led_config = {
-        .Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = PROFILE_PIN};
+        .Mode = GPIO_MODE_OUTPUT_PP,
+        .Pull = GPIO_NOPULL,
+        .Pin = PROFILE_PIN,
+    };
 
     switch ((uint32_t)PROFILE_PORT) {
         case (uint32_t)GPIOA:
@@ -47,7 +50,10 @@ void Profiler_Init() {
 // Initialize clock for heartbeat LED port
 void Heartbeat_Init() {
     GPIO_InitTypeDef led_config = {
-        .Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = LED_PIN};
+        .Mode = GPIO_MODE_OUTPUT_PP,
+        .Pull = GPIO_NOPULL,
+        .Pin = LED_PIN,
+    };
 
     switch ((uint32_t)LED_PORT) {
         case (uint32_t)GPIOA:
@@ -68,9 +74,10 @@ void Heartbeat_Init() {
 void led_sequence() {
     ws2812b_set_all_leds(&wsHandle, WS2812B_SOLID_OFF, portMAX_DELAY);
 
-    ws2812b_color_t colors[] = {WS2812B_SOLID_RED,    WS2812B_SOLID_BLUE,
-                                WS2812B_SOLID_GREEN,  WS2812B_SOLID_PURPLE,
-                                WS2812B_SOLID_YELLOW, WS2812B_SOLID_BURNT_ORANGE};
+    ws2812b_color_t colors[] = {
+        WS2812B_SOLID_RED,    WS2812B_SOLID_BLUE,   WS2812B_SOLID_GREEN,
+        WS2812B_SOLID_PURPLE, WS2812B_SOLID_YELLOW, WS2812B_SOLID_BURNT_ORANGE,
+    };
 
     // dim brightness
     for (int i = 0; i < sizeof(colors) / sizeof(ws2812b_color_t); i++) {

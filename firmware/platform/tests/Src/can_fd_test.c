@@ -27,7 +27,10 @@ for an interrupt
 
 void can_profile_pins_init() {
     GPIO_InitTypeDef tx_pin_config = {
-        .Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = CAN_TX_PROFILE_PIN};
+        .Mode = GPIO_MODE_OUTPUT_PP,
+        .Pull = GPIO_NOPULL,
+        .Pin = CAN_TX_PROFILE_PIN,
+    };
 
     switch ((uint32_t)CAN_TX_PROFILE_PORT) {
         case (uint32_t)GPIOA:
@@ -44,7 +47,10 @@ void can_profile_pins_init() {
     HAL_GPIO_Init(CAN_TX_PROFILE_PORT, &tx_pin_config);
 
     GPIO_InitTypeDef rx_pin_config = {
-        .Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = CAN_RX_PROFILE_PIN};
+        .Mode = GPIO_MODE_OUTPUT_PP,
+        .Pull = GPIO_NOPULL,
+        .Pin = CAN_RX_PROFILE_PIN,
+    };
 
     switch ((uint32_t)CAN_RX_PROFILE_PORT) {
         case (uint32_t)GPIOA:

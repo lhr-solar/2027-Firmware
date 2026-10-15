@@ -104,7 +104,10 @@ int main(void) {
     SystemClock_Config();
 
     GPIO_InitTypeDef led_config = {
-        .Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = LED_PIN};
+        .Mode = GPIO_MODE_OUTPUT_PP,
+        .Pull = GPIO_NOPULL,
+        .Pin = LED_PIN,
+    };
 
     Heartbeat_Clock_Init();               // enable clock for LED_PORT
     HAL_GPIO_Init(LED_PORT, &led_config); // initialize GPIOA with led_config

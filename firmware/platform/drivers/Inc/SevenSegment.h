@@ -12,7 +12,11 @@ struct led_pins {
     GPIO_TypeDef* Port;
 };
 
-enum display { display_0 = 0, display_1 = 1, display_off = 2 };
+enum display {
+    display_0 = 0,
+    display_1 = 1,
+    display_off = 2,
+};
 
 typedef struct led_pins led_t;
 typedef enum display display_t;

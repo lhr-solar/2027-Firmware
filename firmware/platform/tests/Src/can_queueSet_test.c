@@ -31,7 +31,10 @@ StackType_t rx_task_stack[configMINIMAL_STACK_SIZE];
 #define TEST_QUEUE_SET_ID_COUNT 2
 
 
-static const uint32_t test_can_ids[TEST_QUEUE_SET_ID_COUNT] = {0x001, 0x321};
+static const uint32_t test_can_ids[TEST_QUEUE_SET_ID_COUNT] = {
+    0x001,
+    0x321,
+};
 
 #define QUEUESET_NUM_ELEMENTS 30
 
@@ -63,7 +66,10 @@ static void rx_task(void* pvParameters) {
                                         &test_queue_set_buffer);
 
     can_id_set_t canQueueSetStruct = {
-        .ids = test_can_ids, .id_count = TEST_QUEUE_SET_ID_COUNT, .queueSet = canQueueSet};
+        .ids = test_can_ids,
+        .id_count = TEST_QUEUE_SET_ID_COUNT,
+        .queueSet = canQueueSet,
+    };
 
     can_status_t setInitStatus = can_register_id_set(hcan1, &canQueueSetStruct);
 
@@ -153,7 +159,10 @@ int main(void) {
     SystemClock_Config();
 
     GPIO_InitTypeDef led_init = {
-        .Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = HEARTBEAT_LED_PIN};
+        .Mode = GPIO_MODE_OUTPUT_PP,
+        .Pull = GPIO_NOPULL,
+        .Pin = HEARTBEAT_LED_PIN,
+    };
 
     Heartbeat_Clock_Init();
     HAL_GPIO_Init(HEARTBEAT_LED_PORT, &led_init);

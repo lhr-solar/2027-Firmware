@@ -80,7 +80,10 @@ int main(void) {
     SystemClock_Config();
 
     GPIO_InitTypeDef led_init = {
-        .Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_NOPULL, .Pin = HEARTBEAT_LED_PIN};
+        .Mode = GPIO_MODE_OUTPUT_PP,
+        .Pull = GPIO_NOPULL,
+        .Pin = HEARTBEAT_LED_PIN,
+    };
 
     Heartbeat_Clock_Init();
     HAL_GPIO_Init(HEARTBEAT_LED_PORT, &led_init);
