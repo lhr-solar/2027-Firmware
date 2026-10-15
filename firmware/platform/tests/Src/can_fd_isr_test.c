@@ -17,15 +17,15 @@ for an interrupt
 
 // LSOM has heartbeat pin defined as PC3
 // Most other nucleos have a heartbeat for A5
-#define LED_PIN GPIO_PIN_3
+#define LED_PIN  GPIO_PIN_3
 #define LED_PORT GPIOC
 
 // Some pins broken out by LSOM
 #define CAN_TX_PROFILE_PORT GPIOA
-#define CAN_TX_PROFILE_PIN GPIO_PIN_10
+#define CAN_TX_PROFILE_PIN  GPIO_PIN_10
 
 #define CAN_RX_PROFILE_PORT GPIOB
-#define CAN_RX_PROFILE_PIN GPIO_PIN_4
+#define CAN_RX_PROFILE_PIN  GPIO_PIN_4
 
 void can_profile_pins_init() {
     GPIO_InitTypeDef tx_pin_config = {
@@ -167,7 +167,9 @@ void Error_Handler() {
     }
 }
 
-void Success_Handler() { HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET); }
+void Success_Handler() {
+    HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET);
+}
 
 
 #define CANFD1_TX_QUEUE_SIZE 10
@@ -178,7 +180,7 @@ static uint8_t mycanfd1_tx_queue_storage[CANFD1_TX_QUEUE_SIZE * sizeof(can_rx_pa
 
 
 static void task(void* pvParameters) {
-    while(1){
+    while (1) {
         HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
         // HAL_GPIO_TogglePin(CAN_TX_PROFILE_PORT, CAN_TX_PROFILE_PIN);
         vTaskDelay(pdMS_TO_TICKS(500));
@@ -186,7 +188,7 @@ static void task(void* pvParameters) {
 }
 
 
-void can_fd_rx_callback_hook(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs,
+void can_fd_rx_callback_hook(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo0ITs,
                              can_rx_payload_t recv_payload) {
     // only forward motorCAN messages to CarCAN
 
@@ -230,12 +232,12 @@ int main(void) {
     SystemClock_Config();
 #endif
 
-    Heartbeat_Init();         // enable LED for LED_PORT
-    // HAL_GPIO_TogglePin(LED_PORT, LED_PIN); 
-    can_profile_pins_init();  // enable pins we toggle during interrupts
+    Heartbeat_Init(); // enable LED for LED_PORT
+    // HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
+    can_profile_pins_init(); // enable pins we toggle during interrupts
 
     mycanfd1_tx_queue = xQueueCreateStatic(CANFD1_TX_QUEUE_SIZE, sizeof(can_rx_payload_t),
-                           mycanfd1_tx_queue_storage, &mycanfd1_tx_queue_buffer);
+                                           mycanfd1_tx_queue_storage, &mycanfd1_tx_queue_buffer);
 
     if (mycanfd1_tx_queue == NULL) {
         Error_Handler();
@@ -276,7 +278,7 @@ int main(void) {
     sFilterConfig.IdType = FDCAN_STANDARD_ID;
     sFilterConfig.FilterIndex = 0;
     sFilterConfig.FilterType = FDCAN_FILTER_MASK;
-    sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;  // directs frames to FIFO0
+    sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // directs frames to FIFO0
 
     // this accepts all CAN IDs
     sFilterConfig.FilterID1 = 0x000;
@@ -326,7 +328,7 @@ int main(void) {
     sFilterConfig2.IdType = FDCAN_STANDARD_ID;
     sFilterConfig2.FilterIndex = 0;
     sFilterConfig2.FilterType = FDCAN_FILTER_MASK;
-    sFilterConfig2.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;  // directs frames to FIFO0
+    sFilterConfig2.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // directs frames to FIFO0
 
     // this accepts all CAN IDs
     sFilterConfig2.FilterID1 = 0x000;
@@ -377,7 +379,7 @@ int main(void) {
     sFilterConfig3.IdType = FDCAN_STANDARD_ID;
     sFilterConfig3.FilterIndex = 0;
     sFilterConfig3.FilterType = FDCAN_FILTER_MASK;
-    sFilterConfig3.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;  // directs frames to FIFO0
+    sFilterConfig3.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // directs frames to FIFO0
 
     // this accepts all CAN IDs
     sFilterConfig3.FilterID1 = 0x000;
@@ -392,12 +394,13 @@ int main(void) {
     }
 
 #endif
-    // HAL_GPIO_TogglePin(LED_PORT, LED_PIN); 
+    // HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
     // you can only send CAN messages within a FreeRTOS task
     xTaskCreateStatic(task, "task", 512, NULL, tskIDLE_PRIORITY + 2, task_stack, &task_buffer);
 
     vTaskStartScheduler();
-    while (1) {}
+    while (1) {
+    }
 
     Error_Handler();
     return 0;
@@ -409,7 +412,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-    if (0) {  // placeholder for if else if there are no FDCANs defined
+    if (0) { // placeholder for if else if there are no FDCANs defined
 
     }
 #ifdef FDCAN1
@@ -445,7 +448,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
         HAL_NVIC_SetPriority(FDCAN1_IT1_IRQn, FDCAN_NVIC_PRIO, 0);
         HAL_NVIC_EnableIRQ(FDCAN1_IT1_IRQn);
     }
-#endif  // FDCAN1
+#endif // FDCAN1
 #ifdef FDCAN2
     else if (hfdcan->Instance == FDCAN2) {
 
@@ -480,7 +483,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
         HAL_NVIC_EnableIRQ(FDCAN2_IT1_IRQn);
 
     }
-#endif  // FDCAN2
+#endif // FDCAN2
 
 #ifdef FDCAN3
     else if (hfdcan->Instance == FDCAN3) {

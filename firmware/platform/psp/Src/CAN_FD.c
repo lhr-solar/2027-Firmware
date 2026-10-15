@@ -19,9 +19,9 @@ FDCAN_HandleTypeDef* hfdcan3 = &hfdcan3_;
 #endif
 
 #ifdef FDCAN1
-#ifndef FDCAN1_SEND_QUEUE_SIZE
-#define FDCAN1_SEND_QUEUE_SIZE (10)
-#endif /* FDCAN1_SEND_QUEUE_SIZE */
+    #ifndef FDCAN1_SEND_QUEUE_SIZE
+        #define FDCAN1_SEND_QUEUE_SIZE (10)
+    #endif /* FDCAN1_SEND_QUEUE_SIZE */
 
 static QueueHandle_t fdcan1_send_queue = NULL;
 static StaticQueue_t fdcan1_send_queue_buffer;
@@ -29,9 +29,9 @@ static uint8_t fdcan1_send_queue_storage[FDCAN1_SEND_QUEUE_SIZE * sizeof(can_tx_
 #endif /* FDCAN1 */
 
 #ifdef FDCAN2
-#ifndef FDCAN2_SEND_QUEUE_SIZE
-#define FDCAN2_SEND_QUEUE_SIZE (10)
-#endif /* FDCAN2_SEND_QUEUE_SIZE */
+    #ifndef FDCAN2_SEND_QUEUE_SIZE
+        #define FDCAN2_SEND_QUEUE_SIZE (10)
+    #endif /* FDCAN2_SEND_QUEUE_SIZE */
 
 static QueueHandle_t fdcan2_send_queue = NULL;
 static StaticQueue_t fdcan2_send_queue_buffer;
@@ -39,9 +39,9 @@ static uint8_t fdcan2_send_queue_storage[FDCAN2_SEND_QUEUE_SIZE * sizeof(can_tx_
 #endif /* FDCAN2 */
 
 #ifdef FDCAN3
-#ifndef FDCAN3_SEND_QUEUE_SIZE
-#define FDCAN3_SEND_QUEUE_SIZE (10)
-#endif /* FDCAN3_SEND_QUEUE_SIZE */
+    #ifndef FDCAN3_SEND_QUEUE_SIZE
+        #define FDCAN3_SEND_QUEUE_SIZE (10)
+    #endif /* FDCAN3_SEND_QUEUE_SIZE */
 
 static QueueHandle_t fdcan3_send_queue = NULL;
 static StaticQueue_t fdcan3_send_queue_buffer;
@@ -99,13 +99,13 @@ can_status_t can_fd_init(FDCAN_HandleTypeDef* handle, FDCAN_FilterTypeDef* filte
 }
 
 can_status_t can_fd_deinit(FDCAN_HandleTypeDef* handle) {
-    
+
     // disable interrupts
-    if (HAL_FDCAN_DeactivateNotification(
-            handle, FDCAN_IT_RX_FIFO0_NEW_MESSAGE | FDCAN_IT_TX_COMPLETE) != HAL_OK) {
+    if (HAL_FDCAN_DeactivateNotification(handle, FDCAN_IT_RX_FIFO0_NEW_MESSAGE |
+                                                     FDCAN_IT_TX_COMPLETE) != HAL_OK) {
         return CAN_ERR;
     }
-    
+
     // deinit HAL
     if (HAL_FDCAN_DeInit(handle) != HAL_OK) {
         return CAN_ERR;
@@ -121,8 +121,9 @@ can_status_t can_fd_start(FDCAN_HandleTypeDef* handle) {
     }
 
     // Interrupt triggers when a new message arrives in the rx fifo, a tranmission is complete, or the FDCAN peripheral experiences a Bus-Off event
-    if (HAL_FDCAN_ActivateNotification(handle, FDCAN_IT_RX_FIFO0_NEW_MESSAGE | FDCAN_IT_TX_COMPLETE | FDCAN_IT_BUS_OFF,
-                                       0) != HAL_OK) {
+    if (HAL_FDCAN_ActivateNotification(
+            handle, FDCAN_IT_RX_FIFO0_NEW_MESSAGE | FDCAN_IT_TX_COMPLETE | FDCAN_IT_BUS_OFF, 0) !=
+        HAL_OK) {
         return CAN_ERR;
     }
 
@@ -151,21 +152,21 @@ can_status_t can_fd_send(FDCAN_HandleTypeDef* handle, FDCAN_TxHeaderTypeDef* hea
     // change it
     portENTER_CRITICAL();
 
-// Check if there is a free can mailbox to send a message
-if (HAL_FDCAN_GetTxFifoFreeLevel(handle) >= 1) {
-    // if the mailbox is free, add the message to the hardware fifo
-    if (HAL_FDCAN_AddMessageToTxFifoQ(handle, header, data) != HAL_OK) {
-        // If adding to the can fd mailbox was not succesful
-        portEXIT_CRITICAL();
-        return CAN_ERR;
-    }
+    // Check if there is a free can mailbox to send a message
+    if (HAL_FDCAN_GetTxFifoFreeLevel(handle) >= 1) {
+        // if the mailbox is free, add the message to the hardware fifo
+        if (HAL_FDCAN_AddMessageToTxFifoQ(handle, header, data) != HAL_OK) {
+            // If adding to the can fd mailbox was not succesful
+            portEXIT_CRITICAL();
+            return CAN_ERR;
+        }
 
-    portEXIT_CRITICAL();
-    return CAN_OK;
-}
-// hardware mailbox is full, so must add to the queue
-else {
-    portEXIT_CRITICAL();
+        portEXIT_CRITICAL();
+        return CAN_OK;
+    }
+    // hardware mailbox is full, so must add to the queue
+    else {
+        portEXIT_CRITICAL();
 
 
 #ifdef FDCAN1
@@ -199,32 +200,32 @@ can_status_t can_fd_send_isr(FDCAN_HandleTypeDef* handle, FDCAN_TxHeaderTypeDef*
     if (handle == NULL || header == NULL || data == NULL) {
         return CAN_ERR;
     }
- 
+
     can_tx_payload_t payload = {0};
     payload.header = *header;
     memcpy(payload.data, data, FDCAN_BYTES_FROM_DLC(header->DataLength));
-    
+
     // If the HW FIFO has a free slot, write directly into it and return.
     // This mirrors can_fd_send and prevents the SW queue from never draining.
-    
-UBaseType_t uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
 
-// Check if there is a free can mailbox to send a message
-if (HAL_FDCAN_GetTxFifoFreeLevel(handle) >= 1) {
-    // if the mailbox is free, add the message to the hardware fifo
-    if (HAL_FDCAN_AddMessageToTxFifoQ(handle, header, data) != HAL_OK) {
-        // If adding to the can fd mailbox was not succesful
+    UBaseType_t uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
+
+    // Check if there is a free can mailbox to send a message
+    if (HAL_FDCAN_GetTxFifoFreeLevel(handle) >= 1) {
+        // if the mailbox is free, add the message to the hardware fifo
+        if (HAL_FDCAN_AddMessageToTxFifoQ(handle, header, data) != HAL_OK) {
+            // If adding to the can fd mailbox was not succesful
+            taskEXIT_CRITICAL_FROM_ISR(uxSavedInterruptStatus);
+            return CAN_ERR;
+        }
+
         taskEXIT_CRITICAL_FROM_ISR(uxSavedInterruptStatus);
-        return CAN_ERR;
+        return CAN_OK;
     }
+    // hardware mailbox is full, so must add to the queue
+    else {
+        taskEXIT_CRITICAL_FROM_ISR(uxSavedInterruptStatus);
 
-    taskEXIT_CRITICAL_FROM_ISR(uxSavedInterruptStatus);
-    return CAN_OK;
-}
-// hardware mailbox is full, so must add to the queue
-else {
-    taskEXIT_CRITICAL_FROM_ISR(uxSavedInterruptStatus);
- 
         // HW FIFO full, fall back to the SW queue
         if (0) {
         }
@@ -249,7 +250,7 @@ else {
             }
         }
 #endif
-}
+    }
     return CAN_OK;
 }
 
@@ -263,7 +264,7 @@ can_status_t can_fd_recv(FDCAN_HandleTypeDef* handle, uint32_t id, FDCAN_RxHeade
     can_rx_payload_t payload = {0};
     can_recv_entry_t* can_recv_entries = NULL;
     uint32_t can_recv_entry_count = 0;
-    if (0) {  // placeholder if no FDCAN peripherals are enabled
+    if (0) { // placeholder if no FDCAN peripherals are enabled
     }
 #ifdef FDCAN1
     else if (handle->Instance == FDCAN1) {
@@ -293,8 +294,7 @@ can_status_t can_fd_recv(FDCAN_HandleTypeDef* handle, uint32_t id, FDCAN_RxHeade
         if (can_recv_entries[i].id == id) {
             // if delay_ticks == portMAX_DELAY thread blocks,
             // other values of delay_ticks are delays
-            if (xQueueReceive(can_recv_entries[i].queue, &payload, delay_ticks) ==
-                errQUEUE_EMPTY) {
+            if (xQueueReceive(can_recv_entries[i].queue, &payload, delay_ticks) == errQUEUE_EMPTY) {
                 return CAN_EMPTY;
             }
 
@@ -320,24 +320,24 @@ can_status_t can_fd_register_id_set(FDCAN_HandleTypeDef* handle, can_id_set_t* s
 
     if (0) {
     }
-#ifdef FDCAN1
+    #ifdef FDCAN1
     else if (handle->Instance == FDCAN1) {
         entries = can1_recv_entries;
         entry_count = can1_recv_entry_count;
     }
-#endif /* FDCAN1 */
-#ifdef FDCAN2
+    #endif /* FDCAN1 */
+    #ifdef FDCAN2
     else if (handle->Instance == FDCAN2) {
         entries = can2_recv_entries;
         entry_count = can2_recv_entry_count;
     }
-#endif /* FDCAN2 */
-#ifdef FDCAN3
+    #endif /* FDCAN2 */
+    #ifdef FDCAN3
     else if (handle->Instance == FDCAN3) {
         entries = can3_recv_entries;
         entry_count = can3_recv_entry_count;
     }
-#endif /* FDCAN3 */
+    #endif /* FDCAN3 */
 
     if (entries == NULL) {
         return CAN_ERR;
@@ -383,24 +383,24 @@ can_status_t can_fd_recv_set(FDCAN_HandleTypeDef* handle, can_id_set_t* set, uin
     // placeholder if statement so we can do do an else-if chain
     if (0) {
     }
-#ifdef FDCAN1
+    #ifdef FDCAN1
     else if (handle->Instance == FDCAN1) {
         entries = can1_recv_entries;
         entry_count = can1_recv_entry_count;
     }
-#endif /* FDCAN1 */
-#ifdef FDCAN2
+    #endif /* FDCAN1 */
+    #ifdef FDCAN2
     else if (handle->Instance == FDCAN2) {
         entries = can2_recv_entries;
         entry_count = can2_recv_entry_count;
     }
-#endif /* FDCAN2 */
-#ifdef FDCAN3
+    #endif /* FDCAN2 */
+    #ifdef FDCAN3
     else if (handle->Instance == FDCAN3) {
         entries = can3_recv_entries;
         entry_count = can3_recv_entry_count;
     }
-#endif /* FDCAN3 */
+    #endif /* FDCAN3 */
 
     if (entries == NULL) {
         return CAN_ERR;
@@ -429,12 +429,12 @@ __weak void can_fd_rx_callback_hook(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo0ITs) {
     can_rx_payload_t payload = {0};
     BaseType_t higherPriorityTaskWoken = pdFALSE;
- 
+
     if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET) {
         while (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &payload.header, payload.data) ==
                HAL_OK) {
             can_fd_rx_callback_hook(hfdcan, RxFifo0ITs, payload);
- 
+
             // placeholder if no FDCAN peripherals are enabled
             if (0) {
             }
@@ -492,11 +492,11 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo0ITs)
 #endif /* FDCAN3 */
         }
     }
- 
+
     // Yield if any queue send unblocked a higher-priority task
     portYIELD_FROM_ISR(higherPriorityTaskWoken);
 }
- 
+
 
 __weak void can_fd_tx_callback_hook(FDCAN_HandleTypeDef* hfdcan, const can_tx_payload_t* payload) {
     /* Prevent unused argument(s) compilation warning */
@@ -507,13 +507,14 @@ __weak void can_fd_tx_callback_hook(FDCAN_HandleTypeDef* hfdcan, const can_tx_pa
 void HAL_FDCAN_TxBufferCompleteCallback(FDCAN_HandleTypeDef* hfdcan, uint32_t BufferIndexes) {
     BaseType_t higherPriorityTaskWoken = pdFALSE;
     can_tx_payload_t payload = {0};
- 
+
     // placeholder if no FDCAN peripheral is enabled
     if (0) {
     }
 #ifdef FDCAN1
     else if (hfdcan->Instance == FDCAN1) {
-        if (xQueueReceiveFromISR(fdcan1_send_queue, &payload, &higherPriorityTaskWoken) == pdTRUE) {    // actually passing this in now??
+        if (xQueueReceiveFromISR(fdcan1_send_queue, &payload, &higherPriorityTaskWoken) ==
+            pdTRUE) { // actually passing this in now??
             HAL_FDCAN_AddMessageToTxFifoQ(hfdcan, &payload.header, payload.data);
         }
     }
@@ -532,7 +533,7 @@ void HAL_FDCAN_TxBufferCompleteCallback(FDCAN_HandleTypeDef* hfdcan, uint32_t Bu
         }
     }
 #endif
- 
+
     portYIELD_FROM_ISR(higherPriorityTaskWoken);
 }
 
@@ -543,7 +544,7 @@ __weak void can_fd_error_callback_hook(FDCAN_HandleTypeDef* hfdcan, uint32_t Err
 }
 
 // Automatically recover from Bus-Off event
-void HAL_FDCAN_ErrorStatusCallback(FDCAN_HandleTypeDef *hfdcan, uint32_t ErrorStatusITs) {
+void HAL_FDCAN_ErrorStatusCallback(FDCAN_HandleTypeDef* hfdcan, uint32_t ErrorStatusITs) {
     can_fd_error_callback_hook(hfdcan, ErrorStatusITs);
     if ((ErrorStatusITs & FDCAN_IT_BUS_OFF) != 0) { // If Bus-Off error occurred
         hfdcan->Instance->CCCR &= ~FDCAN_CCCR_INIT; // Clear INIT bit to recover from Bus-Off
@@ -552,16 +553,28 @@ void HAL_FDCAN_ErrorStatusCallback(FDCAN_HandleTypeDef *hfdcan, uint32_t ErrorSt
 
 // defintions of FDCAN interrupt handlers
 #ifdef FDCAN1
-void FDCAN1_IT0_IRQHandler(void) { HAL_FDCAN_IRQHandler(hfdcan1); }
-void FDCAN1_IT1_IRQHandler(void) { HAL_FDCAN_IRQHandler(hfdcan1); }
+void FDCAN1_IT0_IRQHandler(void) {
+    HAL_FDCAN_IRQHandler(hfdcan1);
+}
+void FDCAN1_IT1_IRQHandler(void) {
+    HAL_FDCAN_IRQHandler(hfdcan1);
+}
 #endif
 
 #ifdef FDCAN2
-void FDCAN2_IT0_IRQHandler(void) { HAL_FDCAN_IRQHandler(hfdcan2); }
-void FDCAN2_IT1_IRQHandler(void) { HAL_FDCAN_IRQHandler(hfdcan2); }
+void FDCAN2_IT0_IRQHandler(void) {
+    HAL_FDCAN_IRQHandler(hfdcan2);
+}
+void FDCAN2_IT1_IRQHandler(void) {
+    HAL_FDCAN_IRQHandler(hfdcan2);
+}
 #endif
 
 #ifdef FDCAN3
-void FDCAN3_IT0_IRQHandler(void) { HAL_FDCAN_IRQHandler(hfdcan3); }
-void FDCAN3_IT1_IRQHandler(void) { HAL_FDCAN_IRQHandler(hfdcan3); }
+void FDCAN3_IT0_IRQHandler(void) {
+    HAL_FDCAN_IRQHandler(hfdcan3);
+}
+void FDCAN3_IT1_IRQHandler(void) {
+    HAL_FDCAN_IRQHandler(hfdcan3);
+}
 #endif

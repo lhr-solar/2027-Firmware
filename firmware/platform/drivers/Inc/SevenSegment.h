@@ -1,22 +1,18 @@
-#ifndef SEVENSEGMENTHEADER_H  
-#define SEVENSEGMENTHEADER_H  
+#ifndef SEVENSEGMENTHEADER_H
+#define SEVENSEGMENTHEADER_H
 
 #include "stm32xx_hal.h"
 
 #define NUMBER_SEVEN_SEGMENTS 2
-#define NUMBER_SEGMENTS 7
-#define MAX_NUM 99
+#define NUMBER_SEGMENTS       7
+#define MAX_NUM               99
 
-struct led_pins { 
-   uint32_t Pin;
-   GPIO_TypeDef *Port;
-}; 
+struct led_pins {
+    uint32_t Pin;
+    GPIO_TypeDef* Port;
+};
 
-enum display {
-   display_0 = 0,
-   display_1 = 1,
-   display_off = 2
-}; 
+enum display { display_0 = 0, display_1 = 1, display_off = 2 };
 
 typedef struct led_pins led_t;
 typedef enum display display_t;
