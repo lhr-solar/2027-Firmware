@@ -415,14 +415,16 @@ sd_status_t USER_SD_Card_Init(sd_handle_t* sd, UBaseType_t priority) {
     }
 
     // create tasks
-    sd->worker_task_handle = xTaskCreateStatic(USER_SD_Card_Worker_Task, // The function to run
-                                               "SD_Worker",              // Name for debugging
-                                               2048,                     // Stack size
-                                               (void*)sd,     // Pass the handle as the parameter
-                                               priority,      // Priority
-                                               xWorkerStack,  // The stack buffer
-                                               &xWorkerBuffer // The task buffer
-    );
+    // clang-format off
+    sd->worker_task_handle = xTaskCreateStatic(
+        USER_SD_Card_Worker_Task, // The function to run
+        "SD_Worker",              // Name for debugging
+        2048,                     // Stack size
+        (void*)sd,                // Pass the handle as the parameter
+        priority,                 // Priority
+        xWorkerStack,             // The stack buffer
+        &xWorkerBuffer);          // The task buffer
+    // clang-format on
 
     MX_FATFS_Init();
     return SD_OK;

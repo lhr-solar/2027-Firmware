@@ -105,8 +105,16 @@ EMC2305_Status EMC2305_Init(EMC2305_HandleTypeDef* chip, I2C_HandleTypeDef* hi2c
     }
 
     // Create I2C Worker Task
-    xTaskCreateStatic(EMC2305_I2C_Worker_Task, "EMC2305 I2C Worker Task", configMINIMAL_STACK_SIZE,
-                      NULL, tskIDLE_PRIORITY + 1, EMC2305_I2C_TaskStack, &EMC2305_I2C_TaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        EMC2305_I2C_Worker_Task,
+        "EMC2305 I2C Worker Task",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 1,
+        EMC2305_I2C_TaskStack,
+        &EMC2305_I2C_TaskBuffer);
+    // clang-format on
 
     // I hate this so much
     if (hi2c->Instance == I2C1) {

@@ -109,41 +109,58 @@ int main(void) {
 
     /* Create the queue receive task as described in the comments at the top
     of this file. */
-    xTaskCreateStatic(/* The function that implements the task. */
-                      prvQueueReceiveTask,
-                      /* Text name for the task, just to help debugging. */
-                      "Rx",
-                      /* The size (in words) of the stack that should be created
-                    for the task. */
-                      configMINIMAL_STACK_SIZE,
-                      /* A parameter that can be passed into the task. Not used
-                    in this simple demo. */
-                      NULL,
-                      /* The priority to assign to the task. tskIDLE_PRIORITY
-                    (which is 0) is the lowest priority. configMAX_PRIORITIES - 1
-                    is the highest priority. */
-                      mainQUEUE_RECEIVE_TASK_PRIORITY,
-                      /* Used to obtain a handle to the created task. Not used in
-                    this simple demo, so set to NULL. */
-                      NULL,
-                      /* Buffer for static allocation */
-                      &pxTaskBufferRx);
+    // clang-format off
+    xTaskCreateStatic(
+        /* The function that implements the task. */
+        prvQueueReceiveTask,
+        /* Text name for the task, just to help debugging. */
+        "Rx",
+        /* The size (in words) of the stack that should be created
+        for the task. */
+        configMINIMAL_STACK_SIZE,
+        /* A parameter that can be passed into the task. Not used
+        in this simple demo. */
+        NULL,
+        /* The priority to assign to the task. tskIDLE_PRIORITY
+        (which is 0) is the lowest priority. configMAX_PRIORITIES - 1
+        is the highest priority. */
+        mainQUEUE_RECEIVE_TASK_PRIORITY,
+        /* Used to obtain a handle to the created task. Not used in
+        this simple demo, so set to NULL. */
+        NULL,
+        /* Buffer for static allocation */
+        &pxTaskBufferRx);
+    // clang-format on
 
 
     /* Create the queue send task in exactly the same way.  Again, this is
     described in the comments at the top of the file. */
-    xTaskCreateStatic(prvQueueSendTask, "TX", configMINIMAL_STACK_SIZE, NULL,
-                      mainQUEUE_SEND_TASK_PRIORITY, NULL,
-                      /* Buffer for static allocation */
-                      &pxTaskBufferTx);
+    // clang-format off
+    xTaskCreateStatic(
+        prvQueueSendTask,
+        "TX",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        mainQUEUE_SEND_TASK_PRIORITY,
+        NULL,
+        /* Buffer for static allocation */
+        &pxTaskBufferTx);
+    // clang-format on
 
 
     /* Create the task that is synchronised with an interrupt using the
     xEventSemaphore semaphore. */
-    xTaskCreateStatic(prvEventSemaphoreTask, "Sem", configMINIMAL_STACK_SIZE, NULL,
-                      mainEVENT_SEMAPHORE_TASK_PRIORITY, NULL,
-                      /* Buffer for static allocation */
-                      &pxTaskBufferSem);
+    // clang-format off
+    xTaskCreateStatic(
+        prvEventSemaphoreTask,
+        "Sem",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        mainEVENT_SEMAPHORE_TASK_PRIORITY,
+        NULL,
+        /* Buffer for static allocation */
+        &pxTaskBufferSem);
+    // clang-format on
 
 
     /* Create the software timer as described in the comments at the top of

@@ -136,8 +136,16 @@ int main() {
     Profiler_Init();
 
     // Create the tasks statically
-    xTaskCreateStatic(task, "TX", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, TaskStack,
-                      &TaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        task,
+        "TX",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        TaskStack,
+        &TaskBuffer);
+    // clang-format on
 
     // Start the scheduler
     vTaskStartScheduler();

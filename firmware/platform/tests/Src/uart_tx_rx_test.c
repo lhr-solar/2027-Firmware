@@ -152,11 +152,27 @@ int main(void) {
         Error_Handler();
     }
 
-    xTaskCreateStatic(TxTask, "TX", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2,
-                      txTaskStack, &txTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        TxTask,
+        "TX",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        txTaskStack,
+        &txTaskBuffer);
+    // clang-format on
 
-    xTaskCreateStatic(RxTask, "RX", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2,
-                      rxTaskStack, &rxTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        RxTask,
+        "RX",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        rxTaskStack,
+        &rxTaskBuffer);
+    // clang-format on
 
     vTaskStartScheduler();
     while (1)

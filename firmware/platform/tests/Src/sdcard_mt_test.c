@@ -126,12 +126,36 @@ int main(void) {
     }
 
     // Create Tasks
-    xTaskCreateStatic(Task1_Entry, "WriteTask1", 1024, NULL, tskIDLE_PRIORITY + 1, xTask1Stack,
-                      &xTask1Buffer);
-    xTaskCreateStatic(Task2_Entry, "WriteTask2", 1024, NULL, tskIDLE_PRIORITY + 1, xTask2Stack,
-                      &xTask2Buffer);
-    xTaskCreateStatic(Task3_Entry, "HighFreq", 512, NULL, tskIDLE_PRIORITY + 2, xTask3Stack,
-                      &xTask3Buffer);
+    // clang-format off
+    xTaskCreateStatic(
+        Task1_Entry,
+        "WriteTask1",
+        1024,
+        NULL,
+        tskIDLE_PRIORITY + 1,
+        xTask1Stack,
+        &xTask1Buffer);
+    // clang-format on
+    // clang-format off
+    xTaskCreateStatic(
+        Task2_Entry,
+        "WriteTask2",
+        1024,
+        NULL,
+        tskIDLE_PRIORITY + 1,
+        xTask2Stack,
+        &xTask2Buffer);
+    // clang-format on
+    // clang-format off
+    xTaskCreateStatic(
+        Task3_Entry,
+        "HighFreq",
+        512,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        xTask3Stack,
+        &xTask3Buffer);
+    // clang-format on
 
     vTaskStartScheduler();
     while (1)

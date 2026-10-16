@@ -154,8 +154,16 @@ void InitTask(void* argument) {
         tx_done[i] = false;
         for (int j = 0; j < DUMP_SIZE; j++)
             time_dump[i][j] = 0;
-        xTaskCreateStatic(TxTask, "TX", configMINIMAL_STACK_SIZE, ((void*)i), tskIDLE_PRIORITY + 2,
-                          txTaskStack[i], &txTaskBuffer[i]);
+        // clang-format off
+        xTaskCreateStatic(
+            TxTask,
+            "TX",
+            configMINIMAL_STACK_SIZE,
+            ((void*)i),
+            tskIDLE_PRIORITY + 2,
+            txTaskStack[i],
+            &txTaskBuffer[i]);
+        // clang-format on
     }
 
     while (1) {
@@ -215,8 +223,16 @@ int main(void) {
     HAL_Init();
     SystemClock_Config();
 
-    xTaskCreateStatic(InitTask, "Init", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1,
-                      initTaskStack, &initTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        InitTask,
+        "Init",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 1,
+        initTaskStack,
+        &initTaskBuffer);
+    // clang-format on
 
     vTaskStartScheduler();
 

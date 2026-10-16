@@ -124,8 +124,16 @@ void InitTask(void* argument) {
     printf_init(husart1);
 #endif
 
-    xTaskCreateStatic(TermTask, "TermTask", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2,
-                      termTaskStack, &termTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        TermTask,
+        "TermTask",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        termTaskStack,
+        &termTaskBuffer);
+    // clang-format on
 
     while (1) {
         portYIELD();
@@ -136,8 +144,16 @@ int main(void) {
     HAL_Init();
     SystemClock_Config();
 
-    xTaskCreateStatic(InitTask, "Init", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2,
-                      initTaskStack, &initTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        InitTask,
+        "Init",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        initTaskStack,
+        &initTaskBuffer);
+    // clang-format on
 
     vTaskStartScheduler();
 

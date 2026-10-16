@@ -121,14 +121,38 @@ int main(void) {
     if (can_start(hcan1) != CAN_OK)
         Error_Handler();
 
-    xTaskCreateStatic(task1, "task1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2,
-                      task1_stack, &task1_buffer);
+    // clang-format off
+    xTaskCreateStatic(
+        task1,
+        "task1",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        task1_stack,
+        &task1_buffer);
+    // clang-format on
 
-    xTaskCreateStatic(task2, "task2", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2,
-                      task2_stack, &task2_buffer);
+    // clang-format off
+    xTaskCreateStatic(
+        task2,
+        "task2",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        task2_stack,
+        &task2_buffer);
+    // clang-format on
 
-    xTaskCreateStatic(task3, "task3", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2,
-                      task3_stack, &task3_buffer);
+    // clang-format off
+    xTaskCreateStatic(
+        task3,
+        "task3",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        task3_stack,
+        &task3_buffer);
+    // clang-format on
 
 
     vTaskStartScheduler();

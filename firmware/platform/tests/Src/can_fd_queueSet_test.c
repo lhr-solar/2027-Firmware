@@ -229,14 +229,38 @@ int main(void) {
 #endif
 
     // you can only send CAN messages within a FreeRTOS task
-    xTaskCreateStatic(task_1, "Transmit task 1", 512, NULL, tskIDLE_PRIORITY + 2, task_1_stack,
-                      &task_1_buffer);
+    // clang-format off
+    xTaskCreateStatic(
+        task_1,
+        "Transmit task 1",
+        512,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        task_1_stack,
+        &task_1_buffer);
+    // clang-format on
 
-    xTaskCreateStatic(task_2, "Transmit task 2", 512, NULL, tskIDLE_PRIORITY + 2, task_2_stack,
-                      &task_2_buffer);
+    // clang-format off
+    xTaskCreateStatic(
+        task_2,
+        "Transmit task 2",
+        512,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        task_2_stack,
+        &task_2_buffer);
+    // clang-format on
 
-    xTaskCreateStatic(rx_task, "rx task", 512, NULL, tskIDLE_PRIORITY + 2, rx_task_stack,
-                      &rx_task_buffer);
+    // clang-format off
+    xTaskCreateStatic(
+        rx_task,
+        "rx task",
+        512,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        rx_task_stack,
+        &rx_task_buffer);
+    // clang-format on
 
     vTaskStartScheduler();
     while (1) {

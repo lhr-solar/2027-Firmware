@@ -82,8 +82,16 @@ int main() {
     HAL_Init();
     SystemClock_Config();
 
-    xTaskCreateStatic(TxTask, "TX", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2,
-                      txTaskStack, &txTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        TxTask,
+        "TX",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        txTaskStack,
+        &txTaskBuffer);
+    // clang-format on
 
     vTaskStartScheduler();
 

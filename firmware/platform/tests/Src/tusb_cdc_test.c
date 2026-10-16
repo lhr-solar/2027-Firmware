@@ -81,11 +81,27 @@ int main() {
     };
     tusb_init(BOARD_TUD_RHPORT, &dev_init);
 
-    xTaskCreateStatic(poll_events, "Poll Event Queue", configMINIMAL_STACK_SIZE, (void*)1,
-                      tskIDLE_PRIORITY + 4, pollEventsStack, &pollEventsTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        poll_events,
+        "Poll Event Queue",
+        configMINIMAL_STACK_SIZE,
+        (void*)1,
+        tskIDLE_PRIORITY + 4,
+        pollEventsStack,
+        &pollEventsTaskBuffer);
+    // clang-format on
 
-    xTaskCreateStatic(cdc_task, "CDC Task", configMINIMAL_STACK_SIZE, (void*)1,
-                      tskIDLE_PRIORITY + 2, cdcStack, &cdcTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        cdc_task,
+        "CDC Task",
+        configMINIMAL_STACK_SIZE,
+        (void*)1,
+        tskIDLE_PRIORITY + 2,
+        cdcStack,
+        &cdcTaskBuffer);
+    // clang-format on
 
     vTaskStartScheduler();
 

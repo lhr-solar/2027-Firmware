@@ -396,7 +396,16 @@ int main(void) {
 #endif
     // HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
     // you can only send CAN messages within a FreeRTOS task
-    xTaskCreateStatic(task, "task", 512, NULL, tskIDLE_PRIORITY + 2, task_stack, &task_buffer);
+    // clang-format off
+    xTaskCreateStatic(
+        task,
+        "task",
+        512,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        task_stack,
+        &task_buffer);
+    // clang-format on
 
     vTaskStartScheduler();
     while (1) {

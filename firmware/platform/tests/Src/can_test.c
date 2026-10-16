@@ -277,8 +277,16 @@ int main(void) {
         Error_Handler();
     #endif /* CAN2 */
 
-    xTaskCreateStatic(task, "task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2,
-                      task_stack, &task_buffer);
+    // clang-format off
+    xTaskCreateStatic(
+        task,
+        "task",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        task_stack,
+        &task_buffer);
+    // clang-format on
 
     vTaskStartScheduler();
 #endif

@@ -281,8 +281,16 @@ int main() {
         error_handler(ADC_INIT_FAIL);
 #endif
 
-    xTaskCreateStatic(TestADC1, "ADC Test", configMINIMAL_STACK_SIZE, (void*)1,
-                      tskIDLE_PRIORITY + 4, xStack, &xTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        TestADC1,
+        "ADC Test",
+        configMINIMAL_STACK_SIZE,
+        (void*)1,
+        tskIDLE_PRIORITY + 4,
+        xStack,
+        &xTaskBuffer);
+    // clang-format on
 
     vTaskStartScheduler();
 

@@ -459,14 +459,38 @@ int main(void) {
     HAL_GPIO_TogglePin(STATUS_LED_PORT, STATUS_LED_PIN_1);
     printf("Task 2: EMC2305 Initialized\r\n");
 
-    xTaskCreateStatic(Init_Task, "Init Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1,
-                      initTaskStack, &initTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        Init_Task,
+        "Init Task",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 1,
+        initTaskStack,
+        &initTaskBuffer);
+    // clang-format on
 
-    xTaskCreateStatic(EMC2305_Task_1, "EMC2305 Task 1", configMINIMAL_STACK_SIZE, NULL,
-                      tskIDLE_PRIORITY + 2, emc2305TaskStack_1, &emc2305TaskBuffer_1);
+    // clang-format off
+    xTaskCreateStatic(
+        EMC2305_Task_1,
+        "EMC2305 Task 1",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        emc2305TaskStack_1,
+        &emc2305TaskBuffer_1);
+    // clang-format on
 
-    xTaskCreateStatic(EMC2305_Task_2, "EMC2305 Task 2", configMINIMAL_STACK_SIZE, NULL,
-                      tskIDLE_PRIORITY + 5, emc2305TaskStack_2, &emc2305TaskBuffer_2);
+    // clang-format off
+    xTaskCreateStatic(
+        EMC2305_Task_2,
+        "EMC2305 Task 2",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 5,
+        emc2305TaskStack_2,
+        &emc2305TaskBuffer_2);
+    // clang-format on
 
     vTaskStartScheduler();
 
