@@ -1,4 +1,4 @@
-// i think imma delete/move this when we make USB PSP
+// TODO: i think imma delete/move this when we make USB PSP
 
 #include "stm32g4xx.h"
 #include "tusb.h"
