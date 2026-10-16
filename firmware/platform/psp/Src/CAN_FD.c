@@ -1,6 +1,13 @@
 #include "CAN_Common.h"
 #include "CAN_FD.h"
 #include <string.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "queue_ex.h"
+#include "stm32g4xx_hal.h"
+#include "task.h"
 
 // Define CAN FD handles
 #ifdef FDCAN1

@@ -4,10 +4,14 @@
 * - RX queue functionality when UART is busy
 * - Queue overflow conditions
 */
+#include <stdint.h>
 #include "stm32xx_hal.h"
 #include "UART.h"
 
 #include <string.h>
+#include "FreeRTOS.h"
+#include "stm32g4xx_hal.h"
+#include "task.h"
 
 /* Private defines */
 #define TEST_PATTERN_SIZE 64  // Larger pattern to ensure queue gets filled, pattern size represents a message

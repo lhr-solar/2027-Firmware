@@ -43,7 +43,9 @@
 #ifndef UART_H_
 #define UART_H_
 
-#include "stm32xx_hal.h"
+#include <stdint.h>
+#include "stm32g4xx_hal.h"
+#include "FreeRTOS.h"
 
 #if !defined(UART4) && !defined(USART1)
   #error "[CONFIG] UART not enabled on this chip."

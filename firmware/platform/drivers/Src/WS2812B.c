@@ -1,4 +1,6 @@
 #include "WS2812B.h"
+#include <stddef.h>
+#include "task.h"
 
 // ordering of data in my PWM array
 typedef enum{

@@ -1,8 +1,11 @@
 #include "printf.h"
+#include <stdarg.h>
+#include <stdint.h>
+#include <stdio.h>
 #include "UART.h"
-#include "portmacro.h"
-#include "stm32xx_hal.h"
-#include <string.h>
+#include "FreeRTOS.h"
+#include "semphr.h"
+#include "task.h"
 
 #define NANOPRINTF_IMPLEMENTATION
 #include "nanoprintf.h"

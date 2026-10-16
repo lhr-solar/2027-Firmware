@@ -1,4 +1,5 @@
-#include "stm32xx_hal.h"
+#include <stdint.h>
+#include "stm32g4xx_hal.h"
 #include "SevenSegment.h"
 
 static GPIO_InitTypeDef led_configA = {

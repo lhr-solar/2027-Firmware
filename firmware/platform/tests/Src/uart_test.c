@@ -3,8 +3,13 @@
 - Setups up UART loopback mode (the TX line is connected to the RX line)
 - Send messages and verify correctness
 */
+#include <stddef.h>
+#include <stdint.h>
 #include "stm32xx_hal.h"
 #include "UART.h"
+#include "FreeRTOS.h"
+#include "stm32g4xx_hal.h"
+#include "task.h"
 
 /* Private defines */
 #define LD2_Pin GPIO_PIN_5

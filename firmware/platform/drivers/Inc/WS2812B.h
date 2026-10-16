@@ -1,6 +1,7 @@
 #pragma once
 
-#include "stm32xx_hal.h"
+#include <stdint.h>
+#include "stm32g4xx_hal.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
 

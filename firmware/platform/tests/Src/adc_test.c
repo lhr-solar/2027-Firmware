@@ -15,7 +15,13 @@
  * Refer to the `ADC.c` file for the default implementation.
  */
 
+#include <stdint.h>
 #include "ADC.h"
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "stm32g4xx_hal.h"
+#include "stm32xx_hal.h"
+#include "task.h"
 
 #define STACK_SIZE 200
 

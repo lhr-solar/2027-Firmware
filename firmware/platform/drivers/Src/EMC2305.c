@@ -1,6 +1,9 @@
 // Driver for Microchip EMC2305 PWM Fan Controller
 
 #include "EMC2305.h"
+#include <stddef.h>
+#include "queue.h"
+#include "task.h"
 
 // Buffers for static semaphores
 StaticSemaphore_t worker_semaphore_buffer;

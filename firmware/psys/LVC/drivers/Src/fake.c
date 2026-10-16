@@ -1,5 +1,5 @@
 // Initialize clock for heartbeat LED port
-#include "stm32xx_hal.h"
+#include "stm32g4xx_hal.h"
 #include "fake.h"
 
 void Heartbeat_Clock_Init() {

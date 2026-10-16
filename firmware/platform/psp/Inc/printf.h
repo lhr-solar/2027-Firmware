@@ -9,7 +9,8 @@
 #define NANOPRINTF_USE_WRITEBACK_FORMAT_SPECIFIERS 0
 
 #include <stdbool.h>
-#include "UART.h"
+#include <stddef.h>
+#include "stm32g4xx_hal.h"
 
 int printf(const char *fmt, ...);
 int snprintf(char *buffer, size_t bufsz, char const *fmt, ...);

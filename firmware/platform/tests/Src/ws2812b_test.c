@@ -1,5 +1,10 @@
+#include <stddef.h>
+#include <stdint.h>
 #include "stm32xx_hal.h"
 #include "WS2812B.h"
+#include "FreeRTOS.h"
+#include "stm32g4xx_hal.h"
+#include "task.h"
 
 #define MAX_LED 8 // number of addressable leds on the LSOM
 

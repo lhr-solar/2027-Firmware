@@ -3,9 +3,14 @@
 - Setups up LPUART loopback mode (the TX line is connected to the RX line)
 - Send messages and verify correctness
 */
+#include <stdint.h>
+#include <stdio.h>
 #include "stm32xx_hal.h"
 #include "UART.h"
 #include "printf.h" // only for debugging
+#include "FreeRTOS.h"
+#include "stm32g4xx_hal.h"
+#include "task.h"
 
 uint8_t printf_enabled = 0;
 

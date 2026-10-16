@@ -38,11 +38,10 @@
 #ifndef _ADC_H
 #define _ADC_H
 
-#include "stm32xx_hal.h"
+#include "stm32g4xx_hal.h"
 
 #include "FreeRTOS.h"
 #include "queue.h"
-#include "semphr.h"
 
 typedef enum {
     ADC_OK,

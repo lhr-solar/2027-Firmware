@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-#include <stddef.h>
 
 /*
  * Convert CAN frame to SLCAN string.

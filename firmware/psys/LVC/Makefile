@@ -7,6 +7,7 @@ TOOLCHAIN := ../../platform/cmake/toolchain.cmake
 TEST ?=
 
 TIDY ?= OFF
+IWYU ?= OFF
 
 .PHONY: all prod-all configure flash flash-usb erase dump-symbols dump_size clean test-all format format-check
 
@@ -14,7 +15,7 @@ all: configure
 	cmake --build $(BUILD_DIR) --target LVC
 
 configure:
-	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY)
+	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY) -DIWYU=$(IWYU)
 
 flash: configure
 	cmake --build $(BUILD_DIR) --target flash
@@ -43,8 +44,8 @@ format-check: configure
 
 # For CI - builds production firmware for all instances of this board
 prod-all:
-	cmake -B $(BUILD_DIR)/build1 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY)
-	cmake -B $(BUILD_DIR)/build2 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY)
+	cmake -B $(BUILD_DIR)/build1 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY) -DIWYU=$(IWYU)
+	cmake -B $(BUILD_DIR)/build2 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY) -DIWYU=$(IWYU)
 	cmake --build $(BUILD_DIR)/build1 --target LVC	
 	cmake --build $(BUILD_DIR)/build2 --target LVC
 

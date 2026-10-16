@@ -3,9 +3,11 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 
-#include "stm32xx_hal.h"
+#include "stm32g4xx_hal.h"
 #include "FreeRTOS.h"
+#include "semphr.h"
 
 // Device handle
 typedef struct {

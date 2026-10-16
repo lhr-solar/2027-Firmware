@@ -5,6 +5,7 @@
 // thread safe:
 #include "FreeRTOS.h"
 #include "task.h"
+#include "stm32g4xx_hal.h"
 
 /* handles */
 sd_handle_t sd;
