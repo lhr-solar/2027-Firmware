@@ -5,17 +5,13 @@
 BUILD_DIR := build
 TOOLCHAIN := ../../platform/cmake/toolchain.cmake
 
-# only pass TEST when given -- otherwise cmake keeps the cached one (default prod)
-# `make TEST=` (empty) switches back to the production app
-TEST_ARG := $(if $(filter undefined,$(origin TEST)),,-DTEST=$(TEST))
-
 .PHONY: all prod-all configure flash flash-usb erase dump-symbols dump_size clean test-all
 
 all: configure
 	cmake --build $(BUILD_DIR) --target LVC
 
 configure:
-	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) $(TEST_ARG)
+	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST)
 
 flash:
 	cmake --build $(BUILD_DIR) --target flash
