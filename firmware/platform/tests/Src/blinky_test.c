@@ -1,7 +1,7 @@
 #include "stm32xx_hal.h"
 
 // Pin for green channel on RGB LED
-#define LED_PIN GPIO_PIN_2
+#define LED_PIN  GPIO_PIN_2
 #define LED_PORT GPIOA
 
 // Initialize clock for heartbeat LED port
@@ -19,20 +19,20 @@ void Heartbeat_Clock_Init() {
     }
 }
 
-int main(){
+int main() {
     HAL_Init();
     SystemClock_Config();
 
     GPIO_InitTypeDef led_config = {
         .Mode = GPIO_MODE_OUTPUT_PP,
         .Pull = GPIO_NOPULL,
-        .Pin = LED_PIN
+        .Pin = LED_PIN,
     };
-    
-    Heartbeat_Clock_Init(); // enable clock for LED_PORT
+
+    Heartbeat_Clock_Init();               // enable clock for LED_PORT
     HAL_GPIO_Init(LED_PORT, &led_config); // initialize GPIOA with led_config
 
-    while(1){
+    while (1) {
         HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
         HAL_Delay(500);
     }

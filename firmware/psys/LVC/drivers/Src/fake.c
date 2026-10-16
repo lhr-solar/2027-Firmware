@@ -3,7 +3,7 @@
 #include "fake.h"
 
 void Heartbeat_Clock_Init() {
-    #ifdef yeetpc
+#ifdef yeetpc
     __HAL_RCC_GPIOA_CLK_ENABLE();
-    #endif
+#endif
 }

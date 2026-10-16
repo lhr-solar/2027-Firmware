@@ -7,13 +7,13 @@
 #include "UART.h"
 
 /* Private defines */
-#define LD2_Pin GPIO_PIN_5
+#define LD2_Pin       GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
 
 /* Private function prototypes */
 static void MX_GPIO_Init(void);
-void TxTask(void *argument);
-void RxTask(void *argument);
+void TxTask(void* argument);
+void RxTask(void* argument);
 
 // Static task creation resources
 StaticTask_t txTaskBuffer;
@@ -22,9 +22,9 @@ StackType_t txTaskStack[configMINIMAL_STACK_SIZE];
 StackType_t rxTaskStack[configMINIMAL_STACK_SIZE];
 
 #ifdef UART4
-#define huart huart4
+    #define huart huart4
 #else
-#define huart husart1
+    #define huart husart1
 #endif
 
 int main(void) {
@@ -40,11 +40,11 @@ int main(void) {
     huart->Init.HwFlowCtl = UART_HWCONTROL_NONE;
     huart->Init.OverSampling = UART_OVERSAMPLING_16;
 
-    #ifdef STM32L4xx
+#ifdef STM32L4xx
     huart->Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
     huart->AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-    #endif /* STM32L4xx */
-    
+#endif /* STM32L4xx */
+
     // Initialize UART BSP
     uart_status_t status = uart_init(huart);
     if (status != UART_OK) {
@@ -52,21 +52,27 @@ int main(void) {
     }
 
     // Create the tasks statically
-    xTaskCreateStatic(TxTask, 
-                     "TX",
-                     configMINIMAL_STACK_SIZE,
-                     NULL,
-                     tskIDLE_PRIORITY + 2,
-                     txTaskStack,
-                     &txTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        TxTask,
+        "TX",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        txTaskStack,
+        &txTaskBuffer);
+    // clang-format on
 
-    xTaskCreateStatic(RxTask,
-                     "RX", 
-                     configMINIMAL_STACK_SIZE,
-                     NULL,
-                     tskIDLE_PRIORITY + 2,
-                     rxTaskStack,
-                     &rxTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        RxTask,
+        "RX",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        rxTaskStack,
+        &rxTaskBuffer);
+    // clang-format on
 
     // Start the scheduler
     vTaskStartScheduler();
@@ -76,11 +82,11 @@ int main(void) {
     }
 }
 
-void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart){
-    GPIO_InitTypeDef init = {0}; 
-    #ifdef STM32F446xx
+void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
+    GPIO_InitTypeDef init = {0};
+#ifdef STM32F446xx
     #ifdef USART2
-    if(huart->Instance == USART2) {
+    if (huart->Instance == USART2) {
         //enable port A clock
         __HAL_RCC_GPIOA_CLK_ENABLE();
 
@@ -88,7 +94,7 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart){
         PA2 -> USART2_TX
         PA3 -> USART2_RX
         */
-        init.Pin = GPIO_PIN_2|GPIO_PIN_3;
+        init.Pin = GPIO_PIN_2 | GPIO_PIN_3;
         init.Mode = GPIO_MODE_AF_PP;
         init.Pull = GPIO_NOPULL;
         init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -96,13 +102,12 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart){
         HAL_GPIO_Init(GPIOA, &init);
     }
     #endif /* USART2 */
-    #else
+#else
     (void)init;
-    #endif /* STM32F446xx */
+#endif /* STM32F446xx */
 }
 
-static void MX_GPIO_Init(void)
-{
+static void MX_GPIO_Init(void) {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     /* GPIO Ports Clock Enable */
@@ -119,52 +124,49 @@ static void MX_GPIO_Init(void)
     HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 }
 
-void TxTask(void *argument)
-{
-    const TickType_t xDelay = pdMS_TO_TICKS(1000);  // 1 second delay
+void TxTask(void* argument) {
+    const TickType_t xDelay = pdMS_TO_TICKS(1000); // 1 second delay
     uint8_t testData[] = "Test Message 123\r\n";
     const uint8_t msgLen = sizeof(testData) - 1;
     uint32_t txCount = 0;
-    
-    while(1) {
+
+    while (1) {
         // Send test message
         uart_status_t status = uart_send(huart, testData, msgLen, portMAX_DELAY);
-        
+
         if (status == UART_OK) {
             txCount++;
             // Toggle LED to indicate successful transmission
             HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
         }
-        
+
         vTaskDelay(xDelay);
     }
 }
 
-void RxTask(void *argument)
-{
-    const TickType_t xDelay = pdMS_TO_TICKS(100);  // 100ms polling interval
+void RxTask(void* argument) {
+    const TickType_t xDelay = pdMS_TO_TICKS(100); // 100ms polling interval
     uint8_t rxBuffer;
     uint32_t rxCount = 0;
-    
-    while(1) {
+
+    while (1) {
         // Try to receive data
         uart_status_t status = uart_recv(huart, &rxBuffer, 1, 0);
-        
+
         if (status == UART_OK) {
             rxCount++;
             // Echo received data back
             uart_send(huart, &rxBuffer, 1, portMAX_DELAY);
-            
+
             // Toggle LED to indicate successful reception
             HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
         }
-        
+
         vTaskDelay(xDelay);
     }
 }
 
-void Error_Handler(void)
-{
+void Error_Handler(void) {
     __disable_irq();
     while (1) {
     }

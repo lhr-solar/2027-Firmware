@@ -8,7 +8,7 @@ StaticSemaphore_t caller_semaphore_buffer_pool[EMC2305_SEMAPHORE_POOL_SIZE];
 // Semaphore handles for caller
 SemaphoreHandle_t caller_semaphore_handle_pool[EMC2305_SEMAPHORE_POOL_SIZE];
 // Status array to track semaphore usage
-volatile bool caller_semaphore_in_use[EMC2305_SEMAPHORE_POOL_SIZE] = { false };
+volatile bool caller_semaphore_in_use[EMC2305_SEMAPHORE_POOL_SIZE] = {false};
 // Mutex for protecting the pool usage array
 StaticSemaphore_t caller_semaphore_pool_usage_buffer;
 SemaphoreHandle_t caller_semaphore_pool_usage_mutex;
@@ -55,7 +55,7 @@ static int8_t prvAcquireFreeSemaphore(void) {
 // Helper function to return a semaphore to the pool
 static void prvReturnSemaphore(uint8_t index) {
     if (xSemaphoreTake(caller_semaphore_pool_usage_mutex, portMAX_DELAY) == pdTRUE) {
-        caller_semaphore_in_use[index] = false; // Mark as free
+        caller_semaphore_in_use[index] = false;            // Mark as free
         xSemaphoreGive(caller_semaphore_pool_usage_mutex); // Release the mutex
     }
 }
@@ -69,20 +69,23 @@ static void prvReturnSemaphore(uint8_t index) {
  * @param   dev_addr Device address (not shifted - directly from datasheet)
  * @return  OK if successful, ERR otherwise
  */
-EMC2305_Status EMC2305_Init(EMC2305_HandleTypeDef* chip, I2C_HandleTypeDef* hi2c, uint16_t dev_addr) {
+EMC2305_Status EMC2305_Init(EMC2305_HandleTypeDef* chip, I2C_HandleTypeDef* hi2c,
+                            uint16_t dev_addr) {
     // Set I2C handle and device address in EMC2305 handle
     chip->hi2c = hi2c;
     chip->dev_addr = dev_addr << 1; // 7-bit i2c address << 1
 
     // Create caller semaphore pool mutex
-    caller_semaphore_pool_usage_mutex = xSemaphoreCreateMutexStatic(&caller_semaphore_pool_usage_buffer);
+    caller_semaphore_pool_usage_mutex =
+        xSemaphoreCreateMutexStatic(&caller_semaphore_pool_usage_buffer);
     if (caller_semaphore_pool_usage_mutex == NULL) {
         return EMC2305_ERR;
     }
 
     // Create all caller semaphores in pool
     for (int i = 0; i < EMC2305_SEMAPHORE_POOL_SIZE; i++) {
-        caller_semaphore_handle_pool[i] = xSemaphoreCreateBinaryStatic(&caller_semaphore_buffer_pool[i]);
+        caller_semaphore_handle_pool[i] =
+            xSemaphoreCreateBinaryStatic(&caller_semaphore_buffer_pool[i]);
         if (caller_semaphore_handle_pool[i] == NULL) {
             return EMC2305_ERR;
         }
@@ -95,19 +98,23 @@ EMC2305_Status EMC2305_Init(EMC2305_HandleTypeDef* chip, I2C_HandleTypeDef* hi2c
     }
 
     // Create RTOS queue
-    EMC2305_I2C_Queue = xQueueCreateStatic(EMC2305_QUEUE_LENGTH, EMC2305_QUEUE_ITEM_SIZE, ucQueueStorageArea, &xStaticQueue);
+    EMC2305_I2C_Queue = xQueueCreateStatic(EMC2305_QUEUE_LENGTH, EMC2305_QUEUE_ITEM_SIZE,
+                                           ucQueueStorageArea, &xStaticQueue);
     if (EMC2305_I2C_Queue == NULL) {
         return EMC2305_ERR;
     }
 
     // Create I2C Worker Task
-    xTaskCreateStatic(EMC2305_I2C_Worker_Task,
+    // clang-format off
+    xTaskCreateStatic(
+        EMC2305_I2C_Worker_Task,
         "EMC2305 I2C Worker Task",
         configMINIMAL_STACK_SIZE,
         NULL,
         tskIDLE_PRIORITY + 1,
         EMC2305_I2C_TaskStack,
         &EMC2305_I2C_TaskBuffer);
+    // clang-format on
 
     // I hate this so much
     if (hi2c->Instance == I2C1) {
@@ -198,7 +205,8 @@ EMC2305_Status EMC2305_SetGlobalConfig(EMC2305_HandleTypeDef* chip, EMC2305_Glob
  * @param   freq Base frequency as specified in Section 6.10
  * @return  OK if successful, ERR otherwise
  */
-EMC2305_Status EMC2305_SetPWMBaseFrequency(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan, EMC2305_PWM_BaseFreq freq) {
+EMC2305_Status EMC2305_SetPWMBaseFrequency(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan,
+                                           EMC2305_PWM_BaseFreq freq) {
     // Check if the user is stupid (lakshay)
     if (EMC2305_INVALID_FAN(fan)) {
         return EMC2305_ERR;
@@ -209,8 +217,7 @@ EMC2305_Status EMC2305_SetPWMBaseFrequency(EMC2305_HandleTypeDef* chip, EMC2305_
     if ((fan == EMC2305_FAN4) || (fan == EMC2305_FAN5)) {
         // PWM BaseF45 Register
         reg = EMC2305_REG_PWM_BASEF45;
-    }
-    else {
+    } else {
         // PWM BaseF123 Register
         reg = EMC2305_REG_PWM_BASEF123;
     }
@@ -222,32 +229,31 @@ EMC2305_Status EMC2305_SetPWMBaseFrequency(EMC2305_HandleTypeDef* chip, EMC2305_
     }
 
     // Clear and update frequency
-    switch (fan)
-    {
-    case EMC2305_FAN1:
-        val &= ~EMC2305_PWM_FAN1_MASK;
-        val |= freq << EMC2305_PWM_FAN1_SHIFT;
-        break;
-    case EMC2305_FAN2:
-        val &= ~EMC2305_PWM_FAN2_MASK;
-        val |= freq << EMC2305_PWM_FAN2_SHIFT;
-        break;
-    case EMC2305_FAN3:
-        val &= ~EMC2305_PWM_FAN3_MASK;
-        val |= freq << EMC2305_PWM_FAN3_SHIFT;
-        break;
-    case EMC2305_FAN4:
-        val &= ~EMC2305_PWM_FAN4_MASK;
-        val |= freq << EMC2305_PWM_FAN4_SHIFT;
-        break;
-    case EMC2305_FAN5:
-        val &= ~EMC2305_PWM_FAN5_MASK;
-        val |= freq << EMC2305_PWM_FAN5_SHIFT;
-        break;
-    default:
-        // lmfao
-        return EMC2305_ERR;
-        break;
+    switch (fan) {
+        case EMC2305_FAN1:
+            val &= ~EMC2305_PWM_FAN1_MASK;
+            val |= freq << EMC2305_PWM_FAN1_SHIFT;
+            break;
+        case EMC2305_FAN2:
+            val &= ~EMC2305_PWM_FAN2_MASK;
+            val |= freq << EMC2305_PWM_FAN2_SHIFT;
+            break;
+        case EMC2305_FAN3:
+            val &= ~EMC2305_PWM_FAN3_MASK;
+            val |= freq << EMC2305_PWM_FAN3_SHIFT;
+            break;
+        case EMC2305_FAN4:
+            val &= ~EMC2305_PWM_FAN4_MASK;
+            val |= freq << EMC2305_PWM_FAN4_SHIFT;
+            break;
+        case EMC2305_FAN5:
+            val &= ~EMC2305_PWM_FAN5_MASK;
+            val |= freq << EMC2305_PWM_FAN5_SHIFT;
+            break;
+        default:
+            // lmfao
+            return EMC2305_ERR;
+            break;
     }
 
     // Write PWM base frequency
@@ -262,7 +268,8 @@ EMC2305_Status EMC2305_SetPWMBaseFrequency(EMC2305_HandleTypeDef* chip, EMC2305_
  * @param   config2 Configuration for register 2
  * @return  OK if successful, ERR otherwise
  */
-EMC2305_Status EMC2305_SetFanConfig(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan, EMC2305_Fan_Config1* config1, EMC2305_Fan_Config2* config2) {
+EMC2305_Status EMC2305_SetFanConfig(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan,
+                                    EMC2305_Fan_Config1* config1, EMC2305_Fan_Config2* config2) {
     if (EMC2305_INVALID_FAN(fan)) {
         return EMC2305_ERR;
     }
@@ -282,12 +289,14 @@ EMC2305_Status EMC2305_SetFanConfig(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan
     config2_bits |= (config2->error_window << EMC2305_CONFIG2_ERG_SHIFT);
 
     // Write config 1
-    if (EMC2305_WriteReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_CONFIG1), config1_bits) != EMC2305_OK) {
+    if (EMC2305_WriteReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_CONFIG1), config1_bits) !=
+        EMC2305_OK) {
         return EMC2305_ERR;
     }
 
     // Write config 2
-    return EMC2305_WriteReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_CONFIG2), config2_bits);
+    return EMC2305_WriteReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_CONFIG2),
+                            config2_bits);
 }
 
 /**
@@ -297,7 +306,8 @@ EMC2305_Status EMC2305_SetFanConfig(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan
  * @param   open_drain Set to true for open-drain (only driven low, requires pullup) or false for push-pull (driven high and low, no pullup)
  * @return  OK if successful, ERR otherwise
  */
-EMC2305_Status EMC2305_SetPWMOutputMode(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan, bool open_drain) {
+EMC2305_Status EMC2305_SetPWMOutputMode(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan,
+                                        bool open_drain) {
     if (EMC2305_INVALID_FAN(fan)) {
         return EMC2305_ERR;
     }
@@ -311,8 +321,7 @@ EMC2305_Status EMC2305_SetPWMOutputMode(EMC2305_HandleTypeDef* chip, EMC2305_Fan
     if (open_drain == true) {
         // Open-drain output mode
         val &= ~(1 << fan);
-    }
-    else {
+    } else {
         // Push-pull output mode
         val |= (1 << fan);
     }
@@ -354,7 +363,8 @@ EMC2305_Status EMC2305_SetFanPWM(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan, u
  * @param   rpm_target RPM target to set (500 to 16k)
  * @return  OK if successful, ERR otherwise
  */
-EMC2305_Status EMC2305_SetFanRPM(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan, uint16_t rpm_target) {
+EMC2305_Status EMC2305_SetFanRPM(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan,
+                                 uint16_t rpm_target) {
     if (EMC2305_INVALID_FAN(fan)) {
         return EMC2305_ERR;
     }
@@ -371,15 +381,17 @@ EMC2305_Status EMC2305_SetFanRPM(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan, u
     uint16_t tach_target = (EMC2305_TACH_RPM_CONV * EMC2305_TACH_MULT) / rpm_target;
 
     // Split into high and low bytes
-    tach_target &= 0x1FFF; // ensure 13-bit range
-    uint8_t high_byte = (tach_target >> 5) & 0xFF;     // bits [12:5]
-    uint8_t low_byte = (tach_target & 0x1F) << 3;      // bits [4:0]
+    tach_target &= 0x1FFF;                         // ensure 13-bit range
+    uint8_t high_byte = (tach_target >> 5) & 0xFF; // bits [12:5]
+    uint8_t low_byte = (tach_target & 0x1F) << 3;  // bits [4:0]
 
     // Must write low byte first, value is saved once high byte is written
-    if (EMC2305_WriteReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_TACH_TARGET_L), low_byte) != EMC2305_OK) {
+    if (EMC2305_WriteReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_TACH_TARGET_L),
+                         low_byte) != EMC2305_OK) {
         return EMC2305_ERR;
     }
-    return EMC2305_WriteReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_TACH_TARGET_H), high_byte);
+    return EMC2305_WriteReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_TACH_TARGET_H),
+                            high_byte);
 }
 
 // Status & Measurement Functions
@@ -398,10 +410,12 @@ uint16_t EMC2305_GetFanRPM(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan) {
     // Read tachometer reading high and low bytes
     uint8_t high_byte = 0;
     uint8_t low_byte = 0;
-    if (EMC2305_ReadReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_TACH_READING_H), &high_byte) != EMC2305_OK) {
+    if (EMC2305_ReadReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_TACH_READING_H),
+                        &high_byte) != EMC2305_OK) {
         return UINT16_MAX;
     }
-    if (EMC2305_ReadReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_TACH_READING_L), &low_byte) != EMC2305_OK) {
+    if (EMC2305_ReadReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_TACH_READING_L),
+                        &low_byte) != EMC2305_OK) {
         return UINT16_MAX;
     }
 
@@ -431,7 +445,8 @@ uint8_t EMC2305_GetFanPWM(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan) {
 
     // Read PWM from drive register
     uint8_t val = 0;
-    if (EMC2305_ReadReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_SETTING), &val) != EMC2305_OK) {
+    if (EMC2305_ReadReg(chip, EMC2305_FAN_REG_ADDR(fan, EMC2305_REG_FAN1_SETTING), &val) !=
+        EMC2305_OK) {
         return UINT8_MAX;
     }
 
@@ -447,7 +462,7 @@ uint8_t EMC2305_GetFanPWM(EMC2305_HandleTypeDef* chip, EMC2305_Fan fan) {
  * @return  Fan status for all drivers
  */
 EMC2305_Fan_Status EMC2305_GetFanStatus(EMC2305_HandleTypeDef* chip) {
-    EMC2305_Fan_Status status = { 0 };
+    EMC2305_Fan_Status status = {0};
 
     // Read fan status register
     uint8_t val = 0;
@@ -567,7 +582,7 @@ EMC2305_Status EMC2305_WriteReg(EMC2305_HandleTypeDef* chip, uint8_t reg, uint8_
 
 // Worker task to consume messages from the queue and send on I2C bus
 void EMC2305_I2C_Worker_Task(void* pvParameters) {
-    EMC2305_I2C_Message msg = { 0 };
+    EMC2305_I2C_Message msg = {0};
     EMC2305_Status status = EMC2305_OK;
 
     while (1) {
@@ -580,35 +595,44 @@ void EMC2305_I2C_Worker_Task(void* pvParameters) {
             if (msg.operation == EMC2305_OP_WRITE) {
                 // Perform write operation
                 // Buffer so we don't pull a stupid
-                uint8_t tx_buffer[2] = { msg.reg_addr, msg.write_data };
+                uint8_t tx_buffer[2] = {msg.reg_addr, msg.write_data};
                 // Transmit register + data
-                if (HAL_I2C_Master_Transmit_IT(msg.chip->hi2c, msg.chip->dev_addr, tx_buffer, 2) != HAL_OK) {
+                if (HAL_I2C_Master_Transmit_IT(msg.chip->hi2c, msg.chip->dev_addr, tx_buffer, 2) !=
+                    HAL_OK) {
                     status = EMC2305_ERR;
                 }
                 // Wait for ISR to signal completion
-                if ((status == EMC2305_OK) && (xSemaphoreTake(msg.chip->i2c_complete, pdMS_TO_TICKS(EMC2305_I2C_TIMEOUT)) != pdTRUE)) {
+                if ((status == EMC2305_OK) &&
+                    (xSemaphoreTake(msg.chip->i2c_complete, pdMS_TO_TICKS(EMC2305_I2C_TIMEOUT)) !=
+                     pdTRUE)) {
                     status = EMC2305_ERR;
                 }
-            }
-            else if (msg.operation == EMC2305_OP_READ) {
+            } else if (msg.operation == EMC2305_OP_READ) {
                 // Perform read operation
                 // Transmit register to read
-                if (HAL_I2C_Master_Transmit_IT(msg.chip->hi2c, msg.chip->dev_addr, &msg.reg_addr, 1) != HAL_OK) {
+                if (HAL_I2C_Master_Transmit_IT(msg.chip->hi2c, msg.chip->dev_addr, &msg.reg_addr,
+                                               1) != HAL_OK) {
                     status = EMC2305_ERR;
                 }
 
                 // Wait for ISR to signal completion
-                if ((status == EMC2305_OK) && (xSemaphoreTake(msg.chip->i2c_complete, pdMS_TO_TICKS(EMC2305_I2C_TIMEOUT))) != pdTRUE) {
+                if ((status == EMC2305_OK) &&
+                    (xSemaphoreTake(msg.chip->i2c_complete, pdMS_TO_TICKS(EMC2305_I2C_TIMEOUT))) !=
+                        pdTRUE) {
                     status = EMC2305_ERR;
                 }
 
                 // Receive response
-                if ((status == EMC2305_OK) && (HAL_I2C_Master_Receive_IT(msg.chip->hi2c, msg.chip->dev_addr, msg.read_data, 1)) != HAL_OK) {
+                if ((status == EMC2305_OK) &&
+                    (HAL_I2C_Master_Receive_IT(msg.chip->hi2c, msg.chip->dev_addr, msg.read_data,
+                                               1)) != HAL_OK) {
                     status = EMC2305_ERR;
                 }
 
                 // Wait for ISR to signal completion
-                if ((status == EMC2305_OK) && (xSemaphoreTake(msg.chip->i2c_complete, pdMS_TO_TICKS(EMC2305_I2C_TIMEOUT)) != pdTRUE)) {
+                if ((status == EMC2305_OK) &&
+                    (xSemaphoreTake(msg.chip->i2c_complete, pdMS_TO_TICKS(EMC2305_I2C_TIMEOUT)) !=
+                     pdTRUE)) {
                     status = EMC2305_ERR;
                 }
             }
