@@ -1,8 +1,15 @@
 // A simple echo application to test input and output over serial
 #include <string.h>
 #include <math.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 #include "stm32xx_hal.h"
 #include "printf.h"
+#include "FreeRTOS.h"
+#include "UART.h"
+#include "stm32g4xx_hal.h"
+#include "task.h"
 
 StaticTask_t initTaskBuffer;
 StackType_t initTaskStack[configMINIMAL_STACK_SIZE];

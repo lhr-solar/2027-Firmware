@@ -1,6 +1,7 @@
 #include "stm32xx_hal.h"
 #include "pinDefs.h"
 #include "fake.h"
+#include "stm32g4xx_hal.h"
 
 int main(){
     HAL_Init();

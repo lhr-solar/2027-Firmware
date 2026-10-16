@@ -208,6 +208,7 @@ make flash                    # st-flash write build/App.bin 0x8000000
 make dump-symbols             # objdump -x build/App.elf -- confirm what actually linked
 make clean
 make TIDY=ON ...           # same build, with clang-tidy on LHR sources (CI gates on this)
+make IWYU=ON ...           # same build, with include-what-you-use on LHR sources (CI gates on this)
 make format                   # clang-format LHR sources in place; format-check reports drift
 ```
 
@@ -270,6 +271,18 @@ are order-dependent.
 every platform test and board target with `TIDY=ON`. Run it locally with
 `make TIDY=ON ...` from `firmware/platform/` or a board directory. Do not add a
 `NOLINT` or drop a check to get a build green without saying why — in `psys/`, `controls/`, and `telemetry`, a finding is a possible safety defect until shown otherwise.
+
+include-what-you-use is enforced the same way: `lint.yml` rebuilds every target
+with `IWYU=ON`, and any suggestion fails the build. Run `make IWYU=ON ...`
+locally; the output lists exactly which `#include` lines to add or remove.
+`/.iwyu.imp` maps vendor internals to the umbrella header you should include
+instead — `stm32g4xx_hal.h` for any HAL module, `stm32g4xx.h` for CMSIS,
+`FreeRTOS.h` for config/port types — so IWYU never asks for `portmacro.h` or
+`stm32g4xx_hal_gpio.h`. `FreeRTOS.h` is never flagged as unused, because
+`task.h`/`queue.h`/`semphr.h` require it first. Prefer fixing the include over
+`// IWYU pragma: keep`; if you add a pragma or a mapping, say why. A new
+vendored library that IWYU sees through an umbrella header needs entries in
+`/.iwyu.imp`.
 
 Observed conventions in LHR-authored C (`psp/`, `drivers/`, `utils/`), for matching surrounding code — descriptive, not binding:
 

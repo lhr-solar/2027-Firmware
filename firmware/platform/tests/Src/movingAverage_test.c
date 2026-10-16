@@ -1,7 +1,11 @@
 #include "movingAverage.h"
+#include <stdio.h>
 #include "stm32xx_hal.h"
 #include "UART.h"
 #include "printf.h"
+#include "FreeRTOS.h"
+#include "stm32g4xx_hal.h"
+#include "task.h"
 
 StaticTask_t txTaskBuffer;
 StackType_t txTaskStack[configMINIMAL_STACK_SIZE];

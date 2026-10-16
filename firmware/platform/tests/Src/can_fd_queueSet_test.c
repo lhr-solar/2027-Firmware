@@ -1,7 +1,14 @@
+#include <stdint.h>
+#include <stdio.h>
 #include "stm32xx_hal.h"
 #include "UART.h"
 #include "printf.h"
 #include "CAN_FD.h"
+#include "CAN_Common.h"
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "stm32g4xx_hal.h"
+#include "task.h"
 
 StaticTask_t task_1_buffer;
 StackType_t task_1_stack[512];

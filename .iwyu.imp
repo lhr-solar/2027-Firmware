@@ -1,0 +1,34 @@
+# include-what-you-use mappings for LHR firmware -- see firmware/platform/cmake/lint.cmake
+#
+# IWYU suggests the header that *declares* a symbol. The vendored libraries below
+# expect you to include an umbrella header instead -- a private header here is one
+# that must not be included directly. Without these, IWYU would have LHR code
+# include ST/FreeRTOS internals (portmacro.h, stm32g4xx_hal_gpio.h, ...), several
+# of which only compile in the order their umbrella includes them.
+#
+# Format: https://github.com/include-what-you-use/include-what-you-use/blob/master/docs/IWYUMappings.md
+# A leading @ makes the first field a regex (llvm dialect, matched against the
+# whole quoted include name).
+[
+  # ST HAL: every module, _ex, _def and the HAL config (common/Inc) come from the
+  # umbrella, which includes the modules enabled in stm32g4xx_hal_conf.h
+  { include: ["@\"stm32g4xx_hal_.*\\.h\"", "private", "\"stm32g4xx_hal.h\"", "public"] },
+  { include: ["\"Legacy/stm32_hal_legacy.h\"", "private", "\"stm32g4xx_hal.h\"", "public"] },
+
+  # CMSIS device and core headers come from the device umbrella...
+  { include: ["@\"stm32g4[0-9a-z]+xx\\.h\"", "private", "\"stm32g4xx.h\"", "public"] },
+  { include: ["\"system_stm32g4xx.h\"", "private", "\"stm32g4xx.h\"", "public"] },
+  { include: ["@\"(core_cm4|mpu_armv7|cmsis_[a-z]+)\\.h\"", "private", "\"stm32g4xx.h\"", "public"] },
+  # ...which the HAL umbrella re-exports, so HAL users need not include it again
+  { include: ["\"stm32g4xx.h\"", "public", "\"stm32g4xx_hal.h\"", "public"] },
+
+  # FreeRTOS: config, port layer and kernel internals all come in through FreeRTOS.h,
+  # which must precede every other kernel header
+  { include: ["\"FreeRTOSConfig.h\"", "private", "\"FreeRTOS.h\"", "public"] },
+  { include: ["@\"(projdefs|portable|portmacro|deprecated_definitions|mpu_wrappers|mpu_prototypes|mpu_syscall_numbers|newlib-freertos|picolibc-freertos|stack_macros)\\.h\"", "private", "\"FreeRTOS.h\"", "public"] },
+
+  # FatFs: integer types and the config come from ff.h, or diskio.h for disk drivers
+  { include: ["\"integer.h\"", "private", "\"ff.h\"", "public"] },
+  { include: ["\"integer.h\"", "private", "\"diskio.h\"", "public"] },
+  { include: ["\"ffconf.h\"", "private", "\"ff.h\"", "public"] },
+]

@@ -1,6 +1,8 @@
 # Static analysis and formatting
 #   clang-tidy:   rebuilds every platform test and board target with TIDY=ON;
 #                 a finding listed in .clang-tidy WarningsAsErrors fails the build
+#   iwyu:         rebuilds every platform test and board target with IWYU=ON;
+#                 any include-what-you-use suggestion fails the build (mappings: .iwyu.imp)
 #   clang-format: runs `make format-check` for the platform and every board;
 #                 any drift from .clang-format fails the job
 name: lint
@@ -10,6 +12,7 @@ on:
     paths:
       - 'firmware/**'
       - '.clang-tidy'
+      - '.iwyu.imp'
       - '.clang-format'
       - '.clang-format-ignore'
       - 'flake.nix'
@@ -21,6 +24,7 @@ on:
     paths:
       - 'firmware/**'
       - '.clang-tidy'
+      - '.iwyu.imp'
       - '.clang-format'
       - '.clang-format-ignore'
       - 'flake.nix'
@@ -89,6 +93,19 @@ jobs:
           TIDY: 'ON'
         run: direnv exec . make -C firmware/platform test-all
 
+  iwyu-platform:
+    name: iwyu / platform tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-dev-env
+
+      - name: Build all platform tests with include-what-you-use
+        env:
+          IWYU: 'ON'
+        run: direnv exec . make -C firmware/platform test-all
+
   discover:
     name: discover board targets
     runs-on: ubuntu-latest
@@ -124,4 +141,30 @@ jobs:
         if: matrix.blocked == ''
         env:
           TIDY: 'ON'
+        run: direnv exec . ${{ matrix.cmd }}
+
+  iwyu-boards:
+    needs: discover
+    name: iwyu / ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    steps:
+      # build_boards.yml already fails and explains a missing entry point
+      - name: Skip board without build entry point
+        if: matrix.blocked != ''
+        run: echo "skipped -- ${{ matrix.blocked }}"
+
+      - uses: actions/checkout@v4
+        if: matrix.blocked == ''
+      - uses: ./.github/actions/setup-dev-env
+        if: matrix.blocked == ''
+
+      - name: Build ${{ matrix.name }} with include-what-you-use
+        if: matrix.blocked == ''
+        env:
+          IWYU: 'ON'
         run: direnv exec . ${{ matrix.cmd }}

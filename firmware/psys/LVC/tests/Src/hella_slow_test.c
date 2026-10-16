@@ -2,6 +2,7 @@
 #include "pinDefs.h"
 #include "fake.h"
 #include "include_me_please.h"
+#include "stm32g4xx_hal.h"
 
 int main(){
     HAL_Init();

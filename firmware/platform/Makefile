@@ -7,6 +7,7 @@ TOOLCHAIN := cmake/toolchain.cmake
 TEST ?= blinky
 
 TIDY ?= OFF
+IWYU ?= OFF
 
 .PHONY: all test-all configure flash flash-usb erase dump-symbols dump_size clean format format-check
 
@@ -14,7 +15,7 @@ all: configure
 	cmake --build $(BUILD_DIR) --target App
 
 configure:
-	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY)
+	cmake -B $(BUILD_DIR) -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY) -DIWYU=$(IWYU)
 
 flash: configure
 	cmake --build $(BUILD_DIR) --target flash

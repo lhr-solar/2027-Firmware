@@ -1,7 +1,9 @@
 #include "UART.h"
 #include <string.h>
 #include <stdint.h>
-#include "stm32xx_hal.h"
+#include <stdbool.h>
+#include "queue.h"
+#include "semphr.h"
 
 // Define the size of the data to be transmitted
 // may need to be configured for support for packets less more than 8 bits

@@ -201,7 +201,7 @@ Flashing code can be finnicky. Some good commands to note:
 
 ### Linting 🧼
 ---
-A linter is a tool that analyzes your code to find potential bugs, syntax issues, and stylistic (formatting) discrepancies. We use `clang-tidy` and `clang-format` to lint our codebase.
+A linter is a tool that analyzes your code to find potential bugs, syntax issues, and stylistic (formatting) discrepancies. We use `clang-tidy`, `include-what-you-use` and `clang-format` to lint our codebase.
 
 These all run as part of the `lint` workflow in Github CI.
 
@@ -213,6 +213,10 @@ If you see a `lint / clang-format` CI job fail, that means your code formatting 
 If you see a `lint / clang-tidy` CI job fail, there's a deeper error with your code. Open the job output on Github and search for "error" to see which lines are problematic. You can also run `make TIDY=ON` locally as shown below for the same checks.
 
 - `make TIDY=ON`: this will run `clang-tidy` to expose potential issues with your code. Anything flagged as an error is critical and must be fixed prior to running your code in a safety-critical environment. Warnings are less critical but you should still read and understand them - some might be important to implement!
+
+If you see a `lint / iwyu` CI job fail, a file's `#include`s don't match what it actually uses: it either relies on a header it never includes (it only compiles because some other header happens to pull it in) or includes something it doesn't need. Run `make IWYU=ON` locally to see the same output.
+
+- `make IWYU=ON`: this runs `include-what-you-use` while building. For each file it prints "should add these lines" and "should remove these lines" - make exactly those edits. It suggests umbrella headers like `stm32g4xx_hal.h` and `FreeRTOS.h` rather than ST/FreeRTOS internals; those rules live in `.iwyu.imp` at the repo root.
 
 ## Contributing :DD
 

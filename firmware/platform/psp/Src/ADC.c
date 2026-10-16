@@ -1,4 +1,6 @@
 #include "ADC.h"
+#include <stddef.h>
+#include <stdint.h>
 
 // Define Queue Handles
 #ifdef ADC1

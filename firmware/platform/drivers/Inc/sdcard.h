@@ -1,14 +1,13 @@
 #pragma once
 
-#include "stm32xx_hal.h"
+#include "stm32g4xx_hal.h"
 #include <stdint.h>
-#include <stddef.h>
 
 // Thread Safe RTOS includes
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "queue.h"
-#include "queue_ex.h"
+#include "task.h"
 
 /* --- SD Card Command Definitions --- */
 #define SD_CMD_BASE       0x40  // All SPI commands start with 01 followed by 6-bit index

@@ -1,9 +1,14 @@
 // A simple terminal application with three commands the user can pass in for different outputs; meant to illustrate
 // how this could be extended to car-specific operations
-#include "projdefs.h"
+#include <stdbool.h>
+#include <stdio.h>
 #include "stm32xx_hal.h"
 #include "printf.h"
 #include <string.h>
+#include "FreeRTOS.h"
+#include "UART.h"
+#include "stm32g4xx_hal.h"
+#include "task.h"
 
 StaticTask_t termTaskBuffer;
 StackType_t termTaskStack[configMINIMAL_STACK_SIZE];

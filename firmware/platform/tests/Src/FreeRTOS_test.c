@@ -6,7 +6,7 @@
 #include "semphr.h" /* Semaphore related API prototypes. */
 
 /* TODO Add any manufacture supplied header files can be included here. */
-#include "stm32xx_hal.h"
+#include "stm32g4xx.h"
 
 /* Priorities at which the tasks are created. The event semaphore task is
 given the maximum priority of ( configMAX_PRIORITIES - 1 ) to ensure it runs as

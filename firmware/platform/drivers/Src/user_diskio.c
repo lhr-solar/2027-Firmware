@@ -1,6 +1,7 @@
-#include <string.h>
 #include "ff_gen_drv.h"
 #include "sdcard.h"
+#include "FreeRTOS.h"
+#include "diskio.h"
 
 extern sd_handle_t sd;
 

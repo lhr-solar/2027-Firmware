@@ -1,7 +1,12 @@
+#include <stddef.h>
+#include <stdint.h>
 #include "CAN_FD.h"
-#include "can_msgs.h"
 #include "stm32xx_hal.h"
 #include "queue.h"
+#include "CAN_Common.h"
+#include "FreeRTOS.h"
+#include "stm32g4xx_hal.h"
+#include "task.h"
 
 StaticTask_t task_buffer;
 StackType_t task_stack[512];

@@ -25,6 +25,7 @@
             pkgs.gcc
             pkgs.clang
             pkgs.clang-tools
+            pkgs.include-what-you-use
             pkgs.lld
             pkgs.bear
             pkgs.cmake

@@ -1,10 +1,15 @@
 // Test for the EMC2305 Fan Chip Driver
 // Spawns 2 tasks to test thread safe control of underlying I2C bus
 
+#include <stdbool.h>
+#include <stdio.h>
 #include "stm32xx_hal.h"
 #include "EMC2305.h"
 #include "UART.h"
 #include "printf.h"
+#include "FreeRTOS.h"
+#include "stm32g4xx_hal.h"
+#include "task.h"
 
 // From datasheet
 #define DEFAULT_DEV_ADDR 0x4D

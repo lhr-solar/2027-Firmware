@@ -1,4 +1,5 @@
 #include "CAN_Common.h"
+#include <stddef.h> // IWYU pragma: keep -- NULL is only used when the target provides canN_recv_entries.h
 
 // macros to help expand macros defined as IDs into numbers 
 #define CAN_ID_CONCAT_HELPER(prefix, id) prefix ## id

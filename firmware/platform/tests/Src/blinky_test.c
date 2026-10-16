@@ -1,4 +1,6 @@
+#include <stdint.h>
 #include "stm32xx_hal.h"
+#include "stm32g4xx_hal.h"
 
 // Pin for green channel on RGB LED
 #define LED_PIN GPIO_PIN_2
