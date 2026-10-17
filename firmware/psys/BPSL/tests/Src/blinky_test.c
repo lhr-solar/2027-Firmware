@@ -18,9 +18,11 @@ static void vBlinkyTask(void* pvParameters) {
     rgb_color_t color = RGB_RED;
 
     while (true) {
-        if (StatusLEDs_SetHeartbeatColor(color) != LED_OK) {
-            Error_Handler();
-        }
+        // can only fail if color is out of range, which would be a bug
+        led_state_t status = StatusLEDs_SetHeartbeatColor(color);
+        configASSERT(status == LED_OK);
+        (void)status; // avoids an unused-variable warning if configASSERT is compiled out
+
         StatusLEDs_SetHeartbeat(true);
         vTaskDelay(BLINKY_COLOR_PERIOD);
 
@@ -42,9 +44,8 @@ int main(void) {
 
     TaskHandle_t handle = xTaskCreateStatic(vBlinkyTask, "Blinky", BLINKY_TASK_STACK_SIZE, NULL,
                                             BLINKY_TASK_PRIORITY, xBlinkyStack, &xBlinkyTaskBuffer);
-    if (handle == NULL) {
-        Error_Handler();
-    }
+    configASSERT(handle != NULL);
+    (void)handle;
 
     vTaskStartScheduler();
 
