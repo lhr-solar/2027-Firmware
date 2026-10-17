@@ -19,7 +19,7 @@ static void vBlinkyTask(void* pvParameters) {
 
     while (true) {
         // can only fail if color is out of range, which would be a bug
-        led_state_t status = StatusLEDs_SetHeartbeatColor(color);
+        led_status_t status = StatusLEDs_SetHeartbeatColor(color);
         configASSERT(status == LED_OK);
         (void)status; // avoids an unused-variable warning if configASSERT is compiled out
 
