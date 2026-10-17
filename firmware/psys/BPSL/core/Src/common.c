@@ -1,35 +1,46 @@
 #include "stm32g4xx_hal.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include "common.h"
 #include "StatusLEDs.h"
 
-// for software errors
-void Error_Handler(void)
-{
-    // stop interrupts and other tasks so nothing else changes the LED
-    __disable_irq();
+// how long the error LED stays on, then off
+static const uint32_t ERROR_BLINK_DELAY_MS = 1000;
 
-    // solid red heartbeat = software error
-    // init again because the error may happen before main() initializes the LEDs.
-    // A failed init can't be reported from here, so the result is ignored.
-    (void)StatusLEDs_Init();
-    (void)StatusLEDs_SetHeartbeatColor(RGB_RED);
-    StatusLEDs_SetHeartbeat(true);
-
-    while (true)
-    {
+// delays whether or not the scheduler has started
+static void prvSafeDelay(uint32_t delayMs) {
+    if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING) {
+        vTaskDelay(pdMS_TO_TICKS(delayMs));
+    } else {
+        HAL_Delay(delayMs);
     }
 }
 
+// for software errors
+void Error_Handler(void) {
+    (void)StatusLEDs_Init();
+    (void)StatusLEDs_SetHeartbeatColor(RGB_RED);
+
+    while (true) {
+        StatusLEDs_SetHeartbeat(true);
+        prvSafeDelay(ERROR_BLINK_DELAY_MS);
+        StatusLEDs_SetHeartbeat(false);
+        prvSafeDelay(ERROR_BLINK_DELAY_MS);
+    }
+}
+
+// TODO: Fix clock once Aarav makes changes
 // 8 MHz crystal (HSE) -> 80 MHz system clock
 // SYSCLK = HSE / PLLM * PLLN / PLLR = 8 MHz / 1 * 20 / 2 = 80 MHz
-void SystemClock_Config(void)
-{
+void SystemClock_Config(void) {
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
     /** Configure the main internal regulator output voltage
      */
-    HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
+    if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK) {
+        Error_Handler();
+    }
 
     /** Start the external crystal and the PLL
      */
@@ -43,22 +54,21 @@ void SystemClock_Config(void)
     // P and Q outputs aren't used yet, but must still hold valid values
     RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
     RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-    {
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
         Error_Handler();
     }
 
     /** Run the CPU and buses from the PLL at 80 MHz
      */
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.ClockType =
+        RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
     // 2 flash wait states are correct for 80 MHz
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-    {
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
         Error_Handler();
     }
 }

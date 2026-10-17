@@ -3,8 +3,8 @@
  * @file StatusLEDs.h
  * @brief Driver for the BPSL RGB status (heartbeat) LED.
  *
- * The heartbeat LED shows one color at a time. Pins and the on/off pin level
- * come from pinDefs.h.
+ * The heartbeat LED shows one color at a time. Pins come from pinDefs.h. The
+ * LED is active high (pin high = lit).
  *
  * Call order:
  *   StatusLEDs_Init() -> StatusLEDs_SetHeartbeatColor() -> StatusLEDs_SetHeartbeat()
@@ -14,24 +14,22 @@
  *  - StatusLEDs_SetHeartbeatColor() turns the LED off. The new color only shows
  *    after the next StatusLEDs_SetHeartbeat(true) or StatusLEDs_ToggleHeartbeat().
  *  - Not thread-safe. Only one task should drive the LED at a time.
- *    Error_Handler() takes it over after disabling interrupts.
+ *    Error_Handler() also drives it but doesn't stop other tasks, so another
+ *    task still using the LED can overwrite the red error blink.
  */
 
 #include <stdbool.h>
 
 /** @brief Return status for StatusLEDs functions
  */
-typedef enum {
-    LED_OK,
-    LED_ERR
-} led_status_t;
+typedef enum { LED_OK, LED_ERR } led_status_t;
 
 /** @brief Colors for the RGB heartbeat LED
  */
 typedef enum {
+    RGB_BLUE,
     RGB_RED,
     RGB_GREEN,
-    RGB_BLUE,
     RGB_NUM_COLORS /**< Count of colors */
 } rgb_color_t;
 
@@ -47,9 +45,9 @@ led_status_t StatusLEDs_Init(void);
 void StatusLEDs_Clear(void);
 
 /** @brief Turns the heartbeat LED on or off, in its current color.
- * @param on true to turn the LED on, false to turn it off.
+ * @param state true to turn the LED on, false to turn it off.
  */
-void StatusLEDs_SetHeartbeat(bool on);
+void StatusLEDs_SetHeartbeat(bool state);
 
 /** @brief Toggles the heartbeat LED, in its current color.
  */

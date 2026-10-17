@@ -5,8 +5,8 @@
 
 // Task configuration
 #define BLINKY_TASK_STACK_SIZE configMINIMAL_STACK_SIZE
-#define BLINKY_TASK_PRIORITY (tskIDLE_PRIORITY + 1)
-#define BLINKY_COLOR_PERIOD pdMS_TO_TICKS(500)
+#define BLINKY_TASK_PRIORITY   (tskIDLE_PRIORITY + 1)
+#define BLINKY_COLOR_PERIOD    pdMS_TO_TICKS(500)
 
 // Static task buffers
 static StaticTask_t xBlinkyTaskBuffer;
@@ -30,14 +30,8 @@ static void vBlinkyTask(void* pvParameters) {
 }
 
 void Blinky_Init(void) {
-    TaskHandle_t handle = xTaskCreateStatic(
-        vBlinkyTask,
-        "Blinky",
-        BLINKY_TASK_STACK_SIZE,
-        NULL,
-        BLINKY_TASK_PRIORITY,
-        xBlinkyStack,
-        &xBlinkyTaskBuffer);
+    TaskHandle_t handle = xTaskCreateStatic(vBlinkyTask, "Blinky", BLINKY_TASK_STACK_SIZE, NULL,
+                                            BLINKY_TASK_PRIORITY, xBlinkyStack, &xBlinkyTaskBuffer);
 
     if (handle == NULL) {
         Error_Handler();

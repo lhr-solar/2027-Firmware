@@ -5,8 +5,10 @@
  */
 
 /**
- * @brief Handles unrecoverable software errors. Shows a solid red
- *        heartbeat LED and halts. Never returns.
+ * @brief Handles software errors. Blinks the heartbeat LED red,
+ *        1 s on / 1 s off, forever.
+ * @note  Interrupts stay enabled, and once the scheduler is running other tasks
+ *        keep running. Not safe to call from an ISR.
  */
 void Error_Handler(void);
 
