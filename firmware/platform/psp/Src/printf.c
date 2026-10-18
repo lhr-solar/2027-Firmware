@@ -2,6 +2,7 @@
 #include "UART.h"
 #include "portmacro.h"
 #include "stm32xx_hal.h"
+#include "tusb.h"
 #include <string.h>
 
 #define NANOPRINTF_IMPLEMENTATION
@@ -32,22 +33,25 @@ uint8_t printf_pool_next = 0;
 SemaphoreHandle_t printf_pool_mtx;
 StaticSemaphore_t printf_pool_mtx_buf;
 
-UART_HandleTypeDef *printf_huart = NULL;
-
 /**
  * @brief Initializes printf
- * @param huart pointer to the UART handle
  * @return bool true if success
  */
-bool printf_init(UART_HandleTypeDef *huart) { 
-    printf_huart = huart;
-
+bool printf_init() { 
     printf_pool_mtx = xSemaphoreCreateMutexStatic(&printf_pool_mtx_buf);
 
     for(int i=0; i<NUM_PRINTF_BUFFERS; i++){
         printf_pool[i].buffer_mtx = xSemaphoreCreateMutexStatic(&printf_pool[i].buffer_mtx_buffer);
     }
-    return uart_init(huart) == UART_OK;
+
+    /* tusb_init stuff */
+    tusb_rhport_init_t dev_init = {
+        .role = TUSB_ROLE_DEVICE,
+        .speed = TUSB_SPEED_AUTO
+    };
+    tusb_init(BOARD_TUD_RHPORT, &dev_init);
+
+    return true;
 }
 
 // Print to a buffer
@@ -92,31 +96,42 @@ int printf(const char *fmt, ...) {
         return rv;
     }
 
-    uart_status_t status = uart_send(printf_huart, (const uint8_t *)pbuf->buffer, (rv > MAX_PRINTF_SIZE)?MAX_PRINTF_SIZE:rv, portMAX_DELAY);
-    xSemaphoreGive(pbuf->buffer_mtx);
-    return (status == UART_OK)?rv:-1;
-}
-
-char *uart_fgets(char *buffer, size_t maxsz){
-    if(maxsz == 0 || buffer == NULL) return NULL;
-
-    char c;
-    size_t i = 0;
-    while(i < maxsz-1){
-        uart_status_t status = uart_recv(printf_huart, (uint8_t*)&c, 1, portMAX_DELAY);
-        if(status == UART_ERR) return NULL;
-
-        // We check for \r instead of \n because that's what picocom and putty output on hitting enter key
-        if(c == '\r'){
-            buffer[i] = 0;
-            return buffer;
-        } else if(c == '\b' || c == 0x7F){  // handle backspace and DEL
-            if(i > 0) i--;  // just move index back, will be overwritten
-        } else {
-            buffer[i++] = c;
+    /* tusb cdc write, need to find a better home :( */
+    uint8_t* buf =  (uint8_t *)pbuf->buffer;
+    uint32_t count = (rv > MAX_PRINTF_SIZE)?MAX_PRINTF_SIZE:rv;
+    for (uint8_t itf = 0; itf < CFG_TUD_CDC; itf++) {
+        if (tud_cdc_n_connected(itf)) {
+            for (uint32_t i = 0; i < count; i++) {
+                tud_cdc_n_write_char(itf, buf[i]);
+            }
+            tud_cdc_n_write_flush(itf);
         }
     }
 
-    buffer[maxsz-1] = 0;
-    return buffer;
+    xSemaphoreGive(pbuf->buffer_mtx);
+    return rv;
 }
+
+// char *uart_fgets(char *buffer, size_t maxsz){
+//     if(maxsz == 0 || buffer == NULL) return NULL;
+
+//     char c;
+//     size_t i = 0;
+//     while(i < maxsz-1){
+//         uart_status_t status = uart_recv(printf_huart, (uint8_t*)&c, 1, portMAX_DELAY);
+//         if(status == UART_ERR) return NULL;
+
+//         // We check for \r instead of \n because that's what picocom and putty output on hitting enter key
+//         if(c == '\r'){
+//             buffer[i] = 0;
+//             return buffer;
+//         } else if(c == '\b' || c == 0x7F){  // handle backspace and DEL
+//             if(i > 0) i--;  // just move index back, will be overwritten
+//         } else {
+//             buffer[i++] = c;
+//         }
+//     }
+
+//     buffer[maxsz-1] = 0;
+//     return buffer;
+// }

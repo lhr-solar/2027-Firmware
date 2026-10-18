@@ -2,6 +2,7 @@
 // interfaces directly with tinyUSB CDC functions
 #include "stm32xx_hal.h"
 #include "tusb.h"
+#include "printf.h"
 
 #define USB_PRIO (configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1)
 
@@ -10,7 +11,6 @@ PCD_HandleTypeDef hpcd_USB_FS;
 
 static void MX_USB_PCD_Init(void);
 static void MX_GPIO_Init(void);
-void SystemClock_Config(void);
 
 StaticTask_t pollEventsTaskBuffer;
 StaticTask_t cdcTaskBuffer;
@@ -18,12 +18,6 @@ StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
 StackType_t cdcStack[configMINIMAL_STACK_SIZE];
 
 // Echo chars on one part to the other
-static void echo_serial_port(uint8_t itf, uint8_t buf[], uint32_t count) {
-  for (uint32_t i = 0; i < count; i++) {
-    tud_cdc_n_write_char(itf, buf[i]);
-  }
-  tud_cdc_n_write_flush(itf);
-}
 
 // Mount
 void tud_mount_cb(void) {
@@ -36,25 +30,8 @@ void tud_umount_cb(void) {
 }
 
 static void cdc_task(void *pvParameters) {
-  uint8_t itf;
-
   while (1) {
-    for (itf = 0; itf < CFG_TUD_CDC; itf++) {
-      // connected() check for DTR bit
-      // Most but not all terminal client set this when making connection
-      // if ( tud_cdc_n_connected(itf) )
-      {
-        if (tud_cdc_n_available(itf)) {
-          uint8_t buf[64];
-
-          uint32_t count = tud_cdc_n_read(itf, buf, sizeof(buf));
-
-          // echo back to both serial ports
-          echo_serial_port(0, buf, count);
-          echo_serial_port(1, buf, count);
-        }
-      }
-    }
+    printf("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse congue libero condimentum tortor rhoncus, vitae viverra mauris imperdiet. Ut vel sapien lectus. Phasellus molestie blandit nulla et feugiat. Cras vel viverra mauris. Sed in ante quam. Pellentesque risus leo, pellentesque et euismod sed, maximus sed erat. Maecenas eu nunc sollicitudin, elementum elit tristique, dictum tellus. Nunc eros dui, lobortis eu vehicula vel, vehicula non tellus. Nunc pretium dapibus lacinia");
 
     // block
     vTaskDelay(100);
@@ -76,13 +53,7 @@ int main() {
     SystemClock_Config();
     MX_GPIO_Init();
     MX_USB_PCD_Init();
-
-    // init tinyusb
-    tusb_rhport_init_t dev_init = {
-        .role = TUSB_ROLE_DEVICE,
-        .speed = TUSB_SPEED_AUTO
-    };
-    tusb_init(BOARD_TUD_RHPORT, &dev_init);
+    printf_init();
 
     xTaskCreateStatic(poll_events,
                     "Poll Event Queue",
@@ -109,6 +80,7 @@ int main() {
 
 }
 
+/* CUBE MX */
 static void MX_USB_PCD_Init(void)
 {
   hpcd_USB_FS.Instance = USB;
@@ -175,9 +147,4 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* hpcd)
     HAL_NVIC_DisableIRQ(USB_LP_IRQn);
   }
 
-}
-
-void USBWakeUp_IRQHandler(void)
-{
-  tud_int_handler(0);
 }
