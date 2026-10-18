@@ -57,21 +57,21 @@ typedef struct {
 // helper to trigger background interrupts
 static void uart_transmit(UART_HandleTypeDef* huart);
 
-#define UART_STRUCTURE(uart_name, UART_INSTANCE, TX_Q_SIZE, RX_Q_SIZE)                             \
-    static uint8_t uart_name##_tx_queue_storage[(TX_Q_SIZE) * sizeof(UART_tx_payload_t)];          \
-    static uint8_t uart_name##_tx_dir_buffer[UART_SINGLE_TX_SIZE];                                 \
-    static uint8_t uart_name##_rx_queue_storage[(RX_Q_SIZE) * sizeof(UART_rx_payload_t)];          \
-    static UART_periph_t uart_name = {                                                             \
-        .huart = {.Instance = (UART_INSTANCE)},                                                    \
-        .tx_queue_size = (TX_Q_SIZE),                                                              \
-        .tx_queue = NULL,                                                                          \
-        .tx_queue_storage = uart_name##_tx_queue_storage,                                          \
-        .tx_dir_buffer = uart_name##_tx_dir_buffer,                                                \
-        .tx_active = false,                                                                        \
-        .rx_queue_size = (RX_Q_SIZE),                                                              \
-        .rx_queue = NULL,                                                                          \
-        .rx_queue_storage = uart_name##_rx_queue_storage,                                          \
-    };                                                                                             \
+#define UART_STRUCTURE(uart_name, UART_INSTANCE, TX_Q_SIZE, RX_Q_SIZE)                    \
+    static uint8_t uart_name##_tx_queue_storage[(TX_Q_SIZE) * sizeof(UART_tx_payload_t)]; \
+    static uint8_t uart_name##_tx_dir_buffer[UART_SINGLE_TX_SIZE];                        \
+    static uint8_t uart_name##_rx_queue_storage[(RX_Q_SIZE) * sizeof(UART_rx_payload_t)]; \
+    static UART_periph_t uart_name = {                                                    \
+        .huart = {.Instance = (UART_INSTANCE)},                                           \
+        .tx_queue_size = (TX_Q_SIZE),                                                     \
+        .tx_queue = NULL,                                                                 \
+        .tx_queue_storage = uart_name##_tx_queue_storage,                                 \
+        .tx_dir_buffer = uart_name##_tx_dir_buffer,                                       \
+        .tx_active = false,                                                               \
+        .rx_queue_size = (RX_Q_SIZE),                                                     \
+        .rx_queue = NULL,                                                                 \
+        .rx_queue_storage = uart_name##_rx_queue_storage,                                 \
+    };                                                                                    \
     UART_HandleTypeDef* h##uart_name = &uart_name.huart;
 
 #ifdef UART4
@@ -644,9 +644,9 @@ uart_status_t uart_recv(UART_HandleTypeDef* handle, uint8_t* data, uint16_t leng
         }
 
         // Calculate how many bytes to copy from the payload based on UART_RX_DATA_SIZE
-        uint16_t copy_length = (length - bytes_received) >= UART_RX_DATA_SIZE
-                                   ? UART_RX_DATA_SIZE
-                                   : (length - bytes_received);
+        uint16_t copy_length = (length - bytes_received) >= UART_RX_DATA_SIZE ?
+                                   UART_RX_DATA_SIZE :
+                                   (length - bytes_received);
 
         // Copy the data from the payload to the user's data buffer
         memcpy(&data[bytes_received], receivedPayload.data, copy_length);

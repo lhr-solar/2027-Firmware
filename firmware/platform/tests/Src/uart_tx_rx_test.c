@@ -10,7 +10,7 @@
 #include <string.h>
 
 /* Private defines */
-#define TEST_PATTERN_SIZE                                                                          \
+#define TEST_PATTERN_SIZE \
     64 // Larger pattern to ensure queue gets filled, pattern size represents a message
 #define TX_BURST_SIZE 100 // Number of messages to send in a burst
 
