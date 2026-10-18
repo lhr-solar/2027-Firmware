@@ -57,8 +57,11 @@ static uint32_t ws2812b_encode_pwm(ws2812b_handle_t* ledHandler) {
     uint32_t color;
 
     for (uint8_t i = 0; i < ledHandler->numberLeds; i++) {
+        // clang-format off
         color = (ledHandler->ledData[i][WS2812B_GREEN] << 16) |
-                (ledHandler->ledData[i][WS2812B_RED] << 8) | (ledHandler->ledData[i][WS2812B_BLUE]);
+                (ledHandler->ledData[i][WS2812B_RED] << 8) |
+                (ledHandler->ledData[i][WS2812B_BLUE]);
+        // clang-format on
 
         for (int8_t bit = 23; bit >= 0; bit--) {
             ledHandler->pwmBuffer[idx++] = (color & (1 << bit)) ? WS2812_HIGH : WS2812_LOW;

@@ -610,10 +610,12 @@ void EMC2305_I2C_Worker_Task(void* pvParameters) {
             } else if (msg.operation == EMC2305_OP_READ) {
                 // Perform read operation
                 // Transmit register to read
-                if (HAL_I2C_Master_Transmit_IT(msg.chip->hi2c, msg.chip->dev_addr, &msg.reg_addr,
-                                               1) != HAL_OK) {
+                // clang-format off
+                if (HAL_I2C_Master_Transmit_IT(msg.chip->hi2c, msg.chip->dev_addr, &msg.reg_addr, 1)
+                                               != HAL_OK) {
                     status = EMC2305_ERR;
                 }
+                // clang-format on
 
                 // Wait for ISR to signal completion
                 if ((status == EMC2305_OK) &&

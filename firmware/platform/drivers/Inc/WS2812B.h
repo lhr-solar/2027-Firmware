@@ -39,15 +39,15 @@ typedef struct {
 
 // Represents a string of LEDs
 typedef struct {
-    uint8_t (*ledData)
-        [NUMBER_PWM_DATA_ELEMENTS]; // Represents the colors contained in the strip: [LED][LEDNUM, G, R, B]
+    // Represents the colors contained in the strip: [LED][LEDNUM, G, R, B]
+    uint8_t (*ledData)[NUMBER_PWM_DATA_ELEMENTS];
     uint16_t* pwmBuffer;            // PWM bitstream of duty cycles, this is what is passed to DMA
-    TIM_HandleTypeDef* timerHandle;    // The timer handle used to generate PWM
-    uint32_t channel;                  // The channel associated with the pin's timer
-    uint8_t numberLeds;                // the number of LEDs in the string
-    SemaphoreHandle_t mutex;           // protects multiple threads from writting to the handle
-    StaticSemaphore_t mutexBuf;        // static buffer for the mutex
-    volatile uint8_t dmaActive;        // indicates when a dma transmission is active
+    TIM_HandleTypeDef* timerHandle; // The timer handle used to generate PWM
+    uint32_t channel;               // The channel associated with the pin's timer
+    uint8_t numberLeds;             // the number of LEDs in the string
+    SemaphoreHandle_t mutex;        // protects multiple threads from writting to the handle
+    StaticSemaphore_t mutexBuf;     // static buffer for the mutex
+    volatile uint8_t dmaActive;     // indicates when a dma transmission is active
     SemaphoreHandle_t framePendingSem; // indicates that there's a new rgb frame to send
     StaticSemaphore_t framePendingBuf; // static buffer to store the semaphore
 } ws2812b_handle_t;

@@ -4,9 +4,9 @@
 #include <string.h>
 
 static sd_handle_t* g_sd_handle = NULL;
-static const uint8_t g_large_dummy_buffer[SD_BLOCK_SIZE] = {
-    [0 ... SD_BLOCK_SIZE - 1] =
-        SD_DUMMY_BYTE}; // dummy buffer array used to generate SPI clock cycles during large reads
+// dummy buffer array used to generate SPI clock cycles during large reads
+static const uint8_t g_large_dummy_buffer[SD_BLOCK_SIZE] = {[0 ... SD_BLOCK_SIZE - 1] =
+                                                                SD_DUMMY_BYTE};
 //memory allocation for worker task
 StaticTask_t xWorkerBuffer;
 StackType_t xWorkerStack[2048];

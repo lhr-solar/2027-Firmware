@@ -582,8 +582,9 @@ uart_status_t uart_send(UART_HandleTypeDef* handle, const uint8_t* data, uint16_
         // EX: i=4, length=6, DataSize=4, then chunk_size = 2, instead of usual 4 since we've reached end of length
 
         // Copy the appropriate number of bytes to the payload data
-        memcpy(payload.data, &data[i],
-               payload.len); // Usually chunk_size = UART_TX_DATA_SIZE until end of data length
+
+        // Usually chunk_size = UART_TX_DATA_SIZE until end of data length
+        memcpy(payload.data, &data[i], payload.len);
 
         // If the queue is completely full, and uart tx is NOT active, we deadlock waiting for the queue to open up.
         // Kickstart here if that's the case so we can keep adding our messages
