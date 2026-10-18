@@ -233,7 +233,7 @@ static UART_periph_t* get_valid_uart_periph(UART_HandleTypeDef* handle) {
 // Redefine me!
 __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
     GPIO_InitTypeDef init = {0};
-// Same sets of pins for L4/F4
+    // Same sets of pins for L4/F4
 #ifdef UART4
     if (huart->Instance == UART4) {
         //enable port A clock
@@ -241,7 +241,7 @@ __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
 
         /* enable port A UART4 gpio
         PA0 -> UART4_TX
-        PA1 -> UART4_RX    
+        PA1 -> UART4_RX
         */
         init.Pin = GPIO_PIN_0 | GPIO_PIN_1;
         init.Mode = GPIO_MODE_AF_PP;
@@ -258,7 +258,7 @@ __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
 
         __HAL_RCC_GPIOD_CLK_ENABLE();
 
-        /* enable UART5 gpio   
+        /* enable UART5 gpio
         PC12 -> UART5_TX
         PD2 -> UART5_RX
         */
@@ -282,7 +282,7 @@ __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
 
         /* enable port A USART1 gpio
         PA9 -> USART1_TX
-        PA10 -> USART1_RX    
+        PA10 -> USART1_RX
         */
         init.Pin = GPIO_PIN_9 | GPIO_PIN_10;
         init.Mode = GPIO_MODE_AF_PP;
@@ -300,7 +300,7 @@ __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
 
         /* enable port D USART2 gpio
         PD5 -> USART2_TX
-        PD6 -> USART2_RX    
+        PD6 -> USART2_RX
         */
         init.Pin = GPIO_PIN_5 | GPIO_PIN_6;
         init.Mode = GPIO_MODE_AF_PP;
@@ -318,7 +318,7 @@ __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
 
         /* enable port C USART3 gpio
         PC10 -> USART3_TX
-        PC11 -> USART3_RX    
+        PC11 -> USART3_RX
         */
         init.Pin = GPIO_PIN_10 | GPIO_PIN_11;
         init.Mode = GPIO_MODE_AF_PP;
@@ -405,7 +405,7 @@ __weak void HAL_UART_MspGPIODeInit(UART_HandleTypeDef* huart) {
 }
 
 void HAL_UART_MspDeInit(UART_HandleTypeDef* huart) {
-// UART4
+    // UART4
 #ifdef UART4
     if (huart->Instance == UART4) {
         //disable clocks
@@ -416,7 +416,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart) {
     }
 #endif /* UART4 */
 
-// UART5
+    // UART5
 #ifdef UART5
     if (huart->Instance == UART5) {
         // disable clocks
@@ -427,7 +427,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart) {
     }
 #endif /* UART5 */
 
-// USART1
+    // USART1
 #ifdef USART1
     if (huart->Instance == USART1) {
         // disable clocks
@@ -438,7 +438,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart) {
     }
 #endif /* USART1 */
 
-// USART2
+    // USART2
 #ifdef USART2
     if (huart->Instance == USART2) {
         // disable clocks
@@ -449,7 +449,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart) {
     }
 #endif /* USART2 */
 
-// USART3
+    // USART3
 #ifdef USART3
     if (huart->Instance == USART3) {
         // disable clocks
@@ -534,7 +534,7 @@ uart_status_t uart_deinit(UART_HandleTypeDef* handle) {
 }
 
 /**
- * @brief Transmits data over UART. If transmission is in progress, data will be queued in internal TX queue. 
+ * @brief Transmits data over UART. If transmission is in progress, data will be queued in internal TX queue.
  * @param data pointer to the data buffer that will be written/transmitted
  * @param length of the buffer that will be written/transmitted
  * @param delay_ticks number of ticks to wait for data to be transmitted
@@ -553,9 +553,10 @@ uart_status_t uart_send(UART_HandleTypeDef* handle, const uint8_t* data, uint16_
 
     // Try direct transmission if possible
     portENTER_CRITICAL();
-    if (!uart_periph->tx_active && uxQueueMessagesWaiting(uart_periph->tx_queue) == 0 &&
-        length <=
-            UART_SINGLE_TX_SIZE) { // check if UART is ready and queue is empty and length is enough to fit in single tx buffer
+    // clang-format off
+    // check if UART is ready and queue is empty and length is enough to fit in single tx buffer
+    if (!uart_periph->tx_active && uxQueueMessagesWaiting(uart_periph->tx_queue) == 0 && length <= UART_SINGLE_TX_SIZE) {
+        // clang-format on
         // Copy all input data to static buffer
         memcpy(uart_periph->tx_dir_buffer, data, length);
         uart_periph->tx_active = true;
@@ -623,9 +624,8 @@ uart_status_t uart_send(UART_HandleTypeDef* handle, const uint8_t* data, uint16_
  */
 uart_status_t uart_recv(UART_HandleTypeDef* handle, uint8_t* data, uint16_t length,
                         TickType_t delay_ticks) {
-    if (!data || length == 0 ||
-        !is_uart_initialized(
-            handle)) { // check if data is not null, length is not 0 and UART is initialized
+    // check if data is not null, length is not 0 and UART is initialized
+    if (!data || length == 0 || !is_uart_initialized(handle)) {
         return UART_ERR;
     }
 
