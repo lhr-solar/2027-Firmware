@@ -37,13 +37,12 @@ typedef struct {
 typedef struct {
     UART_HandleTypeDef huart;
 
-    uint16_t tx_queue_size;        // number of UART_tx_payload_t in tx_queue
-    QueueHandle_t tx_queue;        // queue handle
-    StaticQueue_t tx_queue_buffer; // static queue info (required for initialization)
-    uint8_t* tx_queue_storage;     // storage for tx queue
-    uint8_t* tx_dir_buffer;        // buffer for in-progress direct transmission
-    SemaphoreHandle_t
-        tx_mutex; // used to ensure ordering in case of multiple users of same TX queue
+    uint16_t tx_queue_size;            // number of UART_tx_payload_t in tx_queue
+    QueueHandle_t tx_queue;            // queue handle
+    StaticQueue_t tx_queue_buffer;     // static queue info (required for initialization)
+    uint8_t* tx_queue_storage;         // storage for tx queue
+    uint8_t* tx_dir_buffer;            // buffer for in-progress direct transmission
+    SemaphoreHandle_t tx_mutex;        // for ordering in case of multiple users of same TX queue
     StaticSemaphore_t tx_mutex_buffer; // static mutex info (required for initialization)
     volatile bool tx_active;
 
