@@ -1,13 +1,6 @@
 #include "PDU_Clock.h"
 
-/**
- * Runs the core at 16 MHz from the internal HSI oscillator.
- * Slow but simple for bring-up: no crystal needed, flash latency 0.
- * Later: switch SYSCLK to the PLL (and maybe the Y1 crystal) for full speed.
- *
- * Not named SystemClock_Config: the platform declares that one __weak in
- * stm32xx_hal.h, which would make this definition weak too.
- */
+
 void PDU_Clock_Init(void)
 {
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};

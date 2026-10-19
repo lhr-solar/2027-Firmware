@@ -8,9 +8,10 @@ void PDU_SPI_Init(void)
     hspi1.Init.Mode              = SPI_MODE_MASTER;
     hspi1.Init.Direction         = SPI_DIRECTION_2LINES;
     hspi1.Init.DataSize          = SPI_DATASIZE_8BIT;  // multi-byte frames sent as bytes
-    // TODO: confirm SPI mode (CPOL/CPHA) against the TPS2HCS08 datasheet
+    // SPI mode 1: TPS2HCS08 latches SDI on the falling SCLK edge and shifts SDO
+    // on the rising edge, SCLK idle low (datasheet SLVSHR0 8.3.3)
     hspi1.Init.CLKPolarity       = SPI_POLARITY_LOW;
-    hspi1.Init.CLKPhase          = SPI_PHASE_1EDGE;
+    hspi1.Init.CLKPhase          = SPI_PHASE_2EDGE;
     // Six chips, six GPIO chip selects: the hardware NSS pin (PA4) is HSS6_CS
     hspi1.Init.NSS               = SPI_NSS_SOFT;
     hspi1.Init.NSSPMode          = SPI_NSS_PULSE_DISABLE;
@@ -24,6 +25,11 @@ void PDU_SPI_Init(void)
     if (HAL_SPI_Init(&hspi1) != HAL_OK) {
         Error_Handler();
     }
+}
+
+HAL_StatusTypeDef PDU_SPI_Xfer(const uint8_t *tx, uint8_t *rx, uint16_t len)
+{
+    return HAL_SPI_TransmitReceive(&hspi1, tx, rx, len, PDU_SPI_TIMEOUT_MS);
 }
 
 // Called by HAL_SPI_Init
