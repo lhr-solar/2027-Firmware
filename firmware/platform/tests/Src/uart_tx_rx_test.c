@@ -10,9 +10,10 @@
 #include <string.h>
 
 /* Private defines */
-#define TEST_PATTERN_SIZE \
-    64 // Larger pattern to ensure queue gets filled, pattern size represents a message
-#define TX_BURST_SIZE 100 // Number of messages to send in a burst
+// Larger pattern to ensure queue gets filled, pattern size represents a message
+#define TEST_PATTERN_SIZE 64
+// Number of messages to send in a burst
+#define TX_BURST_SIZE 100
 
 #ifdef STM32F4xx
     #define huart               husart2
@@ -180,9 +181,10 @@ int main(void) {
 }
 
 void TxTask(void* argument) {
-    const TickType_t fastDelay =
-        pdMS_TO_TICKS(5); // 1ms between transmissions, could be 0 for maximum stress
-    const TickType_t burstDelay = pdMS_TO_TICKS(500); // 250ms between bursts, good for now
+    // 1ms between transmissions, could be 0 for maximum stress
+    const TickType_t fastDelay = pdMS_TO_TICKS(5);
+    // 250ms between bursts, good for now
+    const TickType_t burstDelay = pdMS_TO_TICKS(500);
 
     volatile uint32_t txCount = 0;
     volatile uint32_t queueFullCount = 0;

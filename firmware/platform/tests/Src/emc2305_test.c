@@ -270,9 +270,10 @@ void EMC2305_Task_1(void* argument) {
 
     // Set config1 and config2
     EMC2305_Fan_Config1 config1 = {0};
-    config1.enable_closed_loop =
-        false; // Set this to true if using FSC (Closed Loop RPM Control). False for using PWM directly
-    config1.edges = EMC2305_EDG_5; // 5 edges is default for 2 pole fans
+    // Set this to true if using FSC (Closed Loop RPM Control). False for using PWM directly
+    config1.enable_closed_loop = false;
+    // 5 edges is default for 2 pole fans
+    config1.edges = EMC2305_EDG_5;
     config1.range = EMC2305_RNG_2000;
     EMC2305_Fan_Config2 config2 = {0};
     config2.enable_ramp_rate_ctl = true;
@@ -364,9 +365,10 @@ void EMC2305_Task_2(void* argument) {
 
     // Set config1 and config2
     EMC2305_Fan_Config1 config1 = {0};
-    config1.enable_closed_loop =
-        false; // Set this to true if using FSC (Closed Loop RPM Control). False for using PWM directly
-    config1.edges = EMC2305_EDG_5; // 5 edges is default for 2 pole fans
+    // Set this to true if using FSC (Closed Loop RPM Control). False for using PWM directly
+    config1.enable_closed_loop = false;
+    // 5 edges is default for 2 pole fans
+    config1.edges = EMC2305_EDG_5;
     config1.range = EMC2305_RNG_2000;
     EMC2305_Fan_Config2 config2 = {0};
     config2.enable_ramp_rate_ctl = true;

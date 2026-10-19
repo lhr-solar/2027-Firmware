@@ -191,8 +191,8 @@ int main(void) {
 
 void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
-    UNUSED(
-        GPIO_InitStruct); // UNUSED is for the case where none of the handles are enabled in the chip
+    // UNUSED is for the case where none of the handles are enabled in the chip
+    UNUSED(GPIO_InitStruct);
     #ifdef LPUART1
     if (huart->Instance == LPUART1) {
         __HAL_RCC_GPIOB_CLK_ENABLE();

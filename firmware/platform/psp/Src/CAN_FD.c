@@ -513,8 +513,8 @@ void HAL_FDCAN_TxBufferCompleteCallback(FDCAN_HandleTypeDef* hfdcan, uint32_t Bu
     }
     #ifdef FDCAN1
     else if (hfdcan->Instance == FDCAN1) {
-        if (xQueueReceiveFromISR(fdcan1_send_queue, &payload, &higherPriorityTaskWoken) ==
-            pdTRUE) { // actually passing this in now??
+        // actually passing this in now??
+        if (xQueueReceiveFromISR(fdcan1_send_queue, &payload, &higherPriorityTaskWoken) == pdTRUE) {
             HAL_FDCAN_AddMessageToTxFifoQ(hfdcan, &payload.header, payload.data);
         }
     }

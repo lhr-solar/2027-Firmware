@@ -36,12 +36,14 @@ typedef struct {
 } EMC2305_I2C_Message;
 
 #ifndef EMC2305_QUEUE_LENGTH
-    #define EMC2305_QUEUE_LENGTH 10 // Message queue length
+    // Message queue length
+    #define EMC2305_QUEUE_LENGTH 10
 #endif
 
-#define EMC2305_QUEUE_ITEM_SIZE sizeof(EMC2305_I2C_Message) // Size of queue item (message)
-#define EMC2305_SEMAPHORE_POOL_SIZE \
-    EMC2305_QUEUE_LENGTH // Number of caller semaphores (max concurrent I2C requests)
+// Size of queue item (message)
+#define EMC2305_QUEUE_ITEM_SIZE sizeof(EMC2305_I2C_Message)
+// Number of caller semaphores (max concurrent I2C requests)
+#define EMC2305_SEMAPHORE_POOL_SIZE EMC2305_QUEUE_LENGTH
 
 // Device status
 typedef enum {
@@ -51,15 +53,19 @@ typedef enum {
 
 // Device configuration
 typedef struct {
-    bool alert_mask; // Blocks the alert pin from being asserted
-    bool
-        disable_smbus_timeout; // Disables the SMBus Time-Out function for the SMBus client (if enabled)
-    bool
-        watchdog_enable; // Enables the Watchdog Timer (see Section 4.11 “Watchdog Timer”) to operate in Continuous Mode
-    bool
-        drive_ext_clk; // Enables the internal tachometer clock to be driven out on the CLK pin so that multiple devices can be synced to the same source
-    bool
-        use_ext_clk; // Enables the device to use a clock present on the CLK pin as the tachometer clock. If the DR_EXT_CLK bit is set, then this bit is ignored and the device will use the internal oscillator.
+    // Blocks the alert pin from being asserted
+    bool alert_mask;
+    // Disables the SMBus Time-Out function for the SMBus client (if enabled)
+    bool disable_smbus_timeout;
+    // Enables the Watchdog Timer (see Section 4.11 “Watchdog Timer”) to operate in Continuous Mode
+    bool watchdog_enable;
+    // Enables the internal tachometer clock to be driven out on the CLK pin so that multiple
+    // devices can be synced to the same source
+    bool drive_ext_clk;
+    // Enables the device to use a clock present on the CLK pin as the tachometer clock. If the
+    // DR_EXT_CLK bit is set, then this bit is ignored and the device will use the internal
+    // oscillator.
+    bool use_ext_clk;
 } EMC2305_Global_Config;
 
 // Fans
@@ -89,14 +95,14 @@ typedef enum {
 
 // Edges - Sets the number of edges to sample when calculating RPM
 typedef enum {
-    EMC2305_EDG_9 =
-        0b11, // 9 edges sampled (4 poles) - effective Tach multiplier is 2, based on two pole fans
-    EMC2305_EDG_7 =
-        0b10, // 7 edges sampled (3 poles) - effective Tach multiplier is 1.5, based on two pole fans
-    EMC2305_EDG_5 =
-        0b01, // 5 edges sampled (2 poles) - effective Tach multiplier is 1, based on two pole fans
-    EMC2305_EDG_3 =
-        0b00, // 3 edges sampled (1 pole) - effective Tach multiplier is 0.5, based on two pole fans
+    // 9 edges sampled (4 poles) - effective Tach multiplier is 2, based on two pole fans
+    EMC2305_EDG_9 = 0b11,
+    // 7 edges sampled (3 poles) - effective Tach multiplier is 1.5, based on two pole fans
+    EMC2305_EDG_7 = 0b10,
+    // 5 edges sampled (2 poles) - effective Tach multiplier is 1, based on two pole fans
+    EMC2305_EDG_5 = 0b01,
+    // 3 edges sampled (1 pole) - effective Tach multiplier is 0.5, based on two pole fans
+    EMC2305_EDG_3 = 0b00,
 } EMC2305_EDG;
 
 // Update Time - Sets the PID update rate for closed loop control
@@ -151,81 +157,122 @@ typedef enum {
 } EMC2305_PID_Gain;
 
 typedef struct {
-    bool
-        watchdog_fired; // Indicates that the Watchdog Timer has expired. When this bit is set, each fan is driven to 100% duty cycle and will remain at 100% duty cycle until they are programmed. This bit is cleared when it is read.
-    bool
-        drive_failed; // Indicates that one or more fan drivers cannot meet the programmed fan speed at maximum PWM duty cycle.
-    bool spin_failed; // Indicates that one or more fan drivers cannot spin up.
-    bool stalled;     // Indicates that one or more fan drivers have stalled.
+    // Indicates that the Watchdog Timer has expired. When this bit is set, each fan is driven to
+    // 100% duty cycle and will remain at 100% duty cycle until they are programmed. This bit is
+    // cleared when it is read.
+    bool watchdog_fired;
+    // Indicates that one or more fan drivers cannot meet the programmed fan speed at maximum PWM
+    // duty cycle.
+    bool drive_failed;
+    // Indicates that one or more fan drivers cannot spin up.
+    bool spin_failed;
+    // Indicates that one or more fan drivers have stalled.
+    bool stalled;
 } EMC2305_Fan_Status;
 
 // Register map from EMC2305 datasheet
 // https://ww1.microchip.com/downloads/aemDocuments/documents/MSLD/ProductDocuments/DataSheets/EMC2301-2-3-5-Data-Sheet-DS20006532A.pdf
 
 // Device Configuration
-#define EMC2305_REG_CONFIGURATION \
-    0x20u // The Configuration register controls the basic functionality of the EMC2301/2/3/5. The Configuration Register is software locked.
-#define EMC2305_REG_FAN_INTERRUPT_ENABLE \
-    0x29u // The Fan Interrupt Enable register controls the masking for each fan channel. When a channel is enabled, it will cause the ALERT pin to be asserted when an Error condition is detected. • ‘1’ - An Error condition (Stall, Spin Up, Drive Fail) on fan X will cause the ALERT pin to be asserted. • ‘0’ (default) - An Error condition on fan X will not cause the ALERT pin to be asserted; however, the status registers will be updated normally.
-#define EMC2305_REG_PWM_POLARITY \
-    0x2Au // The PWM Polarity Configuration registers control the output type and polarity of all PWM outputs.
-#define EMC2305_REG_PWM_OUTPUT_CONFIG \
-    0x2Bu // The PWM Output Configuration register controls the PWM output type as push-pull or open drain.
-#define EMC2305_REG_PWM_BASEF45 \
-    0x2Cu // The PWM BASEF45 Register controls the base frequency of PWM drivers 4 and 5.
-#define EMC2305_REG_PWM_BASEF123 \
-    0x2Du // The PWM BaseF123 Register controls the base frequency of PWM drivers 1, 2 and 3.
-#define EMC2305_REG_SW_LOCK \
-    0xEFu // Software Lock Register - bit 0 LOCK Enables the SWL function: 1 = All SWL registers are locked and read-only. Unlock occurs on power cycle. 0 = All SWL registers are writable.
-#define EMC2305_REG_PRODUCT_FEAT \
-    0xFCu // Product Features Register - bit 5-3: ADR[2:0]: SMBus address determined by the ADDR_SEL pin decode. bit 2-0:  FSP[2:0]: Default Fan Speed determined by the CLK pin decode. This is conditional on ADDR_SEL.
-#define EMC2305_REG_PRODUCT_ID \
-    0xFDu // Production Identification Register - bit 1-0: PID[1:0]: Product Identification Register. Device defines bit pattern. 00 for EMC2305
-#define EMC2305_REG_MANUFACTURER_ID \
-    0xFEu // Manufacturer Identification Register - Hard coded fixed value of 0x5D
-#define EMC2305_REG_REVISION 0xFFu // Silicon Revision Register - Hard coded fixed value of 0x80
+// The Configuration register controls the basic functionality of the EMC2301/2/3/5. The
+// Configuration Register is software locked.
+#define EMC2305_REG_CONFIGURATION 0x20u
+// The Fan Interrupt Enable register controls the masking for each fan channel. When a channel is
+// enabled, it will cause the ALERT pin to be asserted when an Error condition is detected.
+// • ‘1’ - An Error condition (Stall, Spin Up, Drive Fail) on fan X will cause the ALERT pin to be
+//   asserted.
+// • ‘0’ (default) - An Error condition on fan X will not cause the ALERT pin to be asserted;
+//   however, the status registers will be updated normally.
+#define EMC2305_REG_FAN_INTERRUPT_ENABLE 0x29u
+// The PWM Polarity Configuration registers control the output type and polarity of all PWM outputs.
+#define EMC2305_REG_PWM_POLARITY 0x2Au
+// The PWM Output Configuration register controls the PWM output type as push-pull or open drain.
+#define EMC2305_REG_PWM_OUTPUT_CONFIG 0x2Bu
+// The PWM BASEF45 Register controls the base frequency of PWM drivers 4 and 5.
+#define EMC2305_REG_PWM_BASEF45 0x2Cu
+// The PWM BaseF123 Register controls the base frequency of PWM drivers 1, 2 and 3.
+#define EMC2305_REG_PWM_BASEF123 0x2Du
+// Software Lock Register - bit 0 LOCK Enables the SWL function: 1 = All SWL registers are locked
+// and read-only. Unlock occurs on power cycle. 0 = All SWL registers are writable.
+#define EMC2305_REG_SW_LOCK 0xEFu
+// Product Features Register - bit 5-3: ADR[2:0]: SMBus address determined by the ADDR_SEL pin
+// decode. bit 2-0:  FSP[2:0]: Default Fan Speed determined by the CLK pin decode. This is
+// conditional on ADDR_SEL.
+#define EMC2305_REG_PRODUCT_FEAT 0xFCu
+// Production Identification Register - bit 1-0: PID[1:0]: Product Identification Register. Device
+// defines bit pattern. 00 for EMC2305
+#define EMC2305_REG_PRODUCT_ID 0xFDu
+// Manufacturer Identification Register - Hard coded fixed value of 0x5D
+#define EMC2305_REG_MANUFACTURER_ID 0xFEu
+// Silicon Revision Register - Hard coded fixed value of 0x80
+#define EMC2305_REG_REVISION 0xFFu
 
 // Device Status
-#define EMC2305_REG_FAN_STATUS \
-    0x24u // The Fan Status register indicates that the fan driver has stalled or failed or that the Watchdog Timer has expired (see Section 4.11 “Watchdog Timer”).
-#define EMC2305_REG_FAN_STALL_STATUS \
-    0x25u // The Fan Stall Status register indicates which fan driver has detected a stalled condition (see Section 4.4.3 “Stalled Fan”). All bits are cleared upon a read if the Error condition has been removed.
-#define EMC2305_REG_FAN_SPIN_STATUS \
-    0x26u // The Fan Spin Status register indicates which fan driver has failed to spin-up (see Section 4.8 “Spin Up Rou tine”). All bits are cleared upon a read if the Error condition has been removed.
-#define EMC2305_REG_DRIVE_FAIL_STATUS \
-    0x27u // The Fan Drive Fail Status register indicates which fan driver cannot drive to the programmed speed even at 100% duty cycle (see Section 4.4.4 “Aging Fan or Invalid Drive Detection” and Register 6-16). All bits are cleared upon a read if the Error condition has been removed.
+// The Fan Status register indicates that the fan driver has stalled or failed or that the Watchdog
+// Timer has expired (see Section 4.11 “Watchdog Timer”).
+#define EMC2305_REG_FAN_STATUS 0x24u
+// The Fan Stall Status register indicates which fan driver has detected a stalled condition (see
+// Section 4.4.3 “Stalled Fan”). All bits are cleared upon a read if the Error condition has been
+// removed.
+#define EMC2305_REG_FAN_STALL_STATUS 0x25u
+// The Fan Spin Status register indicates which fan driver has failed to spin-up (see Section 4.8
+// “Spin Up Routine”). All bits are cleared upon a read if the Error condition has been removed.
+#define EMC2305_REG_FAN_SPIN_STATUS 0x26u
+// The Fan Drive Fail Status register indicates which fan driver cannot drive to the programmed
+// speed even at 100% duty cycle (see Section 4.4.4 “Aging Fan or Invalid Drive Detection” and
+// Register 6-16). All bits are cleared upon a read if the Error condition has been removed.
+#define EMC2305_REG_DRIVE_FAIL_STATUS 0x27u
 
 // Fan 1 Registers (base registers for all fans)
-#define EMC2305_REG_FAN1_SETTING \
-    0x30u // Fan 1 Drive Setting Register - The Fan Drive Setting register always displays the current setting of the respective fan driver
-#define EMC2305_REG_PWM1_DIVIDE \
-    0x31u // Fan 1 PWM Divide Register - The PWM Divide registers determine the final frequency of the respective PWM Fan Driver. Each driver base frequency is divided by the value of the respective PWM Divide Register to determine the final frequency.
-#define EMC2305_REG_FAN1_CONFIG1 \
-    0x32u // Fan 1 Configuration Register 1 - The Fan Configuration 1 registers control the general operation of the RPM-based Fan Speed Control algorithm used for the respective Fan Driver (see Section 4.3 “RPM-Based Fan Speed Control Algorithm”).
-#define EMC2305_REG_FAN1_CONFIG2 \
-    0x33u // Fan 1 Configuration Register 2 - The Fan Configuration 2 registers control the tachometer measurement and advanced features of the RPM based Fan Speed Control algorithm (see Section 4.3 “RPM-Based Fan Speed Control Algorithm”)
-#define EMC2305_REG_GAIN1 \
-    0x35u // Fan 1 PID Gain Register - See Section 4.3.3.2 “Setting the PID Gains”.
-#define EMC2305_REG_FAN1_SPIN \
-    0x36u // Fan 1 Spin Up Configuration Registers - The Fan Spin Up Configuration registers control the settings of the Spin Up Routine. These registers are software locked (see Section 4.8 “Spin Up Routine”)
-#define EMC2305_REG_FAN1_MAX_STEP \
-    0x37u // Fan 1 Maximum Step Size Register - This register determines the maximum step size for the ramp rate control (see Section 4.3.3.3 “Fan Drive Max Step” and Section 4.10 “Ramp Rate Control”).
-#define EMC2305_REG_FAN1_MIN_DRIVE \
-    0x38u // Fan 1 Minimum Drive Register - The Fan Minimum Drive Register (see Section 4.3.3.4 “Minimum Drive Setting”) stores the minimum drive setting for each RPM-based Fan Speed Control algorithm.
-#define EMC2305_REG_FAN1_VALID_TACH \
-    0x39u // Fan 1 Valid TACH Count Register - The Valid TACH Count registers store the maximum TACH Reading register value to indicate that each fan is spinning properly (see Section 4.4.2 “Valid Tachometer Readings”).
-#define EMC2305_REG_FAN1_DRVFAIL_L \
-    0x3Au // Fan 1 Drive Fail Band Low Byte Register - The Drive Fail Band registers store the number of tach counts used by the Fan Drive Fail detection circuitry.
-#define EMC2305_REG_FAN1_DRVFAIL_H \
-    0x3Bu // Fan 1 Drive Fail Band High Byte Register - The Drive Fail Band registers store the number of tach counts used by the Fan Drive Fail detection circuitry.
-#define EMC2305_REG_FAN1_TACH_TARGET_L \
-    0x3Cu // Fan 1 Tachometer Closed Loop Target Low Byte Register - The TACH Target Registers hold the target tachometer value that is maintained by the RPM-based Fan Speed Control algorithm.
-#define EMC2305_REG_FAN1_TACH_TARGET_H \
-    0x3Du // Fan 1 Tachometer Closed Loop Target High Byte Register - The TACH Target Registers hold the target tachometer value that is maintained by the RPM-based Fan Speed Control algorithm.
-#define EMC2305_REG_FAN1_TACH_READING_H \
-    0x3Eu // Fan 1 Tachometer Reading High Byte Register - The TACH Reading Registers describe the current tachometer reading for each of the fans (see Section 4.4 “Tachometer Measurement”).
-#define EMC2305_REG_FAN1_TACH_READING_L \
-    0x3Fu // Fan 1 Tachometer Reading Low Byte Register - The TACH Reading Registers describe the current tachometer reading for each of the fans (see Section 4.4 “Tachometer Measurement”).
+// Fan 1 Drive Setting Register - The Fan Drive Setting register always displays the current setting
+// of the respective fan driver
+#define EMC2305_REG_FAN1_SETTING 0x30u
+// Fan 1 PWM Divide Register - The PWM Divide registers determine the final frequency of the
+// respective PWM Fan Driver. Each driver base frequency is divided by the value of the respective
+// PWM Divide Register to determine the final frequency.
+#define EMC2305_REG_PWM1_DIVIDE 0x31u
+// Fan 1 Configuration Register 1 - The Fan Configuration 1 registers control the general operation
+// of the RPM-based Fan Speed Control algorithm used for the respective Fan Driver (see Section 4.3
+// “RPM-Based Fan Speed Control Algorithm”).
+#define EMC2305_REG_FAN1_CONFIG1 0x32u
+// Fan 1 Configuration Register 2 - The Fan Configuration 2 registers control the tachometer
+// measurement and advanced features of the RPM based Fan Speed Control algorithm (see Section 4.3
+// “RPM-Based Fan Speed Control Algorithm”)
+#define EMC2305_REG_FAN1_CONFIG2 0x33u
+// Fan 1 PID Gain Register - See Section 4.3.3.2 “Setting the PID Gains”.
+#define EMC2305_REG_GAIN1 0x35u
+// Fan 1 Spin Up Configuration Registers - The Fan Spin Up Configuration registers control the
+// settings of the Spin Up Routine. These registers are software locked (see Section 4.8 “Spin Up
+// Routine”)
+#define EMC2305_REG_FAN1_SPIN 0x36u
+// Fan 1 Maximum Step Size Register - This register determines the maximum step size for the ramp
+// rate control (see Section 4.3.3.3 “Fan Drive Max Step” and Section 4.10 “Ramp Rate Control”).
+#define EMC2305_REG_FAN1_MAX_STEP 0x37u
+// Fan 1 Minimum Drive Register - The Fan Minimum Drive Register (see Section 4.3.3.4 “Minimum Drive
+// Setting”) stores the minimum drive setting for each RPM-based Fan Speed Control algorithm.
+#define EMC2305_REG_FAN1_MIN_DRIVE 0x38u
+// Fan 1 Valid TACH Count Register - The Valid TACH Count registers store the maximum TACH Reading
+// register value to indicate that each fan is spinning properly (see Section 4.4.2 “Valid
+// Tachometer Readings”).
+#define EMC2305_REG_FAN1_VALID_TACH 0x39u
+// Fan 1 Drive Fail Band Low Byte Register - The Drive Fail Band registers store the number of tach
+// counts used by the Fan Drive Fail detection circuitry.
+#define EMC2305_REG_FAN1_DRVFAIL_L 0x3Au
+// Fan 1 Drive Fail Band High Byte Register - The Drive Fail Band registers store the number of tach
+// counts used by the Fan Drive Fail detection circuitry.
+#define EMC2305_REG_FAN1_DRVFAIL_H 0x3Bu
+// Fan 1 Tachometer Closed Loop Target Low Byte Register - The TACH Target Registers hold the target
+// tachometer value that is maintained by the RPM-based Fan Speed Control algorithm.
+#define EMC2305_REG_FAN1_TACH_TARGET_L 0x3Cu
+// Fan 1 Tachometer Closed Loop Target High Byte Register - The TACH Target Registers hold the
+// target tachometer value that is maintained by the RPM-based Fan Speed Control algorithm.
+#define EMC2305_REG_FAN1_TACH_TARGET_H 0x3Du
+// Fan 1 Tachometer Reading High Byte Register - The TACH Reading Registers describe the current
+// tachometer reading for each of the fans (see Section 4.4 “Tachometer Measurement”).
+#define EMC2305_REG_FAN1_TACH_READING_H 0x3Eu
+// Fan 1 Tachometer Reading Low Byte Register - The TACH Reading Registers describe the current
+// tachometer reading for each of the fans (see Section 4.4 “Tachometer Measurement”).
+#define EMC2305_REG_FAN1_TACH_READING_L 0x3Fu
 
 // Address offset per fan register block
 #define EMC2305_FAN_ADDRESS_OFFSET 0x10u

@@ -37,21 +37,33 @@ typedef struct {
 typedef struct {
     UART_HandleTypeDef huart;
 
-    uint16_t tx_queue_size;            // number of UART_tx_payload_t in tx_queue
-    QueueHandle_t tx_queue;            // queue handle
-    StaticQueue_t tx_queue_buffer;     // static queue info (required for initialization)
-    uint8_t* tx_queue_storage;         // storage for tx queue
-    uint8_t* tx_dir_buffer;            // buffer for in-progress direct transmission
-    SemaphoreHandle_t tx_mutex;        // for ordering in case of multiple users of same TX queue
-    StaticSemaphore_t tx_mutex_buffer; // static mutex info (required for initialization)
+    // number of UART_tx_payload_t in tx_queue
+    uint16_t tx_queue_size;
+    // queue handle
+    QueueHandle_t tx_queue;
+    // static queue info (required for initialization)
+    StaticQueue_t tx_queue_buffer;
+    // storage for tx queue
+    uint8_t* tx_queue_storage;
+    // buffer for in-progress direct transmission
+    uint8_t* tx_dir_buffer;
+    // for ordering in case of multiple users of same TX queue
+    SemaphoreHandle_t tx_mutex;
+    // static mutex info (required for initialization)
+    StaticSemaphore_t tx_mutex_buffer;
     volatile bool tx_active;
 
-    uint16_t rx_queue_size;        // number of UART_rx_payload_t in rx_queue
-    QueueHandle_t rx_queue;        // queue handle
-    StaticQueue_t rx_queue_buffer; // static queue info (required for initialization)
-    uint8_t* rx_queue_storage;     // storage for rx queue
-    UART_rx_payload_t
-        rx_buffer; // intermediate buffer of UART_RX_DATA_SIZE bytes to store received data before it is copied to the queue
+    // number of UART_rx_payload_t in rx_queue
+    uint16_t rx_queue_size;
+    // queue handle
+    QueueHandle_t rx_queue;
+    // static queue info (required for initialization)
+    StaticQueue_t rx_queue_buffer;
+    // storage for rx queue
+    uint8_t* rx_queue_storage;
+    // intermediate buffer of UART_RX_DATA_SIZE bytes to store received data before it is copied to
+    // the queue
+    UART_rx_payload_t rx_buffer;
 } UART_periph_t;
 
 // helper to trigger background interrupts
@@ -542,8 +554,8 @@ uart_status_t uart_deinit(UART_HandleTypeDef* handle) {
  */
 uart_status_t uart_send(UART_HandleTypeDef* handle, const uint8_t* data, uint16_t length,
                         TickType_t delay_ticks) {
-    if (length == 0 ||
-        !is_uart_initialized(handle)) { // check if UART is initialized and data length is not 0
+    // check if UART is initialized and data length is not 0
+    if (length == 0 || !is_uart_initialized(handle)) {
         return UART_ERR;
     }
 
@@ -669,13 +681,13 @@ static void uart_transmit(UART_HandleTypeDef* huart) {
 
     // Pull as many bytes as we can fit in the buffer
     UART_tx_payload_t payload;
-    while (xQueuePeekFromISR(uart_periph->tx_queue, &payload) ==
-           pdTRUE) { // there's still something in queue?
+    // there's still something in queue?
+    while (xQueuePeekFromISR(uart_periph->tx_queue, &payload) == pdTRUE) {
         if (count + payload.len > UART_SINGLE_TX_SIZE)
             break;
         else {
-            xQueueReceiveFromISR(uart_periph->tx_queue, &payload,
-                                 &higherPriorityTaskWoken); // pop from queue
+            // pop from queue
+            xQueueReceiveFromISR(uart_periph->tx_queue, &payload, &higherPriorityTaskWoken);
         }
 
         // Safely copy the data from the payload into the tx_buffer
@@ -716,14 +728,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 
     BaseType_t higherPriorityTaskWoken = pdFALSE;
 
-    xQueueSendFromISR(
-        uart_periph->rx_queue, &receivedData,
-        &higherPriorityTaskWoken); // Send data from &receivedData(pRxBuffPtr) to rx_queue
+    // Send data from &receivedData(pRxBuffPtr) to rx_queue
+    xQueueSendFromISR(uart_periph->rx_queue, &receivedData, &higherPriorityTaskWoken);
 
     // Trigger the next interrupt
-    HAL_UART_Receive_IT(
-        huart, uart_periph->rx_buffer.data,
-        UART_RX_DATA_SIZE); // pRxBufferPtr is a pointer to the buffer that will store the received data
+    // pRxBufferPtr is a pointer to the buffer that will store the received data
+    HAL_UART_Receive_IT(huart, uart_periph->rx_buffer.data, UART_RX_DATA_SIZE);
 
     portYIELD_FROM_ISR(higherPriorityTaskWoken);
 }
