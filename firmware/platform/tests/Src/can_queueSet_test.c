@@ -151,7 +151,7 @@ static void task_2(void* pvParameters) {
 
 int main(void) {
 
-#if defined(CAN1)
+    #if defined(CAN1)
     // initialize the HAL and system clock
     if (HAL_Init() != HAL_OK)
         Error_Handler();
@@ -241,7 +241,7 @@ int main(void) {
 
     vTaskStartScheduler();
 
-#endif
+    #endif
 
     Error_Handler();
 
@@ -249,7 +249,7 @@ int main(void) {
 }
 
 void test_printf_init() {
-#ifdef USART1
+    #ifdef USART1
     husart1->Init.BaudRate = 115200;
     husart1->Init.WordLength = UART_WORDLENGTH_8B;
     husart1->Init.StopBits = UART_STOPBITS_1;
@@ -274,7 +274,7 @@ void test_printf_init() {
     InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     InitStruct.Alternate = GPIO_AF7_USART1;
     HAL_GPIO_Init(USART_PORT, &InitStruct);
-#endif
+    #endif
 }
 
 

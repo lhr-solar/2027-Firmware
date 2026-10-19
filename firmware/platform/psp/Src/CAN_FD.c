@@ -57,7 +57,7 @@ can_status_t can_fd_init(FDCAN_HandleTypeDef* handle, FDCAN_FilterTypeDef* filte
         return CAN_ERR;
     }
 
-#ifdef FDCAN1
+    #ifdef FDCAN1
     if (handle->Instance == FDCAN1) {
         fdcan1_send_queue =
             xQueueCreateStatic(FDCAN1_SEND_QUEUE_SIZE, sizeof(can_tx_payload_t),
@@ -68,8 +68,8 @@ can_status_t can_fd_init(FDCAN_HandleTypeDef* handle, FDCAN_FilterTypeDef* filte
                                    can1_recv_entries[i].storage, &can1_recv_entries[i].buffer);
         }
     }
-#endif
-#ifdef FDCAN2
+    #endif
+    #ifdef FDCAN2
     if (handle->Instance == FDCAN2) {
         fdcan2_send_queue =
             xQueueCreateStatic(FDCAN2_SEND_QUEUE_SIZE, sizeof(can_tx_payload_t),
@@ -81,8 +81,8 @@ can_status_t can_fd_init(FDCAN_HandleTypeDef* handle, FDCAN_FilterTypeDef* filte
                                    can2_recv_entries[i].storage, &can2_recv_entries[i].buffer);
         }
     }
-#endif
-#ifdef FDCAN3
+    #endif
+    #ifdef FDCAN3
     if (handle->Instance == FDCAN3) {
         fdcan3_send_queue =
             xQueueCreateStatic(FDCAN3_SEND_QUEUE_SIZE, sizeof(can_tx_payload_t),
@@ -94,7 +94,7 @@ can_status_t can_fd_init(FDCAN_HandleTypeDef* handle, FDCAN_FilterTypeDef* filte
         }
     }
 
-#endif
+    #endif
     return CAN_OK;
 }
 
@@ -169,27 +169,27 @@ can_status_t can_fd_send(FDCAN_HandleTypeDef* handle, FDCAN_TxHeaderTypeDef* hea
         portEXIT_CRITICAL();
 
 
-#ifdef FDCAN1
+        #ifdef FDCAN1
         if (handle->Instance == FDCAN1) {
             if (xQueueSend(fdcan1_send_queue, &payload, delay_ticks) != pdTRUE) {
                 return CAN_ERR;
             }
         }
-#endif /* FDCAN1 */
-#ifdef FDCAN2
+        #endif /* FDCAN1 */
+        #ifdef FDCAN2
         if (handle->Instance == FDCAN2) {
             if (xQueueSend(fdcan2_send_queue, &payload, delay_ticks) != pdTRUE) {
                 return CAN_ERR;
             }
         }
-#endif /* FDCAN2 */
-#ifdef FDCAN3
+        #endif /* FDCAN2 */
+        #ifdef FDCAN3
         if (handle->Instance == FDCAN3) {
             if (xQueueSend(fdcan3_send_queue, &payload, delay_ticks) != pdTRUE) {
                 return CAN_ERR;
             }
         }
-#endif /* FDCAN3 */
+        #endif /* FDCAN3 */
     }
     return CAN_OK;
 }
@@ -229,27 +229,27 @@ can_status_t can_fd_send_isr(FDCAN_HandleTypeDef* handle, FDCAN_TxHeaderTypeDef*
         // HW FIFO full, fall back to the SW queue
         if (0) {
         }
-#ifdef FDCAN1
+        #ifdef FDCAN1
         else if (handle->Instance == FDCAN1) {
             if (xQueueSendFromISR(fdcan1_send_queue, &payload, higherPriorityTaskWoken) != pdTRUE) {
                 return CAN_ERR;
             }
         }
-#endif
-#ifdef FDCAN2
+        #endif
+        #ifdef FDCAN2
         else if (handle->Instance == FDCAN2) {
             if (xQueueSendFromISR(fdcan2_send_queue, &payload, higherPriorityTaskWoken) != pdTRUE) {
                 return CAN_ERR;
             }
         }
-#endif
-#ifdef FDCAN3
+        #endif
+        #ifdef FDCAN3
         else if (handle->Instance == FDCAN3) {
             if (xQueueSendFromISR(fdcan3_send_queue, &payload, higherPriorityTaskWoken) != pdTRUE) {
                 return CAN_ERR;
             }
         }
-#endif
+        #endif
     }
     return CAN_OK;
 }
@@ -266,24 +266,24 @@ can_status_t can_fd_recv(FDCAN_HandleTypeDef* handle, uint32_t id, FDCAN_RxHeade
     uint32_t can_recv_entry_count = 0;
     if (0) { // placeholder if no FDCAN peripherals are enabled
     }
-#ifdef FDCAN1
+    #ifdef FDCAN1
     else if (handle->Instance == FDCAN1) {
         can_recv_entry_count = can1_recv_entry_count;
         can_recv_entries = can1_recv_entries;
     }
-#endif /* FDCAN1 */
-#ifdef FDCAN2
+    #endif /* FDCAN1 */
+    #ifdef FDCAN2
     else if (handle->Instance == FDCAN2) {
         can_recv_entry_count = can2_recv_entry_count;
         can_recv_entries = can2_recv_entries;
     }
-#endif /* FDCAN2 */
-#ifdef FDCAN3
+    #endif /* FDCAN2 */
+    #ifdef FDCAN3
     else if (handle->Instance == FDCAN3) {
         can_recv_entry_count = can3_recv_entry_count;
         can_recv_entries = can3_recv_entries;
     }
-#endif /* FDCAN3 */
+    #endif /* FDCAN3 */
 
     // no CAN FD peripherals enabled
     if (can_recv_entries == NULL) {
@@ -438,7 +438,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo0ITs)
             // placeholder if no FDCAN peripherals are enabled
             if (0) {
             }
-#ifdef FDCAN1
+            #ifdef FDCAN1
             else if (hfdcan->Instance == FDCAN1) {
                 for (uint32_t i = 0; i < can1_recv_entry_count; i++) {
                     if (can1_recv_entries[i].id == payload.header.Identifier) {
@@ -454,8 +454,8 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo0ITs)
                     }
                 }
             }
-#endif /* FDCAN1 */
-#ifdef FDCAN2
+            #endif /* FDCAN1 */
+            #ifdef FDCAN2
             else if (hfdcan->Instance == FDCAN2) {
                 for (uint32_t i = 0; i < can2_recv_entry_count; i++) {
                     if (can2_recv_entries[i].id == payload.header.Identifier) {
@@ -472,8 +472,8 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo0ITs)
                     }
                 }
             }
-#endif /* FDCAN2 */
-#ifdef FDCAN3
+            #endif /* FDCAN2 */
+            #ifdef FDCAN3
             else if (hfdcan->Instance == FDCAN3) {
                 for (uint32_t i = 0; i < can3_recv_entry_count; i++) {
                     if (can3_recv_entries[i].id == payload.header.Identifier) {
@@ -489,7 +489,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo0ITs)
                     }
                 }
             }
-#endif /* FDCAN3 */
+            #endif /* FDCAN3 */
         }
     }
 
@@ -511,28 +511,28 @@ void HAL_FDCAN_TxBufferCompleteCallback(FDCAN_HandleTypeDef* hfdcan, uint32_t Bu
     // placeholder if no FDCAN peripheral is enabled
     if (0) {
     }
-#ifdef FDCAN1
+    #ifdef FDCAN1
     else if (hfdcan->Instance == FDCAN1) {
         if (xQueueReceiveFromISR(fdcan1_send_queue, &payload, &higherPriorityTaskWoken) ==
             pdTRUE) { // actually passing this in now??
             HAL_FDCAN_AddMessageToTxFifoQ(hfdcan, &payload.header, payload.data);
         }
     }
-#endif
-#ifdef FDCAN2
+    #endif
+    #ifdef FDCAN2
     else if (hfdcan->Instance == FDCAN2) {
         if (xQueueReceiveFromISR(fdcan2_send_queue, &payload, &higherPriorityTaskWoken) == pdTRUE) {
             HAL_FDCAN_AddMessageToTxFifoQ(hfdcan, &payload.header, payload.data);
         }
     }
-#endif
-#ifdef FDCAN3
+    #endif
+    #ifdef FDCAN3
     else if (hfdcan->Instance == FDCAN3) {
         if (xQueueReceiveFromISR(fdcan3_send_queue, &payload, &higherPriorityTaskWoken) == pdTRUE) {
             HAL_FDCAN_AddMessageToTxFifoQ(hfdcan, &payload.header, payload.data);
         }
     }
-#endif
+    #endif
 
     portYIELD_FROM_ISR(higherPriorityTaskWoken);
 }

@@ -53,18 +53,18 @@ void Heartbeat_Clock_Init() {
 void TxTask(void* argument) {
 
     const TickType_t xDelay = pdMS_TO_TICKS(1000); // 1 second delay
-#ifdef LPUART1
+    #ifdef LPUART1
     uint8_t testData[] = "Test Message 123\r\n";
     const uint8_t msgLen = sizeof(testData) - 1;
-#endif
+    #endif
     uint32_t txCount = 0;
 
     while (1) {
         // Send test message
         uart_status_t status = UART_ERR;
-#ifdef LPUART1
+        #ifdef LPUART1
         status = uart_send(hlpuart1, testData, msgLen, portMAX_DELAY);
-#endif
+        #endif
         if (status == UART_OK) {
             txCount++;
             // Toggle LED to indicate successful transmission
@@ -83,9 +83,9 @@ void RxTask(void* argument) {
 
     while (1) {
         uart_status_t status = UART_ERR;
-#ifdef LPUART1
+        #ifdef LPUART1
         status = uart_recv(hlpuart1, &rxBuffer, 1, portMAX_DELAY);
-#endif
+        #endif
 
         if (status == UART_OK) {
             rxCount++;
@@ -112,7 +112,7 @@ int main(void) {
     Heartbeat_Clock_Init();               // enable clock for LED_PORT
     HAL_GPIO_Init(LED_PORT, &led_config); // initialize GPIOA with led_config
 
-#ifdef LPUART1
+    #ifdef LPUART1
     hlpuart1->Instance = LPUART1;
     hlpuart1->Init.BaudRate = 115200;
     hlpuart1->Init.WordLength = UART_WORDLENGTH_8B;
@@ -127,20 +127,20 @@ int main(void) {
     #endif
     hlpuart1->AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
 
-#endif
+    #endif
 
 
-#ifdef LPUART1
+    #ifdef LPUART1
     // Initialize LPUART1
     uart_status_t status = uart_init(hlpuart1);
     if (status != UART_OK) {
         Error_Handler();
     }
-#endif
+    #endif
 
 
-// This is tested using the LSOM
-#ifdef USART3
+    // This is tested using the LSOM
+    #ifdef USART3
     // initialize printf (not needed for LPUART)
     husart3->Init.BaudRate = 115200;
     husart3->Init.WordLength = UART_WORDLENGTH_8B;
@@ -154,7 +154,7 @@ int main(void) {
 
     printf_enabled = 1; // necessary for ports that don't use husart3
 
-#endif
+    #endif
 
 
     // Create the tasks statically
@@ -193,7 +193,7 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     UNUSED(
         GPIO_InitStruct); // UNUSED is for the case where none of the handles are enabled in the chip
-#ifdef LPUART1
+    #ifdef LPUART1
     if (huart->Instance == LPUART1) {
         __HAL_RCC_GPIOB_CLK_ENABLE();
         /**LPUART1 GPIO Configuration
@@ -207,9 +207,9 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
         GPIO_InitStruct.Alternate = GPIO_AF8_LPUART1;
         HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
     }
-#endif
+    #endif
 
-#ifdef USART3
+    #ifdef USART3
     if (huart->Instance == USART3) {
         __HAL_RCC_GPIOC_CLK_ENABLE();
         /**USART3 GPIO Configuration
@@ -223,7 +223,7 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
         GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
         HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
     }
-#endif
+    #endif
 }
 
 void Error_Handler(void) {

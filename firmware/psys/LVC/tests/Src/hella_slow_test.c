@@ -17,9 +17,9 @@ int main() {
     HAL_GPIO_Init(LED_PORT, &led_config); // initialize GPIOA with led_config
 
     while (1) {
-#ifdef RUN
+        #ifdef RUN
         HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
-#endif
+        #endif
         HAL_Delay(2000);
     }
 

@@ -73,7 +73,7 @@ static void task(void* pvParameters) {
 }
 
 int main(void) {
-#if defined(CAN1)
+    #if defined(CAN1)
     // initialize the HAL and system clock
     if (HAL_Init() != HAL_OK)
         Error_Handler();
@@ -161,7 +161,7 @@ int main(void) {
     // clang-format on
 
     vTaskStartScheduler();
-#endif
+    #endif
 
     Error_Handler();
 

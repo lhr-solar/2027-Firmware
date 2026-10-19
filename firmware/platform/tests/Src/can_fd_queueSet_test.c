@@ -115,11 +115,11 @@ static void task_1(void* pvParameters) {
 
     while (1) {
 
-#ifdef FDCAN1
+        #ifdef FDCAN1
         if (can_fd_send(hfdcan1, &tx_header, tx_data, portMAX_DELAY) == CAN_ERR) {
             Error_Handler();
         }
-#endif
+        #endif
 
         vTaskDelay(pdMS_TO_TICKS(500));
     }
@@ -152,11 +152,11 @@ static void task_2(void* pvParameters) {
 
     while (1) {
 
-#ifdef FDCAN1
+        #ifdef FDCAN1
         if (can_fd_send(hfdcan1, &tx_header, tx_data, portMAX_DELAY) == CAN_ERR) {
             Error_Handler();
         }
-#endif
+        #endif
 
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
@@ -168,23 +168,23 @@ int main(void) {
     __HAL_RCC_SYSCFG_CLK_ENABLE();
     __HAL_RCC_PWR_CLK_ENABLE();
 
-// System clock config can change depending on the target MCU, since the clock tree can be different
-// If you need to use a different MCU, go to cubemx and generate a new system clock config function with the system clock being 80 Mhz
-// It especially varies with nucleo vs direct MCU
-// G473_SystemClockConfig();
-#ifdef STM32G474xx
+    // System clock config can change depending on the target MCU, since the clock tree can be different
+    // If you need to use a different MCU, go to cubemx and generate a new system clock config function with the system clock being 80 Mhz
+    // It especially varies with nucleo vs direct MCU
+    // G473_SystemClockConfig();
+    #ifdef STM32G474xx
     G474_SystemClockConfig();
-#elif defined(STM32G473xx)
+    #elif defined(STM32G473xx)
     G473_SystemClockConfig();
-#else
+    #else
     SystemClock_Config();
-#endif
+    #endif
 
 
     Heartbeat_Init(); // enable LED for LED_PORT
     test_printf_init();
 
-#ifdef FDCAN1
+    #ifdef FDCAN1
     hfdcan1->Instance = FDCAN1;
     hfdcan1->Init.ClockDivider = FDCAN_CLOCK_DIV1;
     hfdcan1->Init.FrameFormat = FDCAN_FRAME_CLASSIC;
@@ -226,7 +226,7 @@ int main(void) {
     if (can_fd_start(hfdcan1) != CAN_OK) {
         Error_Handler();
     }
-#endif
+    #endif
 
     // you can only send CAN messages within a FreeRTOS task
     // clang-format off
@@ -280,7 +280,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
     if (0) { // placeholder for if else if there are no FDCANs defined
 
     }
-#ifdef FDCAN1
+    #ifdef FDCAN1
     else if (hfdcan->Instance == FDCAN1) {
 
         PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
@@ -313,8 +313,8 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
         HAL_NVIC_SetPriority(FDCAN1_IT1_IRQn, FDCAN_NVIC_PRIO, 0);
         HAL_NVIC_EnableIRQ(FDCAN1_IT1_IRQn);
     }
-#endif // FDCAN1
-#ifdef FDCAN2
+    #endif // FDCAN1
+    #ifdef FDCAN2
     else if (hfdcan->Instance == FDCAN2) {
 
         PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
@@ -348,9 +348,9 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
         HAL_NVIC_EnableIRQ(FDCAN2_IT1_IRQn);
 
     }
-#endif // FDCAN2
+    #endif // FDCAN2
 
-#ifdef FDCAN3
+    #ifdef FDCAN3
     else if (hfdcan->Instance == FDCAN3) {
         /** Initializes the peripherals clocks
   */
@@ -384,7 +384,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
         HAL_NVIC_SetPriority(FDCAN3_IT1_IRQn, FDCAN_NVIC_PRIO, 0);
         HAL_NVIC_EnableIRQ(FDCAN3_IT1_IRQn);
     }
-#endif
+    #endif
 }
 
 void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan) {
@@ -472,7 +472,7 @@ void Heartbeat_Init() {
 
 void test_printf_init() {
 
-#ifdef USART3
+    #ifdef USART3
     husart3->Init.BaudRate = 115200;
     husart3->Init.WordLength = UART_WORDLENGTH_8B;
     husart3->Init.StopBits = UART_STOPBITS_1;
@@ -482,7 +482,7 @@ void test_printf_init() {
     husart3->Init.OverSampling = UART_OVERSAMPLING_16;
 
     printf_init(husart3);
-#endif /*USART3*/
+    #endif /*USART3*/
 }
 
 #ifdef USART3

@@ -7,21 +7,21 @@
 #if defined(CAN1) || defined(FDCAN1)
 
     #if __has_include("can1_recv_entries.h")
-        // create can1 recv queue storage
-        #define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_) \
-            uint8_t CAN_ID_CONCAT(can1_recv_queue_storage_, ID_)[SIZE_ * sizeof(can_rx_payload_t)];
+// create can1 recv queue storage
+#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_) \
+    uint8_t CAN_ID_CONCAT(can1_recv_queue_storage_, ID_)[SIZE_ * sizeof(can_rx_payload_t)];
         #include "can1_recv_entries.h"
 
         #undef CAN_RECV_ENTRY
 
-        // create can1 recv queue array
-        #define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)                 \
-            {.id = (ID_),                                             \
-             .size = (SIZE_),                                         \
-             .queue = NULL,                                           \
-             .storage = CAN_ID_CONCAT(can1_recv_queue_storage_, ID_), \
-             .circular = (CIRCULAR_),                                 \
-             .buffer = {{0}}},
+// create can1 recv queue array
+#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)                 \
+    {.id = (ID_),                                             \
+     .size = (SIZE_),                                         \
+     .queue = NULL,                                           \
+     .storage = CAN_ID_CONCAT(can1_recv_queue_storage_, ID_), \
+     .circular = (CIRCULAR_),                                 \
+     .buffer = {{0}}},
 
 can_recv_entry_t can1_recv_entries[] = {
         #include "can1_recv_entries.h"
@@ -42,21 +42,21 @@ __attribute__((unused)) const uint32_t can1_recv_entry_count = 0;
 
 #if defined(CAN2) || defined(FDCAN2)
     #if __has_include("can2_recv_entries.h")
-        // create can2 recv queue storage
-        #define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_) \
-            uint8_t CAN_ID_CONCAT(can2_recv_queue_storage_, ID_)[SIZE_ * sizeof(can_rx_payload_t)];
+// create can2 recv queue storage
+#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_) \
+    uint8_t CAN_ID_CONCAT(can2_recv_queue_storage_, ID_)[SIZE_ * sizeof(can_rx_payload_t)];
         #include "can2_recv_entries.h"
 
         #undef CAN_RECV_ENTRY
 
-        // create can2 recv queue array
-        #define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)                 \
-            {.id = (ID_),                                             \
-             .size = (SIZE_),                                         \
-             .queue = NULL,                                           \
-             .storage = CAN_ID_CONCAT(can2_recv_queue_storage_, ID_), \
-             .circular = (CIRCULAR_),                                 \
-             .buffer = {{0}}},
+// create can2 recv queue array
+#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)                 \
+    {.id = (ID_),                                             \
+     .size = (SIZE_),                                         \
+     .queue = NULL,                                           \
+     .storage = CAN_ID_CONCAT(can2_recv_queue_storage_, ID_), \
+     .circular = (CIRCULAR_),                                 \
+     .buffer = {{0}}},
 
 can_recv_entry_t can2_recv_entries[] = {
         #include "can2_recv_entries.h"
@@ -78,22 +78,22 @@ __attribute__((unused)) const uint32_t can2_recv_entry_count = 0;
 #if defined(CAN3) || defined(FDCAN3)
 
     #if __has_include("can3_recv_entries.h")
-        // create recv queue storage
-        #define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_) \
-            uint8_t CAN_ID_CONCAT(can3_recv_queue_storage_, ID_)[SIZE_ * sizeof(can_rx_payload_t)];
+// create recv queue storage
+#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_) \
+    uint8_t CAN_ID_CONCAT(can3_recv_queue_storage_, ID_)[SIZE_ * sizeof(can_rx_payload_t)];
 
         #include "can3_recv_entries.h"
 
         #undef CAN_RECV_ENTRY
 
-        // create can3 recv queue array
-        #define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)                 \
-            {.id = (ID_),                                             \
-             .size = (SIZE_),                                         \
-             .queue = NULL,                                           \
-             .storage = CAN_ID_CONCAT(can3_recv_queue_storage_, ID_), \
-             .circular = (CIRCULAR_),                                 \
-             .buffer = {{0}}},
+// create can3 recv queue array
+#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)                 \
+    {.id = (ID_),                                             \
+     .size = (SIZE_),                                         \
+     .queue = NULL,                                           \
+     .storage = CAN_ID_CONCAT(can3_recv_queue_storage_, ID_), \
+     .circular = (CIRCULAR_),                                 \
+     .buffer = {{0}}},
 
 can_recv_entry_t can3_recv_entries[] = {
         #include "can3_recv_entries.h"

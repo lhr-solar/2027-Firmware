@@ -228,8 +228,8 @@ void SystemClock_Config(void) {
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-/* CONFIGURATION FOR L4 / G4 CHIPS             */
-#if defined(STM32L4xx)
+    /* CONFIGURATION FOR L4 / G4 CHIPS             */
+    #if defined(STM32L4xx)
 
     if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK) {
         while (1)
@@ -267,7 +267,7 @@ void SystemClock_Config(void) {
             ; // Error Handler
     }
 
-#elif defined(STM32G473xx) || defined(STM32G4xx)
+    #elif defined(STM32G473xx) || defined(STM32G4xx)
 
     if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK) {
         while (1)
@@ -304,8 +304,8 @@ void SystemClock_Config(void) {
     HAL_RCCEx_EnableLSCO(RCC_LSCOSOURCE_LSI); //??
 
 
-/* CONFIGURATION FOR F4 CHIPS (NEW)            */
-#elif defined(STM32F4xx)
+    /* CONFIGURATION FOR F4 CHIPS (NEW)            */
+    #elif defined(STM32F4xx)
 
     __HAL_RCC_PWR_CLK_ENABLE();
     __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
@@ -339,7 +339,7 @@ void SystemClock_Config(void) {
             ; // Error Handler
     }
 
-#endif
+    #endif
 }
 
 void User_Hardware_Init(void) {
@@ -347,14 +347,14 @@ void User_Hardware_Init(void) {
     __HAL_RCC_GPIOB_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
 
-// Force Clocks On
-#if defined(STM32L476xx)
+    // Force Clocks On
+    #if defined(STM32L476xx)
     __HAL_RCC_SPI2_CLK_ENABLE();
-#elif defined(STM32G473xx) || defined(STM32G4xx)
+    #elif defined(STM32G473xx) || defined(STM32G4xx)
     __HAL_RCC_SPI1_CLK_ENABLE();
-#else
+    #else
     __HAL_RCC_SPI1_CLK_ENABLE();
-#endif
+    #endif
 
     /* Configure GPIO (SCK, MISO, MOSI, CS) */
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -389,24 +389,24 @@ void User_Hardware_Init(void) {
     hspi_user.Init.CLKPhase = SPI_PHASE_1EDGE;
     hspi_user.Init.NSS = SPI_NSS_SOFT;
 
-#if defined(STM32G473xx) || defined(STM32G4xx)
+    #if defined(STM32G473xx) || defined(STM32G4xx)
     hspi_user.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-#else
+    #else
     hspi_user.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
-#endif
+    #endif
 
     hspi_user.Init.FirstBit = SPI_FIRSTBIT_MSB;
     hspi_user.Init.TIMode = SPI_TIMODE_DISABLE;
     hspi_user.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
 
-#if defined(STM32L4xx)
+    #if defined(STM32L4xx)
     hspi_user.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
     hspi_user.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
-#elif defined(STM32G473xx) || defined(STM32G4xx)
+    #elif defined(STM32G473xx) || defined(STM32G4xx)
     hspi_user.Init.CRCPolynomial = 7;
     hspi_user.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
     hspi_user.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
-#endif
+    #endif
 
     if (HAL_SPI_Init(&hspi_user) != HAL_OK) {
         while (1)
@@ -414,15 +414,15 @@ void User_Hardware_Init(void) {
     }
     __HAL_SPI_ENABLE(&hspi_user);
 
-// ENABLE INTERRUPTS (Priority 10)
-#if defined(STM32L476xx)
+    // ENABLE INTERRUPTS (Priority 10)
+    #if defined(STM32L476xx)
     HAL_NVIC_SetPriority(SPI2_IRQn, 10, 0);
     HAL_NVIC_EnableIRQ(SPI2_IRQn);
-#elif defined(STM32G473xx) || defined(STM32G4xx)
+    #elif defined(STM32G473xx) || defined(STM32G4xx)
     HAL_NVIC_SetPriority(SPI1_IRQn, 10, 0);
     HAL_NVIC_EnableIRQ(SPI1_IRQn);
-#else
+    #else
     HAL_NVIC_SetPriority(SPI1_IRQn, 10, 0);
     HAL_NVIC_EnableIRQ(SPI1_IRQn);
-#endif
+    #endif
 }

@@ -57,39 +57,39 @@ adc_status_t adc_read(ADC_HandleTypeDef* h, ADC_ChannelConfTypeDef* sConfig, Que
         return ADC_CHANNEL_CONFIG_FAIL;
     }
 
-// BSP only configures channel ranks
-#if defined(STM32F4xx)
+    // BSP only configures channel ranks
+    #if defined(STM32F4xx)
     sConfig->Rank = 1;
-#endif
-#if defined(STM32G4xx) || defined(STM32L4xx)
+    #endif
+    #if defined(STM32G4xx) || defined(STM32L4xx)
     sConfig->Rank = ADC_REGULAR_RANK_1;
-#endif
+    #endif
 
     if (HAL_ADC_ConfigChannel(h, sConfig) != HAL_OK) {
         return ADC_CHANNEL_CONFIG_FAIL;
     }
 
-// Queue Arbitration for later
-#ifdef ADC1
+    // Queue Arbitration for later
+    #ifdef ADC1
     if (h->Instance == ADC1)
         adc1_q = q;
-#endif
-#ifdef ADC2
+    #endif
+    #ifdef ADC2
     if (h->Instance == ADC2)
         adc2_q = q;
-#endif
-#ifdef ADC3
+    #endif
+    #ifdef ADC3
     if (h->Instance == ADC3)
         adc3_q = q;
-#endif
-#ifdef ADC4
+    #endif
+    #ifdef ADC4
     if (h->Instance == ADC4)
         adc4_q = q;
-#endif
-#ifdef ADC5
+    #endif
+    #ifdef ADC5
     if (h->Instance == ADC5)
         adc5_q = q;
-#endif
+    #endif
 
     // Check Queue Full
     if (uxQueueSpacesAvailable(q) == 0) {
@@ -132,22 +132,22 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* h) {
 
     if (h->Instance == ADC1)
         q = adc1_q;
-#ifdef ADC2
+    #ifdef ADC2
     if (h->Instance == ADC2)
         q = adc2_q;
-#endif
-#ifdef ADC3
+    #endif
+    #ifdef ADC3
     if (h->Instance == ADC3)
         q = adc3_q;
-#endif
-#ifdef ADC4
+    #endif
+    #ifdef ADC4
     if (h->Instance == ADC4)
         q = adc4_q;
-#endif
-#ifdef ADC5
+    #endif
+    #ifdef ADC5
     if (h->Instance == ADC5)
         q = adc5_q;
-#endif
+    #endif
 
     rawVal = HAL_ADC_GetValue(h); // reads DR reg
 

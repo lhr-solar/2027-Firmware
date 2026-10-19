@@ -178,11 +178,11 @@ static UART_periph_t* get_valid_uart_periph(UART_HandleTypeDef* handle) {
     UART_periph_t* uart_periph = NULL;
     bool is_valid_uart_instance = false;
 
-#ifdef LPUART1
+    #ifdef LPUART1
     if (IS_LPUART_INSTANCE(handle->Instance)) {
         is_valid_uart_instance = true;
     }
-#endif /* LPUART1 */
+    #endif /* LPUART1 */
     if (IS_UART_INSTANCE(handle->Instance) || IS_USART_INSTANCE(handle->Instance)) {
         is_valid_uart_instance = true;
     }
@@ -191,41 +191,41 @@ static UART_periph_t* get_valid_uart_periph(UART_HandleTypeDef* handle) {
         return NULL;
     }
 
-#ifdef UART4
+    #ifdef UART4
     if (handle->Instance == UART4) {
         uart_periph = &uart4;
     }
-#endif /* UART4 */
+    #endif /* UART4 */
 
-#ifdef UART5
+    #ifdef UART5
     if (handle->Instance == UART5) {
         uart_periph = &uart5;
     }
-#endif /* UART5 */
+    #endif /* UART5 */
 
-#ifdef USART1
+    #ifdef USART1
     if (handle->Instance == USART1) {
         uart_periph = &usart1;
     }
-#endif /* USART1 */
+    #endif /* USART1 */
 
-#ifdef USART2
+    #ifdef USART2
     if (handle->Instance == USART2) {
         uart_periph = &usart2;
     }
-#endif /* USART2 */
+    #endif /* USART2 */
 
-#ifdef USART3
+    #ifdef USART3
     if (handle->Instance == USART3) {
         uart_periph = &usart3;
     }
-#endif /* USART3 */
+    #endif /* USART3 */
 
-#ifdef LPUART1
+    #ifdef LPUART1
     if (handle->Instance == LPUART1) {
         uart_periph = &lpuart1;
     }
-#endif /* LPUART1 */
+    #endif /* LPUART1 */
 
     return uart_periph;
 }
@@ -234,7 +234,7 @@ static UART_periph_t* get_valid_uart_periph(UART_HandleTypeDef* handle) {
 __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
     GPIO_InitTypeDef init = {0};
     // Same sets of pins for L4/F4
-#ifdef UART4
+    #ifdef UART4
     if (huart->Instance == UART4) {
         //enable port A clock
         __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -250,9 +250,9 @@ __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
         init.Alternate = GPIO_AF8_UART4;
         HAL_GPIO_Init(GPIOA, &init);
     }
-#endif /* UART4 */
+    #endif /* UART4 */
 
-#ifdef UART5
+    #ifdef UART5
     if (huart->Instance == UART5) {
         __HAL_RCC_GPIOC_CLK_ENABLE();
 
@@ -273,9 +273,9 @@ __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
 
         HAL_GPIO_Init(GPIOD, &init);
     }
-#endif /* UART5 */
+    #endif /* UART5 */
 
-#ifdef USART1
+    #ifdef USART1
     if (huart->Instance == USART1) {
         //enable port A clock
         __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -291,9 +291,9 @@ __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
         init.Alternate = GPIO_AF7_USART1;
         HAL_GPIO_Init(GPIOA, &init);
     }
-#endif /* USART1 */
+    #endif /* USART1 */
 
-#if defined(USART2) && defined(GPIOD)
+    #if defined(USART2) && defined(GPIOD)
     if (huart->Instance == USART2) {
         //enable port D clock
         __HAL_RCC_GPIOD_CLK_ENABLE();
@@ -309,9 +309,9 @@ __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
         init.Alternate = GPIO_AF7_USART2;
         HAL_GPIO_Init(GPIOD, &init);
     }
-#endif /* USART2 && GPIOD*/
+    #endif /* USART2 && GPIOD*/
 
-#ifdef USART3
+    #ifdef USART3
     if (huart->Instance == USART3) {
         //enable port C clock
         __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -327,9 +327,9 @@ __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
         init.Alternate = GPIO_AF7_USART3;
         HAL_GPIO_Init(GPIOC, &init);
     }
-#endif /* USART3 */
+    #endif /* USART3 */
 
-#ifdef LPUART1
+    #ifdef LPUART1
     if (huart->Instance == LPUART1) {
 
         __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -344,53 +344,53 @@ __weak void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
 
         HAL_GPIO_Init(GPIOA, &init);
     }
-#endif
+    #endif
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* huart) {
     IRQn_Type uart_IRQ = NonMaskableInt_IRQn; // IRQn_Type for UART interrupts
 
-#ifdef UART4
+    #ifdef UART4
     if (huart->Instance == UART4) {
         __HAL_RCC_UART4_CLK_ENABLE(); // enable UART4 clock
         uart_IRQ = UART4_IRQn;
     }
-#endif /* UART4 */
+    #endif /* UART4 */
 
-#ifdef UART5
+    #ifdef UART5
     if (huart->Instance == UART5) {
         __HAL_RCC_UART5_CLK_ENABLE(); // enable UART5 clock
         uart_IRQ = UART5_IRQn;
     }
-#endif /* UART5 */
+    #endif /* UART5 */
 
-#ifdef USART1
+    #ifdef USART1
     if (huart->Instance == USART1) {
         __HAL_RCC_USART1_CLK_ENABLE(); // enable USART1 clock
         uart_IRQ = USART1_IRQn;
     }
-#endif /* USART1 */
+    #endif /* USART1 */
 
-#ifdef USART2
+    #ifdef USART2
     if (huart->Instance == USART2) {
         __HAL_RCC_USART2_CLK_ENABLE(); // enable USART2 clock
         uart_IRQ = USART2_IRQn;
     }
-#endif /* USART2 */
+    #endif /* USART2 */
 
-#ifdef USART3
+    #ifdef USART3
     if (huart->Instance == USART3) {
         __HAL_RCC_USART3_CLK_ENABLE(); // enable USART3 clock
         uart_IRQ = USART3_IRQn;
     }
-#endif /* USART3 */
+    #endif /* USART3 */
 
-#ifdef LPUART1
+    #ifdef LPUART1
     if (huart->Instance == LPUART1) {
         __HAL_RCC_LPUART1_CLK_ENABLE();
         uart_IRQ = LPUART1_IRQn;
     }
-#endif /* LPUART1 */
+    #endif /* LPUART1 */
 
     // configure GPIO pins for UART
     HAL_UART_MspGPIOInit(huart);
@@ -406,7 +406,7 @@ __weak void HAL_UART_MspGPIODeInit(UART_HandleTypeDef* huart) {
 
 void HAL_UART_MspDeInit(UART_HandleTypeDef* huart) {
     // UART4
-#ifdef UART4
+    #ifdef UART4
     if (huart->Instance == UART4) {
         //disable clocks
         __HAL_RCC_UART4_CLK_DISABLE();
@@ -414,10 +414,10 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart) {
         // disable interrupts
         HAL_NVIC_DisableIRQ(UART4_IRQn);
     }
-#endif /* UART4 */
+    #endif /* UART4 */
 
     // UART5
-#ifdef UART5
+    #ifdef UART5
     if (huart->Instance == UART5) {
         // disable clocks
         __HAL_RCC_UART5_CLK_DISABLE();
@@ -425,10 +425,10 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart) {
         // disable interrupts
         HAL_NVIC_DisableIRQ(UART5_IRQn); //disable interrupts
     }
-#endif /* UART5 */
+    #endif /* UART5 */
 
     // USART1
-#ifdef USART1
+    #ifdef USART1
     if (huart->Instance == USART1) {
         // disable clocks
         __HAL_RCC_USART1_CLK_DISABLE();
@@ -436,10 +436,10 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart) {
         // disable interrupts
         HAL_NVIC_DisableIRQ(USART1_IRQn); //disable interrupts
     }
-#endif /* USART1 */
+    #endif /* USART1 */
 
     // USART2
-#ifdef USART2
+    #ifdef USART2
     if (huart->Instance == USART2) {
         // disable clocks
         __HAL_RCC_USART2_CLK_DISABLE();
@@ -447,10 +447,10 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart) {
         // disable interrupts
         HAL_NVIC_DisableIRQ(USART2_IRQn); //disable interrupts
     }
-#endif /* USART2 */
+    #endif /* USART2 */
 
     // USART3
-#ifdef USART3
+    #ifdef USART3
     if (huart->Instance == USART3) {
         // disable clocks
         __HAL_RCC_USART3_CLK_DISABLE();
@@ -458,15 +458,15 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart) {
         // disable interrupts
         HAL_NVIC_DisableIRQ(USART3_IRQn); //disable interrupts
     }
-#endif /* USART3 */
+    #endif /* USART3 */
 
-#ifdef LPUART1
+    #ifdef LPUART1
     if (huart->Instance == LPUART1) {
 
         __HAL_RCC_LPUART1_CLK_DISABLE();
         HAL_NVIC_DisableIRQ(LPUART1_IRQn); //disable interrupts
     }
-#endif
+    #endif
 
     HAL_UART_MspGPIODeInit(huart);
 }

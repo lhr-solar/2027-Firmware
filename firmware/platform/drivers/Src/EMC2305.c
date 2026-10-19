@@ -120,16 +120,16 @@ EMC2305_Status EMC2305_Init(EMC2305_HandleTypeDef* chip, I2C_HandleTypeDef* hi2c
     if (hi2c->Instance == I2C1) {
         chip_I2C1 = chip;
     }
-#ifdef I2C2
+    #ifdef I2C2
     else if (hi2c->Instance == I2C2) {
         chip_I2C2 = chip;
     }
-#endif
-#ifdef I2C3
+    #endif
+    #ifdef I2C3
     else if (hi2c->Instance == I2C3) {
         chip_I2C3 = chip;
     }
-#endif
+    #endif
     else {
         return EMC2305_ERR;
     }
@@ -654,16 +654,16 @@ void EMC2305_I2C_MasterTxCpltCallback(I2C_HandleTypeDef* hi2c) {
     if (hi2c->Instance == I2C1) {
         chip = chip_I2C1;
     }
-#ifdef I2C2
+    #ifdef I2C2
     else if (hi2c->Instance == I2C2) {
         chip = chip_I2C2;
     }
-#endif
-#ifdef I2C3
+    #endif
+    #ifdef I2C3
     else if (hi2c->Instance == I2C3) {
         chip = chip_I2C3;
     }
-#endif
+    #endif
 
     if (chip != NULL) {
         xSemaphoreGiveFromISR(chip->i2c_complete, &xHigherPriorityTaskWoken);
@@ -682,16 +682,16 @@ void EMC2305_I2C_MasterRxCpltCallback(I2C_HandleTypeDef* hi2c) {
     if (hi2c->Instance == I2C1) {
         chip = chip_I2C1;
     }
-#ifdef I2C2
+    #ifdef I2C2
     else if (hi2c->Instance == I2C2) {
         chip = chip_I2C2;
     }
-#endif
-#ifdef I2C3
+    #endif
+    #ifdef I2C3
     else if (hi2c->Instance == I2C3) {
         chip = chip_I2C3;
     }
-#endif
+    #endif
 
     if (chip != NULL) {
         xSemaphoreGiveFromISR(chip->i2c_complete, &xHigherPriorityTaskWoken);

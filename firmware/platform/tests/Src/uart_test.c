@@ -40,10 +40,10 @@ int main(void) {
     huart->Init.HwFlowCtl = UART_HWCONTROL_NONE;
     huart->Init.OverSampling = UART_OVERSAMPLING_16;
 
-#ifdef STM32L4xx
+    #ifdef STM32L4xx
     huart->Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
     huart->AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-#endif /* STM32L4xx */
+    #endif /* STM32L4xx */
 
     // Initialize UART BSP
     uart_status_t status = uart_init(huart);
@@ -84,7 +84,7 @@ int main(void) {
 
 void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
     GPIO_InitTypeDef init = {0};
-#ifdef STM32F446xx
+    #ifdef STM32F446xx
     #ifdef USART2
     if (huart->Instance == USART2) {
         //enable port A clock
@@ -102,9 +102,9 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
         HAL_GPIO_Init(GPIOA, &init);
     }
     #endif /* USART2 */
-#else
+    #else
     (void)init;
-#endif /* STM32F446xx */
+    #endif /* STM32F446xx */
 }
 
 static void MX_GPIO_Init(void) {

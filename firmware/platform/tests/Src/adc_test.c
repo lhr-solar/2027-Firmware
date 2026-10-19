@@ -95,11 +95,11 @@ void TestADC1(void* pvParameters) {
 
     ADC_ChannelConfTypeDef sConfig = {
         .Channel = ADC_CHANNEL_1,
-#ifdef ADC_SAMPLETIME_3CYCLES
+        #ifdef ADC_SAMPLETIME_3CYCLES
         .SamplingTime = ADC_SAMPLETIME_3CYCLES,
-#else
+        #else
         .SamplingTime = ADC_SAMPLETIME_2CYCLES_5,
-#endif
+        #endif
     };
 
     // read once
@@ -125,11 +125,11 @@ void TestADC2(void* pvParameters) {
 
     ADC_ChannelConfTypeDef sConfig = {
         .Channel = ADC_CHANNEL_1,
-    #ifdef ADC_SAMPLETIME_3CYCLES
+        #ifdef ADC_SAMPLETIME_3CYCLES
         .SamplingTime = ADC_SAMPLETIME_3CYCLES,
-    #else
+        #else
         .SamplingTime = ADC_SAMPLETIME_2CYCLES_5,
-    #endif
+        #endif
     };
 
     // read once
@@ -156,11 +156,11 @@ void TestADC3(void* pvParameters) {
 
     ADC_ChannelConfTypeDef sConfig = {
         .Channel = ADC_CHANNEL_1,
-    #ifdef ADC_SAMPLETIME_3CYCLES
+        #ifdef ADC_SAMPLETIME_3CYCLES
         .SamplingTime = ADC_SAMPLETIME_3CYCLES,
-    #else
+        #else
         .SamplingTime = ADC_SAMPLETIME_2CYCLES_5,
-    #endif
+        #endif
     };
 
     // read once
@@ -235,16 +235,16 @@ int main() {
     if (s != ADC_OK)
         error_handler(ADC_INIT_FAIL);
 
-#if !defined(STM32L4xx)
+    #if !defined(STM32L4xx)
     ADC_MultiModeTypeDef multimode = {0};
     multimode.Mode = ADC_MODE_INDEPENDENT;
     if (HAL_ADCEx_MultiModeConfigChannel(hadc1, &multimode) != HAL_OK) {
         Error_Handler();
     }
-#endif
+    #endif
 
 
-#ifdef ADC2
+    #ifdef ADC2
     ADC_InitTypeDef adc_init_2 = {0};
 
     adc_init_2.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
@@ -261,8 +261,8 @@ int main() {
 
     if (adc_init(&adc_init_2, hadc2) != ADC_OK)
         error_handler(ADC_INIT_FAIL);
-#endif
-#ifdef ADC3
+    #endif
+    #ifdef ADC3
     ADC_InitTypeDef adc_init_3 = {0};
 
     adc_init_3.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
@@ -279,7 +279,7 @@ int main() {
 
     if (adc_init(&adc_init_3, hadc3) != ADC_OK)
         error_handler(ADC_INIT_FAIL);
-#endif
+    #endif
 
     // clang-format off
     xTaskCreateStatic(
@@ -463,35 +463,35 @@ static inline void HAL_ADC_MspF4DeInit(ADC_HandleTypeDef* h) {
 #endif
 
 void HAL_ADC_MspInit(ADC_HandleTypeDef* h) {
-// G4
-#ifdef STM32G4xx
+    // G4
+    #ifdef STM32G4xx
     HAL_ADC_MspG4Init(h);
-#endif
+    #endif
 
-// L4
-#ifdef STM32L4xx
+    // L4
+    #ifdef STM32L4xx
     HAL_ADC_MspL4Init(h);
-#endif
+    #endif
 
-// F4
-#ifdef STM32F4xx
+    // F4
+    #ifdef STM32F4xx
     HAL_ADC_MspF4Init(h);
-#endif
+    #endif
 }
 
 void HAL_ADC_MspDeInit(ADC_HandleTypeDef* h) {
-// G4
-#ifdef STM32G4xx
+    // G4
+    #ifdef STM32G4xx
     HAL_ADC_MspG4DeInit(h);
-#endif
+    #endif
 
-// L4
-#ifdef STM32L4xx
+    // L4
+    #ifdef STM32L4xx
     HAL_ADC_MspL4DeInit(h);
-#endif
+    #endif
 
-// F4
-#ifdef STM32F4xx
+    // F4
+    #ifdef STM32F4xx
     HAL_ADC_MspF4DeInit(h);
-#endif
+    #endif
 }

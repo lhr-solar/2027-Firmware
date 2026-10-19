@@ -54,7 +54,7 @@ void test_s32() {
 
 void TxTask(void* argument) {
 
-#ifdef USART3
+    #ifdef USART3
     husart3->Init.BaudRate = 115200;
     husart3->Init.WordLength = UART_WORDLENGTH_8B;
     husart3->Init.StopBits = UART_STOPBITS_1;
@@ -64,7 +64,7 @@ void TxTask(void* argument) {
     husart3->Init.OverSampling = UART_OVERSAMPLING_16;
 
     printf_init(husart3);
-#endif /*USART3 */
+    #endif /*USART3 */
 
     printf("Running moving average tests...\n\r");
 
@@ -105,7 +105,7 @@ int main() {
 
 void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
 
-#ifdef USART3
+    #ifdef USART3
     GPIO_InitTypeDef init = {0};
     __HAL_RCC_GPIOC_CLK_ENABLE();
     /**USART3 GPIO Configuration
@@ -118,5 +118,5 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
     init.Speed = GPIO_SPEED_FREQ_LOW;
     init.Alternate = GPIO_AF7_USART3;
     HAL_GPIO_Init(GPIOC, &init);
-#endif
+    #endif
 }

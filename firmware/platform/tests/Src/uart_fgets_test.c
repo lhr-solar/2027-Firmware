@@ -15,7 +15,7 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
     GPIO_InitTypeDef init = {0};
     UNUSED(init);
 
-#ifdef STM32F4xx
+    #ifdef STM32F4xx
     __HAL_RCC_GPIOA_CLK_ENABLE();
 
     /* enable port A USART2 gpio
@@ -28,9 +28,9 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
     init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     init.Alternate = GPIO_AF7_USART2;
     HAL_GPIO_Init(GPIOA, &init);
-#endif
+    #endif
 
-#ifdef STM32G4xx
+    #ifdef STM32G4xx
     __HAL_RCC_GPIOC_CLK_ENABLE();
 
     /* enable port C USART3 gpio
@@ -43,9 +43,9 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
     init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     init.Alternate = GPIO_AF7_USART3;
     HAL_GPIO_Init(GPIOC, &init);
-#endif
+    #endif
 
-#ifdef STM32L4xx
+    #ifdef STM32L4xx
     /* Peripheral clock enable */
     __HAL_RCC_USART1_CLK_ENABLE();
 
@@ -60,7 +60,7 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
     init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     init.Alternate = GPIO_AF7_USART1;
     HAL_GPIO_Init(GPIOA, &init);
-#endif
+    #endif
 }
 
 static bool contactor_state = true;
@@ -90,7 +90,7 @@ void TermTask(void* argument) {
 }
 
 void InitTask(void* argument) {
-#ifdef STM32F4xx
+    #ifdef STM32F4xx
     husart2->Init.BaudRate = 115200;
     husart2->Init.WordLength = UART_WORDLENGTH_8B;
     husart2->Init.StopBits = UART_STOPBITS_1;
@@ -99,9 +99,9 @@ void InitTask(void* argument) {
     husart2->Init.HwFlowCtl = UART_HWCONTROL_NONE;
     husart2->Init.OverSampling = UART_OVERSAMPLING_16;
     printf_init(husart2);
-#endif
+    #endif
 
-#ifdef STM32G4xx
+    #ifdef STM32G4xx
     husart3->Init.BaudRate = 115200;
     husart3->Init.WordLength = UART_WORDLENGTH_8B;
     husart3->Init.StopBits = UART_STOPBITS_1;
@@ -110,9 +110,9 @@ void InitTask(void* argument) {
     husart3->Init.HwFlowCtl = UART_HWCONTROL_NONE;
     husart3->Init.OverSampling = UART_OVERSAMPLING_16;
     printf_init(husart3);
-#endif
+    #endif
 
-#ifdef STM32L4xx
+    #ifdef STM32L4xx
     husart1->Init.BaudRate = 115200;
     husart1->Init.WordLength = UART_WORDLENGTH_8B;
     husart1->Init.StopBits = UART_STOPBITS_1;
@@ -122,7 +122,7 @@ void InitTask(void* argument) {
     husart1->Init.OverSampling = UART_OVERSAMPLING_16;
 
     printf_init(husart1);
-#endif
+    #endif
 
     // clang-format off
     xTaskCreateStatic(

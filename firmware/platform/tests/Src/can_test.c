@@ -70,36 +70,36 @@ static void task(void* pvParameters) {
     tx_data[1] = 0x00;
     if (can_send(hcan1, &tx_header, tx_data, portMAX_DELAY) != CAN_OK)
         Error_Handler();
-#ifdef CAN2
+    #ifdef CAN2
     if (can_send(hcan2, &tx_header, tx_data, portMAX_DELAY) != CAN_OK)
         Error_Handler();
-#endif /* CAN2 */
+    #endif /* CAN2 */
 
     tx_data[0] = 0x02;
     if (can_send(hcan1, &tx_header, tx_data, portMAX_DELAY) != CAN_OK)
         Error_Handler();
-#ifdef CAN2
+    #ifdef CAN2
     if (can_send(hcan2, &tx_header, tx_data, portMAX_DELAY) != CAN_OK)
         Error_Handler();
-#endif /* CAN2 */
+    #endif /* CAN2 */
 
     // send two payloads to 0x3
     tx_data[0] = 0x03;
     tx_header.StdId = 0x003;
     if (can_send(hcan1, &tx_header, tx_data, portMAX_DELAY) != CAN_OK)
         Error_Handler();
-#ifdef CAN2
+    #ifdef CAN2
     if (can_send(hcan2, &tx_header, tx_data, portMAX_DELAY) != CAN_OK)
         Error_Handler();
-#endif /* CAN2 */
+    #endif /* CAN2 */
 
     tx_data[0] = 0x04;
     if (can_send(hcan1, &tx_header, tx_data, portMAX_DELAY) != CAN_OK)
         Error_Handler();
-#ifdef CAN2
+    #ifdef CAN2
     if (can_send(hcan2, &tx_header, tx_data, portMAX_DELAY) != CAN_OK)
         Error_Handler();
-#endif /* CAN2 */
+    #endif /* CAN2 */
 
     // receive what was sent to 0x1
     CAN_RxHeaderTypeDef rx_header = {0};
@@ -114,7 +114,7 @@ static void task(void* pvParameters) {
     if (status != CAN_OK && rx_data[0] != 0x2)
         Error_Handler();
 
-#ifdef CAN2
+    #ifdef CAN2
     // CAN2
     status = can_recv(hcan2, 0x1, &rx_header, rx_data, portMAX_DELAY);
     if (status != CAN_OK && rx_data[0] != 0x1)
@@ -122,7 +122,7 @@ static void task(void* pvParameters) {
     status = can_recv(hcan2, 0x1, &rx_header, rx_data, portMAX_DELAY);
     if (status != CAN_OK && rx_data[0] != 0x2)
         Error_Handler();
-#endif /* CAN2 */
+    #endif /* CAN2 */
 
     // make sure we don't receive from wrong ID and nonblocking works
     // CAN1
@@ -133,7 +133,7 @@ static void task(void* pvParameters) {
     if (status != CAN_EMPTY)
         Error_Handler();
 
-#ifdef CAN2
+    #ifdef CAN2
     // CAN2
     status = can_recv(hcan2, 0x1, &rx_header, rx_data, 0);
     if (status != CAN_EMPTY)
@@ -141,7 +141,7 @@ static void task(void* pvParameters) {
     status = can_recv(hcan2, 0x1, &rx_header, rx_data, 0);
     if (status != CAN_EMPTY)
         Error_Handler();
-#endif /* CAN2 */
+    #endif /* CAN2 */
 
     // receive the rest
     // CAN1
@@ -152,7 +152,7 @@ static void task(void* pvParameters) {
     if (status != CAN_OK && rx_data[0] != 0x4)
         Error_Handler();
 
-#ifdef CAN2
+    #ifdef CAN2
     // CAN2
     status = can_recv(hcan2, 0x3, &rx_header, rx_data, portMAX_DELAY);
     if (status != CAN_OK && rx_data[0] != 0x3)
@@ -160,7 +160,7 @@ static void task(void* pvParameters) {
     status = can_recv(hcan2, 0x3, &rx_header, rx_data, portMAX_DELAY);
     if (status != CAN_OK && rx_data[0] != 0x4)
         Error_Handler();
-#endif /* CAN2 */
+    #endif /* CAN2 */
 
     // TEST QUEUE OVERWRITE ============================================
 
@@ -212,7 +212,7 @@ static void task(void* pvParameters) {
 }
 
 int main(void) {
-#if defined(CAN1)
+    #if defined(CAN1)
     // initialize the HAL and system clock
     if (HAL_Init() != HAL_OK)
         Error_Handler();
@@ -289,7 +289,7 @@ int main(void) {
     // clang-format on
 
     vTaskStartScheduler();
-#endif
+    #endif
 
     Error_Handler();
 
