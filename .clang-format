@@ -34,7 +34,7 @@ SpacesInContainerLiterals: false
 SpacesInCStyleCastParentheses: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
-IndentPPDirectives: BeforeHash
+IndentPPDirectives: Leave
 
 # register/pin #define tables read better aligned
 AlignConsecutiveMacros: Consecutive
