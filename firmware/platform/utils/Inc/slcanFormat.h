@@ -29,4 +29,4 @@
  *
  * @return int Returns number of bytes written, or -1 on error
  */
-int can_to_slcan(uint16_t id, const uint8_t *data, uint8_t dlc, char *out, uint8_t out_size);
+int can_to_slcan(uint16_t id, const uint8_t* data, uint8_t dlc, char* out, uint8_t out_size);
