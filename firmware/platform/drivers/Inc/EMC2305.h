@@ -246,8 +246,8 @@ typedef struct {
 #define EMC2305_CFG_MASK_ALERT (1u << 7) /* MASK - mask ALERT pin when set */
 #define EMC2305_CFG_DIS_TO     (1u << 6) /* DIS_TO - SMBus timeout disable (I2C compat) */
 #define EMC2305_CFG_WD_EN      (1u << 5) /* WD_EN - enable watchdog continuous mode */
-#define EMC2305_CFG_DRECK (1u << 1) /* DRECK - CLK pin outputs internal clock when set */
-#define EMC2305_CFG_USECK (1u << 0) /* USECK - use external CLK pin as tach clock when set */
+#define EMC2305_CFG_DRECK      (1u << 1) /* DRECK - CLK pin outputs internal clock when set */
+#define EMC2305_CFG_USECK      (1u << 0) /* USECK - use external CLK pin as tach clock when set */
 
 // Fan Status (0x24) bits
 #define EMC2305_STAT_WATCH   (1u << 7) /* WATCH - watchdog fired (read-to-clear) */
