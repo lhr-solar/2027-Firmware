@@ -29,27 +29,28 @@ static void prvCsGap(void)
     }
 }
 
-// Send ONE 3-byte message to the chip and get its 3-byte reply.
+// Send one 3-byte frame and get the 3-byte reply.
 // "Please note that the 16-bit wide "Data Out" in the SDO output is always for the
-// previous SPI command frame (Read or Write)."
-
+//  previous SPI command frame (Read or Write)."
+// 1. CS low, transfer 3 bytes, CS high, wait the CS gap.
+// 2. Save the fault byte; return the 16-bit data (answer to the previous frame).
 TPS_Status_t TPS_Frame(TPS2HCS08_t *dev, bool write, uint8_t addr, uint16_t data_in, uint16_t *data_out)
 {
     if (dev == NULL || dev->xfer == NULL || dev->cs_port == NULL) {
         return TPS_ERR_ARG;
     }
 
-    uint8_t tx[TPS_FRAME_LEN]; // transmit
-    uint8_t rx[TPS_FRAME_LEN] = {0}; // recieve
+    uint8_t tx[TPS_FRAME_LEN];
+    uint8_t rx[TPS_FRAME_LEN] = {0};
 
     tx[0] = (write ? TPS_FRAME_WRITE_BIT : 0x00) | (addr & TPS_FRAME_ADDR_MASK);
     tx[1] = (uint8_t)(data_in >> 8);
     tx[2] = (uint8_t)(data_in & 0xFF);
 
-    HAL_GPIO_WritePin(dev->cs_port, dev->cs_pin, GPIO_PIN_RESET); // select chip, cs low
-    HAL_StatusTypeDef ok = dev->xfer(tx, rx, TPS_FRAME_LEN); // send and receive 3 bytes
-    HAL_GPIO_WritePin(dev->cs_port, dev->cs_pin, GPIO_PIN_SET); // deselect, cs high
-    prvCsGap(); // keep cs high long enough before the next frame
+    HAL_GPIO_WritePin(dev->cs_port, dev->cs_pin, GPIO_PIN_RESET);
+    HAL_StatusTypeDef ok = dev->xfer(tx, rx, TPS_FRAME_LEN);
+    HAL_GPIO_WritePin(dev->cs_port, dev->cs_pin, GPIO_PIN_SET);
+    prvCsGap();
 
     if (ok != HAL_OK) {
         return TPS_ERR_SPI;
@@ -62,7 +63,6 @@ TPS_Status_t TPS_Frame(TPS2HCS08_t *dev, bool write, uint8_t addr, uint16_t data
     return TPS_OK;
 }
 
-
 // Write a 16-bit value into register addr.
 // "Addressed registers are updated if there is no SPI communication error and if it is an SPI write command."
 TPS_Status_t TPS_WriteReg(TPS2HCS08_t *dev, uint8_t addr, uint16_t value)
@@ -72,34 +72,32 @@ TPS_Status_t TPS_WriteReg(TPS2HCS08_t *dev, uint8_t addr, uint16_t value)
 
 // Read register addr into *value (value may be NULL to just do the read).
 // "The microcontroller may issue a READ command to retrieve information stored in the registers."
+// 1. Read addr, ignore the reply (it answers the previous frame).
+// 2. Read the NOP register to collect addr's value (not addr again, so a clear-on-read fault isn't lost).
 TPS_Status_t TPS_ReadReg(TPS2HCS08_t *dev, uint8_t addr, uint16_t *value)
 {
-    // The reply arrives one message late, so:
-    // 1. Ask for addr and ignore this reply (it answers whatever came before).
     TPS_Status_t status = TPS_Frame(dev, false, addr, 0, NULL);
     if (status != TPS_OK) {
         return status;
     }
-    // 2. Send a harmless read to collect the answer to step 1. Not addr again:
-    //    re-reading a clear-on-read register would clear any fault that latched
-    //    in between, and its reply would never be looked at.
     return TPS_Frame(dev, false, TPS_NOP_REG, 0, value);
 }
 
-// Wake the chip, check it's really there, clear power-on faults, start both outputs OFF.
+// Wake the chip, check its ID, clear power-on faults, start both outputs OFF.
 // "Upon wakeup from SLEEP state, the values in the registers will be set to their reset values"
 // "the POR, VDD_UVLO, and VBB_UVLO fault bits will be asserted and will be cleared when the
 //  GLOBAL_FAULT_TYPE register is read if none of these faults currently exist when read."
+// 1. Wake.
+// 2. Check DEV_ID is the A version.
+// 3. Read GLOBAL_FAULT_TYPE to clear POR/UVLO flags.
+// 4. Turn both outputs OFF and verify.
 TPS_Status_t TPS_Init(TPS2HCS08_t *dev)
 {
-    // 1. Wake it (also resets dev->sw_state to match the chip's reset state)
     TPS_Status_t status = TPS_Wake(dev);
     if (status != TPS_OK) {
         return status;
     }
 
-    // 2. Make sure it's the A version. B ignores SW_STATE; 0x0000/0xFFFF here
-    //    usually means wiring, CS, or SPI mode is wrong.
     uint16_t dev_id;
     status = TPS_ReadReg(dev, TPS_REG_DEV_ID, &dev_id);
     if (status != TPS_OK) {
@@ -109,26 +107,23 @@ TPS_Status_t TPS_Init(TPS2HCS08_t *dev)
         return TPS_ERR_BAD_ID;
     }
 
-    // 3. Read GLOBAL_FAULT_TYPE once to clear the power-on flags (POR, VDD_UVLO, VBB_UVLO)
     status = TPS_ReadReg(dev, TPS_REG_GLOBAL_FAULT, NULL);
     if (status != TPS_OK) {
         return status;
     }
 
-
-    // 4. Both outputs start OFF, and confirm the chip agrees
     return TPS_SetChannel(dev, 0, false);
 }
 
 // Wake the chip from SLEEP with one short dummy read.
 // "A dummy SPI transaction could be used to sastify method #1 if the dummy SPI transaction is
 //  completed in t < tREADY." (method #1: "Pulse the CSN pin low for t < tREADY", tREADY = ~65 us)
+// Wake resets every register, so sw_state is reset to 0 (both off) to match.
 TPS_Status_t TPS_Wake(TPS2HCS08_t *dev)
 {
     if (dev == NULL) {
         return TPS_ERR_ARG;
     }
-    // Waking from SLEEP resets every register, so SW_STATE is 0 (both off)
     dev->sw_state = 0;
 
     TPS_Status_t status = TPS_Frame(dev, false, TPS_NOP_REG, 0, NULL);
@@ -142,6 +137,9 @@ TPS_Status_t TPS_Wake(TPS2HCS08_t *dev)
 // Turn one output on/off, then read SW_STATE back to confirm.
 // "The state of the eFuse outputs for ACTIVE state for TPS2HCS08A-Q1 is controlled by the
 //  CHx_ON bits in the SW_STATE register."
+// 1. OFF is saved to sw_state before the write (so the other channel can't turn it back on); ON only after verify.
+// 2. Write SW_STATE.
+// 3. Read it back (a rejected write is otherwise silent).
 TPS_Status_t TPS_SetChannel(TPS2HCS08_t *dev, uint8_t ch, bool on)
 {
     if (dev == NULL || ch > 1) {
@@ -151,9 +149,6 @@ TPS_Status_t TPS_SetChannel(TPS2HCS08_t *dev, uint8_t ch, bool on)
     uint16_t bit = (ch == 0) ? TPS_SW_CH1_ON : TPS_SW_CH2_ON;
     uint16_t want = on ? (dev->sw_state | bit) : (dev->sw_state & ~bit);
 
-    // OFF is remembered even if the write fails, so a later call for the other
-    // channel can never switch this one back on. ON is only remembered once the
-    // chip has confirmed it.
     if (!on) {
         dev->sw_state = want;
     }
@@ -163,7 +158,6 @@ TPS_Status_t TPS_SetChannel(TPS2HCS08_t *dev, uint8_t ch, bool on)
         return status;
     }
 
-    // Read it back: a write the chip rejected (SPI_ERR) is otherwise silent
     uint16_t readback;
     status = TPS_ReadReg(dev, TPS_REG_SW_STATE, &readback);
     if (status != TPS_OK) {
@@ -197,9 +191,10 @@ TPS_Status_t TPS_ReadCurrentRaw(TPS2HCS08_t *dev, uint8_t ch, uint16_t *raw)
     return TPS_OK;
 }
 
-// Read the global and both channel fault registers (reading clears latched faults that are gone).
+// Read the global and both channel fault registers (clear-on-read).
 // "The device also provides fault information through SPI through a global fault register
 //  (GLOBAL_FAULT_TYPE) and channel specific fault registers (FLT_STAT_CHx)"
+// Each register is read exactly once; each reply belongs to the frame before it.
 TPS_Status_t TPS_ReadFaults(TPS2HCS08_t *dev, uint16_t *global,
                             uint16_t *ch1_flt, uint16_t *ch2_flt)
 {
@@ -207,9 +202,6 @@ TPS_Status_t TPS_ReadFaults(TPS2HCS08_t *dev, uint16_t *global,
         return TPS_ERR_ARG;
     }
 
-    // All three are clear-on-read
-    // each is read exactly once
-    // each frame's reply is the answer to the frame before it.
     TPS_Status_t status = TPS_Frame(dev, false, TPS_REG_GLOBAL_FAULT, 0, NULL);
     if (status != TPS_OK) {
         return status;

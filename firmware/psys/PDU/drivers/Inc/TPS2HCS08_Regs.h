@@ -34,7 +34,6 @@
 
 // DEV_ID values 
 #define TPS_DEV_ID_A                0xFFF0  // SW_STATE controls the outputs
-#define TPS_DEV_ID_B                0xFFF1  // DI pins only, SW_STATE ignored
 
 // SW_STATE bits Bits 
 // 15:2 are reserved and read back as 1.
