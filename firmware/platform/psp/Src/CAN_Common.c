@@ -1,8 +1,8 @@
 #include "CAN_Common.h"
 
-// macros to help expand macros defined as IDs into numbers 
-#define CAN_ID_CONCAT_HELPER(prefix, id) prefix ## id
-#define CAN_ID_CONCAT(prefix, id) CAN_ID_CONCAT_HELPER(prefix, id)
+// macros to help expand macros defined as IDs into numbers
+#define CAN_ID_CONCAT_HELPER(prefix, id) prefix##id
+#define CAN_ID_CONCAT(prefix, id)        CAN_ID_CONCAT_HELPER(prefix, id)
 
 #if defined(CAN1) || defined(FDCAN1)
 
@@ -15,24 +15,23 @@
 #undef CAN_RECV_ENTRY
 
 // create can1 recv queue array
-#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)      \
-  {.id = (ID_),                         \
-   .size = (SIZE_),                     \
-   .queue = NULL,                       \
-   .storage = CAN_ID_CONCAT(can1_recv_queue_storage_, ID_), \
-   .circular = (CIRCULAR_), \
-   .buffer = {{0}}},
+#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)                 \
+    {.id = (ID_),                                             \
+     .size = (SIZE_),                                         \
+     .queue = NULL,                                           \
+     .storage = CAN_ID_CONCAT(can1_recv_queue_storage_, ID_), \
+     .circular = (CIRCULAR_),                                 \
+     .buffer = {{0}}},
 
-    can_recv_entry_t can1_recv_entries[] = {
+can_recv_entry_t can1_recv_entries[] = {
 #include "can1_recv_entries.h"
 };
 #undef CAN_RECV_ENTRY
 
 // calculate amount of can1 recv entries
-const uint32_t can1_recv_entry_count =
-    sizeof(can1_recv_entries) / sizeof(can1_recv_entries[0]);
+const uint32_t can1_recv_entry_count = sizeof(can1_recv_entries) / sizeof(can1_recv_entries[0]);
 
-#else /* can1_recv_entries.h */
+#else  /* can1_recv_entries.h */
 // create can1 recv queue array
 __attribute__((unused)) can_recv_entry_t can1_recv_entries[] = {};
 // calculate amount of can1 recv entries
@@ -51,13 +50,13 @@ __attribute__((unused)) const uint32_t can1_recv_entry_count = 0;
 #undef CAN_RECV_ENTRY
 
 // create can2 recv queue array
-#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)      \
-  {.id = (ID_),                         \
-   .size = (SIZE_),                     \
-   .queue = NULL,                       \
-   .storage = CAN_ID_CONCAT(can2_recv_queue_storage_, ID_), \
-   .circular = (CIRCULAR_), \
-   .buffer = {{0}}},
+#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)                 \
+    {.id = (ID_),                                             \
+     .size = (SIZE_),                                         \
+     .queue = NULL,                                           \
+     .storage = CAN_ID_CONCAT(can2_recv_queue_storage_, ID_), \
+     .circular = (CIRCULAR_),                                 \
+     .buffer = {{0}}},
 
 can_recv_entry_t can2_recv_entries[] = {
 #include "can2_recv_entries.h"
@@ -65,10 +64,9 @@ can_recv_entry_t can2_recv_entries[] = {
 #undef CAN_RECV_ENTRY
 
 // calculate amount of can2 recv entries
-const uint32_t can2_recv_entry_count =
-    sizeof(can2_recv_entries) / sizeof(can2_recv_entries[0]);
+const uint32_t can2_recv_entry_count = sizeof(can2_recv_entries) / sizeof(can2_recv_entries[0]);
 
-#else /* can2_recv_entries.h */
+#else  /* can2_recv_entries.h */
 // create can2 recv queue array
 __attribute__((unused)) can_recv_entry_t can2_recv_entries[] = {};
 // calculate amount of can2 recv entries
@@ -89,13 +87,13 @@ __attribute__((unused)) const uint32_t can2_recv_entry_count = 0;
 #undef CAN_RECV_ENTRY
 
 // create can3 recv queue array
-#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)      \
-  {.id = (ID_),                         \
-   .size = (SIZE_),                     \
-   .queue = NULL,                       \
-   .storage = CAN_ID_CONCAT(can3_recv_queue_storage_, ID_), \
-   .circular = (CIRCULAR_), \
-   .buffer = {{0}}},
+#define CAN_RECV_ENTRY(ID_, SIZE_, CIRCULAR_)                 \
+    {.id = (ID_),                                             \
+     .size = (SIZE_),                                         \
+     .queue = NULL,                                           \
+     .storage = CAN_ID_CONCAT(can3_recv_queue_storage_, ID_), \
+     .circular = (CIRCULAR_),                                 \
+     .buffer = {{0}}},
 
 can_recv_entry_t can3_recv_entries[] = {
 #include "can3_recv_entries.h"
@@ -103,10 +101,9 @@ can_recv_entry_t can3_recv_entries[] = {
 #undef CAN_RECV_ENTRY
 
 // calculate amount of can3 recv entries
-const uint32_t can3_recv_entry_count =
-    sizeof(can3_recv_entries) / sizeof(can3_recv_entries[0]);
+const uint32_t can3_recv_entry_count = sizeof(can3_recv_entries) / sizeof(can3_recv_entries[0]);
 
-#else /* can3_recv_entries.h */
+#else  /* can3_recv_entries.h */
 // create can3 recv queue array
 __attribute__((unused)) can_recv_entry_t can3_recv_entries[] = {};
 // calculate amount of can3 recv entries
