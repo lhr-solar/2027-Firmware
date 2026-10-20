@@ -1,7 +1,8 @@
-// Helpers for common GPIO inits and function call
+// Helpers for common GPIO inits and function calls
+
 #include "gpio_helpers.h"
 
-bool enable_gpio_clock(const GPIO_TypeDef* port) {
+HAL_StatusTypeDef enable_gpio_clock(const GPIO_TypeDef* port) {
    if (port == GPIOA) {
         __HAL_RCC_GPIOA_CLK_ENABLE();
     } else if (port == GPIOB) {
@@ -17,7 +18,7 @@ bool enable_gpio_clock(const GPIO_TypeDef* port) {
     } else if (port == GPIOG) {
         __HAL_RCC_GPIOG_CLK_ENABLE();
     } else {
-        return false;
+        return HAL_ERROR;
     }
-    return true;
+    return HAL_OK;
 }
