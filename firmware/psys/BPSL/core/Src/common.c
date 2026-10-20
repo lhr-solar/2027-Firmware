@@ -1,31 +1,33 @@
 #include "stm32g4xx_hal.h"
-#include "FreeRTOS.h"
-#include "task.h"
 #include "common.h"
 #include "StatusLEDs.h"
 
 // how long the error LED stays on, then off
-static const uint32_t ERROR_BLINK_DELAY_MS = 1000;
+static const uint32_t ERROR_BLINK_DELAY_MS = 500;
 
-// delays whether or not the scheduler has started
-static void prvSafeDelay(uint32_t delayMs) {
-    if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING) {
-        vTaskDelay(pdMS_TO_TICKS(delayMs));
-    } else {
-        HAL_Delay(delayMs);
+// busy-waits using the CPU cycle counter; correct at any clock speed
+// (SystemCoreClock tracks it) and needs no scheduler or HAL tick
+static void prvBusyDelay(uint32_t delayMs) {
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // enable the DWT unit
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;            // start the cycle counter
+
+    const uint32_t start = DWT->CYCCNT;
+    const uint32_t cycles = (SystemCoreClock / 1000U) * delayMs;
+    while ((DWT->CYCCNT - start) < cycles) {
+        // unsigned subtraction handles counter wraparound
     }
 }
 
-// for software errors
+// for software errors; only called during initialization
 void Error_Handler(void) {
     (void)StatusLEDs_Init();
     (void)StatusLEDs_SetHeartbeatColor(RGB_RED);
 
     while (true) {
         StatusLEDs_SetHeartbeat(true);
-        prvSafeDelay(ERROR_BLINK_DELAY_MS);
+        prvBusyDelay(ERROR_BLINK_DELAY_MS);
         StatusLEDs_SetHeartbeat(false);
-        prvSafeDelay(ERROR_BLINK_DELAY_MS);
+        prvBusyDelay(ERROR_BLINK_DELAY_MS);
     }
 }
 

@@ -60,7 +60,7 @@ void StatusLEDs_ToggleHeartbeat(void) {
 
 led_status_t StatusLEDs_SetHeartbeatColor(rgb_color_t color) {
     // make sure color is in range
-    if (color >= RGB_NUM_COLORS) {
+    if (color < RGB_RED || color >= RGB_NUM_COLORS) {
         return LED_ERR;
     }
 

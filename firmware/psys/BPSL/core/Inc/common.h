@@ -5,10 +5,10 @@
  */
 
 /**
- * @brief Handles software errors. Blinks the heartbeat LED red,
- *        1 s on / 1 s off, forever.
- * @note  Interrupts stay enabled, and once the scheduler is running other tasks
- *        keep running. Not safe to call from an ISR.
+ * @brief Handles software errors during initialization. Blinks the heartbeat
+ *        LED red, 500 ms on / 500 ms off, forever.
+ * @note  Only call before the scheduler starts; the busy-wait never yields.
+ *        Interrupts stay enabled.
  */
 void Error_Handler(void);
 

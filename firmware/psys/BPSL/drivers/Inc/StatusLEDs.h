@@ -14,8 +14,8 @@
  *  - StatusLEDs_SetHeartbeatColor() turns the LED off. The new color only shows
  *    after the next StatusLEDs_SetHeartbeat(true) or StatusLEDs_ToggleHeartbeat().
  *  - Not thread-safe. Only one task should drive the LED at a time.
- *    Error_Handler() also drives it but doesn't stop other tasks, so another
- *    task still using the LED can overwrite the red error blink.
+ *    Error_Handler() also drives it, but only runs during initialization,
+ *    before any task can use the LED.
  */
 
 #include <stdbool.h>
