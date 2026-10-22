@@ -44,7 +44,8 @@
 #include "queue.h"
 #include "semphr.h"
 
-typedef enum {
+typedef enum
+{
     ADC_OK,
     ADC_INIT_FAIL,
     ADC_DEINIT_FAIL,
@@ -57,19 +58,19 @@ typedef enum {
 } adc_status_t;
 
 #ifdef ADC1
-extern ADC_HandleTypeDef* hadc1;
+extern ADC_HandleTypeDef *hadc1;
 #endif /* ADC1 */
 #ifdef ADC2
-extern ADC_HandleTypeDef* hadc2;
+extern ADC_HandleTypeDef *hadc2;
 #endif /* ADC2 */
 #ifdef ADC3
-extern ADC_HandleTypeDef* hadc3;
+extern ADC_HandleTypeDef *hadc3;
 #endif /* ADC3 */
 #ifdef ADC4
-extern ADC_HandleTypeDef* hadc4;
+extern ADC_HandleTypeDef *hadc4;
 #endif /* ADC4 */
 #ifdef ADC5
-extern ADC_HandleTypeDef* hadc5;
+extern ADC_HandleTypeDef *hadc5;
 #endif /* ADC5 */
 
 /**
