@@ -102,7 +102,7 @@ adc_status_t adc_init(ADC_InitTypeDef* init, ADC_HandleTypeDef* hadc);
  * @return adc_status_t  Returns ADC_OK on success or an appropriate error code.
  */
 adc_status_t adc_read(ADC_HandleTypeDef* h, ADC_ChannelConfTypeDef* sConfig, QueueHandle_t q);
-
+c
 /**
  * @brief Deinitializes the ADC peripheral.
  *
