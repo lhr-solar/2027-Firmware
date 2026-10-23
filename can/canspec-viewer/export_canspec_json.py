@@ -20,7 +20,7 @@ ROOT = _HERE.parent.parent
 DBC_ROOT = ROOT / "can" / "dbc"
 # Default: cwd/canspec-data.json — same folder as a released index.html when you cd there.
 DEFAULT_OUT = Path("canspec-data.json")
-DEFAULT_VEHICLE_ID = "HighNoon"
+DEFAULT_VEHICLE_ID = "2027"
 
 
 def _fmt_id(frame_id: int, is_extended: bool) -> str:
@@ -130,7 +130,7 @@ def _message_to_dict(msg: Any) -> dict[str, Any]:
         "isFd": bool(msg.is_fd),
         "protocol": str(msg.protocol) if getattr(msg, "protocol", None) else None,
         "busName": msg.bus_name or "",
-        "isMultiplexed": bool(getattr(msg, "is_multiplexed", False)),
+        "isMultiplexed": bool(msg.is_multiplexed()),
         "attributes": m_attr,
         "comment": m_comment,
         "signals": [_signal_to_dict(s, msg) for s in signals],
@@ -138,7 +138,7 @@ def _message_to_dict(msg: Any) -> dict[str, Any]:
 
 
 def _empty_network(dbc_path: Path) -> dict[str, Any]:
-    """Blank / unreadable DBC still lists as a network with zero messages/nodes."""
+    """An intentionally blank DBC lists as a network with zero messages/nodes."""
     return {
         "id": dbc_path.stem,
         "filename": dbc_path.name,
@@ -153,11 +153,7 @@ def _network_from_path(dbc_path: Path) -> dict[str, Any]:
     text = dbc_path.read_text(encoding="utf-8", errors="replace").strip()
     if not text:
         return _empty_network(dbc_path)
-    try:
-        return _network_to_dict(dbc_path)
-    except Exception as e:
-        print(f"warn {dbc_path.name}: {e} (exporting empty network)", file=sys.stderr)
-        return _empty_network(dbc_path)
+    return _network_to_dict(dbc_path)
 
 
 def _network_to_dict(dbc_path: Path) -> dict[str, Any]:
@@ -220,7 +216,7 @@ def main() -> None:
     parser.add_argument(
         "--vehicle-id",
         default=DEFAULT_VEHICLE_ID,
-        help="Vehicle id when DBCs are flat under can/dbc (default: HighNoon)",
+        help="Vehicle id when DBCs are flat under can/dbc (default: 2027)",
     )
     args = parser.parse_args()
 
