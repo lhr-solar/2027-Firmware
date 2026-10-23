@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "description": "2027 CAN bootloader allocation for eligible custom boards; explicit user exclusions are retained as reserved IDs.",
+  "addressing": {
+    "frame_format": "standard_11_bit",
+    "host_can_id": "0x000",
+    "node_id_min": 1,
+    "node_id_max": 40,
+    "node_rx_formula": "node_id",
+    "node_tx_formula": "node_id + 0x28",
+    "node_rx_can_id_range": [
+      "0x001",
+      "0x028"
+    ],
+    "node_tx_can_id_range": [
+      "0x029",
+      "0x050"
+    ],
+    "direction": "RX and TX are relative to the board: host sends to rx_can_id, board responds on tx_can_id."
+  },
+  "notes": [
+    "Node IDs are stable board identities, not application message IDs. Do not renumber assigned boards when removing another board.",
+    "can_buses lists physical attachment from the DBCs, not enabled bootloader transports. No routing, gateway or bootloader implementation is configured by this file.",
+    "SMBs are battery monitoring boards without CAN and are intentionally excluded.",
+    "External/bootloader host and COTS devices are not board allocations.",
+    "Bottom-shell lighting is integrated on DEI; it is not a separate programmable board.",
+    "ElconInterface is intentionally excluded from this bootloader allocation; its DBC node and application traffic remain.",
+    "MIKA and TelemetryLeader are one physical node, named MIKA in the DBCs; both names are excluded from this bootloader allocation.",
+    "Removed node IDs 5, 9, 11 and 12 remain reserved; all remaining board node/RX/TX IDs are unchanged."
+  ],
+  "reserved_node_ids": [
+    5,
+    9,
+    11,
+    12,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40
+  ],
+  "boards": [
+    {
+      "name": "BPS",
+      "subteam": "power",
+      "node_id": 1,
+      "rx_can_id": "0x001",
+      "tx_can_id": "0x029",
+      "can_buses": [
+        "CarCAN",
+        "ChargerCAN"
+      ]
+    },
+    {
+      "name": "PDU",
+      "subteam": "power",
+      "node_id": 2,
+      "rx_can_id": "0x002",
+      "tx_can_id": "0x02A",
+      "can_buses": [
+        "CarCAN"
+      ]
+    },
+    {
+      "name": "LVC",
+      "subteam": "power",
+      "node_id": 3,
+      "rx_can_id": "0x003",
+      "tx_can_id": "0x02B",
+      "can_buses": [
+        "CarCAN"
+      ]
+    },
+    {
+      "name": "MPPTInterface",
+      "subteam": "power",
+      "node_id": 4,
+      "rx_can_id": "0x004",
+      "tx_can_id": "0x02C",
+      "can_buses": [
+        "CarCAN",
+        "MPPTCAN"
+      ]
+    },
+    {
+      "name": "VCU",
+      "subteam": "controls",
+      "node_id": 6,
+      "rx_can_id": "0x006",
+      "tx_can_id": "0x02E",
+      "can_buses": [
+        "CarCAN",
+        "MotorCAN"
+      ]
+    },
+    {
+      "name": "DEI",
+      "subteam": "controls",
+      "node_id": 7,
+      "rx_can_id": "0x007",
+      "tx_can_id": "0x02F",
+      "can_buses": [
+        "CarCAN",
+        "LightingCAN",
+        "SteeringCAN"
+      ]
+    },
+    {
+      "name": "Pedals",
+      "subteam": "controls",
+      "node_id": 8,
+      "rx_can_id": "0x008",
+      "tx_can_id": "0x030",
+      "can_buses": [
+        "CarCAN"
+      ]
+    },
+    {
+      "name": "TopShellLighting",
+      "subteam": "controls",
+      "node_id": 10,
+      "rx_can_id": "0x00A",
+      "tx_can_id": "0x032",
+      "can_buses": [
+        "LightingCAN"
+      ]
+    },
+    {
+      "name": "ChassisIMU",
+      "subteam": "telemetry",
+      "node_id": 13,
+      "rx_can_id": "0x00D",
+      "tx_can_id": "0x035",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    },
+    {
+      "name": "UprightFR",
+      "subteam": "telemetry",
+      "node_id": 14,
+      "rx_can_id": "0x00E",
+      "tx_can_id": "0x036",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    },
+    {
+      "name": "UprightFL",
+      "subteam": "telemetry",
+      "node_id": 15,
+      "rx_can_id": "0x00F",
+      "tx_can_id": "0x037",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    },
+    {
+      "name": "UprightRear",
+      "subteam": "telemetry",
+      "node_id": 16,
+      "rx_can_id": "0x010",
+      "tx_can_id": "0x038",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    },
+    {
+      "name": "SuspensionFR",
+      "subteam": "telemetry",
+      "node_id": 17,
+      "rx_can_id": "0x011",
+      "tx_can_id": "0x039",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    },
+    {
+      "name": "SuspensionFL",
+      "subteam": "telemetry",
+      "node_id": 18,
+      "rx_can_id": "0x012",
+      "tx_can_id": "0x03A",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    },
+    {
+      "name": "SuspensionRear",
+      "subteam": "telemetry",
+      "node_id": 19,
+      "rx_can_id": "0x013",
+      "tx_can_id": "0x03B",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    },
+    {
+      "name": "Blackbody1",
+      "subteam": "telemetry",
+      "node_id": 20,
+      "rx_can_id": "0x014",
+      "tx_can_id": "0x03C",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    },
+    {
+      "name": "Blackbody2",
+      "subteam": "telemetry",
+      "node_id": 21,
+      "rx_can_id": "0x015",
+      "tx_can_id": "0x03D",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    },
+    {
+      "name": "Blackbody3",
+      "subteam": "telemetry",
+      "node_id": 22,
+      "rx_can_id": "0x016",
+      "tx_can_id": "0x03E",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    },
+    {
+      "name": "StrainGaugeFront",
+      "subteam": "telemetry",
+      "node_id": 23,
+      "rx_can_id": "0x017",
+      "tx_can_id": "0x03F",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    },
+    {
+      "name": "StrainGaugeRear",
+      "subteam": "telemetry",
+      "node_id": 24,
+      "rx_can_id": "0x018",
+      "tx_can_id": "0x040",
+      "can_buses": [
+        "DAqCAN"
+      ]
+    }
+  ]
+}
