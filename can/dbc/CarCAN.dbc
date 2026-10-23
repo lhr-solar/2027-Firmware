@@ -1,4 +1,4 @@
-VERSION "2027-draft-2026-10-22"
+VERSION "2027-draft-2026-10-23"
 
 
 NS_ :
@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: BPSLeader BottomShellLighting DEI External LVC MIKA MPPTInterface PDU Pedals TelemetryLeader TopShellLighting VCU
+BU_: BPS DEI External LVC MIKA MPPTInterface PDU Pedals VCU
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
@@ -65,306 +65,298 @@ VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 
 
 BO_ 81 BPSCommand: 12 External
- SG_ Mode : 0|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
- SG_ MPPTChargeScheme : 1|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
- SG_ VoltageOverrideMask : 8|32@1+ (1,0) [0.0|4294967295.0] ""  BPSLeader
- SG_ TemperatureOverrideMask : 40|32@1+ (1,0) [0.0|4294967295.0] ""  BPSLeader
+ SG_ Mode : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MPPTChargeScheme : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ VoltageOverrideMask : 2|32@1+ (1,0) [0.0|4294967295.0] "" Vector__XXX
+ SG_ TemperatureOverrideMask : 34|32@1+ (1,0) [0.0|4294967295.0] "" Vector__XXX
 
 BO_ 82 PDUCommand: 1 External
- SG_ ChannelIndex : 0|4@1+ (1,0) [0|13] ""  PDU
- SG_ Enable : 4|1@1+ (1,0) [0.0|1.0] ""  PDU
+ SG_ ChannelIndex : 0|4@1+ (1,0) [0|13] "" Vector__XXX
+ SG_ Enable : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 83 MotorControllerCommand: 1 External
- SG_ CommandSource : 0|1@1+ (1,0) [0.0|1.0] ""  VCU
+ SG_ CommandSource : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 84 SweepMPPTs: 0 External
 
-BO_ 96 BPSLeaderStatus: 32 BPSLeader
- SG_ Status : 0|2@1+ (1,0) [0.0|3.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultSummary : 2|3@1+ (1,0) [0.0|7.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultOverTemperature : 8|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultOverVoltage : 9|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultUnderVoltage : 10|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultChargeOverCurrent : 11|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultDischargeOverCurrent : 12|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultHVPositiveContactorMismatch : 13|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultMotorContactorMismatch : 14|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultHVNegativeContactorMismatch : 15|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultMainPrechargeRelayMismatch : 16|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultMotorPrechargeRelayMismatch : 17|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultDriverEstop : 18|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultExternalEstop : 19|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultBatteryEstop : 20|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultChargerEstop : 21|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultMainPrechargeTimeout : 22|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultMotorPrechargeTimeout : 23|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultMainVoltageNotPresent : 24|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ FaultMotorVoltageNotPresent : 25|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ WarningSMBCommunication : 32|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ WarningUnderVoltage : 33|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ WarningOverVoltage : 34|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ WarningChargeOverTemperature : 35|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ WarningDischargeOverTemperature : 36|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ WarningBatteryFan1 : 37|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ WarningBatteryFan2 : 38|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ WarningBPSFan : 39|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ DriveOK : 40|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ ChargeOK : 41|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MPPTSetMode : 42|2@1+ (1,0) [0.0|3.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ ElconChargeOK : 44|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ RegenChargeOK : 45|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ HVPositiveContactor : 46|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MotorContactor : 47|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ HVNegativeContactor : 48|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MainPrechargeRelay : 49|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MotorPrechargeRelay : 50|1@1+ (1,0) [0.0|1.0] ""  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MainBatteryVoltage : 56|12@1+ (0.05,0) [0.0|204.75] "V"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MotorBatteryVoltage : 68|12@1+ (0.05,0) [0.0|204.75] "V"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MainVoltage : 80|12@1+ (0.05,0) [0.0|204.75] "V"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MotorVoltage : 92|12@1+ (0.05,0) [0.0|204.75] "V"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MaxBatteryTemperature : 104|11@1+ (0.05,0) [0.0|102.35] "degC"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ AverageBatteryTemperature : 115|11@1+ (0.05,0) [0.0|102.35] "degC"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ BatteryCurrent : 126|14@1+ (0.01,-50) [-50.0|113.83] "A"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MinCellVoltage : 140|12@1+ (1,2000) [2000.0|6095.0] "mV"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MaxCellVoltage : 152|12@1+ (1,2000) [2000.0|6095.0] "mV"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MPPTVoltageLimit : 164|16@1+ (0.05,0) [0|175] "V"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ MPPTCurrentLimit : 180|16@1+ (0.01,0) [0|16.38] "A"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ BatteryFan1Tach : 196|12@1+ (5,0) [0.0|20475.0] "rpm"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ BatteryFan2Tach : 208|12@1+ (5,0) [0.0|20475.0] "rpm"  VCU,MPPTInterface,TelemetryLeader,MIKA
- SG_ BPSFanTach : 220|12@1+ (5,0) [0.0|20475.0] "rpm"  VCU,MPPTInterface,TelemetryLeader,MIKA
+BO_ 96 BPSStatus: 32 BPS
+ SG_ FaultSummary : 0|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
+ SG_ FaultOverTemperature : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultOverVoltage : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultUnderVoltage : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChargeOverCurrent : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultDischargeOverCurrent : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultHVPositiveContactorMismatch : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorContactorMismatch : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultHVNegativeContactorMismatch : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeRelayMismatch : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeRelayMismatch : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultDriverEstop : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultExternalEstop : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultBatteryEstop : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChargerEstop : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeTimeout : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeTimeout : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainVoltageNotPresent : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorVoltageNotPresent : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningSMBCommunication : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningUnderVoltage : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningOverVoltage : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChargeOverTemperature : 27|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningDischargeOverTemperature : 28|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBatteryFan1 : 29|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBatteryFan2 : 30|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBPSFan : 31|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Status : 32|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ DriveOK : 34|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChargeOK : 35|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MPPTSetMode : 36|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ ElconChargeOK : 38|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RegenChargeOK : 39|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ HVPositiveContactor : 40|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MotorContactor : 41|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ HVNegativeContactor : 42|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MainPrechargeRelay : 43|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MotorPrechargeRelay : 44|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ CellSumVoltage : 48|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MainBatteryVoltage : 60|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MotorBatteryVoltage : 72|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MainVoltage : 84|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MotorVoltage : 96|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MaxBatteryTemperature : 108|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ AverageBatteryTemperature : 119|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ BatteryCurrent : 130|14@1+ (0.01,-50) [-50.0|113.83] "A" Vector__XXX
+ SG_ MinCellVoltage : 144|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ MaxCellVoltage : 156|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ MPPTVoltageLimit : 168|16@1+ (0.05,0) [0|175] "V" Vector__XXX
+ SG_ MPPTCurrentLimit : 184|16@1+ (0.01,0) [0|16.38] "A" Vector__XXX
+ SG_ BatteryFanTach1 : 200|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ BatteryFanTach2 : 212|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ BPSFanTach : 224|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
 
 BO_ 97 PedalsStatus: 8 Pedals
- SG_ Status : 0|1@1+ (1,0) [0.0|1.0] ""  VCU,TelemetryLeader
- SG_ FaultNoAccelerator : 1|1@1+ (1,0) [0.0|1.0] ""  VCU,TelemetryLeader
- SG_ WarningMainAcceleratorDisconnect : 8|1@1+ (1,0) [0.0|1.0] ""  VCU,TelemetryLeader
- SG_ WarningRedundantAcceleratorDisco : 9|1@1+ (1,0) [0.0|1.0] ""  VCU,TelemetryLeader
- SG_ WarningPressureSwitchMismatch : 10|1@1+ (1,0) [0.0|1.0] ""  VCU,TelemetryLeader
- SG_ BrakeActive : 16|1@1+ (1,0) [0.0|1.0] ""  VCU,TelemetryLeader
- SG_ FrontPressureSwitch : 17|1@1+ (1,0) [0.0|1.0] ""  VCU,TelemetryLeader
- SG_ HandbrakePressureSwitch : 18|1@1+ (1,0) [0.0|1.0] ""  VCU,TelemetryLeader
- SG_ AcceleratorMainPosition : 24|8@1+ (0.39215686274509803,0) [0|100] "%"  VCU,TelemetryLeader
- SG_ AcceleratorRedundantPosition : 32|8@1+ (0.39215686274509803,0) [0|100] "%"  VCU,TelemetryLeader
- SG_ FrontPressure : 40|12@1+ (1,0) [0|3000] "PSI"  VCU,TelemetryLeader
- SG_ RearPressure : 52|12@1+ (1,0) [0|3000] "PSI"  VCU,TelemetryLeader
+ SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultNoAccelerator : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMainAcceleratorDisconnect : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningRedundantAcceleratorDisco : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningPressureSwitchMismatch : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ BrakeActive : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FrontPressureSwitch : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ HandbrakePressureSwitch : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ AcceleratorMainPosition : 24|8@1+ (0.39215686274509803,0) [0|100] "%" Vector__XXX
+ SG_ AcceleratorRedundantPosition : 32|8@1+ (0.39215686274509803,0) [0|100] "%" Vector__XXX
+ SG_ FrontPressure : 40|12@1+ (1,0) [0|3000] "PSI" Vector__XXX
+ SG_ RearPressure : 52|12@1+ (1,0) [0|3000] "PSI" Vector__XXX
 
 BO_ 98 DEIStatus: 2 DEI
- SG_ IgnitionLV : 0|1@1+ (1,0) [0.0|1.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
- SG_ IgnitionCharge : 1|1@1+ (1,0) [0.0|1.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
- SG_ IgnitionDrive : 2|1@1+ (1,0) [0.0|1.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
- SG_ Gear : 3|2@1+ (1,0) [0.0|3.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
- SG_ Hazards : 5|1@1+ (1,0) [0.0|1.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
- SG_ LeftTurnSignal : 6|1@1+ (1,0) [0.0|1.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
- SG_ RightTurnSignal : 7|1@1+ (1,0) [0.0|1.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
- SG_ RegenEnable : 8|1@1+ (1,0) [0.0|1.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
- SG_ RegenActivate : 9|1@1+ (1,0) [0.0|1.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
- SG_ Horn : 10|1@1+ (1,0) [0.0|1.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
- SG_ PushToTalk : 11|1@1+ (1,0) [0.0|1.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
- SG_ Headlights : 12|1@1+ (1,0) [0.0|1.0] ""  VCU,MIKA,BottomShellLighting,TopShellLighting,TelemetryLeader
+ SG_ IgnitionLV : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ IgnitionCharge : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ IgnitionDrive : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Gear : 3|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ Hazards : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ LeftTurnSignal : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RightTurnSignal : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RegenEnable : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RegenActivate : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Horn : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ PushToTalk : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Headlights : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 99 VCUStatus: 8 VCU
- SG_ Status : 0|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FaultMotor : 8|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FaultBPS : 9|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FaultPedals : 10|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FaultMotorControllerWatchdog : 11|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FaultBPSWatchdog : 12|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FaultDriverInputWatchdog : 13|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FaultPedalsWatchdog : 14|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ WarningTipping : 16|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ WarningDirectionChangeLockout : 17|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ WarningMotorControllerFan : 18|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ WarningMotorFan : 19|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ RegenEnabled : 24|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ State : 25|3@1+ (1,0) [0.0|7.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FSMBrake : 28|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FSMBPSDriveOK : 29|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FSMBPSRegenOK : 30|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FSMDriverRegenEnable : 31|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FSMDriverRegenRequest : 32|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ FSMGear : 33|2@1+ (1,0) [0.0|3.0] ""  DEI,MIKA,TelemetryLeader
- SG_ MotorCommandSource : 35|1@1+ (1,0) [0.0|1.0] ""  DEI,MIKA,TelemetryLeader
- SG_ MotorControllerFanTach : 40|12@1+ (5,0) [0.0|20475.0] "rpm"  DEI,MIKA,TelemetryLeader
- SG_ MotorFanTach : 52|12@1+ (5,0) [0.0|20475.0] "rpm"  DEI,MIKA,TelemetryLeader
+BO_ 99 VCUStatus: 7 VCU
+ SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotor : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultBPS : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultPedals : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorControllerWatchdog : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultBPSWatchdog : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultDriverInputWatchdog : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultPedalsWatchdog : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningTipping : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningDirectionChangeLockout : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMotorControllerFan : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMotorFan : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RegenEnabled : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ State : 17|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
+ SG_ FSMBrake : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMBPSDriveOK : 21|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMBPSRegenOK : 22|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMDriverRegenEnable : 23|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMDriverRegenRequest : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMGear : 25|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ MotorCommandSource : 27|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MotorControllerFanTach : 32|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ MotorFanTach : 44|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
 
 BO_ 105 PDUStatus: 4 PDU
- SG_ WarningBlownFuse : 0|1@1+ (1,0) [0.0|1.0] ""  VCU,TelemetryLeader
- SG_ WarningOverCurrentTrip : 1|1@1+ (1,0) [0.0|1.0] ""  VCU,TelemetryLeader
- SG_ InputVoltage : 8|9@1+ (0.05,0) [5|20] "V"  VCU,TelemetryLeader
- SG_ TotalCurrent : 17|11@1+ (0.01,0) [0|20] "A"  VCU,TelemetryLeader
+ SG_ WarningBlownFuse : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningOverCurrentTrip : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ InputVoltage : 8|9@1+ (0.05,0) [5|20] "V" Vector__XXX
+ SG_ TotalCurrent : 17|11@1+ (0.01,0) [0|20] "A" Vector__XXX
 
 BO_ 106 LVCStatus: 12 LVC
- SG_ WarningNoDCDCOutput : 0|1@1+ (1,0) [0.0|1.0] ""  BPSLeader,TelemetryLeader
- SG_ WarningBPSOverCurrent : 1|1@1+ (1,0) [0.0|1.0] ""  BPSLeader,TelemetryLeader
- SG_ WarningBPSBlownFuse : 2|1@1+ (1,0) [0.0|1.0] ""  BPSLeader,TelemetryLeader
- SG_ DCDCEnabled : 8|1@1+ (1,0) [0.0|1.0] ""  BPSLeader,TelemetryLeader
- SG_ DCDCVoltage : 16|9@1+ (0.05,0) [5|20] "V"  BPSLeader,TelemetryLeader
- SG_ DCDCCurrent : 25|11@1+ (0.01,0) [0|20] "A"  BPSLeader,TelemetryLeader
- SG_ LVBVoltage : 36|9@1+ (0.05,0) [5|20] "V"  BPSLeader,TelemetryLeader
- SG_ LVBCurrent : 45|11@1+ (0.01,0) [0|20] "A"  BPSLeader,TelemetryLeader
- SG_ PowerSupplyVoltage : 56|9@1+ (0.05,0) [5|20] "V"  BPSLeader,TelemetryLeader
- SG_ TotalOutputCurrent : 65|11@1+ (0.01,0) [0|20] "A"  BPSLeader,TelemetryLeader
- SG_ BPSLVCurrent : 76|11@1+ (0.01,0) [0|20] "A"  BPSLeader,TelemetryLeader
+ SG_ WarningNoDCDCOutput : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBPSOverCurrent : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBPSBlownFuse : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ DCDCEnabled : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ DCDCVoltage : 16|9@1+ (0.05,0) [5|20] "V" Vector__XXX
+ SG_ DCDCCurrent : 25|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ LVBVoltage : 36|9@1+ (0.05,0) [5|20] "V" Vector__XXX
+ SG_ LVBCurrent : 45|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ PowerSupplyVoltage : 56|9@1+ (0.05,0) [5|20] "V" Vector__XXX
+ SG_ TotalOutputCurrent : 65|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ BPSLVCurrent : 76|11@1+ (0.01,0) [0|20] "A" Vector__XXX
 
-BO_ 112 BPSVoltageData: 48 BPSLeader
- SG_ CellVoltage01 : 0|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage02 : 12|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage03 : 24|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage04 : 36|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage05 : 48|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage06 : 60|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage07 : 72|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage08 : 84|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage09 : 96|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage10 : 108|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage11 : 120|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage12 : 132|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage13 : 144|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage14 : 156|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage15 : 168|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage16 : 180|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage17 : 192|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage18 : 204|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage19 : 216|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage20 : 228|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage21 : 240|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage22 : 252|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage23 : 264|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage24 : 276|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage25 : 288|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage26 : 300|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage27 : 312|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage28 : 324|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage29 : 336|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage30 : 348|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage31 : 360|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
- SG_ CellVoltage32 : 372|12@1+ (1,2000) [2000.0|6095.0] "mV"  TelemetryLeader,MIKA
+BO_ 112 BPSVoltageData: 48 BPS
+ SG_ CellVoltage01 : 0|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage02 : 12|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage03 : 24|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage04 : 36|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage05 : 48|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage06 : 60|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage07 : 72|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage08 : 84|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage09 : 96|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage10 : 108|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage11 : 120|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage12 : 132|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage13 : 144|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage14 : 156|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage15 : 168|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage16 : 180|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage17 : 192|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage18 : 204|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage19 : 216|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage20 : 228|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage21 : 240|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage22 : 252|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage23 : 264|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage24 : 276|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage25 : 288|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage26 : 300|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage27 : 312|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage28 : 324|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage29 : 336|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage30 : 348|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage31 : 360|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage32 : 372|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
 
-BO_ 113 BPSTemperatureData: 48 BPSLeader
- SG_ CellTemperature01 : 0|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature02 : 11|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature03 : 22|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature04 : 33|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature05 : 44|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature06 : 55|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature07 : 66|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature08 : 77|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature09 : 88|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature10 : 99|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature11 : 110|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature12 : 121|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature13 : 132|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature14 : 143|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature15 : 154|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature16 : 165|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature17 : 176|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature18 : 187|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature19 : 198|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature20 : 209|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature21 : 220|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature22 : 231|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature23 : 242|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature24 : 253|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature25 : 264|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature26 : 275|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature27 : 286|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature28 : 297|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature29 : 308|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature30 : 319|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature31 : 330|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
- SG_ CellTemperature32 : 341|11@1+ (0.05,0) [0.0|102.35] "degC"  TelemetryLeader,MIKA
+BO_ 113 BPSTemperatureData: 48 BPS
+ SG_ CellTemperature01 : 0|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature02 : 11|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature03 : 22|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature04 : 33|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature05 : 44|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature06 : 55|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature07 : 66|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature08 : 77|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature09 : 88|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature10 : 99|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature11 : 110|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature12 : 121|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature13 : 132|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature14 : 143|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature15 : 154|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature16 : 165|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature17 : 176|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature18 : 187|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature19 : 198|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature20 : 209|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature21 : 220|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature22 : 231|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature23 : 242|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature24 : 253|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature25 : 264|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature26 : 275|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature27 : 286|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature28 : 297|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature29 : 308|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature30 : 319|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature31 : 330|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature32 : 341|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
 
-BO_ 114 SMDStatus: 0 BPSLeader
+BO_ 114 SMDStatus: 0 BPS
 
 BO_ 120 PDUChannelData: 32 PDU
- SG_ Channel01Current : 0|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel02Current : 11|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel03Current : 22|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel04Current : 33|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel05Current : 44|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel06Current : 55|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel07Current : 66|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel08Current : 77|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel09Current : 88|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel10Current : 99|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel11Current : 110|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel12Current : 121|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel13Current : 132|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel14Current : 143|11@1+ (0.01,0) [0|20] "A"  TelemetryLeader
- SG_ Channel01Enabled : 154|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel02Enabled : 155|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel03Enabled : 156|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel04Enabled : 157|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel05Enabled : 158|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel06Enabled : 159|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel07Enabled : 160|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel08Enabled : 161|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel09Enabled : 162|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel10Enabled : 163|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel11Enabled : 164|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel12Enabled : 165|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel13Enabled : 166|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel14Enabled : 167|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel01BlownFuse : 168|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel01OverCurrent : 169|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel02BlownFuse : 170|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel02OverCurrent : 171|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel03BlownFuse : 172|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel03OverCurrent : 173|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel04BlownFuse : 174|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel04OverCurrent : 175|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel05BlownFuse : 176|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel05OverCurrent : 177|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel06BlownFuse : 178|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel06OverCurrent : 179|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel07BlownFuse : 180|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel07OverCurrent : 181|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel08BlownFuse : 182|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel08OverCurrent : 183|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel09BlownFuse : 184|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel09OverCurrent : 185|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel10BlownFuse : 186|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel10OverCurrent : 187|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel11BlownFuse : 188|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel11OverCurrent : 189|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel12BlownFuse : 190|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel12OverCurrent : 191|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel13BlownFuse : 192|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel13OverCurrent : 193|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel14BlownFuse : 194|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ Channel14OverCurrent : 195|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
+ SG_ ChannelBlownFuse1 : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent1 : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse2 : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent2 : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse3 : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent3 : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse4 : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent4 : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse5 : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent5 : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse6 : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent6 : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse7 : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent7 : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse8 : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent8 : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse9 : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent9 : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse10 : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent10 : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse11 : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent11 : 21|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse12 : 22|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent12 : 23|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse13 : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent13 : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelBlownFuse14 : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelOverCurrent14 : 27|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled1 : 32|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled2 : 33|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled3 : 34|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled4 : 35|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled5 : 36|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled6 : 37|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled7 : 38|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled8 : 39|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled9 : 40|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled10 : 41|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled11 : 42|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled12 : 43|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled13 : 44|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled14 : 45|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelCurrent1 : 48|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent2 : 59|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent3 : 70|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent4 : 81|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent5 : 92|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent6 : 103|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent7 : 114|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent8 : 125|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent9 : 136|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent10 : 147|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent11 : 158|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent12 : 169|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent13 : 180|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ ChannelCurrent14 : 191|11@1+ (0.01,0) [0|20] "A" Vector__XXX
 
 BO_ 121 MPPTInterfaceStatus: 4 MPPTInterface
- SG_ WarningBPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] ""  BPSLeader,TelemetryLeader
- SG_ WarningMPPTAWatchdog : 1|1@1+ (1,0) [0.0|1.0] ""  BPSLeader,TelemetryLeader
- SG_ WarningMPPTBWatchdog : 2|1@1+ (1,0) [0.0|1.0] ""  BPSLeader,TelemetryLeader
- SG_ WarningMPPTCWatchdog : 3|1@1+ (1,0) [0.0|1.0] ""  BPSLeader,TelemetryLeader
- SG_ WarningFan : 4|1@1+ (1,0) [0.0|1.0] ""  BPSLeader,TelemetryLeader
- SG_ MPPTSetMode : 8|2@1+ (1,0) [0.0|3.0] ""  BPSLeader,TelemetryLeader
- SG_ SweepingActive : 10|1@1+ (1,0) [0.0|1.0] ""  BPSLeader,TelemetryLeader
- SG_ FanTach : 16|12@1+ (5,0) [0.0|20475.0] "rpm"  BPSLeader,TelemetryLeader
+ SG_ WarningBPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMPPTAWatchdog : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMPPTBWatchdog : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMPPTCWatchdog : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningFan : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MPPTSetMode : 8|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ SweepingActive : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FanTach : 16|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
 
-BO_ 128 BottomShellLightingStatus: 1 BottomShellLighting
- SG_ Sync : 0|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ LeftSignalOn : 1|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ RightSignalOn : 2|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ HeadlightsOn : 3|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
-
-BO_ 129 TopShellLightingStatus: 1 TopShellLighting
- SG_ BrakeOn : 0|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ LeftSignalOn : 1|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ RightSignalOn : 2|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
-
-BO_ 130 MIKAStatus: 4 MIKA
- SG_ WarningTemperature : 0|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ WarningOverTemperature : 1|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ WarningDisplayDisconnected : 2|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ WarningCameraDisconnected : 3|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ WarningRouterDisconnected : 4|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ CellularConnected : 8|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ InternetConnected : 9|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
- SG_ DisplayFrameRate : 10|6@1+ (1,0) [0|60] "FPS"  TelemetryLeader
- SG_ SoCTemperature : 16|8@1+ (0.5,-20) [-20|85] "degC"  TelemetryLeader
- SG_ GPSConnected : 24|1@1+ (1,0) [0.0|1.0] ""  TelemetryLeader
+BO_ 130 MIKAStatus: 6 MIKA
+ SG_ WarningTemperature : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningOverTemperature : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningDisplayDisconnected : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningRearCameraDisconnected : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningRouterDisconnected : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ CellularConnected : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ InternetConnected : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ GPSConnected : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ DriverCameraConnected : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ DisplayFrameRate : 16|6@1+ (1,0) [0|60] "FPS" Vector__XXX
+ SG_ SoCTemperature : 22|8@1+ (0.5,-20) [-20|85] "degC" Vector__XXX
+ SG_ CM5FanTach : 30|12@1+ (5,0) [0|20475] "rpm" Vector__XXX
 
 
 
@@ -382,8 +374,8 @@ CM_ SG_ 83 CommandSource "CommandSource";
 CM_ BO_ 84 "Defined empty trigger: request a sweep from all MPPTs through MPPTInterface. Zero-byte CAN-FD payload.";
 CM_ BO_ 96 "Critical BPS status. Bitmaps are expanded into individual named bits. Battery current preserves uint14, 0.01 A/bit and -50 A offset. MPPTInterface translates standardized limits into vendor command encodings; hardware/firmware limits must still be enforced.";
 CM_ SG_ 96 BPSFanTach "BPSFanTach";
-CM_ SG_ 96 BatteryFan2Tach "BatteryFan2Tach";
-CM_ SG_ 96 BatteryFan1Tach "BatteryFan1Tach";
+CM_ SG_ 96 BatteryFanTach2 "BatteryFan2Tach";
+CM_ SG_ 96 BatteryFanTach1 "BatteryFan1Tach";
 CM_ SG_ 96 MPPTCurrentLimit "MPPTCurrentLimit";
 CM_ SG_ 96 MPPTVoltageLimit "MPPTVoltageLimit";
 CM_ SG_ 96 MaxCellVoltage "MaxCellVoltage";
@@ -395,6 +387,7 @@ CM_ SG_ 96 MotorVoltage "MotorVoltage";
 CM_ SG_ 96 MainVoltage "MainVoltage";
 CM_ SG_ 96 MotorBatteryVoltage "MotorBatteryVoltage";
 CM_ SG_ 96 MainBatteryVoltage "MainBatteryVoltage";
+CM_ SG_ 96 CellSumVoltage "Sum of the 32 cell-tap voltages, independent of precharge measurements. Bulk voltage encoding: unsigned 12 bits, 0.05 V/bit, offset 0 V.";
 CM_ SG_ 96 MotorPrechargeRelay "MotorPrechargeRelay";
 CM_ SG_ 96 MainPrechargeRelay "MainPrechargeRelay";
 CM_ SG_ 96 HVNegativeContactor "HVNegativeContactor";
@@ -405,6 +398,7 @@ CM_ SG_ 96 ElconChargeOK "ElconChargeOK";
 CM_ SG_ 96 MPPTSetMode "MPPTSetMode";
 CM_ SG_ 96 ChargeOK "ChargeOK";
 CM_ SG_ 96 DriveOK "DriveOK";
+CM_ SG_ 96 Status "Status";
 CM_ SG_ 96 WarningBPSFan "WarningBPSFan";
 CM_ SG_ 96 WarningBatteryFan2 "WarningBatteryFan2";
 CM_ SG_ 96 WarningBatteryFan1 "WarningBatteryFan1";
@@ -432,7 +426,6 @@ CM_ SG_ 96 FaultUnderVoltage "FaultUnderVoltage";
 CM_ SG_ 96 FaultOverVoltage "FaultOverVoltage";
 CM_ SG_ 96 FaultOverTemperature "FaultOverTemperature";
 CM_ SG_ 96 FaultSummary "FaultSummary";
-CM_ SG_ 96 Status "Status";
 CM_ BO_ 97 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 97 RearPressure "RearPressure";
 CM_ SG_ 97 FrontPressure "FrontPressure";
@@ -568,62 +561,62 @@ CM_ SG_ 113 CellTemperature02 "CellTemperature02";
 CM_ SG_ 113 CellTemperature01 "CellTemperature01";
 CM_ BO_ 114 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. Four SMB status bitmaps: widths and bit definitions pending.";
 CM_ BO_ 120 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 120 Channel14OverCurrent "Channel14OverCurrent";
-CM_ SG_ 120 Channel14BlownFuse "Channel14BlownFuse";
-CM_ SG_ 120 Channel13OverCurrent "Channel13OverCurrent";
-CM_ SG_ 120 Channel13BlownFuse "Channel13BlownFuse";
-CM_ SG_ 120 Channel12OverCurrent "Channel12OverCurrent";
-CM_ SG_ 120 Channel12BlownFuse "Channel12BlownFuse";
-CM_ SG_ 120 Channel11OverCurrent "Channel11OverCurrent";
-CM_ SG_ 120 Channel11BlownFuse "Channel11BlownFuse";
-CM_ SG_ 120 Channel10OverCurrent "Channel10OverCurrent";
-CM_ SG_ 120 Channel10BlownFuse "Channel10BlownFuse";
-CM_ SG_ 120 Channel09OverCurrent "Channel09OverCurrent";
-CM_ SG_ 120 Channel09BlownFuse "Channel09BlownFuse";
-CM_ SG_ 120 Channel08OverCurrent "Channel08OverCurrent";
-CM_ SG_ 120 Channel08BlownFuse "Channel08BlownFuse";
-CM_ SG_ 120 Channel07OverCurrent "Channel07OverCurrent";
-CM_ SG_ 120 Channel07BlownFuse "Channel07BlownFuse";
-CM_ SG_ 120 Channel06OverCurrent "Channel06OverCurrent";
-CM_ SG_ 120 Channel06BlownFuse "Channel06BlownFuse";
-CM_ SG_ 120 Channel05OverCurrent "Channel05OverCurrent";
-CM_ SG_ 120 Channel05BlownFuse "Channel05BlownFuse";
-CM_ SG_ 120 Channel04OverCurrent "Channel04OverCurrent";
-CM_ SG_ 120 Channel04BlownFuse "Channel04BlownFuse";
-CM_ SG_ 120 Channel03OverCurrent "Channel03OverCurrent";
-CM_ SG_ 120 Channel03BlownFuse "Channel03BlownFuse";
-CM_ SG_ 120 Channel02OverCurrent "Channel02OverCurrent";
-CM_ SG_ 120 Channel02BlownFuse "Channel02BlownFuse";
-CM_ SG_ 120 Channel01OverCurrent "Channel01OverCurrent";
-CM_ SG_ 120 Channel01BlownFuse "Channel01BlownFuse";
-CM_ SG_ 120 Channel14Enabled "Channel14Enabled";
-CM_ SG_ 120 Channel13Enabled "Channel13Enabled";
-CM_ SG_ 120 Channel12Enabled "Channel12Enabled";
-CM_ SG_ 120 Channel11Enabled "Channel11Enabled";
-CM_ SG_ 120 Channel10Enabled "Channel10Enabled";
-CM_ SG_ 120 Channel09Enabled "Channel09Enabled";
-CM_ SG_ 120 Channel08Enabled "Channel08Enabled";
-CM_ SG_ 120 Channel07Enabled "Channel07Enabled";
-CM_ SG_ 120 Channel06Enabled "Channel06Enabled";
-CM_ SG_ 120 Channel05Enabled "Channel05Enabled";
-CM_ SG_ 120 Channel04Enabled "Channel04Enabled";
-CM_ SG_ 120 Channel03Enabled "Channel03Enabled";
-CM_ SG_ 120 Channel02Enabled "Channel02Enabled";
-CM_ SG_ 120 Channel01Enabled "Channel01Enabled";
-CM_ SG_ 120 Channel14Current "Channel14Current";
-CM_ SG_ 120 Channel13Current "Channel13Current";
-CM_ SG_ 120 Channel12Current "Channel12Current";
-CM_ SG_ 120 Channel11Current "Channel11Current";
-CM_ SG_ 120 Channel10Current "Channel10Current";
-CM_ SG_ 120 Channel09Current "Channel09Current";
-CM_ SG_ 120 Channel08Current "Channel08Current";
-CM_ SG_ 120 Channel07Current "Channel07Current";
-CM_ SG_ 120 Channel06Current "Channel06Current";
-CM_ SG_ 120 Channel05Current "Channel05Current";
-CM_ SG_ 120 Channel04Current "Channel04Current";
-CM_ SG_ 120 Channel03Current "Channel03Current";
-CM_ SG_ 120 Channel02Current "Channel02Current";
-CM_ SG_ 120 Channel01Current "Channel01Current";
+CM_ SG_ 120 ChannelCurrent14 "Channel14Current";
+CM_ SG_ 120 ChannelCurrent13 "Channel13Current";
+CM_ SG_ 120 ChannelCurrent12 "Channel12Current";
+CM_ SG_ 120 ChannelCurrent11 "Channel11Current";
+CM_ SG_ 120 ChannelCurrent10 "Channel10Current";
+CM_ SG_ 120 ChannelCurrent9 "Channel09Current";
+CM_ SG_ 120 ChannelCurrent8 "Channel08Current";
+CM_ SG_ 120 ChannelCurrent7 "Channel07Current";
+CM_ SG_ 120 ChannelCurrent6 "Channel06Current";
+CM_ SG_ 120 ChannelCurrent5 "Channel05Current";
+CM_ SG_ 120 ChannelCurrent4 "Channel04Current";
+CM_ SG_ 120 ChannelCurrent3 "Channel03Current";
+CM_ SG_ 120 ChannelCurrent2 "Channel02Current";
+CM_ SG_ 120 ChannelCurrent1 "Channel01Current";
+CM_ SG_ 120 ChannelEnabled14 "Channel14Enabled";
+CM_ SG_ 120 ChannelEnabled13 "Channel13Enabled";
+CM_ SG_ 120 ChannelEnabled12 "Channel12Enabled";
+CM_ SG_ 120 ChannelEnabled11 "Channel11Enabled";
+CM_ SG_ 120 ChannelEnabled10 "Channel10Enabled";
+CM_ SG_ 120 ChannelEnabled9 "Channel09Enabled";
+CM_ SG_ 120 ChannelEnabled8 "Channel08Enabled";
+CM_ SG_ 120 ChannelEnabled7 "Channel07Enabled";
+CM_ SG_ 120 ChannelEnabled6 "Channel06Enabled";
+CM_ SG_ 120 ChannelEnabled5 "Channel05Enabled";
+CM_ SG_ 120 ChannelEnabled4 "Channel04Enabled";
+CM_ SG_ 120 ChannelEnabled3 "Channel03Enabled";
+CM_ SG_ 120 ChannelEnabled2 "Channel02Enabled";
+CM_ SG_ 120 ChannelEnabled1 "Channel01Enabled";
+CM_ SG_ 120 ChannelOverCurrent14 "Channel14OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse14 "Channel14BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent13 "Channel13OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse13 "Channel13BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent12 "Channel12OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse12 "Channel12BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent11 "Channel11OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse11 "Channel11BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent10 "Channel10OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse10 "Channel10BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent9 "Channel09OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse9 "Channel09BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent8 "Channel08OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse8 "Channel08BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent7 "Channel07OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse7 "Channel07BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent6 "Channel06OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse6 "Channel06BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent5 "Channel05OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse5 "Channel05BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent4 "Channel04OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse4 "Channel04BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent3 "Channel03OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse3 "Channel03BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent2 "Channel02OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse2 "Channel02BlownFuse";
+CM_ SG_ 120 ChannelOverCurrent1 "Channel01OverCurrent";
+CM_ SG_ 120 ChannelBlownFuse1 "Channel01BlownFuse";
 CM_ BO_ 121 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 121 FanTach "FanTach";
 CM_ SG_ 121 SweepingActive "SweepingActive";
@@ -633,23 +626,16 @@ CM_ SG_ 121 WarningMPPTCWatchdog "WarningMPPTCWatchdog";
 CM_ SG_ 121 WarningMPPTBWatchdog "WarningMPPTBWatchdog";
 CM_ SG_ 121 WarningMPPTAWatchdog "WarningMPPTAWatchdog";
 CM_ SG_ 121 WarningBPSWatchdog "WarningBPSWatchdog";
-CM_ BO_ 128 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 128 HeadlightsOn "HeadlightsOn";
-CM_ SG_ 128 RightSignalOn "RightSignalOn";
-CM_ SG_ 128 LeftSignalOn "LeftSignalOn";
-CM_ SG_ 128 Sync "Sync";
-CM_ BO_ 129 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 129 RightSignalOn "RightSignalOn";
-CM_ SG_ 129 LeftSignalOn "LeftSignalOn";
-CM_ SG_ 129 BrakeOn "BrakeOn";
-CM_ BO_ 130 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 130 GPSConnected "GPSConnected";
+CM_ BO_ 130 "HMI and CM5 status from MIKA (combined HMI and telemetry board). Application ID 0x082 and signal layout retained.";
+CM_ SG_ 130 CM5FanTach "CM5 cooling fan tachometer: unsigned 12 bits, 5 rpm/bit, offset 0 rpm.";
 CM_ SG_ 130 SoCTemperature "User-approved explicit exception: uint8, 0.5 degC/bit, -20 degC offset.";
 CM_ SG_ 130 DisplayFrameRate "DisplayFrameRate";
+CM_ SG_ 130 DriverCameraConnected "Driver camera connection state: 0 disconnected, 1 connected.";
+CM_ SG_ 130 GPSConnected "GPSConnected";
 CM_ SG_ 130 InternetConnected "InternetConnected";
 CM_ SG_ 130 CellularConnected "CellularConnected";
 CM_ SG_ 130 WarningRouterDisconnected "WarningRouterDisconnected";
-CM_ SG_ 130 WarningCameraDisconnected "WarningCameraDisconnected";
+CM_ SG_ 130 WarningRearCameraDisconnected "Rear camera disconnected warning; the driver camera has a separate connected bit.";
 CM_ SG_ 130 WarningDisplayDisconnected "WarningDisplayDisconnected";
 CM_ SG_ 130 WarningOverTemperature "WarningOverTemperature";
 CM_ SG_ 130 WarningTemperature "WarningTemperature";
@@ -700,6 +686,7 @@ BA_ "ValueTable" SG_ 96 ElconChargeOK "Permission";
 BA_ "ValueTable" SG_ 96 MPPTSetMode "TPEEControlMode";
 BA_ "ValueTable" SG_ 96 ChargeOK "Permission";
 BA_ "ValueTable" SG_ 96 DriveOK "Permission";
+BA_ "ValueTable" SG_ 96 Status "DeviceStatus";
 BA_ "ValueTable" SG_ 96 WarningBPSFan "WarningState";
 BA_ "ValueTable" SG_ 96 WarningBatteryFan2 "WarningState";
 BA_ "ValueTable" SG_ 96 WarningBatteryFan1 "WarningState";
@@ -727,7 +714,6 @@ BA_ "ValueTable" SG_ 96 FaultUnderVoltage "FaultState";
 BA_ "ValueTable" SG_ 96 FaultOverVoltage "FaultState";
 BA_ "ValueTable" SG_ 96 FaultOverTemperature "FaultState";
 BA_ "ValueTable" SG_ 96 FaultSummary "BPSFaultSummary";
-BA_ "ValueTable" SG_ 96 Status "DeviceStatus";
 BA_ "LayoutPending" BO_ 97 0;
 BA_ "ProtocolSource" BO_ 97 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 97 14;
@@ -804,48 +790,48 @@ BA_ "VFrameFormat" BO_ 114 14;
 BA_ "LayoutPending" BO_ 120 0;
 BA_ "ProtocolSource" BO_ 120 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 120 14;
-BA_ "ValueTable" SG_ 120 Channel14OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel14BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel13OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel13BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel12OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel12BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel11OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel11BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel10OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel10BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel09OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel09BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel08OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel08BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel07OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel07BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel06OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel06BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel05OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel05BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel04OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel04BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel03OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel03BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel02OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel02BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel01OverCurrent "FaultState";
-BA_ "ValueTable" SG_ 120 Channel01BlownFuse "FaultState";
-BA_ "ValueTable" SG_ 120 Channel14Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel13Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel12Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel11Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel10Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel09Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel08Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel07Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel06Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel05Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel04Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel03Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel02Enabled "EnableDisable";
-BA_ "ValueTable" SG_ 120 Channel01Enabled "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled14 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled13 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled12 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled11 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled10 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled9 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled8 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled7 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled6 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled5 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled4 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled3 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled2 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelEnabled1 "EnableDisable";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent14 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse14 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent13 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse13 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent12 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse12 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent11 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse11 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent10 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse10 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent9 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse9 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent8 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse8 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent7 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse7 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent6 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse6 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent5 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse5 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent4 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse4 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent3 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse3 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent2 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse2 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelOverCurrent1 "FaultState";
+BA_ "ValueTable" SG_ 120 ChannelBlownFuse1 "FaultState";
 BA_ "LayoutPending" BO_ 121 0;
 BA_ "ProtocolSource" BO_ 121 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 121 14;
@@ -856,27 +842,15 @@ BA_ "ValueTable" SG_ 121 WarningMPPTCWatchdog "WarningState";
 BA_ "ValueTable" SG_ 121 WarningMPPTBWatchdog "WarningState";
 BA_ "ValueTable" SG_ 121 WarningMPPTAWatchdog "WarningState";
 BA_ "ValueTable" SG_ 121 WarningBPSWatchdog "WarningState";
-BA_ "LayoutPending" BO_ 128 0;
-BA_ "ProtocolSource" BO_ 128 "2027 allocation draft";
-BA_ "VFrameFormat" BO_ 128 14;
-BA_ "ValueTable" SG_ 128 HeadlightsOn "OnOff";
-BA_ "ValueTable" SG_ 128 RightSignalOn "OnOff";
-BA_ "ValueTable" SG_ 128 LeftSignalOn "OnOff";
-BA_ "ValueTable" SG_ 128 Sync "OnOff";
-BA_ "LayoutPending" BO_ 129 0;
-BA_ "ProtocolSource" BO_ 129 "2027 allocation draft";
-BA_ "VFrameFormat" BO_ 129 14;
-BA_ "ValueTable" SG_ 129 RightSignalOn "OnOff";
-BA_ "ValueTable" SG_ 129 LeftSignalOn "OnOff";
-BA_ "ValueTable" SG_ 129 BrakeOn "OnOff";
 BA_ "LayoutPending" BO_ 130 0;
 BA_ "ProtocolSource" BO_ 130 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 130 14;
+BA_ "ValueTable" SG_ 130 DriverCameraConnected "Connection";
 BA_ "ValueTable" SG_ 130 GPSConnected "Connection";
 BA_ "ValueTable" SG_ 130 InternetConnected "Connection";
 BA_ "ValueTable" SG_ 130 CellularConnected "Connection";
 BA_ "ValueTable" SG_ 130 WarningRouterDisconnected "WarningState";
-BA_ "ValueTable" SG_ 130 WarningCameraDisconnected "WarningState";
+BA_ "ValueTable" SG_ 130 WarningRearCameraDisconnected "WarningState";
 BA_ "ValueTable" SG_ 130 WarningDisplayDisconnected "WarningState";
 BA_ "ValueTable" SG_ 130 WarningOverTemperature "WarningState";
 BA_ "ValueTable" SG_ 130 WarningTemperature "WarningState";
@@ -894,6 +868,7 @@ VAL_ 96 ElconChargeOK 0 "NotAllowed" 1 "Allowed" ;
 VAL_ 96 MPPTSetMode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;
 VAL_ 96 ChargeOK 0 "NotAllowed" 1 "Allowed" ;
 VAL_ 96 DriveOK 0 "NotAllowed" 1 "Allowed" ;
+VAL_ 96 Status 0 "OK" 1 "Fault" 2 "Waiting" ;
 VAL_ 96 WarningBPSFan 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningBatteryFan2 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningBatteryFan1 0 "NoWarning" 1 "Warning" ;
@@ -921,7 +896,6 @@ VAL_ 96 FaultUnderVoltage 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultOverVoltage 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultOverTemperature 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultSummary 0 "OK" 1 "SetpointFault" 2 "EmergencyStop" 3 "ContactorRelayFault" 4 "PrechargeFault" 5 "SMBFault" ;
-VAL_ 96 Status 0 "OK" 1 "Fault" 2 "Waiting" ;
 VAL_ 97 HandbrakePressureSwitch 0 "Off" 1 "On" ;
 VAL_ 97 FrontPressureSwitch 0 "Off" 1 "On" ;
 VAL_ 97 BrakeActive 0 "Off" 1 "On" ;
@@ -969,48 +943,48 @@ VAL_ 106 DCDCEnabled 0 "Disabled" 1 "Enabled" ;
 VAL_ 106 WarningBPSBlownFuse 0 "NoWarning" 1 "Warning" ;
 VAL_ 106 WarningBPSOverCurrent 0 "NoWarning" 1 "Warning" ;
 VAL_ 106 WarningNoDCDCOutput 0 "NoWarning" 1 "Warning" ;
-VAL_ 120 Channel14OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel14BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel13OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel13BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel12OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel12BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel11OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel11BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel10OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel10BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel09OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel09BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel08OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel08BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel07OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel07BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel06OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel06BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel05OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel05BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel04OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel04BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel03OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel03BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel02OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel02BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel01OverCurrent 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel01BlownFuse 0 "OK" 1 "Fault" ;
-VAL_ 120 Channel14Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel13Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel12Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel11Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel10Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel09Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel08Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel07Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel06Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel05Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel04Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel03Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel02Enabled 0 "Disabled" 1 "Enabled" ;
-VAL_ 120 Channel01Enabled 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled14 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled13 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled12 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled11 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled10 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled9 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled8 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled7 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled6 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled5 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled4 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled3 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled2 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelEnabled1 0 "Disabled" 1 "Enabled" ;
+VAL_ 120 ChannelOverCurrent14 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse14 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent13 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse13 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent12 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse12 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent11 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse11 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent10 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse10 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent9 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse9 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent8 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse8 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent7 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse7 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent6 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse6 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent5 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse5 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent4 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse4 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent3 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse3 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent2 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse2 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelOverCurrent1 0 "OK" 1 "Fault" ;
+VAL_ 120 ChannelBlownFuse1 0 "OK" 1 "Fault" ;
 VAL_ 121 SweepingActive 0 "Off" 1 "On" ;
 VAL_ 121 MPPTSetMode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;
 VAL_ 121 WarningFan 0 "NoWarning" 1 "Warning" ;
@@ -1018,18 +992,12 @@ VAL_ 121 WarningMPPTCWatchdog 0 "NoWarning" 1 "Warning" ;
 VAL_ 121 WarningMPPTBWatchdog 0 "NoWarning" 1 "Warning" ;
 VAL_ 121 WarningMPPTAWatchdog 0 "NoWarning" 1 "Warning" ;
 VAL_ 121 WarningBPSWatchdog 0 "NoWarning" 1 "Warning" ;
-VAL_ 128 HeadlightsOn 0 "Off" 1 "On" ;
-VAL_ 128 RightSignalOn 0 "Off" 1 "On" ;
-VAL_ 128 LeftSignalOn 0 "Off" 1 "On" ;
-VAL_ 128 Sync 0 "Off" 1 "On" ;
-VAL_ 129 RightSignalOn 0 "Off" 1 "On" ;
-VAL_ 129 LeftSignalOn 0 "Off" 1 "On" ;
-VAL_ 129 BrakeOn 0 "Off" 1 "On" ;
+VAL_ 130 DriverCameraConnected 0 "Disconnected" 1 "Connected" ;
 VAL_ 130 GPSConnected 0 "Disconnected" 1 "Connected" ;
 VAL_ 130 InternetConnected 0 "Disconnected" 1 "Connected" ;
 VAL_ 130 CellularConnected 0 "Disconnected" 1 "Connected" ;
 VAL_ 130 WarningRouterDisconnected 0 "NoWarning" 1 "Warning" ;
-VAL_ 130 WarningCameraDisconnected 0 "NoWarning" 1 "Warning" ;
+VAL_ 130 WarningRearCameraDisconnected 0 "NoWarning" 1 "Warning" ;
 VAL_ 130 WarningDisplayDisconnected 0 "NoWarning" 1 "Warning" ;
 VAL_ 130 WarningOverTemperature 0 "NoWarning" 1 "Warning" ;
 VAL_ 130 WarningTemperature 0 "NoWarning" 1 "Warning" ;

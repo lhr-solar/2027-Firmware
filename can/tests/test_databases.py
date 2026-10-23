@@ -15,7 +15,8 @@ BUSES = (
     "SteeringCAN",
     "ChargerCAN",
     "ElconCAN",
-    "TelemetryCAN",
+    "DAqCAN",
+    "LightingCAN",
 )
 
 
@@ -81,12 +82,15 @@ class DatabaseTests(unittest.TestCase):
 
     def test_team_resolution_and_explicit_exceptions(self):
         """Standardize physical steps while preserving the user's two compact encodings."""
-        for bus in ("CarCAN", "ChargerCAN", "TelemetryCAN"):
+        for bus in ("CarCAN", "ChargerCAN", "DAqCAN", "LightingCAN"):
             for message in self.databases[bus].messages:
                 for signal in message.signals:
                     if signal.unit in ("V", "A", "rpm"):
                         self.assertEqual(
-                            signal.scale, {"V": 0.05, "A": 0.01, "rpm": 5}[signal.unit]
+                            signal.scale,
+                            0.5
+                            if signal.name.startswith("WheelRPM")
+                            else {"V": 0.05, "A": 0.01, "rpm": 5}[signal.unit],
                         )
                     if signal.unit == "mV":
                         self.assertEqual(
@@ -109,7 +113,7 @@ class DatabaseTests(unittest.TestCase):
         )
 
     def test_only_documented_cross_bus_id_repeat(self):
-        """The shared BPS status is the sole duplicate ID across the seven networks."""
+        """The shared BPS status is the sole duplicate ID across the eight networks."""
         seen = {}
         for bus, database in self.databases.items():
             for message in database.messages:
@@ -140,7 +144,7 @@ class DatabaseTests(unittest.TestCase):
                     self.assertEqual(message.length, 0)
                     self.assertIn("PLACEHOLDER", message.comment)
                     placeholders.append((bus, message.frame_id))
-        self.assertEqual(len(placeholders), 30)
+        self.assertEqual(len(placeholders), 18)
         self.assertFalse(
             self.message("CarCAN", 0x54).dbc.attributes["LayoutPending"].value
         )
@@ -228,12 +232,15 @@ class DatabaseTests(unittest.TestCase):
         )
 
     def test_corrected_strain_ids_and_gps(self):
-        for index in range(6):
-            self.assertEqual(
-                self.message("TelemetryCAN", 0x63A + index).senders,
-                [f"StrainGauge{index + 1}"],
-            )
-        status = self.message("TelemetryCAN", 0x621)
+        for identifier, location in [(0x690, "Front"), (0x691, "Rear")]:
+            message = self.message("DAqCAN", identifier)
+            self.assertEqual(message.senders, [f"StrainGauge{location}"])
+            self.assertEqual(message.name, f"StrainGauge{location}Data")
+        identifiers = {
+            message.frame_id for message in self.databases["DAqCAN"].messages
+        }
+        self.assertFalse(identifiers.intersection(range(0x63C, 0x640)))
+        status = self.message("DAqCAN", 0x621)
         self.assertEqual(
             (
                 status.get_signal_by_name("GPSLongitude").minimum,
@@ -248,6 +255,315 @@ class DatabaseTests(unittest.TestCase):
             ),
             (-90, 90),
         )
+
+    def test_mika_camera_and_fan_fields(self):
+        message = self.message("CarCAN", 0x82)
+        names = {signal.name for signal in message.signals}
+        self.assertIn("WarningRearCameraDisconnected", names)
+        self.assertNotIn("WarningCameraDisconnected", names)
+        driver = message.get_signal_by_name("DriverCameraConnected")
+        self.assertEqual(driver.length, 1)
+        self.assertEqual(driver.dbc.attributes["ValueTable"].value, "Connection")
+        tach = message.get_signal_by_name("CM5FanTach")
+        self.assertEqual(
+            (tach.length, tach.scale, tach.offset, tach.unit), (12, 5, 0, "rpm")
+        )
+        discrete = [signal for signal in message.signals if signal.choices]
+        continuous = [signal for signal in message.signals if signal.unit]
+        self.assertLess(
+            max(signal.start for signal in discrete),
+            min(signal.start for signal in continuous),
+        )
+
+    def test_bps_cell_sum_precedes_precharge_voltages(self):
+        message = self.message("CarCAN", 0x60)
+        voltages = [signal for signal in message.signals if signal.unit == "V"]
+        self.assertEqual(
+            [signal.name for signal in voltages[:5]],
+            [
+                "CellSumVoltage",
+                "MainBatteryVoltage",
+                "MotorBatteryVoltage",
+                "MainVoltage",
+                "MotorVoltage",
+            ],
+        )
+        signal = message.get_signal_by_name("CellSumVoltage")
+        self.assertEqual((signal.length, signal.scale, signal.offset), (12, 0.05, 0))
+        self.assertGreaterEqual(signal.maximum, 32 * 6.095)
+        values = {item.name: item.minimum for item in message.signals}
+        values["CellSumVoltage"] = 134.4
+        frame = message.encode(values)
+        self.assertEqual(
+            (int.from_bytes(frame, "little") >> signal.start) & 0xFFF, 2688
+        )
+        charger = self.message("ChargerCAN", 0x60).get_signal_by_name("CellSumVoltage")
+        self.assertEqual(
+            (charger.start, charger.length, charger.scale), (signal.start, 12, 0.05)
+        )
+
+    def test_team_signal_category_order(self):
+        """All team layouts place fault bits, warnings, states, then measurements."""
+
+        def group(signal):
+            attribute = signal.dbc.attributes.get("ValueTable") if signal.dbc else None
+            table = attribute.value if attribute else None
+            if signal.name.startswith("Fault") or table in ("FaultState", "Watchdog"):
+                return 0
+            if signal.name.startswith("Warning") or table == "WarningState":
+                return 1
+            if (
+                table
+                or signal.length == 1
+                or (not signal.unit and signal.name != "SatellitesInUse")
+            ):
+                return 2
+            return 3
+
+        for bus in ("CarCAN", "ChargerCAN", "DAqCAN", "LightingCAN"):
+            for message in self.databases[bus].messages:
+                sequence = [
+                    group(signal)
+                    for signal in sorted(
+                        message.signals, key=lambda signal: signal.start
+                    )
+                ]
+                self.assertEqual(sequence, sorted(sequence), (bus, message.name))
+
+    def test_bootloader_board_coverage_and_addressing(self):
+        allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
+        boards = allocation["boards"]
+        self.assertEqual(len(boards), 20)
+        self.assertEqual(allocation["schema_version"], 1)
+        self.assertEqual(int(allocation["addressing"]["host_can_id"], 0), 0)
+        excluded = {
+            "External",
+            "WS22",
+            "LWS",
+            "Elcon",
+            "MPPTA",
+            "MPPTB",
+            "MPPTC",
+            "ElconInterface",
+            "TelemetryLeader",
+            "MIKA",
+        }
+        attached = {}
+        for bus, database in self.databases.items():
+            for node in database.nodes:
+                if node.name not in excluded:
+                    attached.setdefault(node.name, set()).add(bus)
+        self.assertEqual({board["name"] for board in boards}, set(attached))
+        self.assertEqual(len({board["node_id"] for board in boards}), len(boards))
+        addresses = {0}
+        application_ids = {
+            message.frame_id
+            for database in self.databases.values()
+            for message in database.messages
+        }
+        for board in boards:
+            node = board["node_id"]
+            self.assertTrue(1 <= node <= 40)
+            rx, tx = int(board["rx_can_id"], 0), int(board["tx_can_id"], 0)
+            self.assertEqual((rx, tx), (node, node + 0x28))
+            self.assertNotIn(rx, addresses)
+            self.assertNotIn(tx, addresses)
+            self.assertNotIn(rx, application_ids)
+            self.assertNotIn(tx, application_ids)
+            addresses.update((rx, tx))
+            self.assertEqual(set(board["can_buses"]), attached[board["name"]])
+        used = {board["node_id"] for board in boards}
+        reserved = set(allocation["reserved_node_ids"])
+        self.assertFalse(used & reserved)
+        self.assertEqual(used | reserved, set(range(1, 41)))
+        self.assertFalse(any("SMB" in board["name"] for board in boards))
+
+    def test_consolidated_physical_nodes(self):
+        for database in self.databases.values():
+            self.assertFalse(
+                {node.name for node in database.nodes}
+                & {"TelemetryLeader", "BottomShellLighting"}
+            )
+            for message in database.messages:
+                self.assertNotIn("TelemetryLeader", message.senders)
+                self.assertNotIn("BottomShellLighting", message.senders)
+                for signal in message.signals:
+                    self.assertEqual(len(signal.receivers), len(set(signal.receivers)))
+                    self.assertNotIn("TelemetryLeader", signal.receivers)
+                    self.assertNotIn("BottomShellLighting", signal.receivers)
+        self.assertEqual(self.message("LightingCAN", 0x80).senders, ["DEI"])
+        hmi = self.message("CarCAN", 0x82)
+        self.assertEqual(hmi.name, "MIKAStatus")
+        self.assertEqual(hmi.senders, ["MIKA"])
+        self.assertEqual(self.message("DAqCAN", 0x621).senders, ["MIKA"])
+        self.assertNotIn(
+            "MIKAWatchdog",
+            {signal.name for signal in self.message("DAqCAN", 0x623).signals},
+        )
+        allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
+        boards = {board["name"]: board for board in allocation["boards"]}
+        self.assertFalse(
+            set(boards)
+            & {"MIKA", "TelemetryLeader", "BottomShellLighting", "ElconInterface"}
+        )
+        self.assertTrue({5, 9, 11, 12}.issubset(allocation["reserved_node_ids"]))
+        self.assertEqual(boards["BPS"]["node_id"], 1)
+        self.assertEqual(boards["BPS"]["rx_can_id"], "0x001")
+        self.assertEqual(boards["BPS"]["tx_can_id"], "0x029")
+        for bus in ("CarCAN", "ChargerCAN"):
+            status = self.message(bus, 0x60)
+            self.assertEqual(status.name, "BPSStatus")
+            self.assertEqual(status.senders, ["BPS"])
+        self.assertEqual(boards["DEI"]["node_id"], 7)
+        self.assertEqual(boards["TopShellLighting"]["node_id"], 10)
+        self.assertEqual(boards["StrainGaugeRear"]["node_id"], 24)
+        self.assertEqual(self.message("ChargerCAN", 0x600).senders, ["ElconInterface"])
+
+    def test_lighting_bus_ownership(self):
+        car = self.databases["CarCAN"]
+        lighting = self.databases["LightingCAN"]
+        self.assertFalse({message.frame_id for message in car.messages} & {0x80, 0x81})
+        self.assertNotIn("TopShellLighting", {node.name for node in car.nodes})
+        self.assertEqual(
+            {message.frame_id for message in lighting.messages}, {0x80, 0x81}
+        )
+        self.assertEqual(lighting.dbc.attributes["DBName"].value, "LightingCAN")
+        self.assertEqual(self.message("LightingCAN", 0x80).senders, ["DEI"])
+        self.assertEqual(
+            self.message("LightingCAN", 0x81).senders, ["TopShellLighting"]
+        )
+        self.assertTrue(all(message.is_fd for message in lighting.messages))
+        self.assertEqual(
+            self.message("LightingCAN", 0x80).encode(
+                {"Sync": 1, "LeftSignalOn": 1, "RightSignalOn": 0, "HeadlightsOn": 1}
+            ),
+            b"\x0b",
+        )
+        self.assertEqual(
+            self.message("LightingCAN", 0x81).encode(
+                {"BrakeOn": 1, "LeftSignalOn": 0, "RightSignalOn": 1}
+            ),
+            b"\x05",
+        )
+        allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
+        boards = {board["name"]: board for board in allocation["boards"]}
+        self.assertEqual(boards["TopShellLighting"]["can_buses"], ["LightingCAN"])
+        self.assertEqual(boards["TopShellLighting"]["node_id"], 10)
+        self.assertEqual(
+            boards["DEI"]["can_buses"], ["CarCAN", "LightingCAN", "SteeringCAN"]
+        )
+        self.assertEqual(boards["BPS"]["node_id"], 1)
+        self.assertEqual(boards["BPS"]["rx_can_id"], "0x001")
+        self.assertEqual(boards["BPS"]["tx_can_id"], "0x029")
+        for bus in ("CarCAN", "ChargerCAN"):
+            status = self.message(bus, 0x60)
+            self.assertEqual(status.name, "BPSStatus")
+            self.assertEqual(status.senders, ["BPS"])
+        self.assertEqual(boards["DEI"]["node_id"], 7)
+
+    def test_legacy_timestamp_sync_and_names(self):
+        sync = self.message("DAqCAN", 0x620)
+        self.assertEqual(sync.name, "TimestampSync")
+        self.assertEqual(sync.senders, ["MIKA"])
+        self.assertEqual(sync.length, 2)
+        self.assertTrue(sync.is_fd)
+        self.assertEqual(len(sync.signals), 1)
+        timestamp = sync.get_signal_by_name("Timestamp")
+        self.assertEqual(
+            (
+                timestamp.start,
+                timestamp.length,
+                timestamp.byte_order,
+                timestamp.is_signed,
+            ),
+            (0, 16, "little_endian", False),
+        )
+        self.assertEqual((timestamp.scale, timestamp.offset), (1, 0))
+        self.assertFalse(timestamp.unit)
+        self.assertIn("unresolved", timestamp.comment)
+        self.assertEqual(sync.encode({"Timestamp": 0x1234}), b"\x34\x12")
+        self.assertEqual(sync.encode({"Timestamp": 65535}), b"\xff\xff")
+        self.assertFalse(sync.dbc.attributes["LayoutPending"].value)
+        self.assertEqual(self.message("DAqCAN", 0x621).name, "TelemetryStatus")
+
+    def test_legacy_linpot_adc_calibration(self):
+        for identifier in (0x670, 0x671, 0x672):
+            message = self.message("DAqCAN", identifier)
+            self.assertEqual(message.length, 12)
+            self.assertFalse(message.dbc.attributes["LayoutPending"].value)
+            self.assertEqual(len(message.signals), 6)
+            raw = {"Timestamp": 0x1234}
+            packed = 0x1234
+            for channel, count in enumerate((0, 1, 2048, 4095), 1):
+                signal = message.get_signal_by_name(f"LinpotPosition{channel}")
+                self.assertEqual(
+                    (signal.start, signal.length, signal.byte_order),
+                    (16 + (channel - 1) * 12, 12, "little_endian"),
+                )
+                self.assertEqual(
+                    (signal.scale, signal.offset, signal.unit), (0.0188885, 1, "mm")
+                )
+                raw[signal.name] = count
+                packed |= count << signal.start
+            raw["LinpotPositionAverage"] = 1536
+            packed |= 1536 << 64
+            frame = message.encode(raw, scaling=False)
+            self.assertEqual(frame, packed.to_bytes(12, "little"))
+            decoded = message.decode(frame, decode_choices=False)
+            for channel, count in enumerate((0, 1, 2048, 4095), 1):
+                self.assertAlmostEqual(
+                    decoded[f"LinpotPosition{channel}"], count * 0.0188885 + 1
+                )
+            self.assertEqual(message.encode(decoded), frame)
+
+    def test_measurement_batches_and_logical_ids(self):
+        groups = [(0x630, "Chassis", ("Acceleration", "Gyro", "Magnetometer"))]
+        groups += [
+            (base, board, ("Acceleration", "Gyro", "WheelSpeed"))
+            for base, board in (
+                (0x640, "UprightFR"),
+                (0x650, "UprightFL"),
+                (0x660, "UprightRear"),
+            )
+        ]
+        for base, board, measurements in groups:
+            for index, measurement in enumerate(measurements):
+                message = self.message("DAqCAN", base + index)
+                self.assertEqual(message.name, f"{board}{measurement}Data")
+                self.assertLessEqual(message.length, 64)
+                interval = message.get_signal_by_name("SampleIntervalTicks")
+                self.assertEqual(
+                    (interval.start, interval.length, interval.minimum), (16, 16, 1)
+                )
+                raw = {"Timestamp": 0x1234, "SampleIntervalTicks": 5}
+                packed = 0x1234 | (5 << 16)
+                samples = [
+                    signal for signal in message.signals if signal.name not in raw
+                ]
+                self.assertEqual(len(samples), 5 if measurement == "WheelSpeed" else 15)
+                for signal in samples:
+                    if signal.name.endswith("Average"):
+                        value = 1 if signal.is_signed else 3
+                    else:
+                        sample = int(signal.name[-1]) - 1
+                        value = (
+                            (-6, -2, 4, 8)[sample]
+                            if signal.is_signed
+                            else (0, 2, 4, 6)[sample]
+                        )
+                    raw[signal.name] = value
+                    packed |= (value & ((1 << signal.length) - 1)) << signal.start
+                frame = message.encode(raw, scaling=False)
+                self.assertEqual(frame, packed.to_bytes(message.length, "little"))
+                self.assertEqual(message.encode(message.decode(frame)), frame)
+
+    def test_no_signal_receiver_assignments(self):
+        for bus, database in self.databases.items():
+            for message in database.messages:
+                for signal in message.signals:
+                    self.assertEqual(
+                        signal.receivers, [], (bus, message.name, signal.name)
+                    )
 
     def test_every_defined_layout_roundtrips(self):
         """Exercise every active multiplexed branch, not only the non-multiplexed frames."""

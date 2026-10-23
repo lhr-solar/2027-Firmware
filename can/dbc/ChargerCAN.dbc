@@ -1,4 +1,4 @@
-VERSION "2027-draft-2026-10-22"
+VERSION "2027-draft-2026-10-23"
 
 
 NS_ :
@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: BPSLeader ElconInterface
+BU_: BPS ElconInterface
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
@@ -64,82 +64,83 @@ VAL_TABLE_ ElconControl 1 "Disable" 0 "Charge" ;
 VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 
 
-BO_ 96 BPSLeaderStatus: 32 BPSLeader
- SG_ Status : 0|2@1+ (1,0) [0.0|3.0] ""  ElconInterface
- SG_ FaultSummary : 2|3@1+ (1,0) [0.0|7.0] ""  ElconInterface
- SG_ FaultOverTemperature : 8|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultOverVoltage : 9|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultUnderVoltage : 10|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultChargeOverCurrent : 11|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultDischargeOverCurrent : 12|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultHVPositiveContactorMismatch : 13|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultMotorContactorMismatch : 14|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultHVNegativeContactorMismatch : 15|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultMainPrechargeRelayMismatch : 16|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultMotorPrechargeRelayMismatch : 17|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultDriverEstop : 18|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultExternalEstop : 19|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultBatteryEstop : 20|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultChargerEstop : 21|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultMainPrechargeTimeout : 22|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultMotorPrechargeTimeout : 23|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultMainVoltageNotPresent : 24|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ FaultMotorVoltageNotPresent : 25|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ WarningSMBCommunication : 32|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ WarningUnderVoltage : 33|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ WarningOverVoltage : 34|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ WarningChargeOverTemperature : 35|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ WarningDischargeOverTemperature : 36|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ WarningBatteryFan1 : 37|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ WarningBatteryFan2 : 38|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ WarningBPSFan : 39|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ DriveOK : 40|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ ChargeOK : 41|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ MPPTSetMode : 42|2@1+ (1,0) [0.0|3.0] ""  ElconInterface
- SG_ ElconChargeOK : 44|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ RegenChargeOK : 45|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ HVPositiveContactor : 46|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ MotorContactor : 47|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ HVNegativeContactor : 48|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ MainPrechargeRelay : 49|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ MotorPrechargeRelay : 50|1@1+ (1,0) [0.0|1.0] ""  ElconInterface
- SG_ MainBatteryVoltage : 56|12@1+ (0.05,0) [0.0|204.75] "V"  ElconInterface
- SG_ MotorBatteryVoltage : 68|12@1+ (0.05,0) [0.0|204.75] "V"  ElconInterface
- SG_ MainVoltage : 80|12@1+ (0.05,0) [0.0|204.75] "V"  ElconInterface
- SG_ MotorVoltage : 92|12@1+ (0.05,0) [0.0|204.75] "V"  ElconInterface
- SG_ MaxBatteryTemperature : 104|11@1+ (0.05,0) [0.0|102.35] "degC"  ElconInterface
- SG_ AverageBatteryTemperature : 115|11@1+ (0.05,0) [0.0|102.35] "degC"  ElconInterface
- SG_ BatteryCurrent : 126|14@1+ (0.01,-50) [-50.0|113.83] "A"  ElconInterface
- SG_ MinCellVoltage : 140|12@1+ (1,2000) [2000.0|6095.0] "mV"  ElconInterface
- SG_ MaxCellVoltage : 152|12@1+ (1,2000) [2000.0|6095.0] "mV"  ElconInterface
- SG_ MPPTVoltageLimit : 164|16@1+ (0.05,0) [0|175] "V"  ElconInterface
- SG_ MPPTCurrentLimit : 180|16@1+ (0.01,0) [0|16.38] "A"  ElconInterface
- SG_ BatteryFan1Tach : 196|12@1+ (5,0) [0.0|20475.0] "rpm"  ElconInterface
- SG_ BatteryFan2Tach : 208|12@1+ (5,0) [0.0|20475.0] "rpm"  ElconInterface
- SG_ BPSFanTach : 220|12@1+ (5,0) [0.0|20475.0] "rpm"  ElconInterface
+BO_ 96 BPSStatus: 32 BPS
+ SG_ FaultSummary : 0|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
+ SG_ FaultOverTemperature : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultOverVoltage : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultUnderVoltage : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChargeOverCurrent : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultDischargeOverCurrent : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultHVPositiveContactorMismatch : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorContactorMismatch : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultHVNegativeContactorMismatch : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeRelayMismatch : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeRelayMismatch : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultDriverEstop : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultExternalEstop : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultBatteryEstop : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChargerEstop : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeTimeout : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeTimeout : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainVoltageNotPresent : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorVoltageNotPresent : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningSMBCommunication : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningUnderVoltage : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningOverVoltage : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChargeOverTemperature : 27|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningDischargeOverTemperature : 28|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBatteryFan1 : 29|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBatteryFan2 : 30|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBPSFan : 31|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Status : 32|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ DriveOK : 34|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChargeOK : 35|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MPPTSetMode : 36|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ ElconChargeOK : 38|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RegenChargeOK : 39|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ HVPositiveContactor : 40|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MotorContactor : 41|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ HVNegativeContactor : 42|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MainPrechargeRelay : 43|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MotorPrechargeRelay : 44|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ CellSumVoltage : 48|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MainBatteryVoltage : 60|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MotorBatteryVoltage : 72|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MainVoltage : 84|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MotorVoltage : 96|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MaxBatteryTemperature : 108|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ AverageBatteryTemperature : 119|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ BatteryCurrent : 130|14@1+ (0.01,-50) [-50.0|113.83] "A" Vector__XXX
+ SG_ MinCellVoltage : 144|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ MaxCellVoltage : 156|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ MPPTVoltageLimit : 168|16@1+ (0.05,0) [0|175] "V" Vector__XXX
+ SG_ MPPTCurrentLimit : 184|16@1+ (0.01,0) [0|16.38] "A" Vector__XXX
+ SG_ BatteryFanTach1 : 200|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ BatteryFanTach2 : 212|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ BPSFanTach : 224|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
 
 BO_ 1536 ElconInterfaceStatus: 5 ElconInterface
- SG_ Status : 0|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
- SG_ FaultElconWatchdog : 8|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
- SG_ FaultBPSWatchdog : 9|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
- SG_ FaultElcon : 10|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
- SG_ FaultBPS : 11|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
- SG_ FaultEVSE : 12|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
- SG_ Estop : 16|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
- SG_ ChargeState : 17|2@1+ (1,0) [0.0|3.0] ""  BPSLeader
- SG_ EVSEConnected : 19|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
- SG_ EVSELatchPressed : 20|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
- SG_ EVSEState : 21|3@1+ (1,0) [0.0|7.0] ""  BPSLeader
- SG_ EVSEAvailableCurrent : 24|12@1+ (0.01,0) [0|25.5] "A"  BPSLeader
- SG_ EVSECPValid : 36|1@1+ (1,0) [0.0|1.0] ""  BPSLeader
+ SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultElconWatchdog : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultBPSWatchdog : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultElcon : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultBPS : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultEVSE : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Estop : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChargeState : 9|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ EVSEConnected : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ EVSELatchPressed : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ EVSEState : 13|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
+ SG_ EVSECPValid : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ EVSEAvailableCurrent : 24|12@1+ (0.01,0) [0|25.5] "A" Vector__XXX
 
 
 
 
 CM_ BO_ 96 "Critical BPS status. Bitmaps are expanded into individual named bits. Battery current preserves uint14, 0.01 A/bit and -50 A offset. MPPTInterface translates standardized limits into vendor command encodings; hardware/firmware limits must still be enforced.";
 CM_ SG_ 96 BPSFanTach "BPSFanTach";
-CM_ SG_ 96 BatteryFan2Tach "BatteryFan2Tach";
-CM_ SG_ 96 BatteryFan1Tach "BatteryFan1Tach";
+CM_ SG_ 96 BatteryFanTach2 "BatteryFan2Tach";
+CM_ SG_ 96 BatteryFanTach1 "BatteryFan1Tach";
 CM_ SG_ 96 MPPTCurrentLimit "MPPTCurrentLimit";
 CM_ SG_ 96 MPPTVoltageLimit "MPPTVoltageLimit";
 CM_ SG_ 96 MaxCellVoltage "MaxCellVoltage";
@@ -151,6 +152,7 @@ CM_ SG_ 96 MotorVoltage "MotorVoltage";
 CM_ SG_ 96 MainVoltage "MainVoltage";
 CM_ SG_ 96 MotorBatteryVoltage "MotorBatteryVoltage";
 CM_ SG_ 96 MainBatteryVoltage "MainBatteryVoltage";
+CM_ SG_ 96 CellSumVoltage "Sum of the 32 cell-tap voltages, independent of precharge measurements. Bulk voltage encoding: unsigned 12 bits, 0.05 V/bit, offset 0 V.";
 CM_ SG_ 96 MotorPrechargeRelay "MotorPrechargeRelay";
 CM_ SG_ 96 MainPrechargeRelay "MainPrechargeRelay";
 CM_ SG_ 96 HVNegativeContactor "HVNegativeContactor";
@@ -161,6 +163,7 @@ CM_ SG_ 96 ElconChargeOK "ElconChargeOK";
 CM_ SG_ 96 MPPTSetMode "MPPTSetMode";
 CM_ SG_ 96 ChargeOK "ChargeOK";
 CM_ SG_ 96 DriveOK "DriveOK";
+CM_ SG_ 96 Status "Status";
 CM_ SG_ 96 WarningBPSFan "WarningBPSFan";
 CM_ SG_ 96 WarningBatteryFan2 "WarningBatteryFan2";
 CM_ SG_ 96 WarningBatteryFan1 "WarningBatteryFan1";
@@ -188,10 +191,9 @@ CM_ SG_ 96 FaultUnderVoltage "FaultUnderVoltage";
 CM_ SG_ 96 FaultOverVoltage "FaultOverVoltage";
 CM_ SG_ 96 FaultOverTemperature "FaultOverTemperature";
 CM_ SG_ 96 FaultSummary "FaultSummary";
-CM_ SG_ 96 Status "Status";
 CM_ BO_ 1536 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 1536 EVSECPValid "EVSECPValid";
 CM_ SG_ 1536 EVSEAvailableCurrent "EVSEAvailableCurrent";
+CM_ SG_ 1536 EVSECPValid "EVSECPValid";
 CM_ SG_ 1536 EVSEState "EVSEState";
 CM_ SG_ 1536 EVSELatchPressed "EVSELatchPressed";
 CM_ SG_ 1536 EVSEConnected "EVSEConnected";
@@ -232,6 +234,7 @@ BA_ "ValueTable" SG_ 96 ElconChargeOK "Permission";
 BA_ "ValueTable" SG_ 96 MPPTSetMode "TPEEControlMode";
 BA_ "ValueTable" SG_ 96 ChargeOK "Permission";
 BA_ "ValueTable" SG_ 96 DriveOK "Permission";
+BA_ "ValueTable" SG_ 96 Status "DeviceStatus";
 BA_ "ValueTable" SG_ 96 WarningBPSFan "WarningState";
 BA_ "ValueTable" SG_ 96 WarningBatteryFan2 "WarningState";
 BA_ "ValueTable" SG_ 96 WarningBatteryFan1 "WarningState";
@@ -259,7 +262,6 @@ BA_ "ValueTable" SG_ 96 FaultUnderVoltage "FaultState";
 BA_ "ValueTable" SG_ 96 FaultOverVoltage "FaultState";
 BA_ "ValueTable" SG_ 96 FaultOverTemperature "FaultState";
 BA_ "ValueTable" SG_ 96 FaultSummary "BPSFaultSummary";
-BA_ "ValueTable" SG_ 96 Status "DeviceStatus";
 BA_ "LayoutPending" BO_ 1536 0;
 BA_ "ProtocolSource" BO_ 1536 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 1536 14;
@@ -285,6 +287,7 @@ VAL_ 96 ElconChargeOK 0 "NotAllowed" 1 "Allowed" ;
 VAL_ 96 MPPTSetMode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;
 VAL_ 96 ChargeOK 0 "NotAllowed" 1 "Allowed" ;
 VAL_ 96 DriveOK 0 "NotAllowed" 1 "Allowed" ;
+VAL_ 96 Status 0 "OK" 1 "Fault" 2 "Waiting" ;
 VAL_ 96 WarningBPSFan 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningBatteryFan2 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningBatteryFan1 0 "NoWarning" 1 "Warning" ;
@@ -312,7 +315,6 @@ VAL_ 96 FaultUnderVoltage 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultOverVoltage 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultOverTemperature 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultSummary 0 "OK" 1 "SetpointFault" 2 "EmergencyStop" 3 "ContactorRelayFault" 4 "PrechargeFault" 5 "SMBFault" ;
-VAL_ 96 Status 0 "OK" 1 "Fault" 2 "Waiting" ;
 VAL_ 1536 EVSECPValid 0 "Invalid" 1 "Valid" ;
 VAL_ 1536 EVSEState 0 "A_Disconnected" 1 "B_Connected" 2 "C_ChargingReady" 3 "D_VentilationRequired" 4 "E_Fault" 5 "F_EVSEFault" ;
 VAL_ 1536 EVSELatchPressed 0 "NotPressed" 1 "Pressed" ;

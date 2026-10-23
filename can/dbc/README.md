@@ -1,6 +1,6 @@
 # 2027 CAN databases
 
-These seven draft databases implement the supplied **2026–2027 ID Allocation &
+These eight draft databases implement the supplied **2026–2027 ID Allocation &
 Drafting** export (edited October 22, 2026), incorporating the HighNoon DBCs from
 Embedded-Sharepoint and the vendor references below. New team signal bit layouts
 are proposed here; the source allocation did not specify start bits. They are
@@ -10,33 +10,43 @@ not wire-compatible with the old vehicle's team-defined messages.
 
 | Database | Contents | Frames | Empty placeholders |
 |---|---|---:|---:|
-| CarCAN | Team critical/control, power, battery and body status | 18 | 1 |
+| CarCAN | Team critical/control, power, battery and HMI status | 16 | 1 |
 | MotorCAN | VCU drive/power/reset commands and WS22 telemetry | 19 | 0 |
 | MPPTCAN | Three SEC-B175-7A MPPTs; commands from MPPTInterface | 33 | 12 |
 | SteeringCAN | LWS measurements; configuration sent by DEI | 2 | 0 |
-| ChargerCAN | BPSLeader status and ElconInterface status | 2 | 0 |
+| LightingCAN | Bottom-shell status from DEI; top-shell status from TopShellLighting | 2 | 0 |
+| ChargerCAN | BPS status and ElconInterface status | 2 | 0 |
 | ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
-| TelemetryCAN | TelemetryLeader infrastructure and all 16 sensor boards | 19 | 17 |
+| DAqCAN | MIKA infrastructure and all 12 sensor boards | 23 | 5 |
 
 Every message has exactly one declared transmitter. `External` is the command
-injection tool/node for IDs 0x051–0x054. MPPTInterface receives BPSLeaderStatus
+injection tool/node for IDs 0x051–0x054. MPPTInterface receives BPSStatus
 on **CarCAN** and produces MPPT commands on **MPPTCAN**; BPS is not a transmitter
 on the private MPPT bus. DEI transmits all LWS configuration traffic; LWS remains
 the transmitter of its own measurements.
 
-BPSLeaderStatus (0x060) is intentionally present on both CarCAN and ChargerCAN
+BPSStatus (0x060) is intentionally present on both CarCAN and ChargerCAN
 with identical signals and transmitter. This is the only repeated numeric ID
-across the seven files. It describes BPSLeader transmitting on both networks;
+across the eight files. It describes BPS transmitting on both networks;
 any actual gateway implementation must match this routing assumption.
 
-CarCAN, ChargerCAN and TelemetryCAN use CAN-FD, including short team frames.
+CarCAN, ChargerCAN, DAqCAN and LightingCAN use CAN-FD, including short team frames.
 The WS22, TPEE, Bosch and Elcon protocols remain **classic CAN**. Payloads use
 legal CAN-FD wire lengths, with unused bits/bytes reserved as zero. No bus bit
 rate or BRS setting is guessed; configure those in firmware to match hardware.
 
-The pre-existing zero-byte DAqCAN.dbc, LightingCAN.dbc, bootloading.dbc and
-telemetry_bebug.dbc are left untouched. TelemetryCAN is a new requested network,
-not an unannounced rename of an old file. Lighting status lives on CarCAN.
+The telemetry/sensor bus is **DAqCAN**, using the formerly empty DAqCAN.dbc
+scaffold. TelemetryCAN.dbc is removed at the user's request. The empty
+bootloading.dbc and telemetry_bebug.dbc scaffolds remain untouched. Both lighting
+messages live on **LightingCAN**: DEI transmits BottomShellLightingStatus at
+**0x080**, and TopShellLighting transmits TopShellLightingStatus at **0x081**.
+Their IDs and payload layouts are retained. Bottom-shell circuitry is on DEI,
+not a separate CAN node. TopShellLighting is attached only to LightingCAN; its
+former direct CarCAN DEI-status subscription is removed. DEI is attached to
+CarCAN, SteeringCAN and LightingCAN. MIKA is the combined HMI
+and telemetry board: it transmits MIKAStatus (0x082) on CarCAN and
+TimestampSync/TelemetryStatus/OnBoardWatchdog on DAqCAN. Its former
+self-watchdog bit is reserved rather than monitoring a second board identity.
 
 ## Shared encodings
 
@@ -68,6 +78,91 @@ COTS device's protocol: TPEE retains 0.01 V and 0.0005 A fixed-point values,
 WS22 retains IEEE-754 floats, Bosch retains its angle/speed steps, and Elcon
 retains its own voltage/current/temperature and cell-voltage encodings.
 
+## Signal organization and October 23 updates
+
+Team-defined messages follow **faults → warnings → discrete signals → continuous
+signals**, in both bit layout and displayed signal order. Category boundaries
+are byte-aligned. Status fields using FaultState belong with faults; multi-state
+status fields belong with the discrete states. Measured counts such as satellites
+in use belong with continuous measurements. Fixed vendor layouts are unchanged.
+This reorganization changes bit positions in the draft team layouts; regenerate
+consumers together rather than mixing versions.
+
+- BPSStatus includes `CellSumVoltage` **before** all pre/post-precharge
+  voltage measurements. It uses unsigned 12-bit bulk encoding (0.05 V/bit,
+  offset 0; 0–204.75 V), covering the sum of all 32 representable cell taps.
+  This is added identically on CarCAN and ChargerCAN; the status frame remains 32 bytes.
+- MIKA's rear-camera warning is explicitly `WarningRearCameraDisconnected`.
+  A separate one-bit `DriverCameraConnected` uses the shared Connection table.
+- MIKA includes `CM5FanTach`: unsigned 12-bit, 5 rpm/bit, 0–20475 rpm.
+  Its discrete connection bits precede frame rate, temperature and fan speed;
+  the frame is now 6 bytes. The SoC-temperature encoding remains unchanged.
+
+## Legacy timestamp and linpot formats
+
+`TimestampSync` at **0x620**, TX MIKA, now uses the calibrated HighNoon sync
+layout: **two bytes**, unsigned 16-bit `Timestamp` at bit 0, little-endian,
+scale 1, offset 0. The tick period, epoch and broadcast period remain unresolved.
+The counter wraps every 65536 ticks; do not label it milliseconds or seconds.
+The message remains CAN-FD under this year's bus convention. The status message
+at **0x621** is named `TelemetryStatus`, also transmitted by MIKA.
+
+Suspension FR/FL/Rear at **0x670/0x671/0x672** each contain an unsigned 16-bit
+raw timestamp followed by **four unsigned 12-bit ADC/linpot values** and their
+12-bit average, in twelve bytes. Fields are named `LinpotPosition1` through
+`LinpotPosition4`, followed by `LinpotPositionAverage`. The average is across
+the four physical channels and must be supplied by the sender. This year's wire order is uniformly little-endian. Each channel uses
+last year's calibrated conversion:
+
+```text
+position_mm = raw_adc * 0.0188885 + 1
+```
+
+The 0..4095 raw domain represents **1..78.3494075 mm**, with approximately
+0.01889 mm per count. These bounds are calculated from the calibration rather
+than copying inconsistent old min/max labels. Quantization is not sensor accuracy.
+The user confirmed the same linpots/measuring scheme is in use this year.
+
+The calibrated definitions were found in the local Electron-v2 and Data Sandbox
+copies of Embedded-Sharepoint's `can/dbc/HighNoon/DAqCAN.dbc`; Photon contains an
+older unitless/raw copy. The calibrated copy also includes signed accel/gyro
+fields with real scales, unlike Photon's copy. The new IMU/gyro/magnetometer layouts are defined below.
+
+Firmware sending ADC counts must use a **raw packing path**; the current public
+codegen API expects physical millimetres. Passing counts directly to that API
+would apply the inverse calibration again. Raw-ADC convenience APIs are separate
+codegen work; they have not been added by this DBC update.
+
+## Receiver assignments
+
+All signal receiver lists are intentionally empty in every DBC. `Vector__XXX`
+is the required DBC syntax placeholder for an unspecified receiver, not a real
+node or subscription. Message TX nodes and bus node inventories remain defined;
+consumer subscriptions and gateway behavior belong in firmware configuration.
+
+## Bootloader IDs
+
+`../bootloader_ids.json` allocates **20 eligible custom CAN boards**, with one
+global, stable node ID per board even when it connects to multiple buses.
+Node IDs **5, 9, 11, 12 and 25–40** are reserved; remaining assignments retain
+their original IDs. Standard 11-bit arbitration IDs follow the supplied scheme:
+
+- Reserved BootloaderHost ID: **0x000** (payload/host protocol not defined here).
+- Board RX: **NodeID**.
+- Board TX: **NodeID + 0x28**.
+
+RX/TX are relative to the board. `can_buses` lists physical attachments from the
+DBCs, not enabled bootloader transports. The user's explicit exclusions are:
+
+- BottomShellLighting: integrated on DEI; no independent firmware target.
+- ElconInterface: excluded from bootloader allocation; retained in the DBCs.
+- MIKA and its former TelemetryLeader identity: one physical board, named MIKA
+  in the DBCs; neither needs CAN bootloading.
+- SMBs (no CAN), COTS devices, and the external host.
+
+Do not renumber assigned IDs when boards are removed. The JSON is an allocation,
+not an implementation of bootloading or routing.
+
 ## Global value tables
 
 `value_tables.json` is the shared enum catalog. Every standalone DBC contains
@@ -90,8 +185,7 @@ not permission to transmit an empty frame. Owners must define the layout before
 using these messages:
 
 - CarCAN 0x072 SMDStatus: four SMB bitmaps are mentioned, but no widths/bit meanings.
-- TelemetryCAN 0x620 timestamp/sync: no timestamp format supplied.
-- All 16 telemetry sensor-board messages: no signals supplied.
+- Five telemetry placeholders: three blackbody boards and two strain boards.
 - MPPT offsets 0x05–0x08: reserved here as empty placeholders for variable-length
   configuration-buffer protocols; they are not ordinary fixed-layout commands.
 
@@ -100,14 +194,14 @@ layout. WS22 reset and its two documented reserved frames are defined eight-byte
 frames without named signals.
 
 Unassigned/reserved ranges remain unassigned: no fabricated transmitting node or
-fake message is created for each reserved ID. In particular, bootloader IDs
-0x000–0x050 remain reserved until physical-bus placement and node-to-board mapping
-are defined. No generic HMI, debug or future COTS traffic has been invented.
+fake message is created for each reserved ID. Bootloader IDs 0x000–0x050
+remain reserved for the separate allocation in `../bootloader_ids.json`;
+bootloader transport, message layouts and gateway behavior are not defined here. No generic HMI, debug or future COTS traffic has been invented.
 
 ## Corrections and provenance
 
-- Strain boards 1–6 use **0x63A–0x63F**, resolving the duplicate 0x63B with the
-  user's approval. Telemetry expansion starts at 0x640.
+- There are **two strain boards**: Front at **0x690**, Rear at **0x691**.
+  Telemetry IDs are grouped by board within 0x630–0x6DF.
 - GPS **longitude is −180..180**, latitude **−90..90**. The draft interchanged them.
 - TPEE SetMode/Sweep/VoltageLimit/CurrentLimit offsets are **0x09/0x0A/0x0B/0x0C**,
   confirming the new draft rather than last year's stale sweep/limit IDs.
@@ -158,7 +252,47 @@ ID uniqueness, shared value tables, scaling exceptions, placeholders, vendor
 byte vectors, each Elcon multiplexed page, GPS bounds and corrected strain IDs.
 These are protocol tests, not hardware transmission tests.
 
-The current custom codegen handles the six non-IEEE buses, but **MotorCAN's
+The current custom codegen handles the seven non-IEEE buses, but **MotorCAN's
 required IEEE-754 signals are not yet supported by that generator**. Preserve
 those signals in the DBC; do not convert WS22 floats into integers to bypass the
-limitation. Python cantools can encode/decode all seven databases.
+limitation. Python cantools can encode/decode all eight databases.
+
+## Telemetry allocation and sample batches
+
+| IDs | Measurements |
+|---|---|
+| 0x630–0x632 | Chassis acceleration, gyro, magnetometer |
+| 0x640–0x642 | Front-right upright acceleration, gyro, wheel speed |
+| 0x650–0x652 | Front-left upright acceleration, gyro, wheel speed |
+| 0x660–0x662 | Rear upright acceleration, gyro, wheel speed |
+| 0x670–0x672 | Front-right, front-left, rear suspension linpots |
+| 0x680–0x682 | Blackbody boards 1–3 |
+| 0x690–0x691 | Front and rear strain gauges |
+
+Other slots in 0x630–0x6DF remain unallocated. Infrastructure retains
+TimestampSync 0x620, TelemetryStatus 0x621, and OnBoardWatchdog 0x623.
+Bootloader node IDs are independent and unchanged.
+
+Acceleration, gyro, magnetometer and wheel-speed frames contain four consecutive
+samples per axis/value and a sender-computed arithmetic average. Number suffixes
+follow the quantity, for example `AccelerationX1` through `AccelerationX4`, then
+`AccelerationXAverage`. Packing stores the supplied average; it does not compute
+it. Round averages to the nearest representable step, with raw half-step ties
+away from zero. Send only complete four-sample batches.
+
+`Timestamp` identifies sample 1. `SampleIntervalTicks` is a positive 16-bit gap
+between successive samples, using the same clock. Sample times are Timestamp,
+Timestamp + interval, +2 intervals, +3 intervals, modulo 65536. Tick duration
+remains unresolved. Corresponding acceleration/gyro batches from one board share
+timing; magnetometer batches can use their own cadence.
+
+| Quantity | Encoding | Range |
+|---|---|---|
+| Chassis acceleration | signed 13-bit, 0.001 g | −4.096–4.095 g |
+| Upright acceleration | signed 15-bit, 0.001 g | −16.384–16.383 g |
+| Gyro | signed 16-bit, 0.02 deg/s | −655.36–655.34 deg/s |
+| Magnetometer | signed 12-bit, 0.15 uT | −307.2–307.05 uT |
+| Wheel speed | unsigned 12-bit, 0.5 rpm | 0–2047.5 rpm |
+
+Wheel speed deliberately uses finer resolution than fan tachometers (5 rpm).
+All measurement frames fit CAN-FD's 64-byte limit.

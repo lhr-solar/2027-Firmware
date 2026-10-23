@@ -65,89 +65,89 @@ VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 
 
 BO_ 1025 MC_DriveCommand: 8 VCU
- SG_ MC_MotorVelocitySetpoint : 0|32@1- (1,0) [0|0] "rpm"  WS22
- SG_ MC_MotorCurrentSetpoint : 32|32@1- (1,0) [0|1] "ratio"  WS22
+ SG_ MC_MotorVelocitySetpoint : 0|32@1- (1,0) [0|0] "rpm" Vector__XXX
+ SG_ MC_MotorCurrentSetpoint : 32|32@1- (1,0) [0|1] "ratio" Vector__XXX
 
 BO_ 1026 MC_PowerCommand: 8 VCU
- SG_ MC_MotorPowerSetpoint : 32|32@1- (1,0) [0|1] "ratio"  WS22
+ SG_ MC_MotorPowerSetpoint : 32|32@1- (1,0) [0|1] "ratio" Vector__XXX
 
 BO_ 1027 MC_ResetCommand: 8 VCU
 
 BO_ 1056 MC_Info: 8 WS22
- SG_ MC_TritiumID : 0|32@1+ (1,0) [0|0] ""  VCU
- SG_ MC_SerialNumber : 32|32@1+ (1,0) [0|0] ""  VCU
+ SG_ MC_TritiumID : 0|32@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MC_SerialNumber : 32|32@1+ (1,0) [0|0] "" Vector__XXX
 
 BO_ 1057 MC_Status: 8 WS22
- SG_ MC_LIMIT_OutputVoltagePWM : 0|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_LIMIT_MotorCurrent : 1|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_LIMIT_Velocity : 2|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_LIMIT_BusCurrent : 3|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_LIMIT_BusVoltageUpper : 4|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_LIMIT_BusVoltageLower : 5|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_LIMIT_MotorTemp : 6|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_LIMIT_Reserved : 7|9@1+ (1,0) [0|511] ""  VCU
- SG_ MC_FAULT_HardwareOverCurrent : 16|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_FAULT_SoftwareOverCurrent : 17|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_FAULT_DcBusOverVoltage : 18|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_FAULT_BadMotorPositionHallSeq : 19|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_FAULT_WatchdogCausedLastReset : 20|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_FAULT_ConfigRead : 21|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_FAULT_15vRailUnderVoltage : 22|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_FAULT_DesaturationFault : 23|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_FAULT_MotorOverSpeed : 24|1@1+ (1,0) [0|1] ""  VCU
- SG_ MC_FAULT_Reserved : 25|7@1+ (1,0) [0|0] ""  VCU
- SG_ MC_ActiveMotor : 32|16@1+ (1,0) [0|0] ""  VCU
- SG_ MC_TxErrorCount : 48|8@1+ (1,0) [0|0] ""  VCU
- SG_ MC_RxErrorCount : 56|8@1+ (1,0) [0|0] ""  VCU
+ SG_ MC_LIMIT_OutputVoltagePWM : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_MotorCurrent : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_Velocity : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_BusCurrent : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_BusVoltageUpper : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_BusVoltageLower : 5|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_MotorTemp : 6|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_Reserved : 7|9@1+ (1,0) [0|511] "" Vector__XXX
+ SG_ MC_FAULT_HardwareOverCurrent : 16|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_SoftwareOverCurrent : 17|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_DcBusOverVoltage : 18|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_BadMotorPositionHallSeq : 19|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_WatchdogCausedLastReset : 20|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_ConfigRead : 21|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_15vRailUnderVoltage : 22|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_DesaturationFault : 23|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_MotorOverSpeed : 24|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_Reserved : 25|7@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MC_ActiveMotor : 32|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MC_TxErrorCount : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MC_RxErrorCount : 56|8@1+ (1,0) [0|0] "" Vector__XXX
 
 BO_ 1058 MC_BusMeasurement: 8 WS22
- SG_ MC_BusVoltage : 0|32@1- (1,0) [0|0] "V"  VCU
- SG_ MC_BusCurrent : 32|32@1- (1,0) [0|0] "A"  VCU
+ SG_ MC_BusVoltage : 0|32@1- (1,0) [0|0] "V" Vector__XXX
+ SG_ MC_BusCurrent : 32|32@1- (1,0) [0|0] "A" Vector__XXX
 
 BO_ 1059 MC_VelocityMeasurement: 8 WS22
- SG_ MC_MotorVelocity : 0|32@1- (1,0) [0|0] "rpm"  VCU
- SG_ MC_VehicleVelocity : 32|32@1- (1,0) [0|0] "m/s"  VCU
+ SG_ MC_MotorVelocity : 0|32@1- (1,0) [0|0] "rpm" Vector__XXX
+ SG_ MC_VehicleVelocity : 32|32@1- (1,0) [0|0] "m/s" Vector__XXX
 
 BO_ 1060 MC_PhaseCurrentMeasurement: 8 WS22
- SG_ MC_PhaseCurrentB : 0|32@1- (1,0) [0|0] "A"  VCU
- SG_ MC_PhaseCurrentC : 32|32@1- (1,0) [0|0] "A"  VCU
+ SG_ MC_PhaseCurrentB : 0|32@1- (1,0) [0|0] "A" Vector__XXX
+ SG_ MC_PhaseCurrentC : 32|32@1- (1,0) [0|0] "A" Vector__XXX
 
 BO_ 1061 MC_MotorVoltageVectorMeasurement: 8 WS22
- SG_ MC_Vq : 0|32@1- (1,0) [0|0] "V"  VCU
- SG_ MC_Vd : 32|32@1- (1,0) [0|0] "V"  VCU
+ SG_ MC_Vq : 0|32@1- (1,0) [0|0] "V" Vector__XXX
+ SG_ MC_Vd : 32|32@1- (1,0) [0|0] "V" Vector__XXX
 
 BO_ 1062 MC_MotorCurrentVectorMeasurement: 8 WS22
- SG_ MC_Iq : 0|32@1- (1,0) [0|0] "A"  VCU
- SG_ MC_Id : 32|32@1- (1,0) [0|0] "A"  VCU
+ SG_ MC_Iq : 0|32@1- (1,0) [0|0] "A" Vector__XXX
+ SG_ MC_Id : 32|32@1- (1,0) [0|0] "A" Vector__XXX
 
 BO_ 1063 MC_BackEMFMeasurementPrediction: 8 WS22
- SG_ MC_BEMFq : 0|32@1- (1,0) [0|0] "V"  VCU
- SG_ MC_BEMFd : 32|32@1- (1,0) [0|0] "V"  VCU
+ SG_ MC_BEMFq : 0|32@1- (1,0) [0|0] "V" Vector__XXX
+ SG_ MC_BEMFd : 32|32@1- (1,0) [0|0] "V" Vector__XXX
 
 BO_ 1064 MC_15V_RailMeasurement: 8 WS22
- SG_ MC_Supply15V : 32|32@1- (1,0) [0|0] "V"  VCU
+ SG_ MC_Supply15V : 32|32@1- (1,0) [0|0] "V" Vector__XXX
 
 BO_ 1065 MC_3V3_19V_RailMeasurement: 8 WS22
- SG_ MC_Supply1V9 : 0|32@1- (1,0) [0|0] "V"  VCU
- SG_ MC_Supply3V3 : 32|32@1- (1,0) [0|0] "V"  VCU
+ SG_ MC_Supply1V9 : 0|32@1- (1,0) [0|0] "V" Vector__XXX
+ SG_ MC_Supply3V3 : 32|32@1- (1,0) [0|0] "V" Vector__XXX
 
 BO_ 1066 WS22Reserved0A: 8 WS22
 
 BO_ 1067 MC_Motor_TempMeasurement: 8 WS22
- SG_ MC_MotorTemp : 0|32@1- (1,0) [0|0] "degC"  VCU
- SG_ MC_HeatsinkTemp : 32|32@1- (1,0) [0|0] "degC"  VCU
+ SG_ MC_MotorTemp : 0|32@1- (1,0) [0|0] "degC" Vector__XXX
+ SG_ MC_HeatsinkTemp : 32|32@1- (1,0) [0|0] "degC" Vector__XXX
 
 BO_ 1068 MC_DspBoardTempMeasurement: 8 WS22
- SG_ MC_DspBoardTemp : 0|32@1- (1,0) [0|0] "degC"  VCU
+ SG_ MC_DspBoardTemp : 0|32@1- (1,0) [0|0] "degC" Vector__XXX
 
 BO_ 1069 WS22Reserved0D: 8 WS22
 
 BO_ 1070 MC_OdometerBusAhMeasurement: 8 WS22
- SG_ MC_TripOdometer : 0|32@1- (1,0) [0|0] "m"  VCU
- SG_ MC_DCBusAh : 32|32@1- (1,0) [0|0] "Ah"  VCU
+ SG_ MC_TripOdometer : 0|32@1- (1,0) [0|0] "m" Vector__XXX
+ SG_ MC_DCBusAh : 32|32@1- (1,0) [0|0] "Ah" Vector__XXX
 
 BO_ 1079 MC_SlipSpeedMeasurement: 8 WS22
- SG_ MC_SlipSpeed : 0|32@1- (1,0) [0|0] "Hz"  VCU
+ SG_ MC_SlipSpeed : 0|32@1- (1,0) [0|0] "Hz" Vector__XXX
 
 
 

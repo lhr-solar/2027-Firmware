@@ -65,22 +65,22 @@ VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 
 
 BO_ 512 MPPTAPowerMeasurements: 8 MPPTA
- SG_ InputVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTInterface
- SG_ InputCurrent : 23|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTInterface
- SG_ OutputVoltage : 39|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTInterface
- SG_ OutputCurrent : 55|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTInterface
+ SG_ InputVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ InputCurrent : 23|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ OutputVoltage : 39|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ OutputCurrent : 55|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
 
 BO_ 513 MPPTAStatus: 5 MPPTA
- SG_ OperatingMode : 0|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ Fault : 8|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ Enabled : 16|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ AmbientTemperature : 24|8@1- (1,0) [-128.0|127.0] "degC"  MPPTInterface
- SG_ HeatsinkTemperature : 32|8@1- (1,0) [-128.0|127.0] "degC"  MPPTInterface
+ SG_ OperatingMode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Fault : 8|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Enabled : 16|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ AmbientTemperature : 24|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
+ SG_ HeatsinkTemperature : 32|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
 
 BO_ 514 MPPTASweepData: 5 MPPTA
- SG_ SampleIndex : 0|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTInterface
- SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTInterface
+ SG_ SampleIndex : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
 BO_ 517 MPPTAFillRXBuffer: 0 MPPTInterface
 
@@ -91,36 +91,36 @@ BO_ 519 MPPTAProcessRXBuffer: 0 MPPTInterface
 BO_ 520 MPPTAProcessShortBuffer: 0 MPPTInterface
 
 BO_ 521 MPPTASetMode: 1 MPPTInterface
- SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] ""  MPPTA
+ SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
 
 BO_ 522 MPPTAPerformSweep: 5 MPPTInterface
- SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTA
- SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTA
- SG_ SampleCount : 32|8@1+ (1,0) [4|128] ""  MPPTA
+ SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
 
 BO_ 523 MPPTASetOutputVoltageLimit: 2 MPPTInterface
- SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTA
+ SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
 BO_ 524 MPPTASetOutputCurrentLimit: 2 MPPTInterface
- SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTA
+ SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
 
 BO_ 544 MPPTBPowerMeasurements: 8 MPPTB
- SG_ InputVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTInterface
- SG_ InputCurrent : 23|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTInterface
- SG_ OutputVoltage : 39|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTInterface
- SG_ OutputCurrent : 55|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTInterface
+ SG_ InputVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ InputCurrent : 23|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ OutputVoltage : 39|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ OutputCurrent : 55|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
 
 BO_ 545 MPPTBStatus: 5 MPPTB
- SG_ OperatingMode : 0|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ Fault : 8|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ Enabled : 16|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ AmbientTemperature : 24|8@1- (1,0) [-128.0|127.0] "degC"  MPPTInterface
- SG_ HeatsinkTemperature : 32|8@1- (1,0) [-128.0|127.0] "degC"  MPPTInterface
+ SG_ OperatingMode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Fault : 8|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Enabled : 16|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ AmbientTemperature : 24|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
+ SG_ HeatsinkTemperature : 32|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
 
 BO_ 546 MPPTBSweepData: 5 MPPTB
- SG_ SampleIndex : 0|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTInterface
- SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTInterface
+ SG_ SampleIndex : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
 BO_ 549 MPPTBFillRXBuffer: 0 MPPTInterface
 
@@ -131,36 +131,36 @@ BO_ 551 MPPTBProcessRXBuffer: 0 MPPTInterface
 BO_ 552 MPPTBProcessShortBuffer: 0 MPPTInterface
 
 BO_ 553 MPPTBSetMode: 1 MPPTInterface
- SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] ""  MPPTB
+ SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
 
 BO_ 554 MPPTBPerformSweep: 5 MPPTInterface
- SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTB
- SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTB
- SG_ SampleCount : 32|8@1+ (1,0) [4|128] ""  MPPTB
+ SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
 
 BO_ 555 MPPTBSetOutputVoltageLimit: 2 MPPTInterface
- SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTB
+ SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
 BO_ 556 MPPTBSetOutputCurrentLimit: 2 MPPTInterface
- SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTB
+ SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
 
 BO_ 576 MPPTCPowerMeasurements: 8 MPPTC
- SG_ InputVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTInterface
- SG_ InputCurrent : 23|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTInterface
- SG_ OutputVoltage : 39|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTInterface
- SG_ OutputCurrent : 55|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTInterface
+ SG_ InputVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ InputCurrent : 23|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ OutputVoltage : 39|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ OutputCurrent : 55|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
 
 BO_ 577 MPPTCStatus: 5 MPPTC
- SG_ OperatingMode : 0|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ Fault : 8|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ Enabled : 16|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ AmbientTemperature : 24|8@1- (1,0) [-128.0|127.0] "degC"  MPPTInterface
- SG_ HeatsinkTemperature : 32|8@1- (1,0) [-128.0|127.0] "degC"  MPPTInterface
+ SG_ OperatingMode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Fault : 8|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Enabled : 16|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ AmbientTemperature : 24|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
+ SG_ HeatsinkTemperature : 32|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
 
 BO_ 578 MPPTCSweepData: 5 MPPTC
- SG_ SampleIndex : 0|8@1+ (1,0) [0.0|255.0] ""  MPPTInterface
- SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTInterface
- SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTInterface
+ SG_ SampleIndex : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
 BO_ 581 MPPTCFillRXBuffer: 0 MPPTInterface
 
@@ -171,18 +171,18 @@ BO_ 583 MPPTCProcessRXBuffer: 0 MPPTInterface
 BO_ 584 MPPTCProcessShortBuffer: 0 MPPTInterface
 
 BO_ 585 MPPTCSetMode: 1 MPPTInterface
- SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] ""  MPPTC
+ SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
 
 BO_ 586 MPPTCPerformSweep: 5 MPPTInterface
- SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTC
- SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTC
- SG_ SampleCount : 32|8@1+ (1,0) [4|128] ""  MPPTC
+ SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
 
 BO_ 587 MPPTCSetOutputVoltageLimit: 2 MPPTInterface
- SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V"  MPPTC
+ SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
 BO_ 588 MPPTCSetOutputCurrentLimit: 2 MPPTInterface
- SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A"  MPPTC
+ SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
 
 
 

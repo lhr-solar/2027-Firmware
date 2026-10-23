@@ -65,14 +65,14 @@ VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 
 
 BO_ 688 LWS_Standard: 5 LWS
- SG_ Angle : 0|16@1- (0.1,0) [-3276.8|3276.7] "deg"  DEI
- SG_ AngularSpeed : 16|8@1+ (4,0) [0.0|1020.0] "deg/s"  DEI
- SG_ OK : 24|1@1+ (1,0) [0.0|1.0] ""  DEI
- SG_ Calibrated : 25|1@1+ (1,0) [0.0|1.0] ""  DEI
- SG_ Trimmed : 26|1@1+ (1,0) [0.0|1.0] ""  DEI
+ SG_ Angle : 0|16@1- (0.1,0) [-3276.8|3276.7] "deg" Vector__XXX
+ SG_ AngularSpeed : 16|8@1+ (4,0) [0.0|1020.0] "deg/s" Vector__XXX
+ SG_ OK : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Calibrated : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Trimmed : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 1984 LWS_Config: 2 DEI
- SG_ Command : 0|4@1+ (1,0) [0.0|15.0] ""  LWS
+ SG_ Command : 0|4@1+ (1,0) [0.0|15.0] "" Vector__XXX
 
 
 
