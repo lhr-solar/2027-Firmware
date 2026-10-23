@@ -1,0 +1,114 @@
+VERSION "2027-draft-2026-10-22"
+
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: DEI LWS
+VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
+VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
+VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
+VAL_TABLE_ WarningState 1 "Warning" 0 "NoWarning" ;
+VAL_TABLE_ DeviceStatus 2 "Waiting" 1 "Fault" 0 "OK" ;
+VAL_TABLE_ Permission 1 "Allowed" 0 "NotAllowed" ;
+VAL_TABLE_ Connection 1 "Connected" 0 "Disconnected" ;
+VAL_TABLE_ Pressed 1 "Pressed" 0 "NotPressed" ;
+VAL_TABLE_ Validity 1 "Valid" 0 "Invalid" ;
+VAL_TABLE_ Watchdog 1 "TimedOut" 0 "Alive" ;
+VAL_TABLE_ NormalAdvanced 1 "Advanced" 0 "Normal" ;
+VAL_TABLE_ MotorCommandSource 1 "External" 0 "VCU" ;
+VAL_TABLE_ Gear 3 "Invalid" 2 "Reverse" 1 "Forward" 0 "Neutral" ;
+VAL_TABLE_ BPSFaultSummary 5 "SMBFault" 4 "PrechargeFault" 3 "ContactorRelayFault" 2 "EmergencyStop" 1 "SetpointFault" 0 "OK" ;
+VAL_TABLE_ VCUState 7 "VehicleNotReady" 6 "Disabled" 5 "CruiseControl" 4 "Regen" 3 "ReverseDrive" 2 "NeutralDrive" 1 "ForwardDrive" 0 "Init" ;
+VAL_TABLE_ ChargeState 2 "Charging" 1 "Standby" 0 "Disabled" ;
+VAL_TABLE_ EVSEState 5 "F_EVSEFault" 4 "E_Fault" 3 "D_VentilationRequired" 2 "C_ChargingReady" 1 "B_Connected" 0 "A_Disconnected" ;
+VAL_TABLE_ GPSAntennaState 3 "Unknown" 2 "ShortCircuit" 1 "OpenCircuit" 0 "OK" ;
+VAL_TABLE_ GPSFix 2 "Fix3D" 1 "Fix2D" 0 "NoFix" ;
+VAL_TABLE_ CellularTechnology 4 "Other" 3 "NB_IoT" 2 "LTE_M" 1 "LTE" 0 "None" ;
+VAL_TABLE_ TPEEControlMode 2 "ConstantInputVoltage" 1 "PerturbAndObserve" 0 "Disabled" ;
+VAL_TABLE_ TPEEOperatingMode 7 "Fault" 6 "MinimumInputVoltage" 5 "TemperatureDerating" 4 "ConstantOutputCurrent" 3 "ConstantOutputVoltage" 2 "MinimumInputCurrent" 1 "ConstantInputCurrent" 0 "ConstantInputVoltage" ;
+VAL_TABLE_ TPEEFault 8 "Fault" 7 "PhaseOverCurrent" 6 "InputUnderCurrent" 5 "InputOverCurrent" 4 "OutputOverCurrent" 3 "OutputOverVoltage" 2 "InputOverVoltage" 1 "ConfigurationError" 0 "OK" ;
+VAL_TABLE_ LWSCalibration 1 "Calibrated" 0 "NotCalibrated" ;
+VAL_TABLE_ LWSTrim 1 "Trimmed" 0 "NotTrimmed" ;
+VAL_TABLE_ LWSCommand 5 "ResetCalibration" 3 "SetAngleZero" ;
+VAL_TABLE_ ElconControl 1 "Disable" 0 "Charge" ;
+VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
+
+
+BO_ 688 LWS_Standard: 5 LWS
+ SG_ Angle : 0|16@1- (0.1,0) [-3276.8|3276.7] "deg"  DEI
+ SG_ AngularSpeed : 16|8@1+ (4,0) [0.0|1020.0] "deg/s"  DEI
+ SG_ OK : 24|1@1+ (1,0) [0.0|1.0] ""  DEI
+ SG_ Calibrated : 25|1@1+ (1,0) [0.0|1.0] ""  DEI
+ SG_ Trimmed : 26|1@1+ (1,0) [0.0|1.0] ""  DEI
+
+BO_ 1984 LWS_Config: 2 DEI
+ SG_ Command : 0|4@1+ (1,0) [0.0|15.0] ""  LWS
+
+
+
+
+CM_ BO_ 688 "Bosch Motorsport LWS fixed classic CAN format; Intel little-endian. DEI is the only configuration transmitter.";
+CM_ SG_ 688 Trimmed "Trimmed";
+CM_ SG_ 688 Calibrated "Calibrated";
+CM_ SG_ 688 OK "OK";
+CM_ SG_ 688 AngularSpeed "0xFF is invalid sentinel; valid measurement range is 0..1016 deg/s.";
+CM_ SG_ 688 Angle "0x7FFF is invalid/not-calibrated sentinel; validate OK/CAL/TRIM before using angle.";
+CM_ BO_ 1984 "Bosch Motorsport LWS fixed classic CAN format; Intel little-endian. DEI is the only configuration transmitter.";
+CM_ SG_ 1984 Command "Command";
+BA_DEF_ SG_  "ValueTable" STRING ;
+BA_DEF_ BO_  "LayoutPending" INT 0 1;
+BA_DEF_ BO_  "ProtocolSource" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;
+BA_DEF_DEF_  "ValueTable" "";
+BA_DEF_DEF_  "LayoutPending" 0;
+BA_DEF_DEF_  "ProtocolSource" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_ "BusType" "CAN";
+BA_ "DBName" "SteeringCAN";
+BA_ "LayoutPending" BO_ 688 0;
+BA_ "ProtocolSource" BO_ 688 "Bosch Motorsport LWS datasheet 2021";
+BA_ "GenMsgCycleTime" BO_ 688 10;
+BA_ "ValueTable" SG_ 688 Trimmed "LWSTrim";
+BA_ "ValueTable" SG_ 688 Calibrated "LWSCalibration";
+BA_ "ValueTable" SG_ 688 OK "Validity";
+BA_ "LayoutPending" BO_ 1984 0;
+BA_ "ProtocolSource" BO_ 1984 "Bosch Motorsport LWS datasheet 2021";
+BA_ "ValueTable" SG_ 1984 Command "LWSCommand";
+VAL_ 688 Trimmed 0 "NotTrimmed" 1 "Trimmed" ;
+VAL_ 688 Calibrated 0 "NotCalibrated" 1 "Calibrated" ;
+VAL_ 688 OK 0 "Invalid" 1 "Valid" ;
+VAL_ 1984 Command 3 "SetAngleZero" 5 "ResetCalibration" ;
