@@ -36,10 +36,10 @@ clean:
 	cmake --build $(BUILD_DIR) --target clean
 
 # clang-format, see .clang-format at repo root
-format: configure
+format: 
 	cmake --build $(BUILD_DIR) --target format
 
-format-check: configure
+format-check: 
 	cmake --build $(BUILD_DIR) --target format-check
 
 # For CI - builds all tests, fails if any failed

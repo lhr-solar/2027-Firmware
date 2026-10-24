@@ -36,21 +36,16 @@ clean:
 	cmake --build $(BUILD_DIR) --target clean
 
 # clang-format, see .clang-format at repo root
-format: configure
+format: 
 	cmake --build $(BUILD_DIR) --target format
 
-format-check: configure
+format-check: 
 	cmake --build $(BUILD_DIR) --target format-check
 
 # For CI - builds production firmware for all instances of this board
 prod-all:
-<<<<<<< HEAD
-	cmake -B $(BUILD_DIR)/build1 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=
-	cmake -B $(BUILD_DIR)/build2 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=
-=======
 	cmake -B $(BUILD_DIR)/build1 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY)
 	cmake -B $(BUILD_DIR)/build2 -G Ninja -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN) -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY)
->>>>>>> main
 	cmake --build $(BUILD_DIR)/build1 --target LVC	
 	cmake --build $(BUILD_DIR)/build2 --target LVC
 
