@@ -32,7 +32,10 @@ works with an exported `canspec-data.json` served alongside it. Generated files,
 GitHub Pages at `/2027-Firmware/canspec/`. It runs on DBC/viewer pushes across
 branches, branch creation/deletion, manual dispatch, and an hourly reconciliation.
 The scheduled run covers older branches that do not yet contain the workflow.
-The workflow and viewer code must first be merged into the default branch.
+Pushes and pull requests validate their own code. Publication uses a separate
+trusted default-branch checkout and skips cleanly until the viewer is first
+merged into that branch. Feature branches cannot publish their own UI/exporter
+code.
 
 Every run fetches and prunes all branch refs, then publishes a complete snapshot:
 
