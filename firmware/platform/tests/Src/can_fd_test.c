@@ -468,7 +468,7 @@ int main(void) {
 
 static uint32_t HAL_RCC_FDCAN_CLK_ENABLED = 0;
 
-void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle) {
+void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
@@ -476,7 +476,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle) {
 
   }
 #ifdef FDCAN1
-  else if (fdcanHandle->Instance == FDCAN1) {
+  else if (hfdcan->Instance == FDCAN1) {
 
     PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
     PeriphClkInit.FdcanClockSelection = RCC_FDCANCLKSOURCE_PCLK1;
@@ -510,7 +510,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle) {
   }
 #endif  // FDCAN1
 #ifdef FDCAN2
-  else if (fdcanHandle->Instance == FDCAN2) {
+  else if (hfdcan->Instance == FDCAN2) {
 
     PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
     PeriphClkInit.FdcanClockSelection = RCC_FDCANCLKSOURCE_PCLK1;
@@ -546,7 +546,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle) {
 #endif  // FDCAN2
 
 #ifdef FDCAN3
-  else if (fdcanHandle->Instance == FDCAN3) {
+  else if (hfdcan->Instance == FDCAN3) {
     /** Initializes the peripherals clocks
      */
     PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
@@ -582,8 +582,8 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle) {
 #endif
 }
 
-void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle) {
-  if (fdcanHandle->Instance == FDCAN1) {
+void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan) {
+  if (hfdcan->Instance == FDCAN1) {
     /* Peripheral clock disable */
     HAL_RCC_FDCAN_CLK_ENABLED--;
     if (HAL_RCC_FDCAN_CLK_ENABLED == 0) {
@@ -602,7 +602,7 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle) {
     /* USER CODE BEGIN FDCAN1_MspDeInit 1 */
 
     /* USER CODE END FDCAN1_MspDeInit 1 */
-  } else if (fdcanHandle->Instance == FDCAN2) {
+  } else if (hfdcan->Instance == FDCAN2) {
     /* Peripheral clock disable */
     HAL_RCC_FDCAN_CLK_ENABLED--;
     if (HAL_RCC_FDCAN_CLK_ENABLED == 0) {
@@ -621,7 +621,7 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle) {
     /* USER CODE BEGIN FDCAN2_MspDeInit 1 */
 
     /* USER CODE END FDCAN2_MspDeInit 1 */
-  } else if (fdcanHandle->Instance == FDCAN3) {
+  } else if (hfdcan->Instance == FDCAN3) {
     /* Peripheral clock disable */
     HAL_RCC_FDCAN_CLK_ENABLED--;
     if (HAL_RCC_FDCAN_CLK_ENABLED == 0) {
