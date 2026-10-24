@@ -7,12 +7,12 @@ static const uint32_t ERROR_BLINK_DELAY_MS = 500;
 
 // busy-waits using the CPU cycle counter; correct at any clock speed
 // (SystemCoreClock tracks it) and needs no scheduler or HAL tick
-static void prvBusyDelay(uint32_t delayMs) {
+static void prvBusyDelay(uint32_t delay_ms) {
     CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // enable the DWT unit
     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;            // start the cycle counter
 
     const uint32_t start = DWT->CYCCNT;
-    const uint32_t cycles = (SystemCoreClock / 1000U) * delayMs;
+    const uint32_t cycles = (SystemCoreClock / 1000U) * delay_ms;
     while ((DWT->CYCCNT - start) < cycles) {
         // unsigned subtraction handles counter wraparound
     }

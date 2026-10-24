@@ -22,7 +22,7 @@
 
 /** @brief Return status for StatusLEDs functions
  */
-typedef enum { LED_OK, LED_ERR } led_status_t;
+typedef enum { LED_OK, LED_ERROR } led_status_t;
 
 /** @brief Colors for the RGB heartbeat LED
  */
@@ -35,7 +35,7 @@ typedef enum {
 
 /** @brief Enables the GPIO clocks and configures the pins for all LEDs, leaving
  *         them off. Safe to call more than once.
- * @return LED_OK on success, LED_ERR if pinDefs.h uses a GPIO port this
+ * @return LED_OK on success, LED_ERROR if pinDefs.h uses a GPIO port this
  *         driver doesn't know how to clock.
  */
 led_status_t StatusLEDs_Init(void);
@@ -55,6 +55,6 @@ void StatusLEDs_ToggleHeartbeat(void);
 
 /** @brief Sets the color of the heartbeat LED and turns the LED off.
  * @param color The color to use (RGB_RED, RGB_GREEN, or RGB_BLUE).
- * @return      LED_OK on success, LED_ERR if the color is out of range.
+ * @return      LED_OK on success, LED_ERROR if the color is out of range.
  */
 led_status_t StatusLEDs_SetHeartbeatColor(rgb_color_t color);

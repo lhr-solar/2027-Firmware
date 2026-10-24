@@ -1,8 +1,14 @@
 #pragma once
 /**
  * @file common.h
- * @brief Board-wide BPSL functions.
+ * @brief Board-wide BPSL functions and shared includes.
  */
+
+#include <stdbool.h>
+
+#include "FreeRTOS.h"
+#include "semphr.h"
+#include "timers.h"
 
 /**
  * @brief Handles software errors during initialization. Blinks the heartbeat
