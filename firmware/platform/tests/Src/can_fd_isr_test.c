@@ -17,15 +17,15 @@ for an interrupt
 
 // LSOM has heartbeat pin defined as PC3
 // Most other nucleos have a heartbeat for A5
-#define LED_PIN GPIO_PIN_3
+#define LED_PIN  GPIO_PIN_3
 #define LED_PORT GPIOC
 
 // Some pins broken out by LSOM
 #define CAN_TX_PROFILE_PORT GPIOA
-#define CAN_TX_PROFILE_PIN GPIO_PIN_10
+#define CAN_TX_PROFILE_PIN  GPIO_PIN_10
 
 #define CAN_RX_PROFILE_PORT GPIOB
-#define CAN_RX_PROFILE_PIN GPIO_PIN_4
+#define CAN_RX_PROFILE_PIN  GPIO_PIN_4
 
 void can_profile_pins_init() {
     GPIO_InitTypeDef tx_pin_config = {
@@ -167,7 +167,9 @@ void Error_Handler() {
     }
 }
 
-void Success_Handler() { HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET); }
+void Success_Handler() {
+    HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET);
+}
 
 
 #define CANFD1_TX_QUEUE_SIZE 10
@@ -178,7 +180,7 @@ static uint8_t mycanfd1_tx_queue_storage[CANFD1_TX_QUEUE_SIZE * sizeof(can_rx_pa
 
 
 static void task(void* pvParameters) {
-    while(1){
+    while (1) {
         HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
         // HAL_GPIO_TogglePin(CAN_TX_PROFILE_PORT, CAN_TX_PROFILE_PIN);
         vTaskDelay(pdMS_TO_TICKS(500));
@@ -186,7 +188,7 @@ static void task(void* pvParameters) {
 }
 
 
-void can_fd_rx_callback_hook(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs,
+void can_fd_rx_callback_hook(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo0ITs,
                              can_rx_payload_t recv_payload) {
     // only forward motorCAN messages to CarCAN
 
@@ -218,30 +220,30 @@ int main(void) {
     __HAL_RCC_SYSCFG_CLK_ENABLE();
     __HAL_RCC_PWR_CLK_ENABLE();
 
-// System clock config can change depending on the target MCU, since the clock
-// tree can be different If you need to use a different MCU, go to cubemx and
-// generate a new system clock config function with the system clock being 80
-// Mhz It especially varies with nucleo vs direct MCU G473_SystemClockConfig();
-#ifdef STM32G474xx
+    // System clock config can change depending on the target MCU, since the clock
+    // tree can be different If you need to use a different MCU, go to cubemx and
+    // generate a new system clock config function with the system clock being 80
+    // Mhz It especially varies with nucleo vs direct MCU G473_SystemClockConfig();
+    #ifdef STM32G474xx
     G474_SystemClockConfig();
-#elif defined(STM32G473xx)
+    #elif defined(STM32G473xx)
     G473_SystemClockConfig();
-#else
+    #else
     SystemClock_Config();
-#endif
+    #endif
 
-    Heartbeat_Init();         // enable LED for LED_PORT
-    // HAL_GPIO_TogglePin(LED_PORT, LED_PIN); 
-    can_profile_pins_init();  // enable pins we toggle during interrupts
+    Heartbeat_Init(); // enable LED for LED_PORT
+    // HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
+    can_profile_pins_init(); // enable pins we toggle during interrupts
 
     mycanfd1_tx_queue = xQueueCreateStatic(CANFD1_TX_QUEUE_SIZE, sizeof(can_rx_payload_t),
-                           mycanfd1_tx_queue_storage, &mycanfd1_tx_queue_buffer);
+                                           mycanfd1_tx_queue_storage, &mycanfd1_tx_queue_buffer);
 
     if (mycanfd1_tx_queue == NULL) {
         Error_Handler();
     }
 
-#ifdef FDCAN1
+    #ifdef FDCAN1
     hfdcan1->Instance = FDCAN1;
     hfdcan1->Init.ClockDivider = FDCAN_CLOCK_DIV1;
     hfdcan1->Init.FrameFormat = FDCAN_FRAME_CLASSIC;
@@ -276,7 +278,7 @@ int main(void) {
     sFilterConfig.IdType = FDCAN_STANDARD_ID;
     sFilterConfig.FilterIndex = 0;
     sFilterConfig.FilterType = FDCAN_FILTER_MASK;
-    sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;  // directs frames to FIFO0
+    sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // directs frames to FIFO0
 
     // this accepts all CAN IDs
     sFilterConfig.FilterID1 = 0x000;
@@ -289,9 +291,9 @@ int main(void) {
     if (can_fd_start(hfdcan1) != CAN_OK) {
         Error_Handler();
     }
-#endif
+    #endif
 
-#ifdef FDCAN2
+    #ifdef FDCAN2
 
     hfdcan2->Instance = FDCAN2;
     hfdcan2->Init.ClockDivider = FDCAN_CLOCK_DIV1;
@@ -326,7 +328,7 @@ int main(void) {
     sFilterConfig2.IdType = FDCAN_STANDARD_ID;
     sFilterConfig2.FilterIndex = 0;
     sFilterConfig2.FilterType = FDCAN_FILTER_MASK;
-    sFilterConfig2.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;  // directs frames to FIFO0
+    sFilterConfig2.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // directs frames to FIFO0
 
     // this accepts all CAN IDs
     sFilterConfig2.FilterID1 = 0x000;
@@ -340,9 +342,9 @@ int main(void) {
         Error_Handler();
     }
 
-#endif
+    #endif
 
-#ifdef FDCAN3
+    #ifdef FDCAN3
 
     hfdcan3->Instance = FDCAN3;
     hfdcan3->Init.ClockDivider = FDCAN_CLOCK_DIV1;
@@ -377,7 +379,7 @@ int main(void) {
     sFilterConfig3.IdType = FDCAN_STANDARD_ID;
     sFilterConfig3.FilterIndex = 0;
     sFilterConfig3.FilterType = FDCAN_FILTER_MASK;
-    sFilterConfig3.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;  // directs frames to FIFO0
+    sFilterConfig3.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // directs frames to FIFO0
 
     // this accepts all CAN IDs
     sFilterConfig3.FilterID1 = 0x000;
@@ -391,13 +393,23 @@ int main(void) {
         Error_Handler();
     }
 
-#endif
-    // HAL_GPIO_TogglePin(LED_PORT, LED_PIN); 
+    #endif
+    // HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
     // you can only send CAN messages within a FreeRTOS task
-    xTaskCreateStatic(task, "task", 512, NULL, tskIDLE_PRIORITY + 2, task_stack, &task_buffer);
+    // clang-format off
+    xTaskCreateStatic(
+        task,
+        "task",
+        512,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        task_stack,
+        &task_buffer);
+    // clang-format on
 
     vTaskStartScheduler();
-    while (1) {}
+    while (1) {
+    }
 
     Error_Handler();
     return 0;
@@ -409,10 +421,10 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-    if (0) {  // placeholder for if else if there are no FDCANs defined
+    if (0) { // placeholder for if else if there are no FDCANs defined
 
     }
-#ifdef FDCAN1
+    #ifdef FDCAN1
     else if (hfdcan->Instance == FDCAN1) {
 
         PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
@@ -445,8 +457,8 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
         HAL_NVIC_SetPriority(FDCAN1_IT1_IRQn, FDCAN_NVIC_PRIO, 0);
         HAL_NVIC_EnableIRQ(FDCAN1_IT1_IRQn);
     }
-#endif  // FDCAN1
-#ifdef FDCAN2
+    #endif // FDCAN1
+    #ifdef FDCAN2
     else if (hfdcan->Instance == FDCAN2) {
 
         PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
@@ -480,9 +492,9 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
         HAL_NVIC_EnableIRQ(FDCAN2_IT1_IRQn);
 
     }
-#endif  // FDCAN2
+    #endif // FDCAN2
 
-#ifdef FDCAN3
+    #ifdef FDCAN3
     else if (hfdcan->Instance == FDCAN3) {
         /** Initializes the peripherals clocks
          */
@@ -516,7 +528,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
         HAL_NVIC_SetPriority(FDCAN3_IT1_IRQn, FDCAN_NVIC_PRIO, 0);
         HAL_NVIC_EnableIRQ(FDCAN3_IT1_IRQn);
     }
-#endif
+    #endif
 }
 
 void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan) {
