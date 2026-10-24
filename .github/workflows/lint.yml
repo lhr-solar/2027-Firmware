@@ -49,7 +49,8 @@ jobs:
           failed=""
           for dir in firmware/platform $(dirname firmware/*/*/Board.cmake); do
             echo "::group::format-check $dir"
-            if ! direnv exec . make -C "$dir" format-check 2>&1 | tee -a format.log; then
+            # format-check runs on an existing build dir, configure creates it
+            if ! { direnv exec . make -C "$dir" configure && direnv exec . make -C "$dir" format-check; } 2>&1 | tee -a format.log; then
               failed="$failed $dir"
             fi
             echo "::endgroup::"
