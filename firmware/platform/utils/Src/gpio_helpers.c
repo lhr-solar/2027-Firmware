@@ -3,7 +3,7 @@
 #include "gpio_helpers.h"
 
 HAL_StatusTypeDef enable_gpio_clock(const GPIO_TypeDef* port) {
-   if (port == GPIOA) {
+    if (port == GPIOA) {
         __HAL_RCC_GPIOA_CLK_ENABLE();
     } else if (port == GPIOB) {
         __HAL_RCC_GPIOB_CLK_ENABLE();
