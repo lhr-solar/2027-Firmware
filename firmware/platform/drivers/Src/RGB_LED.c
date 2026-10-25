@@ -1,4 +1,5 @@
 #include "RGB_LED.h"
+#include "gpio_helpers.h"
 
 #include <stddef.h>
 
@@ -49,7 +50,9 @@ static const uint16_t gamma_lut[256] = {
     3584, 3617, 3650, 3683, 3716, 3750, 3784, 3818, 3852, 3886, 3920, 3955, 3990, 4025, 4060, 4095,
 };
 
-// Kernel clock of an APB1 timer: PCLK1, doubled when the APB1 prescaler is not 1.
+// Kernel clock of an APB1 timer. The hardware feeds timers PCLK1 when the APB1
+// prescaler is 1, and 2 x PCLK1 otherwise (RM0440, RCC chapter), so a divided
+// APB1 bus doesn't halve the timer clock.
 // TODO: replace with the shared clock helper once Aarav's clock PR lands.
 static uint32_t apb1_timer_clock_hz(void) {
     uint32_t pclk1 = HAL_RCC_GetPCLK1Freq();
@@ -76,28 +79,6 @@ static rgb_led_status_t enable_timer_clock(const TIM_TypeDef* timer) {
     return RGB_LED_OK;
 }
 
-// Turn on the bus clock for the GPIO port the LED pins are on.
-static rgb_led_status_t enable_gpio_clock(const GPIO_TypeDef* port) {
-    if (port == GPIOA) {
-        __HAL_RCC_GPIOA_CLK_ENABLE();
-    } else if (port == GPIOB) {
-        __HAL_RCC_GPIOB_CLK_ENABLE();
-    } else if (port == GPIOC) {
-        __HAL_RCC_GPIOC_CLK_ENABLE();
-    } else if (port == GPIOD) {
-        __HAL_RCC_GPIOD_CLK_ENABLE();
-    } else if (port == GPIOE) {
-        __HAL_RCC_GPIOE_CLK_ENABLE();
-    } else if (port == GPIOF) {
-        __HAL_RCC_GPIOF_CLK_ENABLE();
-    } else if (port == GPIOG) {
-        __HAL_RCC_GPIOG_CLK_ENABLE();
-    } else {
-        return RGB_LED_ERROR;
-    }
-    return RGB_LED_OK;
-}
-
 // Write all three compare registers and remember the colour. Caller must hold
 // led->mutex. The registers are preloaded, so the new duty cycles take effect
 // together at the next timer update rather than one channel at a time.
@@ -115,8 +96,7 @@ rgb_led_status_t rgb_led_init(rgb_led_handle_t* led, TIM_HandleTypeDef* htim,
     if (led == NULL || htim == NULL || cfg == NULL) {
         return RGB_LED_NULL_ERROR;
     }
-    if (enable_timer_clock(cfg->timer) != RGB_LED_OK ||
-        enable_gpio_clock(cfg->port) != RGB_LED_OK) {
+    if (enable_timer_clock(cfg->timer) != RGB_LED_OK || enable_gpio_clock(cfg->port) != HAL_OK) {
         return RGB_LED_ERROR;
     }
 

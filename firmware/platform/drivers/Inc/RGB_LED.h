@@ -11,11 +11,11 @@
  * A mutex in the handle keeps tasks from interleaving their register writes.
  *
  * Hardware notes:
- *  - The driver takes over the whole timer it is given (prescaler, period,
- *    channel modes). Don't use that timer for anything else.
+ *  - Don't use the RGB LED timer for anything else.
  *  - Only APB1 timers with three or more channels are supported (TIM2-TIM5).
- *  - Clocks and GPIO are set up inside rgb_led_init(); the driver does not
- *    define any HAL_TIM_*Msp* callbacks, so a board's own timer code is free to.
+ *  - Clocks and GPIO are set up inside rgb_led_init(). The driver doesn't
+ *    define any HAL_TIM_*Msp* callbacks, so it won't clash with a board that
+ *    defines its own.
  *  - The default pins (PA0-PA2, TIM2 AF1) exist on both LQFP48 and LQFP100.
  *    PA2 is also USART2_TX / LPUART1_TX, so those UARTs can't use PA2 alongside
  *    this LED.

@@ -35,7 +35,7 @@
 
 typedef struct {
     rgb_led_color_t color;
-    TickType_t delay_ticks; // 0 = never block, just yield
+    TickType_t delay_ticks; // 0 = never block
 } writer_args_t;
 
 static TIM_HandleTypeDef htim_rgb;
@@ -45,7 +45,8 @@ static volatile bool started = false; // set by the checker after the colour che
 static volatile bool done = false;    // set by the checker when the run ends
 
 // The lowest-priority writer never blocks, so it is almost always the one
-// mid-write when a higher-priority writer or the checker wakes up.
+// mid-write when a higher-priority writer or the checker wakes up. The others
+// preempt it whenever their delay ends.
 static const writer_args_t writer_args[] = {
     {RGB_LED_RED, 0},
     {RGB_LED_GREEN, 1},
@@ -76,9 +77,7 @@ static void writer_task(void* argument) {
             failed = true;
             break;
         }
-        if (args->delay_ticks == 0U) {
-            taskYIELD();
-        } else {
+        if (args->delay_ticks != 0U) {
             vTaskDelay(args->delay_ticks);
         }
     }
@@ -130,9 +129,9 @@ static void checker_task(void* argument) {
     const uint32_t full = htim_rgb.Init.Period;
     const uint32_t red_blue = failed ? full : 0U;
     taskENTER_CRITICAL();
-    __HAL_TIM_SET_COMPARE(&htim_rgb, RGB_LED_DEFAULT_RED_CH, red_blue);
-    __HAL_TIM_SET_COMPARE(&htim_rgb, RGB_LED_DEFAULT_GREEN_CH, full);
-    __HAL_TIM_SET_COMPARE(&htim_rgb, RGB_LED_DEFAULT_BLUE_CH, red_blue);
+    __HAL_TIM_SET_COMPARE(&htim_rgb, rgb_led.red_channel, red_blue);
+    __HAL_TIM_SET_COMPARE(&htim_rgb, rgb_led.green_channel, full);
+    __HAL_TIM_SET_COMPARE(&htim_rgb, rgb_led.blue_channel, red_blue);
     taskEXIT_CRITICAL();
     vTaskSuspend(NULL);
 }
