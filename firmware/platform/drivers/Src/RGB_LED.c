@@ -53,7 +53,6 @@ static const uint16_t gamma_lut[256] = {
 // Kernel clock of an APB1 timer. The hardware feeds timers PCLK1 when the APB1
 // prescaler is 1, and 2 x PCLK1 otherwise (RM0440, RCC chapter), so a divided
 // APB1 bus doesn't halve the timer clock.
-// TODO: replace with the shared clock helper once Aarav's clock PR lands.
 static uint32_t apb1_timer_clock_hz(void) {
     uint32_t pclk1 = HAL_RCC_GetPCLK1Freq();
     if ((RCC->CFGR & RCC_CFGR_PPRE1) != RCC_HCLK_DIV1) {
