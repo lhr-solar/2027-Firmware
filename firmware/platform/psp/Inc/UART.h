@@ -46,7 +46,7 @@
 #include "stm32xx_hal.h"
 
 #if !defined(UART4) && !defined(USART1)
-  #error "[CONFIG] UART not enabled on this chip."
+    #error "[CONFIG] UART not enabled on this chip."
 #endif /* UART4 */
 
 // Return codes for UART operations
@@ -105,7 +105,8 @@ uart_status_t uart_deinit(UART_HandleTypeDef* handle);
  * @param delay_ticks Ticks to wait if TX queue is full (0 = no wait, portMAX_DELAY = wait indefinitely).
  * @return uart_status_t Returns UART_SENT on queued/sent, UART_ERR on failure.
  */
-uart_status_t uart_send(UART_HandleTypeDef* handle, const uint8_t* data, uint16_t length, TickType_t delay_ticks);
+uart_status_t uart_send(UART_HandleTypeDef* handle, const uint8_t* data, uint16_t length,
+                        TickType_t delay_ticks);
 
 /**
  * @brief Receives data from UART RX queue.
@@ -116,6 +117,7 @@ uart_status_t uart_send(UART_HandleTypeDef* handle, const uint8_t* data, uint16_
  * @param delay_ticks Ticks to wait for data (0 = non-blocking, portMAX_DELAY = block until available).
  * @return uart_status_t Returns UART_RECV on success, UART_EMPTY if RX queue empty, UART_ERR on failure.
  */
-uart_status_t uart_recv(UART_HandleTypeDef* handle, uint8_t* data, uint16_t length, TickType_t delay_ticks);
+uart_status_t uart_recv(UART_HandleTypeDef* handle, uint8_t* data, uint16_t length,
+                        TickType_t delay_ticks);
 
 #endif /* UART_H_ */

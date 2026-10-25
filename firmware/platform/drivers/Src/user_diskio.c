@@ -8,27 +8,24 @@ extern sd_handle_t sd;
 static volatile DSTATUS Stat = STA_NOINIT;
 
 /* Private function prototypes */
-DSTATUS USER_initialize (BYTE pdrv);
-DSTATUS USER_status (BYTE pdrv);
-DRESULT USER_read (BYTE pdrv, BYTE *buff, DWORD sector, UINT count);
+DSTATUS USER_initialize(BYTE pdrv);
+DSTATUS USER_status(BYTE pdrv);
+DRESULT USER_read(BYTE pdrv, BYTE* buff, DWORD sector, UINT count);
 #if _USE_WRITE == 1
-  DRESULT USER_write (BYTE pdrv, const BYTE *buff, DWORD sector, UINT count);
-#endif 
+DRESULT USER_write(BYTE pdrv, const BYTE* buff, DWORD sector, UINT count);
+#endif
 #if _USE_IOCTL == 1
-  DRESULT USER_ioctl (BYTE pdrv, BYTE cmd, void *buff);
-#endif 
+DRESULT USER_ioctl(BYTE pdrv, BYTE cmd, void* buff);
+#endif
 
-Diskio_drvTypeDef  USER_Driver =
-{
-  USER_initialize,
-  USER_status,
-  USER_read,
-#if  _USE_WRITE
-  USER_write,
-#endif  
-#if  _USE_IOCTL == 1
-  USER_ioctl,
-#endif 
+Diskio_drvTypeDef USER_Driver = {
+    USER_initialize, USER_status, USER_read,
+#if _USE_WRITE
+    USER_write,
+#endif
+#if _USE_IOCTL == 1
+    USER_ioctl,
+#endif
 };
 
 /**
@@ -36,10 +33,9 @@ Diskio_drvTypeDef  USER_Driver =
   * @param  pdrv: Physical drive number (0..)
   * @retval DSTATUS: Operation status
   */
-DSTATUS USER_initialize (BYTE pdrv)
-{
-    if(SD_Init(&sd, pdMS_TO_TICKS(SD_TIMEOUT_MS)) != SD_OK) {
-        Stat = STA_NOINIT; 
+DSTATUS USER_initialize(BYTE pdrv) {
+    if (SD_Init(&sd, pdMS_TO_TICKS(SD_TIMEOUT_MS)) != SD_OK) {
+        Stat = STA_NOINIT;
         return Stat;
     }
 
@@ -50,16 +46,14 @@ DSTATUS USER_initialize (BYTE pdrv)
 /**
   * @brief  Gets Disk Status
   */
-DSTATUS USER_status (BYTE pdrv)
-{
+DSTATUS USER_status(BYTE pdrv) {
     return Stat;
 }
 
 /**
   * @brief  Reads Sector(s) using the safe Single Block interrupt function
   */
-DRESULT USER_read (BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
-{
+DRESULT USER_read(BYTE pdrv, BYTE* buff, DWORD sector, UINT count) {
     // Loop through however many sectors FatFs asks for
     for (UINT i = 0; i < count; i++) {
         if (SD_ReadSingleBlock(&sd, sector + i, buff, pdMS_TO_TICKS(SD_TIMEOUT_MS)) != SD_OK) {
@@ -74,8 +68,7 @@ DRESULT USER_read (BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
   * @brief  Writes Sector(s) using the safe Single Block interrupt function
   */
 #if _USE_WRITE == 1
-DRESULT USER_write (BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
-{
+DRESULT USER_write(BYTE pdrv, const BYTE* buff, DWORD sector, UINT count) {
     for (UINT i = 0; i < count; i++) {
         if (SD_WriteSingleBlock(&sd, sector + i, buff, pdMS_TO_TICKS(SD_TIMEOUT_MS)) != SD_OK) {
             return RES_ERROR;
@@ -90,14 +83,14 @@ DRESULT USER_write (BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
   * @brief  I/O control operation
   */
 #if _USE_IOCTL == 1
-DRESULT USER_ioctl (BYTE pdrv, BYTE cmd, void *buff)
-{
-  if (pdrv != 0) return RES_PARERR;
+DRESULT USER_ioctl(BYTE pdrv, BYTE cmd, void* buff) {
+    if (pdrv != 0)
+        return RES_PARERR;
 
     switch (cmd) {
         case CTRL_SYNC:
-            return RES_OK; 
-            
+            return RES_OK;
+
         case GET_SECTOR_COUNT:
             *(DWORD*)buff = SD_DEFAULT_SECTOR_COUNT; // Dummy size
             return RES_OK;

@@ -20,7 +20,7 @@ function(lint TARGET_NAME)
         message(FATAL_ERROR "CLANG_TIDY needs CMake >= 3.27 (have ${CMAKE_VERSION}) -- use the nix dev shell.")
     endif()
 
-    find_program(CLANG_TIDY_EXE NAMES clang-tidy REQUIRED)
+    find_program(CLANG_TIDY_EXE NAMES clang-tidy REQUIRED NO_CACHE)
 
     # clang parses the arm-none-eabi-gcc command line but cannot find newlib on its
     # own -- hand it the target and the gcc toolchain's sysroot explicitly
@@ -50,7 +50,7 @@ endfunction()
 
 ### add_format_targets(<dir>...)
 function(add_format_targets)
-    find_program(CLANG_FORMAT_EXE NAMES clang-format)
+    find_program(CLANG_FORMAT_EXE NAMES clang-format NO_CACHE)
     if(NOT CLANG_FORMAT_EXE)
         message(STATUS "clang-format not found -- format targets unavailable")
         return()
@@ -64,7 +64,7 @@ function(add_format_targets)
     list(FILTER FORMAT_SOURCES EXCLUDE REGEX "/build/")
     list(FILTER FORMAT_SOURCES EXCLUDE REGEX "${VENDORED_REGEX}")
 
-    add_custom_target(formatf
+    add_custom_target(format
         COMMAND ${CLANG_FORMAT_EXE} -i ${FORMAT_SOURCES}
         COMMENT "clang-format: rewriting sources in place"
         VERBATIM

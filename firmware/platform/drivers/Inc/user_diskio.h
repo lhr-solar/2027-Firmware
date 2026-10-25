@@ -3,7 +3,7 @@
 #define __USER_DISKIO_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* USER CODE BEGIN 0 */
@@ -12,7 +12,7 @@
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-extern Diskio_drvTypeDef  USER_Driver;
+extern Diskio_drvTypeDef USER_Driver;
 
 /* USER CODE END 0 */
 
