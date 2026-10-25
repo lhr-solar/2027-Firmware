@@ -61,7 +61,10 @@ static StackType_t checker_stack[TASK_STACK_WORDS];
 
 // True when two colours match on all three channels.
 static bool is_color(rgb_led_color_t lhs, rgb_led_color_t rhs) {
-    return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b;
+    if (lhs.r != rhs.r || lhs.g != rhs.g || lhs.b != rhs.b) {
+        return false;
+    }
+    return true;
 }
 
 // Keeps setting one pure colour until the run ends or a failure is flagged. A timeout on the
@@ -93,7 +96,8 @@ static void checker_task(void* argument) {
     // Colour check: show each writer's colour so a dead channel is easy to spot.
     // The writers are held back until this finishes.
     for (uint32_t i = 0; i < NUM_WRITERS && !failed; i++) {
-        if (rgb_led_set(&rgb_led, writer_args[i].color, pdMS_TO_TICKS(RGB_TIMEOUT_MS)) != RGB_LED_OK) {
+        if (rgb_led_set(&rgb_led, writer_args[i].color, pdMS_TO_TICKS(RGB_TIMEOUT_MS)) !=
+            RGB_LED_OK) {
             failed = true;
         }
         vTaskDelay(pdMS_TO_TICKS(COLOR_CHECK_MS));
@@ -111,7 +115,9 @@ static void checker_task(void* argument) {
         // RGB_LED_OFF is the value before any writer has run
         bool valid = is_color(seen, RGB_LED_OFF);
         for (uint32_t i = 0; i < NUM_WRITERS; i++) {
-            valid = valid || is_color(seen, writer_args[i].color);
+            if (is_color(seen, writer_args[i].color)) {
+                valid = true;
+            }
         }
         if (!valid) {
             failed = true;
@@ -127,7 +133,10 @@ static void checker_task(void* argument) {
     done = true;
     vTaskDelay(pdMS_TO_TICKS(FAIL_SETTLE_MS));
     const uint32_t full = htim_rgb.Init.Period;
-    const uint32_t red_blue = failed ? full : 0U;
+    uint32_t red_blue = 0U;
+    if (failed) {
+        red_blue = full;
+    }
     taskENTER_CRITICAL();
     __HAL_TIM_SET_COMPARE(&htim_rgb, rgb_led.red_channel, red_blue);
     __HAL_TIM_SET_COMPARE(&htim_rgb, rgb_led.green_channel, full);

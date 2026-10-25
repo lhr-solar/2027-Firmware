@@ -78,17 +78,17 @@ typedef struct {
 #define RGB_LED_DEFAULT_BLUE_PIN  GPIO_PIN_0
 #define RGB_LED_DEFAULT_AF        GPIO_AF1_TIM2
 
-#define RGB_LED_DEFAULT_CONFIG                                                                     \
-    ((rgb_led_config_t){                                                                           \
-        .timer = RGB_LED_DEFAULT_TIMER,                                                            \
-        .red_channel = RGB_LED_DEFAULT_RED_CH,                                                     \
-        .green_channel = RGB_LED_DEFAULT_GREEN_CH,                                                 \
-        .blue_channel = RGB_LED_DEFAULT_BLUE_CH,                                                   \
-        .port = RGB_LED_DEFAULT_PORT,                                                              \
-        .red_pin = RGB_LED_DEFAULT_RED_PIN,                                                        \
-        .green_pin = RGB_LED_DEFAULT_GREEN_PIN,                                                    \
-        .blue_pin = RGB_LED_DEFAULT_BLUE_PIN,                                                      \
-        .alternate = RGB_LED_DEFAULT_AF,                                                           \
+#define RGB_LED_DEFAULT_CONFIG                     \
+    ((rgb_led_config_t){                           \
+        .timer = RGB_LED_DEFAULT_TIMER,            \
+        .red_channel = RGB_LED_DEFAULT_RED_CH,     \
+        .green_channel = RGB_LED_DEFAULT_GREEN_CH, \
+        .blue_channel = RGB_LED_DEFAULT_BLUE_CH,   \
+        .port = RGB_LED_DEFAULT_PORT,              \
+        .red_pin = RGB_LED_DEFAULT_RED_PIN,        \
+        .green_pin = RGB_LED_DEFAULT_GREEN_PIN,    \
+        .blue_pin = RGB_LED_DEFAULT_BLUE_PIN,      \
+        .alternate = RGB_LED_DEFAULT_AF,           \
     })
 
 typedef struct {
