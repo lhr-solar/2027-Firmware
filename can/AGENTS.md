@@ -43,9 +43,8 @@ two buses appears in two DBCs. Do not create a per-board DBC.
 **`ElconCAN.dbc` is vendor-defined.** IDs and layouts come from the Elcon
 charger's datasheet. Do not renumber them to fit our conventions.
 
-**Do not rename DBC files.** `telemetry_bebug.dbc` is misspelled. It is
-referenced by tooling, workflow path filters, and the published site; renaming
-it is a coordinated change a human must approve. Flag it, do not fix it.
+**Do not rename DBC files without explicit user approval.** The telemetry debug
+scaffold is named `debug_telemetry.dbc` following the approved rename.
 
 **Never commit generated artifacts.** `dist/`, `canspec-data.json`, `.ldb`
 Vector lock files. CI builds and publishes the site; generated output on `main`

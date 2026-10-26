@@ -10,12 +10,12 @@ not wire-compatible with the old vehicle's team-defined messages.
 
 | Database | Contents | Frames | Empty placeholders |
 |---|---|---:|---:|
-| CarCAN | Team critical/control, power, battery and HMI status | 17 | 1 |
+| CarCAN | Team critical/control, power, battery and HMI status | 18 | 1 |
 | MotorCAN | VCU drive/power/reset commands and WS22 telemetry | 19 | 0 |
 | MPPTCAN | Three SEC-B175-7A MPPTs; commands from MPPTInterface | 33 | 12 |
 | SteeringCAN | LWS measurements; configuration sent by DEI | 2 | 0 |
 | LightingCAN | Bottom-shell status from DEI; top-shell status from TopShellLighting | 2 | 0 |
-| ChargerCAN | BPS status/pack data and ElconInterface status | 3 | 0 |
+| ChargerCAN | BPS status/pack/cell data and ElconInterface status | 5 | 0 |
 | ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
 | DAqCAN | MIKA infrastructure and all 12 sensor boards | 23 | 5 |
 
@@ -25,19 +25,23 @@ on **CarCAN** and produces MPPT commands on **MPPTCAN**; BPS is not a transmitte
 on the private MPPT bus. DEI transmits all LWS configuration traffic; LWS remains
 the transmitter of its own measurements.
 
-BPSStatus (0x060) and BPSPackData (0x070) are intentionally present on both
-CarCAN and ChargerCAN with identical layouts and transmitter. These are the only
-repeated numeric IDs across the eight files. BPS transmits both on both networks;
+BPSStatus (0x060), BPSPackData (0x070), BPSVoltageData (0x071), and
+BPSTemperatureData (0x072) are intentionally present on both CarCAN and ChargerCAN
+with identical layouts, periods, and transmitter. These are the only repeated
+numeric IDs across the eight files. BPS transmits these on both networks;
 any actual gateway implementation must match this routing assumption.
 
-CarCAN, ChargerCAN, DAqCAN and LightingCAN use CAN-FD, including short team frames.
+CarCAN, ChargerCAN and DAqCAN use CAN-FD, including short team frames.
+LightingCAN uses classic CAN.
 The WS22, TPEE, Bosch and Elcon protocols remain **classic CAN**. Payloads use
-legal CAN-FD wire lengths, with unused bits/bytes reserved as zero. No bus bit
-rate or BRS setting is guessed; configure those in firmware to match hardware.
+legal CAN-FD wire lengths, with unused bits/bytes reserved as zero. Bus bitrates are explicitly assigned using Baudrate (bits/second): CarCAN and
+DAqCAN 1000000, ChargerCAN/ElconCAN/MotorCAN/LightingCAN 250000, SteeringCAN
+500000, and MPPTCAN 1000000. BRS is explicitly off. See
+[traffic analysis](../analysis/README.md) for timing, forwarding, and load calculations.
 
 The telemetry/sensor bus is **DAqCAN**, using the formerly empty DAqCAN.dbc
 scaffold. TelemetryCAN.dbc is removed at the user's request. The empty
-bootloading.dbc and telemetry_bebug.dbc scaffolds remain untouched. Both lighting
+bootloading.dbc and debug_telemetry.dbc scaffolds remain untouched. Both lighting
 messages live on **LightingCAN**: DEI transmits BottomShellLightingStatus at
 **0x080**, and TopShellLighting transmits TopShellLightingStatus at **0x081**.
 Their IDs and payload layouts are retained. Bottom-shell circuitry is on DEI,
@@ -100,8 +104,13 @@ consumers together rather than mixing versions.
   permissions, MPPT limits, and all three fan tachometers.
   The CarCAN BPS data block is 0x070 BPSPackData, 0x071 BPSVoltageData,
   0x072 BPSTemperatureData, and 0x073 SMDStatus. The new pack frame is shared across
-  CarCAN/ChargerCAN; the individual-cell frames and their summaries are on CarCAN.
-  No send type or cycle time is assigned yet.
+  CarCAN/ChargerCAN; the individual-cell frames and their summaries are mirrored
+  on both networks. Send types and periods now follow the reviewed timing CSV.
+- `BPSCommandEcho` at **0x074** on CarCAN is transmitted by BPS and mirrors the
+  12-byte `BPSCommand` (0x051) payload exactly, including shared enum tables.
+  It cyclically reports the command values held by BPS; it is not a per-request
+  acknowledgement or confirmation that a command was successfully applied.
+  The reviewed cyclic period is 1000 ms.
 - MIKA's rear-camera warning is explicitly `WarningRearCameraDisconnected`.
   A separate one-bit `DriverCameraConnected` uses the shared Connection table.
 - MIKA includes `CM5FanTach`: unsigned 12-bit, 5 rpm/bit, 0–20475 rpm.
@@ -112,8 +121,11 @@ consumers together rather than mixing versions.
 
 `TimestampSync` at **0x620**, TX MIKA, now uses the calibrated HighNoon sync
 layout: **two bytes**, unsigned 16-bit `Timestamp` at bit 0, little-endian,
-scale 1, offset 0. The tick period, epoch and broadcast period remain unresolved.
-The counter wraps every 65536 ticks; do not label it milliseconds or seconds.
+scale 1, offset 0. TimestampSync broadcasts every 10 ms, following the reviewed
+timing CSV. The legacy sender increments its raw counter once per broadcast
+(10 ms/count); epoch/interpolation semantics for this year still need firmware
+agreement.
+The 16-bit raw counter wraps after 65536 counts; its DBC scale remains 1.
 The message remains CAN-FD under this year's bus convention. The status message
 at **0x621** is named `TelemetryStatus`, also transmitted by MIKA.
 
@@ -306,3 +318,16 @@ timing; magnetometer batches can use their own cadence.
 
 Wheel speed deliberately uses finer resolution than fan tachometers (5 rpm).
 All measurement frames fit CAN-FD's 64-byte limit.
+
+## Timing and forwarding
+
+Every cyclic message explicitly sets `GenMsgCycleTime` in milliseconds;
+`GenMsgSendType` defaults to `Cyclic`. `Triggered` messages have no cycle time.
+Reserved WS22 IDs use `None` and must not be transmitted. Pending layouts keep
+planned timing but are excluded from active traffic estimates until defined.
+
+The reviewed MPPT A schedule is applied consistently to B/C as requested:
+power 500 ms, status 1000 ms, mode command 100 ms, output limits 200 ms.
+Bus settings, outputs and forwarding policy are in `../topology.yaml`. See
+[the calculator documentation](../analysis/README.md) for exclusions, mirrored
+traffic, physical bus rates, and TCP serialization assumptions.

@@ -1,9 +1,9 @@
 """Validate the authored 2027 bus contracts without requiring vehicle hardware."""
 
 import json
-from pathlib import Path
 import struct
 import unittest
+from pathlib import Path
 
 import cantools
 
@@ -112,16 +112,21 @@ class DatabaseTests(unittest.TestCase):
             (temperature.length, temperature.minimum, temperature.maximum), (8, -20, 85)
         )
 
-    def test_only_documented_cross_bus_id_repeat(self):
-        """Only shared BPS status and pack data repeat across CarCAN/ChargerCAN."""
+    def test_only_documented_shared_bps_ids_repeat(self):
         seen = {}
         for bus, database in self.databases.items():
             for message in database.messages:
                 key = (message.frame_id, message.is_extended_frame)
                 if key in seen:
                     previous_bus, previous = seen[key]
-                    self.assertIn(key, ((0x60, False), (0x70, False)))
+                    self.assertIn(
+                        key,
+                        ((0x60, False), (0x70, False), (0x71, False), (0x72, False)),
+                    )
                     self.assertEqual({previous_bus, bus}, {"CarCAN", "ChargerCAN"})
+                    self.assertEqual(message.name, previous.name)
+                    self.assertEqual(message.length, previous.length)
+                    self.assertEqual(message.cycle_time, previous.cycle_time)
                     self.assertEqual(message.senders, previous.senders)
                     self.assertEqual(
                         [
@@ -338,7 +343,7 @@ class DatabaseTests(unittest.TestCase):
             frame = pack.encode(raw, scaling=False)
             self.assertEqual(frame, expected.to_bytes(12, "little"))
             self.assertEqual(pack.decode(frame, scaling=False)["BatteryCurrent"], 5000)
-            self.assertIsNone(pack.cycle_time)
+            self.assertEqual(pack.cycle_time, 50)
         for identifier, name in (
             (0x70, "BPSPackData"),
             (0x71, "BPSVoltageData"),
@@ -380,6 +385,59 @@ class DatabaseTests(unittest.TestCase):
                 )
             self.assertEqual(
                 message.encode(raw, scaling=False), expected.to_bytes(length, "little")
+            )
+
+    def test_bps_command_echo_mirrors_command(self):
+        command = self.message("CarCAN", 0x51)
+        echo = self.message("CarCAN", 0x74)
+        self.assertEqual(echo.name, "BPSCommandEcho")
+        self.assertEqual(echo.senders, ["BPS"])
+        self.assertEqual((echo.length, echo.is_fd), (command.length, command.is_fd))
+        self.assertEqual(echo.cycle_time, 1000)
+        for source, mirrored in zip(command.signals, echo.signals, strict=True):
+            self.assertEqual(
+                (
+                    source.name,
+                    source.start,
+                    source.length,
+                    source.byte_order,
+                    source.scale,
+                    source.offset,
+                    source.is_signed,
+                    source.minimum,
+                    source.maximum,
+                    source.choices,
+                ),
+                (
+                    mirrored.name,
+                    mirrored.start,
+                    mirrored.length,
+                    mirrored.byte_order,
+                    mirrored.scale,
+                    mirrored.offset,
+                    mirrored.is_signed,
+                    mirrored.minimum,
+                    mirrored.maximum,
+                    mirrored.choices,
+                ),
+            )
+        for values in (
+            {
+                "Mode": 0,
+                "MPPTChargeScheme": 0,
+                "VoltageOverrideMask": 0,
+                "TemperatureOverrideMask": 0,
+            },
+            {
+                "Mode": 1,
+                "MPPTChargeScheme": 1,
+                "VoltageOverrideMask": 0xA5A5A5A5,
+                "TemperatureOverrideMask": 0xFFFFFFFF,
+            },
+        ):
+            self.assertEqual(echo.encode(values), command.encode(values))
+            self.assertEqual(
+                echo.decode(command.encode(values), decode_choices=False), values
             )
 
     def test_team_signal_category_order(self):
@@ -490,9 +548,12 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(boards["BPS"]["node_id"], 1)
         self.assertEqual(boards["BPS"]["rx_can_id"], "0x001")
         self.assertEqual(boards["BPS"]["tx_can_id"], "0x029")
-        for bus in ("CarCAN", "ChargerCAN"):
-            status = self.message(bus, 0x60)
-            self.assertEqual(status.name, "BPSStatus")
+        for bus, identifier, name in (
+            ("CarCAN", 0x60, "BPSStatus"),
+            ("ChargerCAN", 0x60, "BPSStatus"),
+        ):
+            status = self.message(bus, identifier)
+            self.assertEqual(status.name, name)
             self.assertEqual(status.senders, ["BPS"])
         self.assertEqual(boards["DEI"]["node_id"], 7)
         self.assertEqual(boards["TopShellLighting"]["node_id"], 10)
@@ -512,7 +573,7 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(
             self.message("LightingCAN", 0x81).senders, ["TopShellLighting"]
         )
-        self.assertTrue(all(message.is_fd for message in lighting.messages))
+        self.assertTrue(all(not message.is_fd for message in lighting.messages))
         self.assertEqual(
             self.message("LightingCAN", 0x80).encode(
                 {"Sync": 1, "LeftSignalOn": 1, "RightSignalOn": 0, "HeadlightsOn": 1}
@@ -535,9 +596,12 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(boards["BPS"]["node_id"], 1)
         self.assertEqual(boards["BPS"]["rx_can_id"], "0x001")
         self.assertEqual(boards["BPS"]["tx_can_id"], "0x029")
-        for bus in ("CarCAN", "ChargerCAN"):
-            status = self.message(bus, 0x60)
-            self.assertEqual(status.name, "BPSStatus")
+        for bus, identifier, name in (
+            ("CarCAN", 0x60, "BPSStatus"),
+            ("ChargerCAN", 0x60, "BPSStatus"),
+        ):
+            status = self.message(bus, identifier)
+            self.assertEqual(status.name, name)
             self.assertEqual(status.senders, ["BPS"])
         self.assertEqual(boards["DEI"]["node_id"], 7)
 

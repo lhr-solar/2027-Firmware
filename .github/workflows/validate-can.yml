@@ -1,0 +1,30 @@
+name: Validate CAN contracts
+
+on:
+  push:
+    paths:
+      - 'can/**'
+      - '.github/workflows/validate-can.yml'
+  pull_request:
+    paths:
+      - 'can/**'
+      - '.github/workflows/validate-can.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-can:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r can/analysis/requirements.txt
+      - name: Validate DBCs, schedules, forwarding and load calculations
+        run: python -m unittest discover -s can/tests -v
+      - name: Test generated C API
+        run: python -m unittest discover -s can/codegen/tests -v
+      - name: Calculate declared traffic
+        run: python can/analysis/calculate_load.py --json /tmp/can-load.json

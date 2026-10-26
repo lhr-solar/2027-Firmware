@@ -120,7 +120,7 @@ Each `.dbc` in `can/dbc/` is one physical bus, not one board:
 | `LightingCAN.dbc` | Lighting |
 | `DAqCAN.dbc` | Data acquisition |
 | `ElconCAN.dbc` | Elcon charger (vendor-defined IDs — follow the charger datasheet, not our conventions) |
-| `telemetry_bebug.dbc` | Telemetry debug (filename typo is in the repo as-is; do not silently rename — see §8) |
+| `debug_telemetry.dbc` | Telemetry debug |
 | `bootloading.dbc` | Bootloader protocol |
 
 ### Boards (2027 targets)
@@ -340,7 +340,7 @@ published by CI to `gh-pages`; generated site artifacts must never land on
 4. **Safety code is not refactor fodder.** See §2 for what counts.
 5. **Scope discipline.** Do the task asked. Do not opportunistically reformat,
    rename, add changelogs, or "fix" adjacent files — including obvious-looking
-   typos such as `telemetry_bebug.dbc` or the `Surpress` in a commit message. A
+   typos such as `Surpress` in a commit message. A
    filename is referenced by tooling and CI; flag it, let a human decide.
 6. **CAN IDs are a shared, contended resource.** Never assign or change one
    without checking every DBC in `can/dbc/` for collisions. See `can/AGENTS.md`.

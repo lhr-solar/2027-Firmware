@@ -117,6 +117,78 @@ BO_ 112 BPSPackData: 12 BPS
  SG_ MotorVoltage : 48|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
  SG_ BatteryCurrent : 60|14@1+ (0.01,-50) [-50.0|113.83] "A" Vector__XXX
 
+BO_ 113 BPSVoltageData: 64 BPS
+ SG_ CellVoltage01 : 0|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage02 : 12|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage03 : 24|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage04 : 36|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage05 : 48|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage06 : 60|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage07 : 72|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage08 : 84|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage09 : 96|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage10 : 108|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage11 : 120|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage12 : 132|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage13 : 144|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage14 : 156|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage15 : 168|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage16 : 180|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage17 : 192|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage18 : 204|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage19 : 216|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage20 : 228|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage21 : 240|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage22 : 252|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage23 : 264|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage24 : 276|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage25 : 288|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage26 : 300|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage27 : 312|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage28 : 324|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage29 : 336|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage30 : 348|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage31 : 360|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage32 : 372|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ MinCellVoltage : 384|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ MaxCellVoltage : 396|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+
+BO_ 114 BPSTemperatureData: 48 BPS
+ SG_ CellTemperature01 : 0|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature02 : 11|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature03 : 22|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature04 : 33|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature05 : 44|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature06 : 55|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature07 : 66|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature08 : 77|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature09 : 88|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature10 : 99|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature11 : 110|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature12 : 121|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature13 : 132|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature14 : 143|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature15 : 154|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature16 : 165|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature17 : 176|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature18 : 187|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature19 : 198|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature20 : 209|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature21 : 220|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature22 : 231|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature23 : 242|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature24 : 253|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature25 : 264|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature26 : 275|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature27 : 286|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature28 : 297|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature29 : 308|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature30 : 319|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature31 : 330|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature32 : 341|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ MaxBatteryTemperature : 352|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ AverageBatteryTemperature : 363|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+
 BO_ 1536 ElconInterfaceStatus: 5 ElconInterface
  SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultElconWatchdog : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -186,6 +258,76 @@ CM_ SG_ 112 MainVoltage "MainVoltage";
 CM_ SG_ 112 MotorBatteryVoltage "MotorBatteryVoltage";
 CM_ SG_ 112 MainBatteryVoltage "MainBatteryVoltage";
 CM_ SG_ 112 CellSumVoltage "Sum of the 32 cell-tap voltages, independent of precharge measurements. Bulk voltage encoding: unsigned 12 bits, 0.05 V/bit, offset 0 V.";
+CM_ BO_ 113 "BPS individual cell voltages followed by minimum/maximum cell voltage; unchanged physical encodings.";
+CM_ SG_ 113 MaxCellVoltage "MaxCellVoltage";
+CM_ SG_ 113 MinCellVoltage "MinCellVoltage";
+CM_ SG_ 113 CellVoltage32 "CellVoltage32";
+CM_ SG_ 113 CellVoltage31 "CellVoltage31";
+CM_ SG_ 113 CellVoltage30 "CellVoltage30";
+CM_ SG_ 113 CellVoltage29 "CellVoltage29";
+CM_ SG_ 113 CellVoltage28 "CellVoltage28";
+CM_ SG_ 113 CellVoltage27 "CellVoltage27";
+CM_ SG_ 113 CellVoltage26 "CellVoltage26";
+CM_ SG_ 113 CellVoltage25 "CellVoltage25";
+CM_ SG_ 113 CellVoltage24 "CellVoltage24";
+CM_ SG_ 113 CellVoltage23 "CellVoltage23";
+CM_ SG_ 113 CellVoltage22 "CellVoltage22";
+CM_ SG_ 113 CellVoltage21 "CellVoltage21";
+CM_ SG_ 113 CellVoltage20 "CellVoltage20";
+CM_ SG_ 113 CellVoltage19 "CellVoltage19";
+CM_ SG_ 113 CellVoltage18 "CellVoltage18";
+CM_ SG_ 113 CellVoltage17 "CellVoltage17";
+CM_ SG_ 113 CellVoltage16 "CellVoltage16";
+CM_ SG_ 113 CellVoltage15 "CellVoltage15";
+CM_ SG_ 113 CellVoltage14 "CellVoltage14";
+CM_ SG_ 113 CellVoltage13 "CellVoltage13";
+CM_ SG_ 113 CellVoltage12 "CellVoltage12";
+CM_ SG_ 113 CellVoltage11 "CellVoltage11";
+CM_ SG_ 113 CellVoltage10 "CellVoltage10";
+CM_ SG_ 113 CellVoltage09 "CellVoltage09";
+CM_ SG_ 113 CellVoltage08 "CellVoltage08";
+CM_ SG_ 113 CellVoltage07 "CellVoltage07";
+CM_ SG_ 113 CellVoltage06 "CellVoltage06";
+CM_ SG_ 113 CellVoltage05 "CellVoltage05";
+CM_ SG_ 113 CellVoltage04 "CellVoltage04";
+CM_ SG_ 113 CellVoltage03 "CellVoltage03";
+CM_ SG_ 113 CellVoltage02 "CellVoltage02";
+CM_ SG_ 113 CellVoltage01 "CellVoltage01";
+CM_ BO_ 114 "BPS individual cell temperatures followed by maximum/average battery temperature; unchanged physical encodings.";
+CM_ SG_ 114 AverageBatteryTemperature "AverageBatteryTemperature";
+CM_ SG_ 114 MaxBatteryTemperature "MaxBatteryTemperature";
+CM_ SG_ 114 CellTemperature32 "CellTemperature32";
+CM_ SG_ 114 CellTemperature31 "CellTemperature31";
+CM_ SG_ 114 CellTemperature30 "CellTemperature30";
+CM_ SG_ 114 CellTemperature29 "CellTemperature29";
+CM_ SG_ 114 CellTemperature28 "CellTemperature28";
+CM_ SG_ 114 CellTemperature27 "CellTemperature27";
+CM_ SG_ 114 CellTemperature26 "CellTemperature26";
+CM_ SG_ 114 CellTemperature25 "CellTemperature25";
+CM_ SG_ 114 CellTemperature24 "CellTemperature24";
+CM_ SG_ 114 CellTemperature23 "CellTemperature23";
+CM_ SG_ 114 CellTemperature22 "CellTemperature22";
+CM_ SG_ 114 CellTemperature21 "CellTemperature21";
+CM_ SG_ 114 CellTemperature20 "CellTemperature20";
+CM_ SG_ 114 CellTemperature19 "CellTemperature19";
+CM_ SG_ 114 CellTemperature18 "CellTemperature18";
+CM_ SG_ 114 CellTemperature17 "CellTemperature17";
+CM_ SG_ 114 CellTemperature16 "CellTemperature16";
+CM_ SG_ 114 CellTemperature15 "CellTemperature15";
+CM_ SG_ 114 CellTemperature14 "CellTemperature14";
+CM_ SG_ 114 CellTemperature13 "CellTemperature13";
+CM_ SG_ 114 CellTemperature12 "CellTemperature12";
+CM_ SG_ 114 CellTemperature11 "CellTemperature11";
+CM_ SG_ 114 CellTemperature10 "CellTemperature10";
+CM_ SG_ 114 CellTemperature09 "CellTemperature09";
+CM_ SG_ 114 CellTemperature08 "CellTemperature08";
+CM_ SG_ 114 CellTemperature07 "CellTemperature07";
+CM_ SG_ 114 CellTemperature06 "CellTemperature06";
+CM_ SG_ 114 CellTemperature05 "CellTemperature05";
+CM_ SG_ 114 CellTemperature04 "CellTemperature04";
+CM_ SG_ 114 CellTemperature03 "CellTemperature03";
+CM_ SG_ 114 CellTemperature02 "CellTemperature02";
+CM_ SG_ 114 CellTemperature01 "CellTemperature01";
 CM_ BO_ 1536 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 1536 EVSEAvailableCurrent "EVSEAvailableCurrent";
 CM_ SG_ 1536 EVSECPValid "EVSECPValid";
@@ -207,18 +349,29 @@ BA_DEF_  "BusType" STRING ;
 BA_DEF_  "DBName" STRING ;
 BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
 BA_DEF_ BO_  "CANFD_BRS" ENUM  "0","1";
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","Triggered","None";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;
+BA_DEF_  "DataBaudrate" INT 1 10000000;
+BA_DEF_  "Baudrate" INT 1 10000000;
 BA_DEF_DEF_  "ValueTable" "";
 BA_DEF_DEF_  "LayoutPending" 0;
 BA_DEF_DEF_  "ProtocolSource" "";
 BA_DEF_DEF_  "BusType" "CAN";
 BA_DEF_DEF_  "DBName" "";
 BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
-BA_DEF_DEF_  "CANFD_BRS" "1";
+BA_DEF_DEF_  "CANFD_BRS" "0";
+BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
 BA_ "BusType" "CAN FD";
 BA_ "DBName" "ChargerCAN";
+BA_ "Baudrate" 250000;
+BA_ "DataBaudrate" 250000;
 BA_ "LayoutPending" BO_ 96 0;
 BA_ "ProtocolSource" BO_ 96 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 96 14;
+BA_ "GenMsgSendType" BO_ 96 0;
+BA_ "GenMsgCycleTime" BO_ 96 200;
+BA_ "CANFD_BRS" BO_ 96 0;
 BA_ "ValueTable" SG_ 96 MotorPrechargeRelay "OnOff";
 BA_ "ValueTable" SG_ 96 MainPrechargeRelay "OnOff";
 BA_ "ValueTable" SG_ 96 HVNegativeContactor "OnOff";
@@ -260,9 +413,27 @@ BA_ "ValueTable" SG_ 96 FaultSummary "BPSFaultSummary";
 BA_ "LayoutPending" BO_ 112 0;
 BA_ "ProtocolSource" BO_ 112 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 112 14;
+BA_ "GenMsgSendType" BO_ 112 0;
+BA_ "GenMsgCycleTime" BO_ 112 50;
+BA_ "CANFD_BRS" BO_ 112 0;
+BA_ "LayoutPending" BO_ 113 0;
+BA_ "ProtocolSource" BO_ 113 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 113 14;
+BA_ "GenMsgSendType" BO_ 113 0;
+BA_ "GenMsgCycleTime" BO_ 113 100;
+BA_ "CANFD_BRS" BO_ 113 0;
+BA_ "LayoutPending" BO_ 114 0;
+BA_ "ProtocolSource" BO_ 114 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 114 14;
+BA_ "GenMsgSendType" BO_ 114 0;
+BA_ "GenMsgCycleTime" BO_ 114 200;
+BA_ "CANFD_BRS" BO_ 114 0;
 BA_ "LayoutPending" BO_ 1536 0;
 BA_ "ProtocolSource" BO_ 1536 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 1536 14;
+BA_ "GenMsgSendType" BO_ 1536 0;
+BA_ "GenMsgCycleTime" BO_ 1536 100;
+BA_ "CANFD_BRS" BO_ 1536 0;
 BA_ "ValueTable" SG_ 1536 EVSECPValid "Validity";
 BA_ "ValueTable" SG_ 1536 EVSEState "EVSEState";
 BA_ "ValueTable" SG_ 1536 EVSELatchPressed "Pressed";
