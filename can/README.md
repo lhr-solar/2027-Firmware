@@ -40,9 +40,9 @@ code.
 Every run fetches and prunes all branch refs, then publishes a complete snapshot:
 
 - `main` is always included, even when its DBC files are intentionally blank.
-- Other branches appear only when their current DBC filenames/content differ
+- Other branches appear only when their current DBC filenames/content or topology differ
   from `main`. Comparison uses file contents, not commit ancestry or SHA equality.
-- Each unique DBC snapshot gets one `data/<sha256>.json`. Branches sharing the
+- Each unique DBC/topology snapshot gets one `data/<sha256>.json`. Branches sharing the
   same content share that file. `branches.json` maps names to snapshot URLs and
   source commits. `canspec-data.json` remains a main-only compatibility export.
 - Deleted branches, branches matching main, and their unused JSON disappear on
@@ -78,3 +78,41 @@ To generate a branch publication locally after fetching origin refs:
 python can/canspec-viewer/publish_branches.py --out can/canspec-viewer/dist
 python -m unittest discover -s can/canspec-viewer/tests -v
 ```
+
+## Topology graph and metadata
+
+Open **Topology** (or **Network graph** on the main page). The diagram comes from
+`can/topology.yaml` in the selected branch. Bus nodes show format, bitrate and
+BRS; arrows show the bridge and include/exclude mode. Hover a route or select it
+to inspect expandable hex-ID, transmitter or network selector lists. The side
+panel also lists the bus's DBC node inventory and connected routes. Zoom and a
+route table support small screens and keyboard navigation. Branches without a
+YAML file show an explicit empty state.
+
+The network cards and bus view show bus type/bitrate. Message rows and the
+summary table show send type and cycle time. Missing legacy metadata stays
+unspecified; a missing period is not automatically labeled triggered. Reserved
+`None` messages display as disabled.
+
+Topology bytes are part of publication fingerprints and trigger paths, so a
+YAML-only change updates its branch snapshot. The exporter parses feature-branch
+YAML as passive data using trusted viewer code; it does not execute that branch's
+analysis scripts. Generated JSON contains topology together with the DBC data.
+For a local checkout whose viewer and contracts are separate:
+
+```sh
+python can/canspec-viewer/export_canspec_json.py \
+  --dbc-dir /path/to/contracts/can/dbc \
+  --topology /path/to/contracts/can/topology.yaml \
+  -o can/canspec-viewer/dist/canspec-data.json
+```
+
+The **Loading** page follows each cyclic frame through every permitted YAML hop,
+including Elcon → Charger → Car → TelemetryTCP. Mirrored IDs count once per
+bus/output. Bars compare 125/250/500/1000 kbit/s, with the assigned bitrate in
+orange; percentages bound unstuffed and conservative stuffing, including frame
+headers, CRC, ACK and intermission. Triggered messages and pending layouts are
+listed separately and excluded. BRS must be off. TCP estimates show payload,
+application and TCP/IP kbps under the displayed serialization/batching assumptions.
+The Wire column's expandable legend explains field type/width, DBC start bits
+and byte order.

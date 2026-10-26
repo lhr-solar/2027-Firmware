@@ -96,6 +96,34 @@ class PublicationTests(unittest.TestCase):
         self.assertNotIn("dev/dbc", [b["name"] for b in manifest["branches"]])
         self.assertFalse(stale_path.exists())
 
+    def test_topology_only_branch_is_published_and_cleaned_up(self):
+        topology = self.repo / "can/topology.yaml"
+        topology.write_text("version: 1\nbuses: {}\noutputs: {}\n")
+        self.git("add", ".")
+        self.git("commit", "-qm", "topology only")
+        self.ref("dev/topology")
+        manifest = publish(self.repo, self.out)
+        self.assertEqual(
+            [entry["name"] for entry in manifest["branches"]], ["main", "dev/topology"]
+        )
+        entry = manifest["branches"][1]
+        payload = json.loads((self.out / entry["dataUrl"]).read_text())
+        self.assertEqual(
+            payload["topology"], {"version": 1, "buses": {}, "outputs": {}}
+        )
+        main_payload = json.loads(
+            (self.out / manifest["branches"][0]["dataUrl"]).read_text()
+        )
+        self.assertIsNone(main_payload["topology"])
+        self.ref("main")
+        self.assertEqual(len(publish(self.repo, self.out)["branches"]), 1)
+        topology.write_text("version: 1\nbuses: [invalid]\noutputs: {}\n")
+        self.git("commit", "-qam", "invalid topology")
+        self.ref("dev/topology")
+        manifest = publish(self.repo, self.out)
+        self.assertEqual([entry["name"] for entry in manifest["branches"]], ["main"])
+        self.assertEqual(manifest["errors"][0]["name"], "dev/topology")
+
     def test_invalid_feature_omitted_invalid_main_fails(self):
         self.write(b"broken DBC")
         self.git("commit", "-qam", "invalid")

@@ -69,6 +69,14 @@ export function Layout() {
             className={({ isActive }) =>
               `doc-link${isActive ? " doc-link--active" : ""}`
             }
+            to="/loading"
+          >
+            Loading
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              `doc-link${isActive ? " doc-link--active" : ""}`
+            }
             to="/"
             end
           >
@@ -81,6 +89,14 @@ export function Layout() {
             to="/summary"
           >
             Summary
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              `doc-link${isActive ? " doc-link--active" : ""}`
+            }
+            to="/topology"
+          >
+            Topology
           </NavLink>
         </nav>
       </header>

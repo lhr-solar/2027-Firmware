@@ -9,7 +9,8 @@
     "export-data:dist": "python3 export_canspec_json.py -o dist/canspec-data.json",
     "build": "npm run build-site && npm run export-data:dist",
     "preview": "vite preview",
-    "preview:local": "npm run build && vite preview --host 127.0.0.1 --port 4173"
+    "preview:local": "npm run build && vite preview --host 127.0.0.1 --port 4173",
+    "test": "node --experimental-strip-types --test tests/loading.test.mjs"
   },
   "dependencies": {
     "react": "^19.0.0",

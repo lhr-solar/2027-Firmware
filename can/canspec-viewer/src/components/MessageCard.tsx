@@ -1,3 +1,4 @@
+import { messageTiming } from "../metadata";
 import type { IdSearchFormat } from "../search";
 import type { CanMessage } from "../types";
 
@@ -25,6 +26,11 @@ export function MessageCard({
           {msg.isFd ? "FD" : "CAN"}
           {msg.isExtended ? " · ext" : ""}
         </span>
+        <span
+          className={`msg-badge timing-badge timing-${(msg.sendType ?? "unknown").toLowerCase()}`}
+        >
+          {messageTiming(msg)}
+        </span>
         <span className="muted-sm">
           {msg.dlc} B · {msg.signals.length} signals
         </span>
@@ -36,7 +42,32 @@ export function MessageCard({
             <thead>
               <tr>
                 <th>Signal</th>
-                <th>Wire</th>
+                <th>
+                  <details className="wire-legend">
+                    <summary title="Signal type, bit width, start bit and byte order">
+                      Wire ⓘ
+                    </summary>
+                    <div>
+                      <p>
+                        <code>u3 · @0 · LE | Intel</code>: unsigned 3-bit
+                        signal, starting at bit 0, little-endian.
+                      </p>
+                      <p>
+                        <code>u</code> = unsigned integer; <code>i</code> =
+                        signed integer; <code>f</code> = floating point. The
+                        number is the width in bits.
+                      </p>
+                      <p>
+                        <code>@</code> gives the zero-based DBC start bit (bits
+                        0–7 are in the first byte). <code>LE | Intel</code> =
+                        little-endian, start bit is the least significant bit.{" "}
+                        <code>BE | Motorola</code> = big-endian, start bit is
+                        the most significant bit; DBC bit numbering runs 7→0,
+                        then 15→8.
+                      </p>
+                    </div>
+                  </details>
+                </th>
                 <th>Scale / offset</th>
                 <th>Range</th>
                 <th>Unit</th>
@@ -91,7 +122,9 @@ export function MessageCard({
                   <td className="mono nowrap">
                     {s.isFloat ? "f" : s.isSigned ? "i" : "u"}
                     {s.lengthBits} · @{s.startBit} ·{" "}
-                    {s.byteOrder === "little_endian" ? "LE" : "BE"}
+                    {s.byteOrder === "little_endian"
+                      ? "LE | Intel"
+                      : "BE | Motorola"}
                   </td>
                   <td className="mono">
                     {fmt(s.scale)} / {fmt(s.offset)}

@@ -1,3 +1,4 @@
+import { busType, busBitrate } from "../metadata";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MessageCard } from "./MessageCard";
@@ -119,6 +120,8 @@ export function NetworkExplorer({
           <h1 className="dbc-title">DBC viewer</h1>
           <p className="dbc-subtitle">
             <span className="mono-sm">{network.filename}</span>
+            <span className="dot-sep">·</span>
+            {busType(network)} · {busBitrate(network)}
             <span className="dot-sep">·</span>
             {network.messages.length} messages
             <span className="dot-sep">·</span>

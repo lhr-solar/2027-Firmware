@@ -1,3 +1,4 @@
+import { busType, busBitrate } from "../metadata";
 import { useState } from "react";
 import { IdPreview } from "../components/IdPreview";
 import { Link } from "react-router-dom";
@@ -9,7 +10,14 @@ export function Home() {
   const [preview, setPreview] = useState(false);
   const { data, q } = useLayoutOutlet();
   const networks = allNetworks(data).filter((n) =>
-    matchesQuery(q, n.id, n.filename, String(n.messages.length)),
+    matchesQuery(
+      q,
+      n.id,
+      n.filename,
+      String(n.messages.length),
+      busType(n),
+      busBitrate(n),
+    ),
   );
 
   return (
@@ -21,6 +29,12 @@ export function Home() {
 
       {preview && <IdPreview data={data} onClose={() => setPreview(false)} />}
       <div className="home-actions">
+        <Link className="btn-primary" to="/loading">
+          Bus loading
+        </Link>
+        <Link className="btn-primary" to="/topology">
+          Network graph
+        </Link>
         <button
           type="button"
           className="btn-primary"
@@ -38,6 +52,9 @@ export function Home() {
           <article key={n.id} className="network-card">
             <div className="network-card-head">
               <span className="network-card-title">{n.id}</span>
+              <div className="network-card-meta">
+                {busType(n)} · {busBitrate(n)}
+              </div>
               <div className="network-card-meta">
                 {n.messages.length} message{n.messages.length === 1 ? "" : "s"}
               </div>

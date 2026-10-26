@@ -9,10 +9,14 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from topology_data import topology_payload
+
 try:
     import cantools
 except ImportError:
-    print("export_canspec_json: install cantools (pip install cantools)", file=sys.stderr)
+    print(
+        "export_canspec_json: install cantools (pip install cantools)", file=sys.stderr
+    )
     sys.exit(1)
 
 _HERE = Path(__file__).resolve().parent
@@ -111,6 +115,22 @@ def _signal_to_dict(sig: Any, msg: Any) -> dict[str, Any]:
     }
 
 
+def _send_type(msg: Any) -> str | None:
+    """DBC enum/default -> readable message type; absent metadata stays unknown."""
+    if msg.dbc:
+        attr = msg.dbc.attributes.get("GenMsgSendType")
+        if attr:
+            value = (
+                attr.definition.choices[int(attr.value)]
+                if attr.definition.type_name == "ENUM"
+                else str(attr.value)
+            )
+            return "Disabled" if value == "None" else value
+    if msg.send_type:
+        return "Disabled" if msg.send_type == "None" else str(msg.send_type)
+    return "Cyclic" if msg.cycle_time else None
+
+
 def _message_to_dict(msg: Any) -> dict[str, Any]:
     m_comment = getattr(msg, "comment", None) or ""
     signals = sorted(msg.signals, key=lambda s: (s.start, s.name))
@@ -127,6 +147,7 @@ def _message_to_dict(msg: Any) -> dict[str, Any]:
         "dlc": int(msg.length),
         "senders": senders,
         "cycleTimeMs": msg.cycle_time,
+        "sendType": _send_type(msg),
         "isFd": bool(msg.is_fd),
         "protocol": str(msg.protocol) if getattr(msg, "protocol", None) else None,
         "busName": msg.bus_name or "",
@@ -181,8 +202,10 @@ def _network_to_dict(dbc_path: Path) -> dict[str, Any]:
     }
 
 
-def _collect_vehicles(vehicle_id: str) -> list[dict[str, Any]]:
-    flat = sorted(DBC_ROOT.glob("*.dbc"), key=lambda p: p.name.lower())
+def _collect_vehicles(
+    vehicle_id: str, dbc_root: Path = DBC_ROOT
+) -> list[dict[str, Any]]:
+    flat = sorted(dbc_root.glob("*.dbc"), key=lambda p: p.name.lower())
     if flat:
         return [
             {
@@ -192,7 +215,7 @@ def _collect_vehicles(vehicle_id: str) -> list[dict[str, Any]]:
         ]
 
     vehicles: list[dict[str, Any]] = []
-    for vehicle_dir in sorted(DBC_ROOT.iterdir(), key=lambda p: p.name.lower()):
+    for vehicle_dir in sorted(dbc_root.iterdir(), key=lambda p: p.name.lower()):
         if not vehicle_dir.is_dir():
             continue
         networks = [
@@ -218,20 +241,28 @@ def main() -> None:
         default=DEFAULT_VEHICLE_ID,
         help="Vehicle id when DBCs are flat under can/dbc (default: 2027)",
     )
+    parser.add_argument("--dbc-dir", type=Path, default=DBC_ROOT)
+    parser.add_argument("--topology", type=Path, default=ROOT / "can" / "topology.yaml")
     args = parser.parse_args()
 
-    if not DBC_ROOT.is_dir():
+    if not args.dbc_dir.is_dir():
         print(f"No DBC root at {DBC_ROOT}", file=sys.stderr)
         sys.exit(1)
 
-    vehicles = _collect_vehicles(args.vehicle_id)
+    vehicles = _collect_vehicles(args.vehicle_id, args.dbc_dir)
     if not vehicles:
         print(f"No .dbc files under {DBC_ROOT}", file=sys.stderr)
         sys.exit(1)
 
     out: Path = args.out
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"vehicles": vehicles}), encoding="utf-8")
+    payload = {
+        "vehicles": vehicles,
+        "topology": topology_payload(
+            args.topology.read_bytes() if args.topology.exists() else None
+        ),
+    }
+    out.write_text(json.dumps(payload), encoding="utf-8")
     print(f"Wrote {out}")
 
 

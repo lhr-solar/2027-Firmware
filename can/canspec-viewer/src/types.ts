@@ -46,6 +46,7 @@ export interface CanMessage {
   dlc: number;
   senders: string[];
   cycleTimeMs: number | null;
+  sendType?: string | null;
   isFd: boolean;
   protocol: string | null;
   busName: string;
@@ -76,6 +77,7 @@ export interface Vehicle {
 
 export interface CanspecPayload {
   vehicles: Vehicle[];
+  topology?: CanTopology | null;
 }
 
 export type SearchFields = {
@@ -84,3 +86,28 @@ export type SearchFields = {
   msgNames: boolean;
   sigNames: boolean;
 };
+
+export interface RouteFilter {
+  mode?: "include" | "exclude";
+  messages?: string[];
+  transmitters?: string[];
+  networks?: string[];
+}
+export interface ForwardRoute {
+  to: string;
+  via: string;
+  filter?: RouteFilter;
+}
+export interface TopologyBus {
+  dbc: string;
+  format: "can_fd" | "classic";
+  bitrate: number;
+  brs?: boolean;
+  data_bitrate?: number;
+  forwards?: ForwardRoute[];
+}
+export interface CanTopology {
+  version: number;
+  buses: Record<string, TopologyBus>;
+  outputs: Record<string, { transport: string }>;
+}

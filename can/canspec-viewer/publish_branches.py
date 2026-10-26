@@ -8,6 +8,7 @@ import tempfile
 from pathlib import Path
 
 from export_canspec_json import _network_from_path
+from topology_data import topology_payload
 
 
 def git(repo: Path, *args: str) -> bytes:
@@ -18,13 +19,15 @@ def git(repo: Path, *args: str) -> bytes:
 def snapshot(repo: Path, ref: str) -> dict[str, bytes]:
     """Commit/ref -> flat DBC file bytes, rejecting symlinks and submodules."""
     files = {}
-    entries = git(repo, "ls-tree", "-rz", ref, "--", "can/dbc/")
+    entries = git(repo, "ls-tree", "-rz", ref, "--", "can/dbc/", "can/topology.yaml")
     for entry in entries.split(b"\0"):
         if not entry:
             continue
         metadata, raw_path = entry.split(b"\t", 1)
         path = raw_path.decode("utf-8")
-        if not path.endswith(".dbc") or len(Path(path).parts) != 3:
+        if path != "can/topology.yaml" and (
+            not path.endswith(".dbc") or len(Path(path).parts) != 3
+        ):
             continue
         mode, kind, oid = metadata.split()
         if mode not in (b"100644", b"100755") or kind != b"blob":
@@ -34,7 +37,7 @@ def snapshot(repo: Path, ref: str) -> dict[str, bytes]:
 
 
 def fingerprint(files: dict[str, bytes]) -> str:
-    """Sorted filenames + exact contents -> stable, filename-sensitive snapshot ID."""
+    """Sorted filenames + exact contents -> stable, filename-sensitive DBC/topology snapshot ID."""
     digest = hashlib.sha256()
     for name, content in sorted(files.items()):
         digest.update(name.encode() + b"\0" + str(len(content)).encode() + b"\0")
@@ -47,10 +50,15 @@ def export(files: dict[str, bytes]) -> dict:
     with tempfile.TemporaryDirectory() as directory:
         networks = []
         for name, content in sorted(files.items()):
+            if name == "topology.yaml":
+                continue
             path = Path(directory) / name
             path.write_bytes(content)
             networks.append(_network_from_path(path))
-    return {"vehicles": [{"id": "2027", "networks": networks}]}
+    return {
+        "vehicles": [{"id": "2027", "networks": networks}],
+        "topology": topology_payload(files.get("topology.yaml")),
+    }
 
 
 def publish(repo: Path, output: Path, baseline: str = "main") -> dict:

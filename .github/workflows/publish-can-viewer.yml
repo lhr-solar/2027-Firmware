@@ -5,11 +5,13 @@ on:
     branches: ['**', '!gh-pages']
     paths:
       - 'can/dbc/**'
+      - 'can/topology.yaml'
       - 'can/canspec-viewer/**'
       - '.github/workflows/publish-can-viewer.yml'
   pull_request:
     paths:
       - 'can/dbc/**'
+      - 'can/topology.yaml'
       - 'can/canspec-viewer/**'
       - '.github/workflows/publish-can-viewer.yml'
   delete:
@@ -47,6 +49,8 @@ jobs:
       - name: Test branch lifecycle
         run: python -m unittest discover -s can/canspec-viewer/tests -v
       - run: npm ci
+        working-directory: can/canspec-viewer
+      - run: npm test
         working-directory: can/canspec-viewer
       - run: npm run build-site
         working-directory: can/canspec-viewer
