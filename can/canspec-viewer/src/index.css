@@ -1697,3 +1697,5 @@ table.data tbody tr.selected {
 .wire-legend > div { max-width:100%; overflow-wrap:anywhere; white-space:normal; text-transform:none; font-weight:400; line-height:1.5; letter-spacing:normal; }
 
 .load-over { color:#ef8585; }
+
+.load-bar.overloaded, .load-row.assigned .load-bar.overloaded { background: repeating-linear-gradient(135deg, #eeb0b0 0 5px, #a76868 5px 10px); }

@@ -71,10 +71,6 @@ export function LoadingPage() {
             const rates = [
               ...new Set([125000, 250000, 500000, 1000000, bus.bitrate]),
             ].sort((a, b) => a - b);
-            const scale = Math.max(
-              100,
-              ...rates.map((rate) => loadPercent(rows, rate)[1]),
-            );
             return (
               <article className="network-card" key={name}>
                 <h2>{name}</h2>
@@ -100,8 +96,8 @@ export function LoadingPage() {
                         </span>
                         <div className="load-track">
                           <div
-                            className="load-bar"
-                            style={{ width: `${(high / scale) * 100}%` }}
+                            className={`load-bar${high > 100 ? " overloaded" : ""}`}
+                            style={{ width: `${Math.min(high, 100)}%` }}
                           />
                         </div>
                         <strong className={high > 100 ? "load-over" : ""}>
@@ -111,7 +107,7 @@ export function LoadingPage() {
                     );
                   })}
                   <div className="load-axis">
-                    Shared scale within this bus: 0–{scale.toFixed(0)}%
+                    Shared scale: 0–100% · stripes = over capacity
                   </div>
                 </div>
                 <Inventory rows={rows} />
