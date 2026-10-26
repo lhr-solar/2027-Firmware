@@ -39,6 +39,13 @@ export function MessageCard({
       <div className="table-scroll">
         {msg.signals.length ? (
           <table className="data data-compact signal-table">
+            <colgroup>
+              <col style={{ width: "34%" }} />
+              <col style={{ width: "25%" }} />
+              <col style={{ width: "16%" }} />
+              <col style={{ width: "17%" }} />
+              <col style={{ width: "8%" }} />
+            </colgroup>
             <thead>
               <tr>
                 <th>Signal</th>

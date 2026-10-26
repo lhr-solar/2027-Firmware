@@ -1597,14 +1597,14 @@ table.data tbody tr.selected {
 .msg-card-name { flex: 1; overflow-wrap: anywhere; }
 .msg-card-id { min-width: 4.6rem; }
 .msg-card-ecu { color: var(--text-muted); }
-.signal-table { margin-top: .5rem; }
+.signal-table { margin-top: .5rem; table-layout: fixed; width: 100%; min-width: 960px; }
 .signal-table td { vertical-align: top; }
-.signal-table td:first-child { min-width: 13rem; }
+.signal-table td:first-child { white-space: normal; overflow-wrap: anywhere; }
 .signal-table tbody tr { cursor: default; }
 .signal-notes { font-size: .8rem; color: var(--text-muted); margin-top: .35rem; }
 .signal-notes summary { cursor: pointer; }
 .signal-notes p { margin: .35rem 0; max-width: 70rem; }
-.signal-notes .choice-pair { display: inline-block; color: var(--text); }
+.signal-notes .choice-pair { display: block; white-space: normal; overflow-wrap: anywhere; color: var(--text); }
 .id-preview { width: min(1000px, calc(100vw - 2rem)); max-height: calc(100dvh - 3rem); padding: 1rem; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-elevated); color: var(--text); }
 .id-preview::backdrop { background: rgb(0 0 0 / 75%); }
 .modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: .8rem; }
@@ -1694,6 +1694,6 @@ table.data tbody tr.selected {
 .loading-grid .table-scroll { overflow:auto; }
 
 .wire-legend summary { cursor:help; white-space:nowrap; }
-.wire-legend > div { min-width:230px; max-width:330px; white-space:normal; text-transform:none; font-weight:400; line-height:1.5; letter-spacing:normal; }
+.wire-legend > div { max-width:100%; overflow-wrap:anywhere; white-space:normal; text-transform:none; font-weight:400; line-height:1.5; letter-spacing:normal; }
 
 .load-over { color:#ef8585; }
