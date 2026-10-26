@@ -64,7 +64,7 @@ VAL_TABLE_ ElconControl 1 "Disable" 0 "Charge" ;
 VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 
 
-BO_ 96 BPSStatus: 32 BPS
+BO_ 96 BPSStatus: 16 BPS
  SG_ FaultSummary : 0|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
  SG_ FaultOverTemperature : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultOverVoltage : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -103,21 +103,19 @@ BO_ 96 BPSStatus: 32 BPS
  SG_ HVNegativeContactor : 42|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ MainPrechargeRelay : 43|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ MotorPrechargeRelay : 44|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ CellSumVoltage : 48|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
- SG_ MainBatteryVoltage : 60|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
- SG_ MotorBatteryVoltage : 72|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
- SG_ MainVoltage : 84|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
- SG_ MotorVoltage : 96|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
- SG_ MaxBatteryTemperature : 108|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ AverageBatteryTemperature : 119|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ BatteryCurrent : 130|14@1+ (0.01,-50) [-50.0|113.83] "A" Vector__XXX
- SG_ MinCellVoltage : 144|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ MaxCellVoltage : 156|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ MPPTVoltageLimit : 168|16@1+ (0.05,0) [0|175] "V" Vector__XXX
- SG_ MPPTCurrentLimit : 184|16@1+ (0.01,0) [0|16.38] "A" Vector__XXX
- SG_ BatteryFanTach1 : 200|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
- SG_ BatteryFanTach2 : 212|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
- SG_ BPSFanTach : 224|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ MPPTVoltageLimit : 48|16@1+ (0.05,0) [0|175] "V" Vector__XXX
+ SG_ MPPTCurrentLimit : 64|16@1+ (0.01,0) [0|16.38] "A" Vector__XXX
+ SG_ BatteryFanTach1 : 80|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ BatteryFanTach2 : 92|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ BPSFanTach : 104|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+
+BO_ 112 BPSPackData: 12 BPS
+ SG_ CellSumVoltage : 0|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MainBatteryVoltage : 12|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MotorBatteryVoltage : 24|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MainVoltage : 36|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ MotorVoltage : 48|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
+ SG_ BatteryCurrent : 60|14@1+ (0.01,-50) [-50.0|113.83] "A" Vector__XXX
 
 BO_ 1536 ElconInterfaceStatus: 5 ElconInterface
  SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -137,22 +135,12 @@ BO_ 1536 ElconInterfaceStatus: 5 ElconInterface
 
 
 
-CM_ BO_ 96 "Critical BPS status. Bitmaps are expanded into individual named bits. Battery current preserves uint14, 0.01 A/bit and -50 A offset. MPPTInterface translates standardized limits into vendor command encodings; hardware/firmware limits must still be enforced.";
+CM_ BO_ 96 "BPS faults, warnings, state, contactors, control permissions, MPPT limits, and fan tachometers. Pack measurements are in BPSPackData (0x070). CAN-FD; no transmit period assigned yet.";
 CM_ SG_ 96 BPSFanTach "BPSFanTach";
 CM_ SG_ 96 BatteryFanTach2 "BatteryFan2Tach";
 CM_ SG_ 96 BatteryFanTach1 "BatteryFan1Tach";
 CM_ SG_ 96 MPPTCurrentLimit "MPPTCurrentLimit";
 CM_ SG_ 96 MPPTVoltageLimit "MPPTVoltageLimit";
-CM_ SG_ 96 MaxCellVoltage "MaxCellVoltage";
-CM_ SG_ 96 MinCellVoltage "MinCellVoltage";
-CM_ SG_ 96 BatteryCurrent "BatteryCurrent";
-CM_ SG_ 96 AverageBatteryTemperature "AverageBatteryTemperature";
-CM_ SG_ 96 MaxBatteryTemperature "MaxBatteryTemperature";
-CM_ SG_ 96 MotorVoltage "MotorVoltage";
-CM_ SG_ 96 MainVoltage "MainVoltage";
-CM_ SG_ 96 MotorBatteryVoltage "MotorBatteryVoltage";
-CM_ SG_ 96 MainBatteryVoltage "MainBatteryVoltage";
-CM_ SG_ 96 CellSumVoltage "Sum of the 32 cell-tap voltages, independent of precharge measurements. Bulk voltage encoding: unsigned 12 bits, 0.05 V/bit, offset 0 V.";
 CM_ SG_ 96 MotorPrechargeRelay "MotorPrechargeRelay";
 CM_ SG_ 96 MainPrechargeRelay "MainPrechargeRelay";
 CM_ SG_ 96 HVNegativeContactor "HVNegativeContactor";
@@ -191,6 +179,13 @@ CM_ SG_ 96 FaultUnderVoltage "FaultUnderVoltage";
 CM_ SG_ 96 FaultOverVoltage "FaultOverVoltage";
 CM_ SG_ 96 FaultOverTemperature "FaultOverTemperature";
 CM_ SG_ 96 FaultSummary "FaultSummary";
+CM_ BO_ 112 "BPS pack electrical measurements: cell-sum and main/motor battery and precharge voltages, then battery current. Cell-voltage extrema are in BPSVoltageData; temperature summaries are in BPSTemperatureData. Signal encodings unchanged; no transmit period assigned yet.";
+CM_ SG_ 112 BatteryCurrent "BatteryCurrent";
+CM_ SG_ 112 MotorVoltage "MotorVoltage";
+CM_ SG_ 112 MainVoltage "MainVoltage";
+CM_ SG_ 112 MotorBatteryVoltage "MotorBatteryVoltage";
+CM_ SG_ 112 MainBatteryVoltage "MainBatteryVoltage";
+CM_ SG_ 112 CellSumVoltage "Sum of the 32 cell-tap voltages, independent of precharge measurements. Bulk voltage encoding: unsigned 12 bits, 0.05 V/bit, offset 0 V.";
 CM_ BO_ 1536 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 1536 EVSEAvailableCurrent "EVSEAvailableCurrent";
 CM_ SG_ 1536 EVSECPValid "EVSECPValid";
@@ -262,6 +257,9 @@ BA_ "ValueTable" SG_ 96 FaultUnderVoltage "FaultState";
 BA_ "ValueTable" SG_ 96 FaultOverVoltage "FaultState";
 BA_ "ValueTable" SG_ 96 FaultOverTemperature "FaultState";
 BA_ "ValueTable" SG_ 96 FaultSummary "BPSFaultSummary";
+BA_ "LayoutPending" BO_ 112 0;
+BA_ "ProtocolSource" BO_ 112 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 112 14;
 BA_ "LayoutPending" BO_ 1536 0;
 BA_ "ProtocolSource" BO_ 1536 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 1536 14;

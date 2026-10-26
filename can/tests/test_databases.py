@@ -101,7 +101,7 @@ class DatabaseTests(unittest.TestCase):
                             (0.5, -20) if signal.name == "SoCTemperature" else (0.05, 0)
                         )
                         self.assertEqual((signal.scale, signal.offset), expected)
-        current = self.message("CarCAN", 0x60).get_signal_by_name("BatteryCurrent")
+        current = self.message("CarCAN", 0x70).get_signal_by_name("BatteryCurrent")
         self.assertEqual(
             (current.length, current.scale, current.offset, current.is_signed),
             (14, 0.01, -50, False),
@@ -113,14 +113,14 @@ class DatabaseTests(unittest.TestCase):
         )
 
     def test_only_documented_cross_bus_id_repeat(self):
-        """The shared BPS status is the sole duplicate ID across the eight networks."""
+        """Only shared BPS status and pack data repeat across CarCAN/ChargerCAN."""
         seen = {}
         for bus, database in self.databases.items():
             for message in database.messages:
                 key = (message.frame_id, message.is_extended_frame)
                 if key in seen:
                     previous_bus, previous = seen[key]
-                    self.assertEqual(key, (0x60, False))
+                    self.assertIn(key, ((0x60, False), (0x70, False)))
                     self.assertEqual({previous_bus, bus}, {"CarCAN", "ChargerCAN"})
                     self.assertEqual(message.senders, previous.senders)
                     self.assertEqual(
@@ -276,7 +276,7 @@ class DatabaseTests(unittest.TestCase):
         )
 
     def test_bps_cell_sum_precedes_precharge_voltages(self):
-        message = self.message("CarCAN", 0x60)
+        message = self.message("CarCAN", 0x70)
         voltages = [signal for signal in message.signals if signal.unit == "V"]
         self.assertEqual(
             [signal.name for signal in voltages[:5]],
@@ -297,10 +297,90 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(
             (int.from_bytes(frame, "little") >> signal.start) & 0xFFF, 2688
         )
-        charger = self.message("ChargerCAN", 0x60).get_signal_by_name("CellSumVoltage")
+        charger = self.message("ChargerCAN", 0x70).get_signal_by_name("CellSumVoltage")
         self.assertEqual(
             (charger.start, charger.length, charger.scale), (signal.start, 12, 0.05)
         )
+
+    def test_bps_pack_split_and_data_block(self):
+        measurements = {
+            "CellSumVoltage",
+            "MainBatteryVoltage",
+            "MotorBatteryVoltage",
+            "MainVoltage",
+            "MotorVoltage",
+            "BatteryCurrent",
+        }
+        for bus in ("CarCAN", "ChargerCAN"):
+            status = self.message(bus, 0x60)
+            pack = self.message(bus, 0x70)
+            self.assertEqual(pack.name, "BPSPackData")
+            self.assertEqual(pack.senders, ["BPS"])
+            self.assertTrue(pack.is_fd)
+            self.assertEqual((status.length, pack.length), (16, 12))
+            self.assertEqual({signal.name for signal in pack.signals}, measurements)
+            self.assertFalse(measurements & {signal.name for signal in status.signals})
+            for name in (
+                "BatteryFanTach1",
+                "BatteryFanTach2",
+                "BPSFanTach",
+                "MPPTVoltageLimit",
+                "MPPTCurrentLimit",
+                "DriveOK",
+                "ChargeOK",
+            ):
+                self.assertIn(name, {signal.name for signal in status.signals})
+            self.assertEqual(status.get_signal_by_name("HVPositiveContactor").start, 40)
+            # Known raw values verify the new frame boundaries and padding.
+            raw = {signal.name: 0 for signal in pack.signals}
+            raw.update(CellSumVoltage=2688, BatteryCurrent=5000)
+            expected = 2688 | (5000 << 60)
+            frame = pack.encode(raw, scaling=False)
+            self.assertEqual(frame, expected.to_bytes(12, "little"))
+            self.assertEqual(pack.decode(frame, scaling=False)["BatteryCurrent"], 5000)
+            self.assertIsNone(pack.cycle_time)
+        for identifier, name in (
+            (0x70, "BPSPackData"),
+            (0x71, "BPSVoltageData"),
+            (0x72, "BPSTemperatureData"),
+            (0x73, "SMDStatus"),
+        ):
+            self.assertEqual(self.message("CarCAN", identifier).name, name)
+
+        for identifier, summaries, starts, length, counts in (
+            (0x71, ("MinCellVoltage", "MaxCellVoltage"), (384, 396), 64, (1000, 2000)),
+            (
+                0x72,
+                ("MaxBatteryTemperature", "AverageBatteryTemperature"),
+                (352, 363),
+                48,
+                (800, 600),
+            ),
+        ):
+            message = self.message("CarCAN", identifier)
+            self.assertEqual(message.length, length)
+            self.assertEqual(len(message.signals), 34)
+            self.assertEqual(
+                [signal.name for signal in message.signals[-2:]], list(summaries)
+            )
+            raw = {signal.name: 0 for signal in message.signals}
+            expected = 0
+            for name, start, count in zip(summaries, starts, counts):
+                signal = message.get_signal_by_name(name)
+                self.assertEqual(signal.start, start)
+                raw[name] = count
+                expected |= count << start
+                self.assertNotIn(
+                    name,
+                    {signal.name for signal in self.message("CarCAN", 0x60).signals},
+                )
+                self.assertNotIn(
+                    name,
+                    {signal.name for signal in self.message("CarCAN", 0x70).signals},
+                )
+            self.assertEqual(
+                message.encode(raw, scaling=False), expected.to_bytes(length, "little")
+            )
 
     def test_team_signal_category_order(self):
         """All team layouts place fault bits, warnings, states, then measurements."""

@@ -10,12 +10,12 @@ not wire-compatible with the old vehicle's team-defined messages.
 
 | Database | Contents | Frames | Empty placeholders |
 |---|---|---:|---:|
-| CarCAN | Team critical/control, power, battery and HMI status | 16 | 1 |
+| CarCAN | Team critical/control, power, battery and HMI status | 17 | 1 |
 | MotorCAN | VCU drive/power/reset commands and WS22 telemetry | 19 | 0 |
 | MPPTCAN | Three SEC-B175-7A MPPTs; commands from MPPTInterface | 33 | 12 |
 | SteeringCAN | LWS measurements; configuration sent by DEI | 2 | 0 |
 | LightingCAN | Bottom-shell status from DEI; top-shell status from TopShellLighting | 2 | 0 |
-| ChargerCAN | BPS status and ElconInterface status | 2 | 0 |
+| ChargerCAN | BPS status/pack data and ElconInterface status | 3 | 0 |
 | ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
 | DAqCAN | MIKA infrastructure and all 12 sensor boards | 23 | 5 |
 
@@ -25,9 +25,9 @@ on **CarCAN** and produces MPPT commands on **MPPTCAN**; BPS is not a transmitte
 on the private MPPT bus. DEI transmits all LWS configuration traffic; LWS remains
 the transmitter of its own measurements.
 
-BPSStatus (0x060) is intentionally present on both CarCAN and ChargerCAN
-with identical signals and transmitter. This is the only repeated numeric ID
-across the eight files. It describes BPS transmitting on both networks;
+BPSStatus (0x060) and BPSPackData (0x070) are intentionally present on both
+CarCAN and ChargerCAN with identical layouts and transmitter. These are the only
+repeated numeric IDs across the eight files. BPS transmits both on both networks;
 any actual gateway implementation must match this routing assumption.
 
 CarCAN, ChargerCAN, DAqCAN and LightingCAN use CAN-FD, including short team frames.
@@ -88,10 +88,20 @@ in use belong with continuous measurements. Fixed vendor layouts are unchanged.
 This reorganization changes bit positions in the draft team layouts; regenerate
 consumers together rather than mixing versions.
 
-- BPSStatus includes `CellSumVoltage` **before** all pre/post-precharge
+- BPSPackData includes `CellSumVoltage` **before** all pre/post-precharge
   voltage measurements. It uses unsigned 12-bit bulk encoding (0.05 V/bit,
   offset 0; 0–204.75 V), covering the sum of all 32 representable cell taps.
-  This is added identically on CarCAN and ChargerCAN; the status frame remains 32 bytes.
+  BPSPackData is 12 bytes on both CarCAN and ChargerCAN. It contains these five
+  voltages and battery current. Min/max cell voltage follow the 32 cell voltages
+  in BPSVoltageData (64 bytes). Max/average battery temperature follow the 32
+  cell temperatures in BPSTemperatureData (48 bytes). Existing scales, offsets,
+  widths, units, and individual-cell bit positions are preserved.
+  BPSStatus is now 16 bytes and retains faults, warnings, discrete state,
+  permissions, MPPT limits, and all three fan tachometers.
+  The CarCAN BPS data block is 0x070 BPSPackData, 0x071 BPSVoltageData,
+  0x072 BPSTemperatureData, and 0x073 SMDStatus. The new pack frame is shared across
+  CarCAN/ChargerCAN; the individual-cell frames and their summaries are on CarCAN.
+  No send type or cycle time is assigned yet.
 - MIKA's rear-camera warning is explicitly `WarningRearCameraDisconnected`.
   A separate one-bit `DriverCameraConnected` uses the shared Connection table.
 - MIKA includes `CM5FanTach`: unsigned 12-bit, 5 rpm/bit, 0–20475 rpm.
@@ -184,7 +194,7 @@ signals and a zero-byte placeholder payload. Zero length is a drafting marker,
 not permission to transmit an empty frame. Owners must define the layout before
 using these messages:
 
-- CarCAN 0x072 SMDStatus: four SMB bitmaps are mentioned, but no widths/bit meanings.
+- CarCAN 0x073 SMDStatus: four SMB bitmaps are mentioned, but no widths/bit meanings.
 - Five telemetry placeholders: three blackbody boards and two strain boards.
 - MPPT offsets 0x05–0x08: reserved here as empty placeholders for variable-length
   configuration-buffer protocols; they are not ordinary fixed-layout commands.
