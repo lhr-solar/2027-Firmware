@@ -92,7 +92,7 @@ export function LoadingPage() {
                         key={rate}
                       >
                         <span>
-                          {rate / 1000}k{rate === bus.bitrate ? " ★" : ""}
+                          {rate >= 1000000 ? `${rate / 1000000}M` : `${rate / 1000}k`}{rate === bus.bitrate ? " ★" : ""}
                         </span>
                         <div className="load-track">
                           <div
