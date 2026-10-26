@@ -112,7 +112,6 @@ including Elcon → Charger → Car → TelemetryTCP. Mirrored IDs count once pe
 bus/output. Bars compare 125/250/500/1000 kbit/s, with the assigned bitrate in
 orange; percentages bound unstuffed and conservative stuffing, including frame
 headers, CRC, ACK and intermission. Triggered messages and pending layouts are
-listed separately and excluded. BRS must be off. TCP estimates show payload,
-application and TCP/IP kbps under the displayed serialization/batching assumptions.
+listed separately and excluded. BRS must be off. The telemetry card shows only CAN payload kbps after forwarding and exclusions.
 The Wire column's expandable legend explains field type/width, DBC start bits
 and byte order.

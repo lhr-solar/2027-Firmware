@@ -1,5 +1,5 @@
 import { useLayoutOutlet } from "../layoutContext";
-import { calculateLoading, loadPercent, tcpRate } from "../loading";
+import { calculateLoading, loadPercent } from "../loading";
 import type { Traffic } from "../loading";
 
 function Inventory({ rows }: { rows: Traffic[] }) {
@@ -119,24 +119,15 @@ export function LoadingPage() {
         .filter(([, output]) => output.transport === "tcp")
         .map(([name]) => {
           const rows = [...resolved.get(name)!.values()],
-            rate = tcpRate(rows);
+            payloadKbps = rows.reduce((sum, row) => sum + row.fps * row.message.dlc * 8 / 1000, 0);
           return (
             <article className="network-card tcp-card" key={name}>
               <h2>{name}</h2>
               <div className="tcp-rate">
-                {rate.uplink.toFixed(2)} <small>kbps TCP/IP uplink</small>
+                {payloadKbps.toFixed(2)} <small>kbps CAN payload</small>
               </div>
-              <p>
-                CAN payload {rate.payload.toFixed(2)} kbps · application{" "}
-                {rate.application.toFixed(2)} kbps · reverse ACKs{" "}
-                {rate.ack.toFixed(2)} kbps
-              </p>
               <p className="page-sub">
-                All permitted upstream paths are included, including Elcon →
-                Charger → Car → TCP. Assumes 10-byte record headers, 20-byte
-                batch headers, 20 ms batches, 1500-byte MTU, IPv4/TCP 20-byte
-                headers and one ACK per two segments. Excludes TLS, modem/link
-                overhead, GPS and video.
+                Message data only, including all permitted upstream forwarding paths.
               </p>
               <Inventory rows={rows} />
             </article>
