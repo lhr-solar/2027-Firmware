@@ -58,8 +58,10 @@ self-watchdog bit is reserved rather than monitoring a second board identity.
 |---|---|---|---|
 | Bulk voltages | V | 0.05 | 0 |
 | Cell/tap voltages | mV | 1 | 2000; unsigned 12 bits, 2000–6095 mV |
-| Currents | A | 0.01 | 0, except battery current below |
+| Currents | A | 0.01 | 0, except battery currents below |
 | Battery current | A | 0.01 | **−50; unsigned 14 bits, −50.00–113.83 A** |
+| LV battery current | A | 0.01 | −50; unsigned 14 bits, −50.00–113.83 A; positive discharge, negative charge |
+| HSS FET temperatures | degC | 0.05 | −40; unsigned 13 bits, permitted −40–200 degC |
 | Battery temperatures | degC | 0.05 | 0; unsigned 11 bits, 0–102.35 degC |
 | MIKA SoC temperature | degC | **0.5** | **−20; unsigned 8 bits, permitted −20–85 degC** |
 | Fan tachometers | rpm | 5 | 0; unsigned 12 bits |
@@ -68,8 +70,8 @@ self-watchdog bit is reserved rather than monitoring a second board identity.
 
 Battery-current width and offset and the SoC-temperature exception are explicitly
 preserved at the user's request. The 5 V offset from the draft's PDU/LVC voltage
-fields is removed to standardize bulk voltage encoding; the existing 9-bit width
-still represents the requested 5–20 V range. EVSE available current uses 12 bits
+fields is removed to standardize bulk voltage encoding. LV voltages now use
+10 bits at 0.05 V/bit, including zero for disabled outputs (0–51.15 V). EVSE available current uses 12 bits
 at 0.01 A/bit to retain 0–25.5 A with the standard current resolution.
 
 BPS MPPT limits use the team voltage/current resolutions; MPPTInterface converts
@@ -322,7 +324,9 @@ All measurement frames fit CAN-FD's 64-byte limit.
 ## Timing and forwarding
 
 Every cyclic message explicitly sets `GenMsgCycleTime` in milliseconds;
-`GenMsgSendType` defaults to `Cyclic`. `Triggered` messages have no cycle time.
+`GenMsgSendType` defaults to `Cyclic`. `Triggered` messages may carry an explicit
+positive repeat period; they are not free-running cyclic traffic. Conditional
+fault snapshots also define `GenMsgSendCondition`, which firmware must honor.
 Reserved WS22 IDs use `None` and must not be transmitted. Pending layouts keep
 planned timing but are excluded from active traffic estimates until defined.
 
@@ -358,3 +362,64 @@ ChargerCAN include list is unchanged. Both BPSStatus mirrors rename
 FaultMainVoltageNotPresent/FaultMotorVoltageNotPresent to FaultMainVoltage/
 FaultMotorVoltage and add FaultMainPrechargeVoltage/FaultMotorPrechargeVoltage
 in spare bits 21/22. Existing fields retain their bit positions.
+
+## LV power telemetry: LVC and PDU
+
+These messages replace PDUStatus 0x069, LVCStatus 0x06A and PDUData 0x078.
+The retired IDs are free. All new messages are standard-ID CAN FD on CarCAN,
+with BRS off; existing CarCAN → TCP forwarding includes them. They do not enter
+ChargerCAN's BPS-only forwarding include list. Bootloader IDs are unchanged.
+
+| ID | Message | Bytes | Timing |
+|---|---|---:|---|
+| 0x090 | LVCStatus | 2 | Cyclic, 100 ms |
+| 0x091 | LVCCurrentData | 12 | Cyclic, 100 ms (10 Hz) |
+| 0x092 | LVCVoltageData | 7 | Cyclic, 500 ms |
+| 0x093 | LVCTemperatureData | 4 | Cyclic, 1000 ms |
+| 0x094 | LVCOverCurrentSnapshot | 12 | Triggered, 1000 ms while trip latched |
+| 0x0A0 | PDUStatus | 16 | Cyclic, 100 ms |
+| 0x0A1 | PDUCurrentData | 24 | Cyclic, 100 ms (10 Hz) |
+| 0x0A2 | PDUVoltageData | 20 | Cyclic, 500 ms |
+| 0x0A3 | PDUTemperatureData | 24 | Cyclic, 1000 ms |
+| 0x0A4 | PDUOverCurrentSnapshotA | 64 | Triggered, 1000 ms while group trip latched |
+| 0x0A5 | PDUOverCurrentSnapshotB | 64 | Triggered, 1000 ms while group trip latched |
+
+PDU has exactly twelve outputs; chip n controls channels 2n-1/2n. Each channel
+has enabled state, current, output voltage, internal power-FET temperature,
+overcurrent/I2T/overtemperature/open-load/short-to-battery fault bits, and its own
+separate hardware blown-fuse warning. Open-load does not imply a blown fuse.
+Chip VBB undervoltage, SPI error and watchdog faults are reported once per chip
+(six of each). The existing aggregate blown-fuse warning is retained as the OR of the twelve
+per-channel hardware warnings.
+PDUCommand ChannelIndex is zero-based 0–11, selecting Channel1–Channel12.
+
+Only LVC's BPS feed uses an HSS channel. Its PDU power feed is separate; no
+fictitious PDU HSS channel or unused second-chip-channel telemetry is added.
+Measured upstream currents and voltages are preserved outside LVCStatus.
+TotalCurrent/TotalOutputCurrent are independent measured totals, not inferred
+sums of downstream channels. Output-enable signals describe requested state;
+output-voltage measurements indicate actual powered state.
+
+No LVC/PDU validity bits are sent. Live readings carry a shared maximum
+SampleAgeMs; chip SPI/watchdog faults and sample age provide diagnostic context.
+Unavailable readings cannot be distinguished explicitly from legitimate values.
+The HSS may suspend voltage/temperature updates in some I2T operating modes;
+firmware must not reset the reported sample age just because it retransmits a
+cached measurement. Temperature is FET temperature, not load/ambient temperature.
+
+Trip snapshots freeze independent first-trip records per output until an explicit
+firmware fault-reset action. Overcurrent or I2T triggers capture. A later trip on
+another output does not erase earlier records; repeated trips on an already
+latched output keep its first record. Clearing HSS diagnostic registers does not
+automatically clear the software capture. Each saved record has trip current,
+board-uptime CaptureTimeMs, current sample age at detection and saturation flag.
+PDU group A is channels 1–6; B is 7–12. Send that group immediately on a new trip,
+then at most once per 1000 ms while any record remains latched; send nothing
+from an inactive group. There is no SnapshotId and no validity bit. Current
+saturation means the saved value is a lower bound. Samples are the latest
+available at fault detection, not guaranteed instantaneous analog peaks.
+Capture clocks wrap at 2^32 ms and reset on board reboot; sample ages saturate
+at 65535 ms. Normal readings continue independently of the frozen records.
+
+Current DBCs describe this contract; acquisition, latching, reset and transmit
+scheduling must be implemented in board firmware.

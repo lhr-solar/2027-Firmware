@@ -98,7 +98,9 @@ class DatabaseTests(unittest.TestCase):
                         )
                     if signal.unit == "degC":
                         expected = (
-                            (0.5, -20) if signal.name == "SoCTemperature" else (0.05, 0)
+                            (0.5, -20) if signal.name == "SoCTemperature"
+                            else (0.05, -40) if message.senders in (["LVC"], ["PDU"])
+                            else (0.05, 0)
                         )
                         self.assertEqual((signal.scale, signal.offset), expected)
         current = self.message("CarCAN", 0x70).get_signal_by_name("BatteryCurrent")
@@ -708,6 +710,103 @@ class DatabaseTests(unittest.TestCase):
                     self.assertEqual(
                         signal.receivers, [], (bus, message.name, signal.name)
                     )
+
+    def test_lv_power_message_groups_and_timing(self):
+        car = self.databases["CarCAN"]
+        definitions = (
+            (0x90, "LVCStatus", 100, 2), (0x91, "LVCCurrentData", 100, 12),
+            (0x92, "LVCVoltageData", 500, 7), (0x93, "LVCTemperatureData", 1000, 4),
+            (0x94, "LVCOverCurrentSnapshot", 1000, 12),
+            (0xA0, "PDUStatus", 100, 16), (0xA1, "PDUCurrentData", 100, 24),
+            (0xA2, "PDUVoltageData", 500, 20), (0xA3, "PDUTemperatureData", 1000, 24),
+            (0xA4, "PDUOverCurrentSnapshotA", 1000, 64),
+            (0xA5, "PDUOverCurrentSnapshotB", 1000, 64),
+        )
+        for identifier, name, period, length in definitions:
+            message = car.get_message_by_frame_id(identifier)
+            self.assertEqual((message.name, message.cycle_time, message.length), (name, period, length))
+            self.assertEqual(message.senders, ["LVC" if identifier < 0xA0 else "PDU"])
+            self.assertTrue(message.is_fd)
+            snapshot = "Snapshot" in name
+            self.assertEqual(message.dbc.attributes["GenMsgSendType"].value, 1 if snapshot else 0)
+            self.assertEqual(bool(message.dbc.attributes.get("GenMsgSendCondition")), snapshot)
+        self.assertFalse({0x69, 0x6A, 0x78} & {m.frame_id for m in car.messages})
+        for name in ("LVCStatus", "PDUStatus"):
+            self.assertFalse(any(signal.unit in ("A", "V", "degC") for signal in car.get_message_by_name(name).signals))
+        self.assertEqual(car.get_message_by_name("PDUCommand").get_signal_by_name("ChannelIndex").maximum, 11)
+        for message in car.messages:
+            if message.senders in (["LVC"], ["PDU"]):
+                self.assertFalse(any("Valid" in signal.name for signal in message.signals))
+
+    def test_lv_hss_faults_and_separate_fuse_monitors(self):
+        car = self.databases["CarCAN"]
+        status = car.get_message_by_name("PDUStatus")
+        for channel in range(1, 13):
+            for cause in ("OverCurrent", "I2T", "OverTemperature", "OpenLoad", "ShortToBattery"):
+                signal = status.get_signal_by_name(f"FaultChannel{cause}{channel}")
+                self.assertEqual(signal.dbc.attributes["ValueTable"].value, "FaultState")
+                self.assertIn(f"HSS chip {(channel + 1) // 2}", signal.comment)
+            fuse = status.get_signal_by_name(f"WarningChannelBlownFuse{channel}")
+            self.assertEqual(fuse.dbc.attributes["ValueTable"].value, "WarningState")
+            self.assertNotEqual(fuse.start, status.get_signal_by_name(f"FaultChannelOpenLoad{channel}").start)
+            status.get_signal_by_name(f"ChannelEnabled{channel}")
+        for chip in range(1, 7):
+            for cause in ("VBBUndervoltage", "SPIError", "Watchdog"):
+                status.get_signal_by_name(f"FaultChip{cause}{chip}")
+        names = {signal.name for signal in status.signals}
+        self.assertFalse(any(name.endswith(("13", "14")) for name in names))
+        lvc = car.get_message_by_name("LVCStatus")
+        for cause in ("OverCurrent", "I2T", "OverTemperature", "OpenLoad", "ShortToBattery"):
+            lvc.get_signal_by_name("FaultBPS" + cause)
+        lvc.get_signal_by_name("WarningBPSBlownFuse")
+        self.assertFalse(any("PDU" in signal.name or "Channel2" in signal.name for signal in lvc.signals))
+
+    def test_lv_measurement_encodings_without_validity(self):
+        car = self.databases["CarCAN"]
+        current = car.get_message_by_name("PDUCurrentData")
+        values = {signal.name: 0 for signal in current.signals}
+        expected = 0
+        for channel in range(1, 13):
+            count = channel * 123
+            values[f"ChannelCurrent{channel}"] = count
+            expected |= count << (16 + 12 * (channel - 1))
+        values["TotalCurrent"] = 2460
+        expected |= 2460 << 160
+        self.assertEqual(current.encode(values, scaling=False), expected.to_bytes(24, "little"))
+        self.assertEqual(current.cycle_time, 100)
+        for channel in range(1, 13):
+            for message, field in (("PDUVoltageData", "ChannelVoltage"), ("PDUTemperatureData", "ChannelTemperature")):
+                car.get_message_by_name(message).get_signal_by_name(field + str(channel))
+        voltage = car.get_message_by_name("PDUVoltageData").get_signal_by_name("ChannelVoltage1")
+        temperature = car.get_message_by_name("PDUTemperatureData").get_signal_by_name("ChannelTemperature1")
+        self.assertEqual((voltage.scale, voltage.offset, voltage.minimum), (0.05, 0, 0))
+        self.assertEqual((temperature.scale, temperature.offset, temperature.minimum, temperature.maximum), (0.05, -40, -40, 200))
+        lvb = car.get_message_by_name("LVCCurrentData").get_signal_by_name("LVBCurrent")
+        self.assertEqual((lvb.scale, lvb.offset, lvb.minimum), (0.01, -50, -50))
+
+    def test_lv_trip_records_are_independent_per_output(self):
+        car = self.databases["CarCAN"]
+        for name, channels in (("PDUOverCurrentSnapshotA", range(1, 7)), ("PDUOverCurrentSnapshotB", range(7, 13))):
+            message = car.get_message_by_name(name)
+            values = {signal.name: 0 for signal in message.signals}
+            expected = 0
+            for index, channel in enumerate(channels):
+                values[f"FaultOverCurrent{channel}"] = 1
+                values[f"CaptureTimeMs{channel}"] = channel * 1000
+                values[f"CurrentSampleAgeMs{channel}"] = channel
+                values[f"TripCurrent{channel}"] = channel * 300
+                expected |= 1 << index
+                expected |= (channel * 1000) << (24 + index * 64)
+                expected |= channel << (56 + index * 64)
+                expected |= (channel * 300) << (72 + index * 64)
+            frame = message.encode(values, scaling=False)
+            self.assertEqual(frame, expected.to_bytes(64, "little"))
+            decoded = message.decode(frame, decode_choices=False, scaling=False)
+            self.assertEqual(decoded, values)
+            self.assertNotIn("SnapshotId", decoded)
+        lvc = car.get_message_by_name("LVCOverCurrentSnapshot")
+        self.assertEqual(lvc.get_signal_by_name("TripCurrent").length, 16)
+        self.assertIn("sampled current", lvc.comment)
 
     def test_bps_fault_snapshots_and_voltage_faults(self):
         for bus in ("CarCAN", "ChargerCAN"):
