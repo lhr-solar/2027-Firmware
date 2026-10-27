@@ -78,6 +78,16 @@ def traffic(databases, event_rates):
                     }
                 )
                 continue
+            condition = attribute(message, "GenMsgSendCondition", "")
+            if condition:
+                if key in event_rates:
+                    raise ValueError(f"Cannot override conditional cyclic schedule: {key}")
+                unresolved.append({
+                    "network": bus,
+                    "message": message.name,
+                    "reason": f"conditional cyclic; inactive in normal operation: {condition}",
+                })
+                continue
             if kind == "Cyclic":
                 if key in event_rates:
                     raise ValueError(

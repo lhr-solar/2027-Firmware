@@ -97,8 +97,10 @@ BO_ 96 BPSStatus: 16 BPS
  SG_ FaultChargerEstop : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultMainPrechargeTimeout : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultMotorPrechargeTimeout : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMainVoltageNotPresent : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMotorVoltageNotPresent : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainVoltage : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorVoltage : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeVoltage : 21|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeVoltage : 22|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningSMBCommunication : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningUnderVoltage : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningOverVoltage : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -366,6 +368,108 @@ BO_ 130 MIKAStatus: 6 MIKA
  SG_ SoCTemperature : 22|8@1+ (0.5,-20) [-20|85] "degC" Vector__XXX
  SG_ CM5FanTach : 30|12@1+ (5,0) [0|20475] "rpm" Vector__XXX
 
+BO_ 117 BPSFaultSnapshot: 16 BPS
+ SG_ FaultSummary : 0|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
+ SG_ FaultOverTemperature : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultOverVoltage : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultUnderVoltage : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChargeOverCurrent : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultDischargeOverCurrent : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultHVPositiveContactorMismatch : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorContactorMismatch : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultHVNegativeContactorMismatch : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeRelayMismatch : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeRelayMismatch : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultDriverEstop : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultExternalEstop : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultBatteryEstop : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChargerEstop : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeTimeout : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeTimeout : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainVoltage : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorVoltage : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeVoltage : 21|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeVoltage : 22|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ CurrentValid : 24|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ SnapshotId : 32|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ CaptureTimeMs : 48|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
+ SG_ CurrentSampleAgeMs : 80|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+ SG_ BatteryCurrent : 96|14@1+ (0.01,-50) [-50.0|113.83] "A" Vector__XXX
+
+BO_ 118 BPSFaultVoltageSnapshot: 64 BPS
+ SG_ SnapshotId : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ SampleValidMask : 16|32@1+ (1,0) [0|4294967295] "" Vector__XXX
+ SG_ SampleAgeMs : 48|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+ SG_ CellVoltage01 : 64|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage02 : 76|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage03 : 88|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage04 : 100|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage05 : 112|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage06 : 124|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage07 : 136|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage08 : 148|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage09 : 160|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage10 : 172|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage11 : 184|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage12 : 196|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage13 : 208|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage14 : 220|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage15 : 232|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage16 : 244|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage17 : 256|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage18 : 268|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage19 : 280|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage20 : 292|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage21 : 304|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage22 : 316|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage23 : 328|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage24 : 340|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage25 : 352|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage26 : 364|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage27 : 376|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage28 : 388|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage29 : 400|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage30 : 412|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage31 : 424|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage32 : 436|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+
+BO_ 119 BPSFaultTemperatureSnapshot: 64 BPS
+ SG_ SnapshotId : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ SampleValidMask : 16|32@1+ (1,0) [0|4294967295] "" Vector__XXX
+ SG_ SampleAgeMs : 48|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+ SG_ CellTemperature01 : 64|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature02 : 75|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature03 : 86|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature04 : 97|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature05 : 108|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature06 : 119|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature07 : 130|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature08 : 141|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature09 : 152|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature10 : 163|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature11 : 174|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature12 : 185|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature13 : 196|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature14 : 207|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature15 : 218|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature16 : 229|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature17 : 240|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature18 : 251|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature19 : 262|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature20 : 273|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature21 : 284|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature22 : 295|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature23 : 306|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature24 : 317|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature25 : 328|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature26 : 339|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature27 : 350|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature28 : 361|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature29 : 372|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature30 : 383|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature31 : 394|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature32 : 405|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+
 
 
 
@@ -405,8 +509,10 @@ CM_ SG_ 96 WarningChargeOverTemperature "WarningChargeOverTemperature";
 CM_ SG_ 96 WarningOverVoltage "WarningOverVoltage";
 CM_ SG_ 96 WarningUnderVoltage "WarningUnderVoltage";
 CM_ SG_ 96 WarningSMBCommunication "WarningSMBCommunication";
-CM_ SG_ 96 FaultMotorVoltageNotPresent "FaultMotorVoltageNotPresent";
-CM_ SG_ 96 FaultMainVoltageNotPresent "FaultMainVoltageNotPresent";
+CM_ SG_ 96 FaultMotorPrechargeVoltage "FaultMotorPrechargeVoltage";
+CM_ SG_ 96 FaultMainPrechargeVoltage "FaultMainPrechargeVoltage";
+CM_ SG_ 96 FaultMotorVoltage "FaultMotorVoltage";
+CM_ SG_ 96 FaultMainVoltage "FaultMainVoltage";
 CM_ SG_ 96 FaultMotorPrechargeTimeout "FaultMotorPrechargeTimeout";
 CM_ SG_ 96 FaultMainPrechargeTimeout "FaultMainPrechargeTimeout";
 CM_ SG_ 96 FaultChargerEstop "FaultChargerEstop";
@@ -653,6 +759,105 @@ CM_ SG_ 130 WarningRearCameraDisconnected "Rear camera disconnected warning; the
 CM_ SG_ 130 WarningDisplayDisconnected "WarningDisplayDisconnected";
 CM_ SG_ 130 WarningOverTemperature "WarningOverTemperature";
 CM_ SG_ 130 WarningTemperature "WarningTemperature";
+CM_ BO_ 117 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. All three frames reuse the same frozen SnapshotId; never replace captured samples with post-trip zeros. Rearm after all faults clear. SnapshotId is a wrapping 16-bit sequence within a boot. Fault bits record the first fault state. BatteryCurrent preserves the live message scaling. CurrentSampleAgeMs describes sampling latency; this is not a guaranteed instantaneous peak measurement.";
+CM_ SG_ 117 BatteryCurrent "BatteryCurrent";
+CM_ SG_ 117 CurrentSampleAgeMs "Age of last valid current sample at capture; saturates at 65535 ms.";
+CM_ SG_ 117 CaptureTimeMs "BPS monotonic uptime at fault detection, wraps at 2^32 ms; independent of legacy TimestampSync ticks.";
+CM_ SG_ 117 SnapshotId "Shared snapshot sequence; resets on BPS reboot.";
+CM_ SG_ 117 CurrentValid "1 only if BatteryCurrent was sampled successfully before capture; otherwise ignore BatteryCurrent and CurrentSampleAgeMs.";
+CM_ SG_ 117 FaultMotorPrechargeVoltage "FaultMotorPrechargeVoltage";
+CM_ SG_ 117 FaultMainPrechargeVoltage "FaultMainPrechargeVoltage";
+CM_ SG_ 117 FaultMotorVoltage "FaultMotorVoltage";
+CM_ SG_ 117 FaultMainVoltage "FaultMainVoltage";
+CM_ SG_ 117 FaultMotorPrechargeTimeout "FaultMotorPrechargeTimeout";
+CM_ SG_ 117 FaultMainPrechargeTimeout "FaultMainPrechargeTimeout";
+CM_ SG_ 117 FaultChargerEstop "FaultChargerEstop";
+CM_ SG_ 117 FaultBatteryEstop "FaultBatteryEstop";
+CM_ SG_ 117 FaultExternalEstop "FaultExternalEstop";
+CM_ SG_ 117 FaultDriverEstop "FaultDriverEstop";
+CM_ SG_ 117 FaultMotorPrechargeRelayMismatch "FaultMotorPrechargeRelayMismatch";
+CM_ SG_ 117 FaultMainPrechargeRelayMismatch "FaultMainPrechargeRelayMismatch";
+CM_ SG_ 117 FaultHVNegativeContactorMismatch "FaultHVNegativeContactorMismatch";
+CM_ SG_ 117 FaultMotorContactorMismatch "FaultMotorContactorMismatch";
+CM_ SG_ 117 FaultHVPositiveContactorMismatch "FaultHVPositiveContactorMismatch";
+CM_ SG_ 117 FaultDischargeOverCurrent "FaultDischargeOverCurrent";
+CM_ SG_ 117 FaultChargeOverCurrent "FaultChargeOverCurrent";
+CM_ SG_ 117 FaultUnderVoltage "FaultUnderVoltage";
+CM_ SG_ 117 FaultOverVoltage "FaultOverVoltage";
+CM_ SG_ 117 FaultOverTemperature "FaultOverTemperature";
+CM_ SG_ 117 FaultSummary "FaultSummary";
+CM_ BO_ 118 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. All three frames reuse the same frozen SnapshotId; never replace captured samples with post-trip zeros. Rearm after all faults clear. SnapshotId is a wrapping 16-bit sequence within a boot. The last completed scan available at fault detection is frozen, not acquired after shutdown. Scaling and offsets match BPSVoltageData.";
+CM_ SG_ 118 CellVoltage32 "CellVoltage32";
+CM_ SG_ 118 CellVoltage31 "CellVoltage31";
+CM_ SG_ 118 CellVoltage30 "CellVoltage30";
+CM_ SG_ 118 CellVoltage29 "CellVoltage29";
+CM_ SG_ 118 CellVoltage28 "CellVoltage28";
+CM_ SG_ 118 CellVoltage27 "CellVoltage27";
+CM_ SG_ 118 CellVoltage26 "CellVoltage26";
+CM_ SG_ 118 CellVoltage25 "CellVoltage25";
+CM_ SG_ 118 CellVoltage24 "CellVoltage24";
+CM_ SG_ 118 CellVoltage23 "CellVoltage23";
+CM_ SG_ 118 CellVoltage22 "CellVoltage22";
+CM_ SG_ 118 CellVoltage21 "CellVoltage21";
+CM_ SG_ 118 CellVoltage20 "CellVoltage20";
+CM_ SG_ 118 CellVoltage19 "CellVoltage19";
+CM_ SG_ 118 CellVoltage18 "CellVoltage18";
+CM_ SG_ 118 CellVoltage17 "CellVoltage17";
+CM_ SG_ 118 CellVoltage16 "CellVoltage16";
+CM_ SG_ 118 CellVoltage15 "CellVoltage15";
+CM_ SG_ 118 CellVoltage14 "CellVoltage14";
+CM_ SG_ 118 CellVoltage13 "CellVoltage13";
+CM_ SG_ 118 CellVoltage12 "CellVoltage12";
+CM_ SG_ 118 CellVoltage11 "CellVoltage11";
+CM_ SG_ 118 CellVoltage10 "CellVoltage10";
+CM_ SG_ 118 CellVoltage09 "CellVoltage09";
+CM_ SG_ 118 CellVoltage08 "CellVoltage08";
+CM_ SG_ 118 CellVoltage07 "CellVoltage07";
+CM_ SG_ 118 CellVoltage06 "CellVoltage06";
+CM_ SG_ 118 CellVoltage05 "CellVoltage05";
+CM_ SG_ 118 CellVoltage04 "CellVoltage04";
+CM_ SG_ 118 CellVoltage03 "CellVoltage03";
+CM_ SG_ 118 CellVoltage02 "CellVoltage02";
+CM_ SG_ 118 CellVoltage01 "CellVoltage01";
+CM_ SG_ 118 SampleAgeMs "Maximum age of valid samples in this frozen scan at capture; saturates at 65535 ms.";
+CM_ SG_ 118 SampleValidMask "Bit 0 corresponds to cell 01; bit 31 to cell 32. Clear bits mean unavailable readings and their encoded values must be ignored.";
+CM_ SG_ 118 SnapshotId "Matches BPSFaultSnapshot SnapshotId.";
+CM_ BO_ 119 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. All three frames reuse the same frozen SnapshotId; never replace captured samples with post-trip zeros. Rearm after all faults clear. SnapshotId is a wrapping 16-bit sequence within a boot. The last completed scan available at fault detection is frozen, not acquired after shutdown. Scaling and offsets match BPSTemperatureData.";
+CM_ SG_ 119 CellTemperature32 "CellTemperature32";
+CM_ SG_ 119 CellTemperature31 "CellTemperature31";
+CM_ SG_ 119 CellTemperature30 "CellTemperature30";
+CM_ SG_ 119 CellTemperature29 "CellTemperature29";
+CM_ SG_ 119 CellTemperature28 "CellTemperature28";
+CM_ SG_ 119 CellTemperature27 "CellTemperature27";
+CM_ SG_ 119 CellTemperature26 "CellTemperature26";
+CM_ SG_ 119 CellTemperature25 "CellTemperature25";
+CM_ SG_ 119 CellTemperature24 "CellTemperature24";
+CM_ SG_ 119 CellTemperature23 "CellTemperature23";
+CM_ SG_ 119 CellTemperature22 "CellTemperature22";
+CM_ SG_ 119 CellTemperature21 "CellTemperature21";
+CM_ SG_ 119 CellTemperature20 "CellTemperature20";
+CM_ SG_ 119 CellTemperature19 "CellTemperature19";
+CM_ SG_ 119 CellTemperature18 "CellTemperature18";
+CM_ SG_ 119 CellTemperature17 "CellTemperature17";
+CM_ SG_ 119 CellTemperature16 "CellTemperature16";
+CM_ SG_ 119 CellTemperature15 "CellTemperature15";
+CM_ SG_ 119 CellTemperature14 "CellTemperature14";
+CM_ SG_ 119 CellTemperature13 "CellTemperature13";
+CM_ SG_ 119 CellTemperature12 "CellTemperature12";
+CM_ SG_ 119 CellTemperature11 "CellTemperature11";
+CM_ SG_ 119 CellTemperature10 "CellTemperature10";
+CM_ SG_ 119 CellTemperature09 "CellTemperature09";
+CM_ SG_ 119 CellTemperature08 "CellTemperature08";
+CM_ SG_ 119 CellTemperature07 "CellTemperature07";
+CM_ SG_ 119 CellTemperature06 "CellTemperature06";
+CM_ SG_ 119 CellTemperature05 "CellTemperature05";
+CM_ SG_ 119 CellTemperature04 "CellTemperature04";
+CM_ SG_ 119 CellTemperature03 "CellTemperature03";
+CM_ SG_ 119 CellTemperature02 "CellTemperature02";
+CM_ SG_ 119 CellTemperature01 "CellTemperature01";
+CM_ SG_ 119 SampleAgeMs "Maximum age of valid samples in this frozen scan at capture; saturates at 65535 ms.";
+CM_ SG_ 119 SampleValidMask "Bit 0 corresponds to cell 01; bit 31 to cell 32. Clear bits mean unavailable readings and their encoded values must be ignored.";
+CM_ SG_ 119 SnapshotId "Matches BPSFaultSnapshot SnapshotId.";
 BA_DEF_ SG_  "ValueTable" STRING ;
 BA_DEF_ BO_  "LayoutPending" INT 0 1;
 BA_DEF_ BO_  "ProtocolSource" STRING ;
@@ -665,6 +870,7 @@ BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","Triggered","None";
 BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;
 BA_DEF_  "Baudrate" INT 1 10000000;
 BA_DEF_  "DataBaudrate" INT 1 10000000;
+BA_DEF_ BO_  "GenMsgSendCondition" STRING ;
 BA_DEF_DEF_  "ValueTable" "";
 BA_DEF_DEF_  "LayoutPending" 0;
 BA_DEF_DEF_  "ProtocolSource" "";
@@ -675,6 +881,7 @@ BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
 BA_DEF_DEF_  "CANFD_BRS" "0";
 BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
 BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenMsgSendCondition" "";
 BA_ "BusType" "CAN FD";
 BA_ "DBName" "CarCAN";
 BA_ "Baudrate" 1000000;
@@ -728,8 +935,10 @@ BA_ "ValueTable" SG_ 96 WarningChargeOverTemperature "WarningState";
 BA_ "ValueTable" SG_ 96 WarningOverVoltage "WarningState";
 BA_ "ValueTable" SG_ 96 WarningUnderVoltage "WarningState";
 BA_ "ValueTable" SG_ 96 WarningSMBCommunication "WarningState";
-BA_ "ValueTable" SG_ 96 FaultMotorVoltageNotPresent "FaultState";
-BA_ "ValueTable" SG_ 96 FaultMainVoltageNotPresent "FaultState";
+BA_ "ValueTable" SG_ 96 FaultMotorPrechargeVoltage "FaultState";
+BA_ "ValueTable" SG_ 96 FaultMainPrechargeVoltage "FaultState";
+BA_ "ValueTable" SG_ 96 FaultMotorVoltage "FaultState";
+BA_ "ValueTable" SG_ 96 FaultMainVoltage "FaultState";
 BA_ "ValueTable" SG_ 96 FaultMotorPrechargeTimeout "FaultState";
 BA_ "ValueTable" SG_ 96 FaultMainPrechargeTimeout "FaultState";
 BA_ "ValueTable" SG_ 96 FaultChargerEstop "FaultState";
@@ -934,6 +1143,49 @@ BA_ "ValueTable" SG_ 130 WarningRearCameraDisconnected "WarningState";
 BA_ "ValueTable" SG_ 130 WarningDisplayDisconnected "WarningState";
 BA_ "ValueTable" SG_ 130 WarningOverTemperature "WarningState";
 BA_ "ValueTable" SG_ 130 WarningTemperature "WarningState";
+BA_ "LayoutPending" BO_ 117 0;
+BA_ "ProtocolSource" BO_ 117 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 117 14;
+BA_ "GenMsgSendType" BO_ 117 0;
+BA_ "GenMsgCycleTime" BO_ 117 1000;
+BA_ "CANFD_BRS" BO_ 117 0;
+BA_ "GenMsgSendCondition" BO_ 117 "AnyBPSFaultActive && FaultSnapshotValid";
+BA_ "ValueTable" SG_ 117 CurrentValid "Validity";
+BA_ "ValueTable" SG_ 117 FaultMotorPrechargeVoltage "FaultState";
+BA_ "ValueTable" SG_ 117 FaultMainPrechargeVoltage "FaultState";
+BA_ "ValueTable" SG_ 117 FaultMotorVoltage "FaultState";
+BA_ "ValueTable" SG_ 117 FaultMainVoltage "FaultState";
+BA_ "ValueTable" SG_ 117 FaultMotorPrechargeTimeout "FaultState";
+BA_ "ValueTable" SG_ 117 FaultMainPrechargeTimeout "FaultState";
+BA_ "ValueTable" SG_ 117 FaultChargerEstop "FaultState";
+BA_ "ValueTable" SG_ 117 FaultBatteryEstop "FaultState";
+BA_ "ValueTable" SG_ 117 FaultExternalEstop "FaultState";
+BA_ "ValueTable" SG_ 117 FaultDriverEstop "FaultState";
+BA_ "ValueTable" SG_ 117 FaultMotorPrechargeRelayMismatch "FaultState";
+BA_ "ValueTable" SG_ 117 FaultMainPrechargeRelayMismatch "FaultState";
+BA_ "ValueTable" SG_ 117 FaultHVNegativeContactorMismatch "FaultState";
+BA_ "ValueTable" SG_ 117 FaultMotorContactorMismatch "FaultState";
+BA_ "ValueTable" SG_ 117 FaultHVPositiveContactorMismatch "FaultState";
+BA_ "ValueTable" SG_ 117 FaultDischargeOverCurrent "FaultState";
+BA_ "ValueTable" SG_ 117 FaultChargeOverCurrent "FaultState";
+BA_ "ValueTable" SG_ 117 FaultUnderVoltage "FaultState";
+BA_ "ValueTable" SG_ 117 FaultOverVoltage "FaultState";
+BA_ "ValueTable" SG_ 117 FaultOverTemperature "FaultState";
+BA_ "ValueTable" SG_ 117 FaultSummary "BPSFaultSummary";
+BA_ "LayoutPending" BO_ 118 0;
+BA_ "ProtocolSource" BO_ 118 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 118 14;
+BA_ "GenMsgSendType" BO_ 118 0;
+BA_ "GenMsgCycleTime" BO_ 118 1000;
+BA_ "CANFD_BRS" BO_ 118 0;
+BA_ "GenMsgSendCondition" BO_ 118 "AnyBPSFaultActive && FaultSnapshotValid";
+BA_ "LayoutPending" BO_ 119 0;
+BA_ "ProtocolSource" BO_ 119 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 119 14;
+BA_ "GenMsgSendType" BO_ 119 0;
+BA_ "GenMsgCycleTime" BO_ 119 1000;
+BA_ "CANFD_BRS" BO_ 119 0;
+BA_ "GenMsgSendCondition" BO_ 119 "AnyBPSFaultActive && FaultSnapshotValid";
 VAL_ 81 MPPTChargeScheme 0 "Normal" 1 "Advanced" ;
 VAL_ 81 Mode 0 "Normal" 1 "Advanced" ;
 VAL_ 82 Enable 0 "Disabled" 1 "Enabled" ;
@@ -957,8 +1209,10 @@ VAL_ 96 WarningChargeOverTemperature 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningOverVoltage 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningUnderVoltage 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningSMBCommunication 0 "NoWarning" 1 "Warning" ;
-VAL_ 96 FaultMotorVoltageNotPresent 0 "OK" 1 "Fault" ;
-VAL_ 96 FaultMainVoltageNotPresent 0 "OK" 1 "Fault" ;
+VAL_ 96 FaultMotorPrechargeVoltage 0 "OK" 1 "Fault" ;
+VAL_ 96 FaultMainPrechargeVoltage 0 "OK" 1 "Fault" ;
+VAL_ 96 FaultMotorVoltage 0 "OK" 1 "Fault" ;
+VAL_ 96 FaultMainVoltage 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultMotorPrechargeTimeout 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultMainPrechargeTimeout 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultChargerEstop 0 "OK" 1 "Fault" ;
@@ -1083,3 +1337,25 @@ VAL_ 130 WarningRearCameraDisconnected 0 "NoWarning" 1 "Warning" ;
 VAL_ 130 WarningDisplayDisconnected 0 "NoWarning" 1 "Warning" ;
 VAL_ 130 WarningOverTemperature 0 "NoWarning" 1 "Warning" ;
 VAL_ 130 WarningTemperature 0 "NoWarning" 1 "Warning" ;
+VAL_ 117 CurrentValid 1 "Valid" 0 "Invalid" ;
+VAL_ 117 FaultMotorPrechargeVoltage 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultMainPrechargeVoltage 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultMotorVoltage 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultMainVoltage 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultMotorPrechargeTimeout 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultMainPrechargeTimeout 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultChargerEstop 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultBatteryEstop 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultExternalEstop 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultDriverEstop 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultMotorPrechargeRelayMismatch 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultMainPrechargeRelayMismatch 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultHVNegativeContactorMismatch 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultMotorContactorMismatch 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultHVPositiveContactorMismatch 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultDischargeOverCurrent 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultChargeOverCurrent 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultUnderVoltage 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultOverVoltage 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultOverTemperature 0 "OK" 1 "Fault" ;
+VAL_ 117 FaultSummary 0 "OK" 1 "SetpointFault" 2 "EmergencyStop" 3 "ContactorRelayFault" 4 "PrechargeFault" 5 "SMBFault" ;

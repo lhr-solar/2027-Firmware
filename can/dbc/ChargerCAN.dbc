@@ -82,8 +82,10 @@ BO_ 96 BPSStatus: 16 BPS
  SG_ FaultChargerEstop : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultMainPrechargeTimeout : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultMotorPrechargeTimeout : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMainVoltageNotPresent : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMotorVoltageNotPresent : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainVoltage : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorVoltage : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeVoltage : 21|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeVoltage : 22|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningSMBCommunication : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningUnderVoltage : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningOverVoltage : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -232,8 +234,10 @@ CM_ SG_ 96 WarningChargeOverTemperature "WarningChargeOverTemperature";
 CM_ SG_ 96 WarningOverVoltage "WarningOverVoltage";
 CM_ SG_ 96 WarningUnderVoltage "WarningUnderVoltage";
 CM_ SG_ 96 WarningSMBCommunication "WarningSMBCommunication";
-CM_ SG_ 96 FaultMotorVoltageNotPresent "FaultMotorVoltageNotPresent";
-CM_ SG_ 96 FaultMainVoltageNotPresent "FaultMainVoltageNotPresent";
+CM_ SG_ 96 FaultMotorPrechargeVoltage "FaultMotorPrechargeVoltage";
+CM_ SG_ 96 FaultMainPrechargeVoltage "FaultMainPrechargeVoltage";
+CM_ SG_ 96 FaultMotorVoltage "FaultMotorVoltage";
+CM_ SG_ 96 FaultMainVoltage "FaultMainVoltage";
 CM_ SG_ 96 FaultMotorPrechargeTimeout "FaultMotorPrechargeTimeout";
 CM_ SG_ 96 FaultMainPrechargeTimeout "FaultMainPrechargeTimeout";
 CM_ SG_ 96 FaultChargerEstop "FaultChargerEstop";
@@ -391,8 +395,10 @@ BA_ "ValueTable" SG_ 96 WarningChargeOverTemperature "WarningState";
 BA_ "ValueTable" SG_ 96 WarningOverVoltage "WarningState";
 BA_ "ValueTable" SG_ 96 WarningUnderVoltage "WarningState";
 BA_ "ValueTable" SG_ 96 WarningSMBCommunication "WarningState";
-BA_ "ValueTable" SG_ 96 FaultMotorVoltageNotPresent "FaultState";
-BA_ "ValueTable" SG_ 96 FaultMainVoltageNotPresent "FaultState";
+BA_ "ValueTable" SG_ 96 FaultMotorPrechargeVoltage "FaultState";
+BA_ "ValueTable" SG_ 96 FaultMainPrechargeVoltage "FaultState";
+BA_ "ValueTable" SG_ 96 FaultMotorVoltage "FaultState";
+BA_ "ValueTable" SG_ 96 FaultMainVoltage "FaultState";
 BA_ "ValueTable" SG_ 96 FaultMotorPrechargeTimeout "FaultState";
 BA_ "ValueTable" SG_ 96 FaultMainPrechargeTimeout "FaultState";
 BA_ "ValueTable" SG_ 96 FaultChargerEstop "FaultState";
@@ -465,8 +471,10 @@ VAL_ 96 WarningChargeOverTemperature 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningOverVoltage 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningUnderVoltage 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningSMBCommunication 0 "NoWarning" 1 "Warning" ;
-VAL_ 96 FaultMotorVoltageNotPresent 0 "OK" 1 "Fault" ;
-VAL_ 96 FaultMainVoltageNotPresent 0 "OK" 1 "Fault" ;
+VAL_ 96 FaultMotorPrechargeVoltage 0 "OK" 1 "Fault" ;
+VAL_ 96 FaultMainPrechargeVoltage 0 "OK" 1 "Fault" ;
+VAL_ 96 FaultMotorVoltage 0 "OK" 1 "Fault" ;
+VAL_ 96 FaultMainVoltage 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultMotorPrechargeTimeout 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultMainPrechargeTimeout 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultChargerEstop 0 "OK" 1 "Fault" ;

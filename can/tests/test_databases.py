@@ -709,6 +709,45 @@ class DatabaseTests(unittest.TestCase):
                         signal.receivers, [], (bus, message.name, signal.name)
                     )
 
+    def test_bps_fault_snapshots_and_voltage_faults(self):
+        for bus in ("CarCAN", "ChargerCAN"):
+            status = self.databases[bus].get_message_by_name("BPSStatus")
+            names = {signal.name for signal in status.signals}
+            self.assertFalse(any("VoltageNotPresent" in name for name in names))
+            for name, bit in (("FaultMainVoltage", 19), ("FaultMotorVoltage", 20),
+                              ("FaultMainPrechargeVoltage", 21), ("FaultMotorPrechargeVoltage", 22)):
+                signal = status.get_signal_by_name(name)
+                self.assertEqual((signal.start, signal.length), (bit, 1))
+                self.assertEqual(signal.dbc.attributes["ValueTable"].value, "FaultState")
+        car = self.databases["CarCAN"]
+        for identifier, name, length in ((0x75, "BPSFaultSnapshot", 16),
+                                         (0x76, "BPSFaultVoltageSnapshot", 64),
+                                         (0x77, "BPSFaultTemperatureSnapshot", 64)):
+            message = car.get_message_by_frame_id(identifier)
+            self.assertEqual((message.name, message.length, message.cycle_time), (name, length, 1000))
+            self.assertEqual(message.senders, ["BPS"])
+            self.assertTrue(message.is_fd)
+            self.assertEqual(message.dbc.attributes["GenMsgSendCondition"].value,
+                             "AnyBPSFaultActive && FaultSnapshotValid")
+            self.assertEqual(message.get_signal_by_name("SnapshotId").length, 16)
+            self.assertIn("frozen", message.comment)
+        for snapshot_name, live_name, prefix in (
+            ("BPSFaultSnapshot", "BPSPackData", "BatteryCurrent"),
+            ("BPSFaultVoltageSnapshot", "BPSVoltageData", "CellVoltage"),
+            ("BPSFaultTemperatureSnapshot", "BPSTemperatureData", "CellTemperature"),
+        ):
+            snapshot = car.get_message_by_name(snapshot_name)
+            live = car.get_message_by_name(live_name)
+            for signal in snapshot.signals:
+                if signal.name.startswith(prefix):
+                    source = live.get_signal_by_name(signal.name)
+                    self.assertEqual((signal.length, signal.scale, signal.offset, signal.minimum, signal.maximum),
+                                     (source.length, source.scale, source.offset, source.minimum, source.maximum))
+        for name in ("BPSFaultVoltageSnapshot", "BPSFaultTemperatureSnapshot"):
+            message = car.get_message_by_name(name)
+            self.assertEqual(message.get_signal_by_name("SampleValidMask").length, 32)
+            self.assertEqual(message.get_signal_by_name("SampleAgeMs").length, 16)
+
     def test_every_defined_layout_roundtrips(self):
         """Exercise every active multiplexed branch, not only the non-multiplexed frames."""
 
