@@ -34,8 +34,8 @@ branches, branch creation/deletion, manual dispatch, and an hourly reconciliatio
 The scheduled run covers older branches that do not yet contain the workflow.
 Pushes and pull requests validate their own code. Publication uses a separate
 trusted default-branch checkout and skips cleanly until the viewer is first
-merged into that branch. Feature branches cannot publish their own UI/exporter
-code.
+merged into that branch. A manual dispatch is the explicit exception: it publishes the UI/exporter from
+the branch selected in **Run workflow → Use workflow from** after validation.
 
 Every run fetches and prunes all branch refs, then publishes a complete snapshot:
 
@@ -50,13 +50,31 @@ Every run fetches and prunes all branch refs, then publishes a complete snapshot
 - Invalid nonblank DBCs fail parsing. Invalid feature branches are omitted and
   reported in the manifest/UI; invalid main data fails the publication so the
   previous deployed site remains available. Blank scaffold DBCs are valid.
-- Only DBC bytes are read from feature branches. UI/exporter code always comes
-  from the trusted default-branch checkout.
+- DBC and topology YAML bytes are read from live feature branches, then JSON is
+  regenerated. Automatic runs use the default-branch UI/exporter; manual runs
+  use the selected branch UI/exporter. Code from data-only branches is not executed.
 
 The UI refreshes the branch list every minute. If a selected branch disappears,
 it falls back to main with a notice. A `?branch=dev%2Fexample` URL preserves branch
 selection across reloads and can be shared. Snapshot files are content-addressed,
 so switching branches does not reuse another branch's cached data.
+
+### Manual preview deployment
+
+Run **Actions → Publish CAN viewer → Run workflow**, select
+`dev/PLAT-can-viewer` under **Use workflow from**, and start the run. Alternatively:
+
+```sh
+gh workflow run publish-can-viewer.yml --ref dev/PLAT-can-viewer
+```
+
+This builds and deploys that branch's viewer at the normal Pages URL, replacing
+the current site. It still discovers all live branches for data: DBCs and topology
+YAML are exported to JSON, with existing main-comparison, deduplication and
+branch-deletion cleanup rules. Select the codegen branch in the site's branch
+selector to inspect its current data. No codegen merge is required.
+Automatic publication continues to use main and may replace a manual preview
+once publication from main is available.
 
 ### GitHub setup
 

@@ -68,8 +68,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.repository.default_branch }}
-      - name: Check trusted publication source
+          # Manual runs explicitly deploy the selected branch; automatic runs use main.
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.sha || github.event.repository.default_branch }}
+      - name: Check publication source
         id: source
         run: |
           echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
@@ -81,11 +82,11 @@ jobs:
           fi
 
   build:
-    needs: publication-source
-    if: needs.publication-source.outputs.ready == 'true'
+    needs: [publication-source, validate]
+    if: always() && needs.publication-source.outputs.ready == 'true' && (needs.validate.result == 'success' || needs.validate.result == 'skipped')
     runs-on: ubuntu-latest
     steps:
-      # Never execute exporter or UI code taken from a feature branch.
+      # Use the resolved commit: selected branch for manual runs, main otherwise.
       - uses: actions/checkout@v4
         with:
           ref: ${{ needs.publication-source.outputs.commit }}
