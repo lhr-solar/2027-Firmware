@@ -1,9 +1,20 @@
+### Board build
+# Shared build for every board: included from a board's CMakeLists.txt, after project().
+# The board's settings come from its Board.cmake; the target is named after the project.
+include_guard()
+
 include(${CMAKE_CURRENT_LIST_DIR}/platform.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/stm32.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/post_build.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/custom_commands.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/lint.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/Board.cmake)
+
+# check if test is skipped for this board
+list(FIND BOARD_SKIP_TESTS "${TEST}" TEST_DISABLED_INDEX)
+if(NOT TEST_DISABLED_INDEX EQUAL -1)
+    message(FATAL_ERROR "TEST '${TEST}' is disabled on this board -- see BOARD_SKIP_TESTS in Board.cmake.")
+endif()
 
 # set test to default to build prod
 set(TEST "" CACHE STRING "Name of test to build, empty for production app")

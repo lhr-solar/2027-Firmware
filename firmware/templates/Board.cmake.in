@@ -24,3 +24,7 @@ set(BOARD_INCLUDE_DIRS
     ${CMAKE_CURRENT_LIST_DIR}/config/Inc
     ${CMAKE_CURRENT_LIST_DIR}/tests/Inc
 )
+
+# Tests to skip: names without _test.c, separated by spaces or newlines, no quotes
+# e.g. hella_slow can_isr  -- leave as "" to build every test
+set(BOARD_SKIP_TESTS "")

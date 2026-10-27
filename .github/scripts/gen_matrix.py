@@ -31,8 +31,6 @@ PROD_TARGET = "prod-all"
 TEST_TARGET = "test-all"
 ENTRY_POINTS = ((PROD_TARGET, "prod", "production firmware"),
                 (TEST_TARGET, "tests", "all tests"))
-# board-local test script, made executable before the tests job runs
-TEST_SCRIPT = "build_all_tests.sh"
 
 
 def fail(msg: str) -> None:
@@ -89,8 +87,6 @@ def boards_matrix(root: Path) -> list[dict]:
             else:
                 blocked = ""
             cmd = f"make -C {rel} {target}"
-            if target == TEST_TARGET and (board_dir / TEST_SCRIPT).is_file():
-                cmd = f"sh -c 'chmod +x {rel}/{TEST_SCRIPT} && {cmd}'"
             matrix.append(entry(f"{board} / {label}",
                                 f"{subteam}-{board}-{label}", rel,
                                 cmd, blocked))

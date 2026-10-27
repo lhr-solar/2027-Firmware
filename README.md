@@ -72,7 +72,6 @@ firmware/psys/LVC
 ├── Board.cmake
 ├── CMakeLists.txt
 ├── Makefile
-├── build_all_tests.sh
 ├── config/
 ├── core/
 ├── drivers/
@@ -108,11 +107,11 @@ This will make more sense as you start to look at existing code and write your o
 
 Managing the process of building code is hard. What files get combined with what other files? How can you avoid rebuilding all your code if only a small change is made? To better manage this we use [CMake](https://cmake.org/about/).
 
-CMake is a build system generator. You'll see `CMakeLists.txt` and `Board.cmake` files in your board folders. If needed, you should only need to modify the `Board.cmake` file, as `CMakeLists.txt` statically describes how to include code from other parts of the codebase like `platform/` - **don't touch this file**.
+CMake is a build system generator. You'll see `CMakeLists.txt` and `Board.cmake` files in your board folders. `CMakeLists.txt` is a short stub: the only part you'd ever edit is the `project()` block between the `USER EDIT` comments (board name, version, description). Everything else about how a board is built is shared by every board and lives in `platform/cmake/board_build.cmake` - **don't copy that logic into your board**.
 
-`Board.cmake` is made to be easy to read and change. It tells the build system what files in your folder should be included in the build process. If you ever feel special and want to make your folders, you can add their relative paths to `BOARD_INCLUDE_DIRS` (for directories containing `.h` files) and `BOARD_OTHER_SOURCES` (for .c files).
+`Board.cmake` is made to be easy to read and change. It tells the build system what files in your folder should be included in the build process. If you ever feel special and want to make your folders, you can add their relative paths to `BOARD_INCLUDE_DIRS` (for directories containing `.h` files) and `BOARD_OTHER_SOURCES` (for .c files). If a test is broken and shouldn't be built, add its name to `BOARD_SKIP_TESTS`.
 
-You'll also see a `Makefile`. A [makefile](https://makefiletutorial.com/) contains recipes for performing commands. For example, to build a test you'd have to run `make TEST=<test>` or `make test-all` to build all tests. These commands call CMake build functions to actually compile and link your code.
+You'll also see a `Makefile`. A [makefile](https://makefiletutorial.com/) contains recipes for performing commands. For example, to build a test you'd have to run `make TEST=<test>` or `make test-all` to build all tests. These commands call CMake build functions to actually compile and link your code. Your board's `Makefile` only defines `prod-all` and `test-all` (the two targets CI builds); every other target comes from `platform/board.mk`.
 
 The default structure for a board folder contains `core/`, `config/`, `tests/`, and `drivers/`. 
 - `core/` contains your production code - this is the full application that is ultimately what is flashed onto the car. **Run with** `make`, `make all`, or `make prod-all` (for boards with multiple instances on the vehicle - common for sensor boards)
