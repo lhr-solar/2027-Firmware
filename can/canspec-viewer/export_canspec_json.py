@@ -15,7 +15,7 @@ try:
     import cantools
 except ImportError:
     print(
-        "export_canspec_json: install cantools (pip install cantools)", file=sys.stderr
+        "export_canspec_json: run uv sync --locked from the repository root", file=sys.stderr
     )
     sys.exit(1)
 

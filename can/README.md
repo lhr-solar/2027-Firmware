@@ -14,7 +14,7 @@ under **Filters & ID format**. Enums, comments and metadata remain expandable.
 table: ID → transmitting device → bus. Shared IDs appear separately per bus.
 
 ```sh
-pip install -r can/canspec-viewer/requirements.txt
+uv sync --locked
 cd can/canspec-viewer
 npm ci
 npm run build
@@ -75,8 +75,8 @@ delete events cannot restore an obsolete branch entry.
 To generate a branch publication locally after fetching origin refs:
 
 ```sh
-python can/canspec-viewer/publish_branches.py --out can/canspec-viewer/dist
-python -m unittest discover -s can/canspec-viewer/tests -v
+uv run --locked python can/canspec-viewer/publish_branches.py --out can/canspec-viewer/dist
+uv run --locked python -m unittest discover -s can/canspec-viewer/tests -v
 ```
 
 ## Topology graph and metadata
@@ -101,7 +101,7 @@ analysis scripts. Generated JSON contains topology together with the DBC data.
 For a local checkout whose viewer and contracts are separate:
 
 ```sh
-python can/canspec-viewer/export_canspec_json.py \
+uv run --locked python can/canspec-viewer/export_canspec_json.py \
   --dbc-dir /path/to/contracts/can/dbc \
   --topology /path/to/contracts/can/topology.yaml \
   -o can/canspec-viewer/dist/canspec-data.json
@@ -115,3 +115,12 @@ headers, CRC, ACK and intermission. Triggered messages and pending layouts are
 listed separately and excluded. BRS must be off. The telemetry card shows only CAN payload kbps after forwarding and exclusions.
 The Wire column's expandable legend explains field type/width, DBC start bits
 and byte order.
+
+## Python dependencies
+
+All Python tooling dependencies live in the root `pyproject.toml`; `uv.lock`
+pins the complete environment for local use and CI. Run `uv sync --locked`
+from the repository root, then `uv run --locked python <script>`.
+The environment includes cantools for DBC parsing/C generation and PyYAML for
+viewer topology and the codegen branch's routing/load-analysis tools.
+JavaScript dependencies remain in the viewer's `package.json`/`package-lock.json`.

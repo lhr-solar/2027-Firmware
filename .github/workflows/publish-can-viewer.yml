@@ -6,12 +6,16 @@ on:
     paths:
       - 'can/dbc/**'
       - 'can/topology.yaml'
+      - 'pyproject.toml'
+      - 'uv.lock'
       - 'can/canspec-viewer/**'
       - '.github/workflows/publish-can-viewer.yml'
   pull_request:
     paths:
       - 'can/dbc/**'
       - 'can/topology.yaml'
+      - 'pyproject.toml'
+      - 'uv.lock'
       - 'can/canspec-viewer/**'
       - '.github/workflows/publish-can-viewer.yml'
   delete:
@@ -40,14 +44,14 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: can/canspec-viewer/package-lock.json
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v6
         with:
           python-version: '3.12'
-          cache: pip
-          cache-dependency-path: can/canspec-viewer/requirements.txt
-      - run: pip install -r can/canspec-viewer/requirements.txt
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv sync --locked
       - name: Test branch lifecycle
-        run: python -m unittest discover -s can/canspec-viewer/tests -v
+        run: uv run --locked python -m unittest discover -s can/canspec-viewer/tests -v
       - run: npm ci
         working-directory: can/canspec-viewer
       - run: npm test
@@ -91,14 +95,14 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: can/canspec-viewer/package-lock.json
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v6
         with:
           python-version: '3.12'
-          cache: pip
-          cache-dependency-path: can/canspec-viewer/requirements.txt
-      - run: pip install -r can/canspec-viewer/requirements.txt
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv sync --locked
       - name: Test branch lifecycle
-        run: python -m unittest discover -s can/canspec-viewer/tests -v
+        run: uv run --locked python -m unittest discover -s can/canspec-viewer/tests -v
       - run: npm ci
         working-directory: can/canspec-viewer
       - run: npm run build-site
@@ -106,7 +110,7 @@ jobs:
       - name: Reconcile live branch DBCs
         run: |
           git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*'
-          python can/canspec-viewer/publish_branches.py --out can/canspec-viewer/dist
+          uv run --locked python can/canspec-viewer/publish_branches.py --out can/canspec-viewer/dist
           mkdir -p _site/canspec
           cp -R can/canspec-viewer/dist/. _site/canspec/
       - uses: actions/upload-pages-artifact@v3
