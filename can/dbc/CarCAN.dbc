@@ -181,7 +181,6 @@ BO_ 105 PDUStatus: 4 PDU
  SG_ WarningBlownFuse : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningOverCurrentTrip : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ InputVoltage : 8|9@1+ (0.05,0) [5|20] "V" Vector__XXX
- SG_ TotalCurrent : 17|11@1+ (0.01,0) [0|20] "A" Vector__XXX
 
 BO_ 106 LVCStatus: 12 LVC
  SG_ WarningNoDCDCOutput : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -341,6 +340,7 @@ BO_ 120 PDUChannelData: 32 PDU
  SG_ ChannelCurrent12 : 169|11@1+ (0.01,0) [0|20] "A" Vector__XXX
  SG_ ChannelCurrent13 : 180|11@1+ (0.01,0) [0|20] "A" Vector__XXX
  SG_ ChannelCurrent14 : 191|11@1+ (0.01,0) [0|20] "A" Vector__XXX
+ SG_ TotalCurrent : 202|11@1+ (0.01,0) [0|20] "A" Vector__XXX
 
 BO_ 121 MPPTInterfaceStatus: 4 MPPTInterface
  SG_ WarningBPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -475,7 +475,7 @@ CM_ SG_ 99 FaultBPS "FaultBPS";
 CM_ SG_ 99 FaultMotor "FaultMotor";
 CM_ SG_ 99 Status "Status";
 CM_ BO_ 105 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 105 TotalCurrent "TotalCurrent";
+CM_ SG_ 120 TotalCurrent "TotalCurrent";
 CM_ SG_ 105 InputVoltage "InputVoltage";
 CM_ SG_ 105 WarningOverCurrentTrip "WarningOverCurrentTrip";
 CM_ SG_ 105 WarningBlownFuse "WarningBlownFuse";
