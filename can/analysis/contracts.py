@@ -38,7 +38,7 @@ def pending(message):
 
 
 def validate_timing(message):
-    """Reject missing cyclic periods and periods on triggered/disabled messages."""
+    """Require cyclic periods; allow explicit positive triggered repeat periods; disable schedules for reserved messages."""
     kind = send_type(message)
     explicit = message.dbc.attributes.get("GenMsgCycleTime")
     if kind == "Cyclic":
@@ -52,7 +52,13 @@ def validate_timing(message):
             )
         if message.cycle_time != explicit.value:
             raise ValueError(f"{message.name}: inconsistent cycle time")
-    elif kind in ("Triggered", "None"):
+    elif kind == "Triggered":
+        if explicit is None:
+            if message.cycle_time is not None:
+                raise ValueError(f"{message.name}: Triggered cannot have a cycle time without explicit GenMsgCycleTime")
+        elif not isinstance(explicit.value, int) or explicit.value <= 0 or message.cycle_time != explicit.value:
+            raise ValueError(f"{message.name}: triggered repeat period must be explicit, positive and consistent")
+    elif kind == "None":
         if explicit is not None or message.cycle_time is not None:
             raise ValueError(f"{message.name}: {kind} cannot have a cycle time")
     else:

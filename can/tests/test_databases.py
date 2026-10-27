@@ -729,7 +729,8 @@ class DatabaseTests(unittest.TestCase):
             self.assertTrue(message.is_fd)
             self.assertEqual(message.dbc.attributes["GenMsgSendCondition"].value,
                              "AnyBPSFaultActive && FaultSnapshotValid")
-            self.assertEqual(message.get_signal_by_name("SnapshotId").length, 16)
+            self.assertNotIn("SnapshotId", {signal.name for signal in message.signals})
+            self.assertEqual(message.dbc.attributes["GenMsgSendType"].value, 1)
             self.assertIn("frozen", message.comment)
         for snapshot_name, live_name, prefix in (
             ("BPSFaultSnapshot", "BPSPackData", "BatteryCurrent"),

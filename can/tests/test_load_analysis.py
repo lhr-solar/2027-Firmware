@@ -91,6 +91,11 @@ class LoadAnalysisTests(unittest.TestCase):
                     .cycle_time,
                     period,
                 )
+        snapshot = deepcopy(car.get_message_by_name("BPSFaultSnapshot"))
+        validate_timing(snapshot)
+        snapshot.dbc.attributes["GenMsgCycleTime"].value = 0
+        with self.assertRaisesRegex(ValueError, "positive"):
+            validate_timing(snapshot)
         for name in ("WS22Reserved0A", "WS22Reserved0D"):
             self.assertEqual(
                 send_type(self.databases["MotorCAN"].get_message_by_name(name)), "None"

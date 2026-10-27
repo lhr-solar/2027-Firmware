@@ -391,13 +391,11 @@ BO_ 117 BPSFaultSnapshot: 16 BPS
  SG_ FaultMainPrechargeVoltage : 21|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultMotorPrechargeVoltage : 22|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ CurrentValid : 24|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ SnapshotId : 32|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ CaptureTimeMs : 48|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
  SG_ CurrentSampleAgeMs : 80|16@1+ (1,0) [0|65535] "ms" Vector__XXX
  SG_ BatteryCurrent : 96|14@1+ (0.01,-50) [-50.0|113.83] "A" Vector__XXX
 
 BO_ 118 BPSFaultVoltageSnapshot: 64 BPS
- SG_ SnapshotId : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleValidMask : 16|32@1+ (1,0) [0|4294967295] "" Vector__XXX
  SG_ SampleAgeMs : 48|16@1+ (1,0) [0|65535] "ms" Vector__XXX
  SG_ CellVoltage01 : 64|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
@@ -434,7 +432,6 @@ BO_ 118 BPSFaultVoltageSnapshot: 64 BPS
  SG_ CellVoltage32 : 436|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
 
 BO_ 119 BPSFaultTemperatureSnapshot: 64 BPS
- SG_ SnapshotId : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleValidMask : 16|32@1+ (1,0) [0|4294967295] "" Vector__XXX
  SG_ SampleAgeMs : 48|16@1+ (1,0) [0|65535] "ms" Vector__XXX
  SG_ CellTemperature01 : 64|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
@@ -759,11 +756,10 @@ CM_ SG_ 130 WarningRearCameraDisconnected "Rear camera disconnected warning; the
 CM_ SG_ 130 WarningDisplayDisconnected "WarningDisplayDisconnected";
 CM_ SG_ 130 WarningOverTemperature "WarningOverTemperature";
 CM_ SG_ 130 WarningTemperature "WarningTemperature";
-CM_ BO_ 117 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. All three frames reuse the same frozen SnapshotId; never replace captured samples with post-trip zeros. Rearm after all faults clear. SnapshotId is a wrapping 16-bit sequence within a boot. Fault bits record the first fault state. BatteryCurrent preserves the live message scaling. CurrentSampleAgeMs describes sampling latency; this is not a guaranteed instantaneous peak measurement.";
+CM_ BO_ 117 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. never replace captured samples with post-trip zeros. Rearm after all faults clear. Triggered transmission with a 1000 ms active-fault repeat interval; no transmission outside the send condition. Fault bits record the first fault state. BatteryCurrent preserves the live message scaling. CurrentSampleAgeMs describes sampling latency; this is not a guaranteed instantaneous peak measurement.";
 CM_ SG_ 117 BatteryCurrent "BatteryCurrent";
 CM_ SG_ 117 CurrentSampleAgeMs "Age of last valid current sample at capture; saturates at 65535 ms.";
 CM_ SG_ 117 CaptureTimeMs "BPS monotonic uptime at fault detection, wraps at 2^32 ms; independent of legacy TimestampSync ticks.";
-CM_ SG_ 117 SnapshotId "Shared snapshot sequence; resets on BPS reboot.";
 CM_ SG_ 117 CurrentValid "1 only if BatteryCurrent was sampled successfully before capture; otherwise ignore BatteryCurrent and CurrentSampleAgeMs.";
 CM_ SG_ 117 FaultMotorPrechargeVoltage "FaultMotorPrechargeVoltage";
 CM_ SG_ 117 FaultMainPrechargeVoltage "FaultMainPrechargeVoltage";
@@ -786,7 +782,7 @@ CM_ SG_ 117 FaultUnderVoltage "FaultUnderVoltage";
 CM_ SG_ 117 FaultOverVoltage "FaultOverVoltage";
 CM_ SG_ 117 FaultOverTemperature "FaultOverTemperature";
 CM_ SG_ 117 FaultSummary "FaultSummary";
-CM_ BO_ 118 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. All three frames reuse the same frozen SnapshotId; never replace captured samples with post-trip zeros. Rearm after all faults clear. SnapshotId is a wrapping 16-bit sequence within a boot. The last completed scan available at fault detection is frozen, not acquired after shutdown. Scaling and offsets match BPSVoltageData.";
+CM_ BO_ 118 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. never replace captured samples with post-trip zeros. Rearm after all faults clear. Triggered transmission with a 1000 ms active-fault repeat interval; no transmission outside the send condition. The last completed scan available at fault detection is frozen, not acquired after shutdown. Scaling and offsets match BPSVoltageData.";
 CM_ SG_ 118 CellVoltage32 "CellVoltage32";
 CM_ SG_ 118 CellVoltage31 "CellVoltage31";
 CM_ SG_ 118 CellVoltage30 "CellVoltage30";
@@ -821,8 +817,7 @@ CM_ SG_ 118 CellVoltage02 "CellVoltage02";
 CM_ SG_ 118 CellVoltage01 "CellVoltage01";
 CM_ SG_ 118 SampleAgeMs "Maximum age of valid samples in this frozen scan at capture; saturates at 65535 ms.";
 CM_ SG_ 118 SampleValidMask "Bit 0 corresponds to cell 01; bit 31 to cell 32. Clear bits mean unavailable readings and their encoded values must be ignored.";
-CM_ SG_ 118 SnapshotId "Matches BPSFaultSnapshot SnapshotId.";
-CM_ BO_ 119 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. All three frames reuse the same frozen SnapshotId; never replace captured samples with post-trip zeros. Rearm after all faults clear. SnapshotId is a wrapping 16-bit sequence within a boot. The last completed scan available at fault detection is frozen, not acquired after shutdown. Scaling and offsets match BPSTemperatureData.";
+CM_ BO_ 119 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. never replace captured samples with post-trip zeros. Rearm after all faults clear. Triggered transmission with a 1000 ms active-fault repeat interval; no transmission outside the send condition. The last completed scan available at fault detection is frozen, not acquired after shutdown. Scaling and offsets match BPSTemperatureData.";
 CM_ SG_ 119 CellTemperature32 "CellTemperature32";
 CM_ SG_ 119 CellTemperature31 "CellTemperature31";
 CM_ SG_ 119 CellTemperature30 "CellTemperature30";
@@ -857,7 +852,6 @@ CM_ SG_ 119 CellTemperature02 "CellTemperature02";
 CM_ SG_ 119 CellTemperature01 "CellTemperature01";
 CM_ SG_ 119 SampleAgeMs "Maximum age of valid samples in this frozen scan at capture; saturates at 65535 ms.";
 CM_ SG_ 119 SampleValidMask "Bit 0 corresponds to cell 01; bit 31 to cell 32. Clear bits mean unavailable readings and their encoded values must be ignored.";
-CM_ SG_ 119 SnapshotId "Matches BPSFaultSnapshot SnapshotId.";
 BA_DEF_ SG_  "ValueTable" STRING ;
 BA_DEF_ BO_  "LayoutPending" INT 0 1;
 BA_DEF_ BO_  "ProtocolSource" STRING ;
@@ -1146,7 +1140,7 @@ BA_ "ValueTable" SG_ 130 WarningTemperature "WarningState";
 BA_ "LayoutPending" BO_ 117 0;
 BA_ "ProtocolSource" BO_ 117 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 117 14;
-BA_ "GenMsgSendType" BO_ 117 0;
+BA_ "GenMsgSendType" BO_ 117 1;
 BA_ "GenMsgCycleTime" BO_ 117 1000;
 BA_ "CANFD_BRS" BO_ 117 0;
 BA_ "GenMsgSendCondition" BO_ 117 "AnyBPSFaultActive && FaultSnapshotValid";
@@ -1175,14 +1169,14 @@ BA_ "ValueTable" SG_ 117 FaultSummary "BPSFaultSummary";
 BA_ "LayoutPending" BO_ 118 0;
 BA_ "ProtocolSource" BO_ 118 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 118 14;
-BA_ "GenMsgSendType" BO_ 118 0;
+BA_ "GenMsgSendType" BO_ 118 1;
 BA_ "GenMsgCycleTime" BO_ 118 1000;
 BA_ "CANFD_BRS" BO_ 118 0;
 BA_ "GenMsgSendCondition" BO_ 118 "AnyBPSFaultActive && FaultSnapshotValid";
 BA_ "LayoutPending" BO_ 119 0;
 BA_ "ProtocolSource" BO_ 119 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 119 14;
-BA_ "GenMsgSendType" BO_ 119 0;
+BA_ "GenMsgSendType" BO_ 119 1;
 BA_ "GenMsgCycleTime" BO_ 119 1000;
 BA_ "CANFD_BRS" BO_ 119 0;
 BA_ "GenMsgSendCondition" BO_ 119 "AnyBPSFaultActive && FaultSnapshotValid";

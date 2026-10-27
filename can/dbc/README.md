@@ -332,12 +332,12 @@ Bus settings, outputs and forwarding policy are in `../topology.yaml`. See
 [the calculator documentation](../analysis/README.md) for exclusions, mirrored
 traffic, physical bus rates, and TCP serialization assumptions.
 
-### BPS fault capture (local draft)
+### BPS fault capture
 
 CarCAN reserves `0x075 BPSFaultSnapshot` (16 bytes),
 `0x076 BPSFaultVoltageSnapshot` (64 bytes), and
-`0x077 BPSFaultTemperatureSnapshot` (64 bytes). These are conditional cyclic
-messages: `GenMsgCycleTime=1000` and
+`0x077 BPSFaultTemperatureSnapshot` (64 bytes). These are triggered messages with an active-fault repeat period:
+`GenMsgSendType=Triggered`, `GenMsgCycleTime=1000`, and
 `GenMsgSendCondition="AnyBPSFaultActive && FaultSnapshotValid"`.
 Transmit immediately on capture and repeat at 1 Hz only during an active fault
 episode; transmit nothing in normal operation. DBC metadata describes this
@@ -345,11 +345,10 @@ contract; firmware must implement the condition and capture behavior.
 
 On the first no-fault → fault transition, freeze the fault flags, last valid
 battery current and last completed cell voltage/temperature scans before
-shutdown where possible. All frames share a wrapping 16-bit SnapshotId within a
-boot. CaptureTimeMs is BPS monotonic uptime in milliseconds, independent of the
+shutdown where possible. No snapshot ID is included. CaptureTimeMs is BPS monotonic uptime in milliseconds, independent of the
 legacy TimestampSync unit. Keep captured data unchanged for that fault episode;
 rearm once all faults clear. Never replace it with post-shutdown readings.
-Snapshot IDs reset on reboot; a reconnect/reboot invalidates partial assemblies.
+The frames have no explicit cross-frame capture identifier.
 Sample ages saturate at 65535 ms. Each scan has a 32-bit validity mask (bit 0 is
 cell 01); ignore readings with clear bits. The current frame has CurrentValid.
 This captures the latest available samples, not a guaranteed analog trip peak.

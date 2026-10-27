@@ -85,7 +85,7 @@ def traffic(databases, event_rates):
                 unresolved.append({
                     "network": bus,
                     "message": message.name,
-                    "reason": f"conditional cyclic; inactive in normal operation: {condition}",
+                    "reason": f"conditional transmission; inactive in normal operation: {condition}",
                 })
                 continue
             if kind == "Cyclic":
