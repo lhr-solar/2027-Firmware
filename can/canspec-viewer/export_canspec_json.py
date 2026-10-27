@@ -9,10 +9,14 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from topology_data import topology_payload
+
 try:
     import cantools
 except ImportError:
-    print("export_canspec_json: install cantools (pip install cantools)", file=sys.stderr)
+    print(
+        "export_canspec_json: run uv sync --locked from the repository root", file=sys.stderr
+    )
     sys.exit(1)
 
 _HERE = Path(__file__).resolve().parent
@@ -20,7 +24,7 @@ ROOT = _HERE.parent.parent
 DBC_ROOT = ROOT / "can" / "dbc"
 # Default: cwd/canspec-data.json — same folder as a released index.html when you cd there.
 DEFAULT_OUT = Path("canspec-data.json")
-DEFAULT_VEHICLE_ID = "HighNoon"
+DEFAULT_VEHICLE_ID = "2027"
 
 
 def _fmt_id(frame_id: int, is_extended: bool) -> str:
@@ -111,6 +115,22 @@ def _signal_to_dict(sig: Any, msg: Any) -> dict[str, Any]:
     }
 
 
+def _send_type(msg: Any) -> str | None:
+    """DBC enum/default -> readable message type; absent metadata stays unknown."""
+    if msg.dbc:
+        attr = msg.dbc.attributes.get("GenMsgSendType")
+        if attr:
+            value = (
+                attr.definition.choices[int(attr.value)]
+                if attr.definition.type_name == "ENUM"
+                else str(attr.value)
+            )
+            return "Disabled" if value == "None" else value
+    if msg.send_type:
+        return "Disabled" if msg.send_type == "None" else str(msg.send_type)
+    return "Cyclic" if msg.cycle_time else None
+
+
 def _message_to_dict(msg: Any) -> dict[str, Any]:
     m_comment = getattr(msg, "comment", None) or ""
     signals = sorted(msg.signals, key=lambda s: (s.start, s.name))
@@ -127,10 +147,11 @@ def _message_to_dict(msg: Any) -> dict[str, Any]:
         "dlc": int(msg.length),
         "senders": senders,
         "cycleTimeMs": msg.cycle_time,
+        "sendType": _send_type(msg),
         "isFd": bool(msg.is_fd),
         "protocol": str(msg.protocol) if getattr(msg, "protocol", None) else None,
         "busName": msg.bus_name or "",
-        "isMultiplexed": bool(getattr(msg, "is_multiplexed", False)),
+        "isMultiplexed": bool(msg.is_multiplexed()),
         "attributes": m_attr,
         "comment": m_comment,
         "signals": [_signal_to_dict(s, msg) for s in signals],
@@ -138,7 +159,7 @@ def _message_to_dict(msg: Any) -> dict[str, Any]:
 
 
 def _empty_network(dbc_path: Path) -> dict[str, Any]:
-    """Blank / unreadable DBC still lists as a network with zero messages/nodes."""
+    """An intentionally blank DBC lists as a network with zero messages/nodes."""
     return {
         "id": dbc_path.stem,
         "filename": dbc_path.name,
@@ -153,11 +174,7 @@ def _network_from_path(dbc_path: Path) -> dict[str, Any]:
     text = dbc_path.read_text(encoding="utf-8", errors="replace").strip()
     if not text:
         return _empty_network(dbc_path)
-    try:
-        return _network_to_dict(dbc_path)
-    except Exception as e:
-        print(f"warn {dbc_path.name}: {e} (exporting empty network)", file=sys.stderr)
-        return _empty_network(dbc_path)
+    return _network_to_dict(dbc_path)
 
 
 def _network_to_dict(dbc_path: Path) -> dict[str, Any]:
@@ -185,8 +202,10 @@ def _network_to_dict(dbc_path: Path) -> dict[str, Any]:
     }
 
 
-def _collect_vehicles(vehicle_id: str) -> list[dict[str, Any]]:
-    flat = sorted(DBC_ROOT.glob("*.dbc"), key=lambda p: p.name.lower())
+def _collect_vehicles(
+    vehicle_id: str, dbc_root: Path = DBC_ROOT
+) -> list[dict[str, Any]]:
+    flat = sorted(dbc_root.glob("*.dbc"), key=lambda p: p.name.lower())
     if flat:
         return [
             {
@@ -196,7 +215,7 @@ def _collect_vehicles(vehicle_id: str) -> list[dict[str, Any]]:
         ]
 
     vehicles: list[dict[str, Any]] = []
-    for vehicle_dir in sorted(DBC_ROOT.iterdir(), key=lambda p: p.name.lower()):
+    for vehicle_dir in sorted(dbc_root.iterdir(), key=lambda p: p.name.lower()):
         if not vehicle_dir.is_dir():
             continue
         networks = [
@@ -220,22 +239,30 @@ def main() -> None:
     parser.add_argument(
         "--vehicle-id",
         default=DEFAULT_VEHICLE_ID,
-        help="Vehicle id when DBCs are flat under can/dbc (default: HighNoon)",
+        help="Vehicle id when DBCs are flat under can/dbc (default: 2027)",
     )
+    parser.add_argument("--dbc-dir", type=Path, default=DBC_ROOT)
+    parser.add_argument("--topology", type=Path, default=ROOT / "can" / "topology.yaml")
     args = parser.parse_args()
 
-    if not DBC_ROOT.is_dir():
+    if not args.dbc_dir.is_dir():
         print(f"No DBC root at {DBC_ROOT}", file=sys.stderr)
         sys.exit(1)
 
-    vehicles = _collect_vehicles(args.vehicle_id)
+    vehicles = _collect_vehicles(args.vehicle_id, args.dbc_dir)
     if not vehicles:
         print(f"No .dbc files under {DBC_ROOT}", file=sys.stderr)
         sys.exit(1)
 
     out: Path = args.out
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"vehicles": vehicles}), encoding="utf-8")
+    payload = {
+        "vehicles": vehicles,
+        "topology": topology_payload(
+            args.topology.read_bytes() if args.topology.exists() else None
+        ),
+    }
+    out.write_text(json.dumps(payload), encoding="utf-8")
     print(f"Wrote {out}")
 
 

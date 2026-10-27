@@ -1,3 +1,4 @@
+import { busType, busBitrate } from "../metadata";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MessageCard } from "./MessageCard";
@@ -120,6 +121,8 @@ export function NetworkExplorer({
           <p className="dbc-subtitle">
             <span className="mono-sm">{network.filename}</span>
             <span className="dot-sep">·</span>
+            {busType(network)} · {busBitrate(network)}
+            <span className="dot-sep">·</span>
             {network.messages.length} messages
             <span className="dot-sep">·</span>
             {network.nodes.length} nodes
@@ -134,7 +137,9 @@ export function NetworkExplorer({
             <select
               className="dbc-select"
               value={network.id}
-              onChange={(e) => navigate(`/n/${encodeURIComponent(e.target.value)}`)}
+              onChange={(e) =>
+                navigate(`/n/${encodeURIComponent(e.target.value)}`)
+              }
             >
               {networks.map((n) => (
                 <option key={n.id} value={n.id}>
@@ -169,89 +174,107 @@ export function NetworkExplorer({
           </label>
         </div>
 
-        <div className="dbc-scope-row">
-          <span className="dbc-label">Search in</span>
-          <div className="dbc-scope-checks">
-            {(
-              [
-                ["ids", "CAN IDs"],
-                ["ecus", "Sender ECUs"],
-                ["msgNames", "Messages & comments"],
-                ["sigNames", "Signals & enums"],
-              ] as const
-            ).map(([key, label]) => (
-              <label key={key} className="chk-label">
-                <input
-                  type="checkbox"
-                  className="chk"
-                  checked={searchIn[key]}
-                  onChange={() => toggleSearchField(key)}
-                />
-                <span>{label}</span>
-              </label>
-            ))}
-          </div>
-          <div className="dbc-scope-actions">
-            <button type="button" className="btn-text" onClick={selectAllSearchFields}>
-              All
-            </button>
-            <button type="button" className="btn-text" onClick={deselectAllSearchFields}>
-              None
-            </button>
-          </div>
-        </div>
-
-        <div className="dbc-ecu-bar">
-          <span className="dbc-label">ECUs</span>
-          <span className="dbc-ecu-hint">nodes ∪ senders</span>
-          <div className="dbc-ecu-actions">
-            <button type="button" className="btn-text" onClick={selectAllEcus}>
-              All
-            </button>
-            <button type="button" className="btn-text" onClick={deselectAllEcus}>
-              None
-            </button>
-          </div>
-          <div className="dbc-ecu-chips">
-            {ecuOptions.map((id) => (
+        <details className="advanced-filters">
+          <summary>Filters & ID format</summary>
+          <div className="dbc-scope-row">
+            <span className="dbc-label">Search in</span>
+            <div className="dbc-scope-checks">
+              {(
+                [
+                  ["ids", "CAN IDs"],
+                  ["ecus", "Sender ECUs"],
+                  ["msgNames", "Messages & comments"],
+                  ["sigNames", "Signals & enums"],
+                ] as const
+              ).map(([key, label]) => (
+                <label key={key} className="chk-label">
+                  <input
+                    type="checkbox"
+                    className="chk"
+                    checked={searchIn[key]}
+                    onChange={() => toggleSearchField(key)}
+                  />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+            <div className="dbc-scope-actions">
               <button
-                key={id}
                 type="button"
-                className={`ecu-chip${selectedEcus.has(id) ? " ecu-chip-on" : ""}`}
-                onClick={() => toggleEcu(id)}
+                className="btn-text"
+                onClick={selectAllSearchFields}
               >
-                {id === ECU_NONE ? "— no sender" : id}
+                All
               </button>
-            ))}
+              <button
+                type="button"
+                className="btn-text"
+                onClick={deselectAllSearchFields}
+              >
+                None
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div className="dbc-id-format-row">
-          <span className="dbc-label">CAN ID</span>
-          <div
-            className={`id-format-segmented${idSearchFormat === "decimal" ? " id-format-segmented--decimal" : ""}`}
-            role="group"
-            aria-label="CAN ID display and search format"
-          >
-            <button
-              type="button"
-              className={`id-format-btn${idSearchFormat === "hex" ? " id-format-btn--active" : ""}`}
-              onClick={() => setIdSearchFormat("hex")}
-              aria-pressed={idSearchFormat === "hex"}
-            >
-              Hex
-            </button>
-            <button
-              type="button"
-              className={`id-format-btn${idSearchFormat === "decimal" ? " id-format-btn--active" : ""}`}
-              onClick={() => setIdSearchFormat("decimal")}
-              aria-pressed={idSearchFormat === "decimal"}
-            >
-              Decimal
-            </button>
+          <div className="dbc-ecu-bar">
+            <span className="dbc-label">ECUs</span>
+            <span className="dbc-ecu-hint">nodes ∪ senders</span>
+            <div className="dbc-ecu-actions">
+              <button
+                type="button"
+                className="btn-text"
+                onClick={selectAllEcus}
+              >
+                All
+              </button>
+              <button
+                type="button"
+                className="btn-text"
+                onClick={deselectAllEcus}
+              >
+                None
+              </button>
+            </div>
+            <div className="dbc-ecu-chips">
+              {ecuOptions.map((id) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={`ecu-chip${selectedEcus.has(id) ? " ecu-chip-on" : ""}`}
+                  onClick={() => toggleEcu(id)}
+                >
+                  {id === ECU_NONE ? "— no sender" : id}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
+          <div className="dbc-id-format-row">
+            <span className="dbc-label">CAN ID</span>
+            <div
+              className={`id-format-segmented${idSearchFormat === "decimal" ? " id-format-segmented--decimal" : ""}`}
+              role="group"
+              aria-label="CAN ID display and search format"
+            >
+              <button
+                type="button"
+                className={`id-format-btn${idSearchFormat === "hex" ? " id-format-btn--active" : ""}`}
+                onClick={() => setIdSearchFormat("hex")}
+                aria-pressed={idSearchFormat === "hex"}
+              >
+                Hex
+              </button>
+              <button
+                type="button"
+                className={`id-format-btn${idSearchFormat === "decimal" ? " id-format-btn--active" : ""}`}
+                onClick={() => setIdSearchFormat("decimal")}
+                aria-pressed={idSearchFormat === "decimal"}
+              >
+                Decimal
+              </button>
+            </div>
+          </div>
+        </details>
         <div className="breadcrumb compact">
           <Link to="/">Networks</Link>
           <span className="bc-sep">/</span>
@@ -266,10 +289,17 @@ export function NetworkExplorer({
           <summary>Messages ({sortedMessages.length})</summary>
           <div className="messages-details-body">
             {sortedMessages.length === 0 ? (
-              <p className="empty-state">No messages match ECU and search filters.</p>
+              <p className="empty-state">
+                No messages match ECU and search filters.
+              </p>
             ) : (
               sortedMessages.map((m) => (
-                <MessageCard key={`${m.frameId}-${m.name}`} msg={m} idFormat={idSearchFormat} />
+                <MessageCard
+                  key={`${m.frameId}-${m.name}`}
+                  msg={m}
+                  idFormat={idSearchFormat}
+                  expanded={search.trim().length > 0}
+                />
               ))
             )}
           </div>
@@ -277,7 +307,9 @@ export function NetworkExplorer({
 
         {network.valueTables.length > 0 && (
           <details className="vt-details">
-            <summary>Global value tables ({network.valueTables.length})</summary>
+            <summary>
+              Global value tables ({network.valueTables.length})
+            </summary>
             <div className="vt-list">
               {network.valueTables.map((vt) => (
                 <details key={vt.name} className="vt-item">
@@ -323,7 +355,9 @@ export function NetworkExplorer({
         {network.nodes.length > 0 && (
           <details className="vt-details">
             <summary>Network nodes ({network.nodes.length})</summary>
-            <p className="nodes-line">{network.nodes.map((n) => n.name).join(", ")}</p>
+            <p className="nodes-line">
+              {network.nodes.map((n) => n.name).join(", ")}
+            </p>
           </details>
         )}
       </div>
