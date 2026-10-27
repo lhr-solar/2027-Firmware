@@ -46,9 +46,9 @@ test('actual per-message loops, conflicting IDs and unsupported BRS fail visibly
 });
 test('pending and triggered traffic excluded; known wire/TCP calculations', () => {
   const data = fixture();
-  data.vehicles[0].networks[0].messages.push(message(6,{sendType:'Triggered',cycleTimeMs:null}),message(7,{attributes:{LayoutPending:1}}));
+  data.vehicles[0].networks[0].messages.push(message(6,{sendType:'Triggered',cycleTimeMs:null}),message(7,{attributes:{LayoutPending:1}}),message(8,{attributes:{GenMsgSendCondition:'FaultActive'}}));
   const result=calculateLoading(data);
-  assert.equal(result.omitted.length,2);
+  assert.equal(result.omitted.length,3);
   assert.deepEqual(frameBits(message(1)),[111,135]);
   assert.deepEqual(frameBits(message(1,{isFd:true,dlc:64})),[579,713]);
   const rows=[{source:'Elcon',message:message(1),fps:10}];

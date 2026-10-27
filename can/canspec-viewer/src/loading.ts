@@ -69,6 +69,10 @@ export function calculateLoading(data: CanspecPayload) {
       const type =
         message.sendType ?? (message.cycleTimeMs ? "Cyclic" : "Unspecified");
       if (type === "Disabled" || type === "None") continue;
+      if (message.attributes.GenMsgSendCondition) {
+        omitted.push(`${bus}/${message.name}: conditional cyclic; inactive in normal operation`);
+        continue;
+      }
       if (type !== "Cyclic") {
         omitted.push(`${bus}/${message.name}: ${type.toLowerCase()}`);
         continue;
