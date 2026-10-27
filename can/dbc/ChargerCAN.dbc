@@ -65,51 +65,52 @@ VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 
 
 BO_ 96 BPSStatus: 16 BPS
- SG_ FaultSummary : 0|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
- SG_ FaultOverTemperature : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultOverVoltage : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultUnderVoltage : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChargeOverCurrent : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultDischargeOverCurrent : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultHVPositiveContactorMismatch : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMotorContactorMismatch : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultHVNegativeContactorMismatch : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMainPrechargeRelayMismatch : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMotorPrechargeRelayMismatch : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultDriverEstop : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultExternalEstop : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultBatteryEstop : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChargerEstop : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMainPrechargeTimeout : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMotorPrechargeTimeout : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMainVoltage : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMotorVoltage : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMainPrechargeVoltage : 21|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultMotorPrechargeVoltage : 22|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningSMBCommunication : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningUnderVoltage : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningOverVoltage : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChargeOverTemperature : 27|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningDischargeOverTemperature : 28|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningBatteryFan1 : 29|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningBatteryFan2 : 30|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningBPSFan : 31|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ Status : 32|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ DriveOK : 34|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChargeOK : 35|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ MPPTSetMode : 36|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ ElconChargeOK : 38|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ RegenChargeOK : 39|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ HVPositiveContactor : 40|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ MotorContactor : 41|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ HVNegativeContactor : 42|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ MainPrechargeRelay : 43|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ MotorPrechargeRelay : 44|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ MPPTVoltageLimit : 48|16@1+ (0.05,0) [0|175] "V" Vector__XXX
- SG_ MPPTCurrentLimit : 64|16@1+ (0.01,0) [0|16.38] "A" Vector__XXX
- SG_ BatteryFanTach1 : 80|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
- SG_ BatteryFanTach2 : 92|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
- SG_ BPSFanTach : 104|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ Status : 0|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ FaultSummary : 2|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
+ SG_ FaultOverTemperature : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultOverVoltage : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultUnderVoltage : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChargeOverCurrent : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultDischargeOverCurrent : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultHVPositiveContactorMismatch : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorContactorMismatch : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultHVNegativeContactorMismatch : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeRelayMismatch : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeRelayMismatch : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultDriverEstop : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultExternalEstop : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultBatteryEstop : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChargerEstop : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeTimeout : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeTimeout : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainVoltage : 21|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorVoltage : 22|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMainPrechargeVoltage : 23|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultMotorPrechargeVoltage : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningSMBCommunication : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningUnderVoltage : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningOverVoltage : 27|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChargeOverTemperature : 28|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningDischargeOverTemperature : 29|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBatteryFan1 : 30|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBatteryFan2 : 31|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBPSFan : 32|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ DriveOK : 33|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChargeOK : 34|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MPPTSetMode : 35|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ ElconChargeOK : 37|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RegenChargeOK : 38|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ HVPositiveContactor : 39|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MotorContactor : 40|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ HVNegativeContactor : 41|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MainPrechargeRelay : 42|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MotorPrechargeRelay : 43|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MPPTVoltageLimit : 44|16@1+ (0.05,0) [0|175] "V" Vector__XXX
+ SG_ MPPTCurrentLimit : 60|16@1+ (0.01,0) [0|16.38] "A" Vector__XXX
+ SG_ BatteryFanTach1 : 76|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ BatteryFanTach2 : 88|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ BPSFanTach : 100|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ SampleAgeMs : 112|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 112 BPSPackData: 12 BPS
  SG_ CellSumVoltage : 0|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
@@ -118,6 +119,7 @@ BO_ 112 BPSPackData: 12 BPS
  SG_ MainVoltage : 36|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
  SG_ MotorVoltage : 48|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
  SG_ BatteryCurrent : 60|14@1+ (0.01,-50) [-50.0|113.83] "A" Vector__XXX
+ SG_ SampleAgeMs : 74|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 113 BPSVoltageData: 64 BPS
  SG_ CellVoltage01 : 0|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
@@ -154,8 +156,9 @@ BO_ 113 BPSVoltageData: 64 BPS
  SG_ CellVoltage32 : 372|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
  SG_ MinCellVoltage : 384|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
  SG_ MaxCellVoltage : 396|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ SampleAgeMs : 408|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 114 BPSTemperatureData: 48 BPS
+BO_ 114 BPSTemperatureData: 64 BPS
  SG_ CellTemperature01 : 0|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
  SG_ CellTemperature02 : 11|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
  SG_ CellTemperature03 : 22|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
@@ -190,26 +193,29 @@ BO_ 114 BPSTemperatureData: 48 BPS
  SG_ CellTemperature32 : 341|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
  SG_ MaxBatteryTemperature : 352|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
  SG_ AverageBatteryTemperature : 363|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ SampleAgeMs : 374|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 1536 ElconInterfaceStatus: 5 ElconInterface
+BO_ 1536 ElconInterfaceStatus: 6 ElconInterface
  SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultElconWatchdog : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultBPSWatchdog : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultElcon : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultBPS : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultEVSE : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ Estop : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChargeState : 9|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ EVSEConnected : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ EVSELatchPressed : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ EVSEState : 13|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
- SG_ EVSECPValid : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ EVSEAvailableCurrent : 24|12@1+ (0.01,0) [0|25.5] "A" Vector__XXX
+ SG_ Estop : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChargeState : 7|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ EVSEConnected : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ EVSELatchPressed : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ EVSEState : 11|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
+ SG_ EVSECPValid : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ EVSEAvailableCurrent : 15|12@1+ (0.01,0) [0|25.5] "A" Vector__XXX
+ SG_ SampleAgeMs : 27|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 
 
 
 CM_ BO_ 96 "BPS faults, warnings, state, contactors, control permissions, MPPT limits, and fan tachometers. Pack measurements are in BPSPackData (0x070). CAN-FD; no transmit period assigned yet.";
+CM_ SG_ 96 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 96 BPSFanTach "BPSFanTach";
 CM_ SG_ 96 BatteryFanTach2 "BatteryFan2Tach";
 CM_ SG_ 96 BatteryFanTach1 "BatteryFan1Tach";
@@ -225,7 +231,6 @@ CM_ SG_ 96 ElconChargeOK "ElconChargeOK";
 CM_ SG_ 96 MPPTSetMode "MPPTSetMode";
 CM_ SG_ 96 ChargeOK "ChargeOK";
 CM_ SG_ 96 DriveOK "DriveOK";
-CM_ SG_ 96 Status "Status";
 CM_ SG_ 96 WarningBPSFan "WarningBPSFan";
 CM_ SG_ 96 WarningBatteryFan2 "WarningBatteryFan2";
 CM_ SG_ 96 WarningBatteryFan1 "WarningBatteryFan1";
@@ -255,7 +260,9 @@ CM_ SG_ 96 FaultUnderVoltage "FaultUnderVoltage";
 CM_ SG_ 96 FaultOverVoltage "FaultOverVoltage";
 CM_ SG_ 96 FaultOverTemperature "FaultOverTemperature";
 CM_ SG_ 96 FaultSummary "FaultSummary";
+CM_ SG_ 96 Status "Status";
 CM_ BO_ 112 "BPS pack electrical measurements: cell-sum and main/motor battery and precharge voltages, then battery current. Cell-voltage extrema are in BPSVoltageData; temperature summaries are in BPSTemperatureData. Signal encodings unchanged; no transmit period assigned yet.";
+CM_ SG_ 112 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 112 BatteryCurrent "BatteryCurrent";
 CM_ SG_ 112 MotorVoltage "MotorVoltage";
 CM_ SG_ 112 MainVoltage "MainVoltage";
@@ -263,6 +270,7 @@ CM_ SG_ 112 MotorBatteryVoltage "MotorBatteryVoltage";
 CM_ SG_ 112 MainBatteryVoltage "MainBatteryVoltage";
 CM_ SG_ 112 CellSumVoltage "Sum of the 32 cell-tap voltages, independent of precharge measurements. Bulk voltage encoding: unsigned 12 bits, 0.05 V/bit, offset 0 V.";
 CM_ BO_ 113 "BPS individual cell voltages followed by minimum/maximum cell voltage; unchanged physical encodings.";
+CM_ SG_ 113 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 113 MaxCellVoltage "MaxCellVoltage";
 CM_ SG_ 113 MinCellVoltage "MinCellVoltage";
 CM_ SG_ 113 CellVoltage32 "CellVoltage32";
@@ -298,6 +306,7 @@ CM_ SG_ 113 CellVoltage03 "CellVoltage03";
 CM_ SG_ 113 CellVoltage02 "CellVoltage02";
 CM_ SG_ 113 CellVoltage01 "CellVoltage01";
 CM_ BO_ 114 "BPS individual cell temperatures followed by maximum/average battery temperature; unchanged physical encodings.";
+CM_ SG_ 114 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 114 AverageBatteryTemperature "AverageBatteryTemperature";
 CM_ SG_ 114 MaxBatteryTemperature "MaxBatteryTemperature";
 CM_ SG_ 114 CellTemperature32 "CellTemperature32";
@@ -333,6 +342,7 @@ CM_ SG_ 114 CellTemperature03 "CellTemperature03";
 CM_ SG_ 114 CellTemperature02 "CellTemperature02";
 CM_ SG_ 114 CellTemperature01 "CellTemperature01";
 CM_ BO_ 1536 "2027 team-defined layout; physical values use the shared scaling conventions.";
+CM_ SG_ 1536 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1536 EVSEAvailableCurrent "EVSEAvailableCurrent";
 CM_ SG_ 1536 EVSECPValid "EVSECPValid";
 CM_ SG_ 1536 EVSEState "EVSEState";
@@ -386,7 +396,6 @@ BA_ "ValueTable" SG_ 96 ElconChargeOK "Permission";
 BA_ "ValueTable" SG_ 96 MPPTSetMode "TPEEControlMode";
 BA_ "ValueTable" SG_ 96 ChargeOK "Permission";
 BA_ "ValueTable" SG_ 96 DriveOK "Permission";
-BA_ "ValueTable" SG_ 96 Status "DeviceStatus";
 BA_ "ValueTable" SG_ 96 WarningBPSFan "WarningState";
 BA_ "ValueTable" SG_ 96 WarningBatteryFan2 "WarningState";
 BA_ "ValueTable" SG_ 96 WarningBatteryFan1 "WarningState";
@@ -416,6 +425,7 @@ BA_ "ValueTable" SG_ 96 FaultUnderVoltage "FaultState";
 BA_ "ValueTable" SG_ 96 FaultOverVoltage "FaultState";
 BA_ "ValueTable" SG_ 96 FaultOverTemperature "FaultState";
 BA_ "ValueTable" SG_ 96 FaultSummary "BPSFaultSummary";
+BA_ "ValueTable" SG_ 96 Status "DeviceStatus";
 BA_ "LayoutPending" BO_ 112 0;
 BA_ "ProtocolSource" BO_ 112 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 112 14;
@@ -462,7 +472,6 @@ VAL_ 96 ElconChargeOK 0 "NotAllowed" 1 "Allowed" ;
 VAL_ 96 MPPTSetMode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;
 VAL_ 96 ChargeOK 0 "NotAllowed" 1 "Allowed" ;
 VAL_ 96 DriveOK 0 "NotAllowed" 1 "Allowed" ;
-VAL_ 96 Status 0 "OK" 1 "Fault" 2 "Waiting" ;
 VAL_ 96 WarningBPSFan 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningBatteryFan2 0 "NoWarning" 1 "Warning" ;
 VAL_ 96 WarningBatteryFan1 0 "NoWarning" 1 "Warning" ;
@@ -492,6 +501,7 @@ VAL_ 96 FaultUnderVoltage 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultOverVoltage 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultOverTemperature 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultSummary 0 "OK" 1 "SetpointFault" 2 "EmergencyStop" 3 "ContactorRelayFault" 4 "PrechargeFault" 5 "SMBFault" ;
+VAL_ 96 Status 0 "OK" 1 "Fault" 2 "Waiting" ;
 VAL_ 1536 EVSECPValid 0 "Invalid" 1 "Valid" ;
 VAL_ 1536 EVSEState 0 "A_Disconnected" 1 "B_Connected" 2 "C_ChargingReady" 3 "D_VentilationRequired" 4 "E_Fault" 5 "F_EVSEFault" ;
 VAL_ 1536 EVSELatchPressed 0 "NotPressed" 1 "Pressed" ;
