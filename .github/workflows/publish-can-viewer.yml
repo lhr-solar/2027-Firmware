@@ -26,7 +26,8 @@ on:
 
 # Every run reconciles the latest refs, including main changes and branch deletions.
 concurrency:
-  group: can-viewer-publication
+  # PR validation must not replace a queued manual deployment.
+  group: can-viewer-${{ github.event_name == 'pull_request' && github.ref || 'publication' }}
   cancel-in-progress: false
 
 permissions:
