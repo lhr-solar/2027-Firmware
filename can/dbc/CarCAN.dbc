@@ -283,7 +283,7 @@ BO_ 116 BPSCommandEcho: 12 BPS
  SG_ VoltageOverrideMask : 2|32@1+ (1,0) [0.0|4294967295.0] "" Vector__XXX
  SG_ TemperatureOverrideMask : 34|32@1+ (1,0) [0.0|4294967295.0] "" Vector__XXX
 
-BO_ 120 PDUChannelData: 32 PDU
+BO_ 120 PDUData: 32 PDU
  SG_ ChannelBlownFuse1 : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ ChannelOverCurrent1 : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ ChannelBlownFuse2 : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -475,7 +475,6 @@ CM_ SG_ 99 FaultBPS "FaultBPS";
 CM_ SG_ 99 FaultMotor "FaultMotor";
 CM_ SG_ 99 Status "Status";
 CM_ BO_ 105 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 120 TotalCurrent "TotalCurrent";
 CM_ SG_ 105 InputVoltage "InputVoltage";
 CM_ SG_ 105 WarningOverCurrentTrip "WarningOverCurrentTrip";
 CM_ SG_ 105 WarningBlownFuse "WarningBlownFuse";
@@ -575,6 +574,7 @@ CM_ SG_ 116 VoltageOverrideMask "Bit 0 selects tap 1; bit 31 selects tap 32. Set
 CM_ SG_ 116 MPPTChargeScheme "MPPTChargeScheme";
 CM_ SG_ 116 Mode "Mode";
 CM_ BO_ 120 "2027 team-defined layout; physical values use the shared scaling conventions.";
+CM_ SG_ 120 TotalCurrent "TotalCurrent";
 CM_ SG_ 120 ChannelCurrent14 "Channel14Current";
 CM_ SG_ 120 ChannelCurrent13 "Channel13Current";
 CM_ SG_ 120 ChannelCurrent12 "Channel12Current";
