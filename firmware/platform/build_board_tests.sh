@@ -4,6 +4,8 @@
 # A board's `make test-all` calls this; exits 1 if any test failed to build
 set -eu
 
+. "$(dirname "$0")/board_cmake_list.sh"
+
 cd "${1:?usage: build_board_tests.sh <board_dir>}"
 
 if [ ! -f Board.cmake ]; then
@@ -11,11 +13,7 @@ if [ ! -f Board.cmake ]; then
     exit 1
 fi
 
-# set(BOARD_SKIP_TESTS ...) block from Board.cmake, flattened to one space-separated line
-# a ")" inside a comment within the list ends it early
-SKIP=$(awk '/^ *set\(BOARD_SKIP_TESTS/{f=1} f{print} f&&/\)/{exit}' Board.cmake \
-    | sed -e 's/.*set(BOARD_SKIP_TESTS//' -e 's/).*//' -e 's/#.*//' \
-    | tr -d '"' | tr '\n' ' ')
+SKIP=$(board_cmake_list BOARD_SKIP_TESTS)
 
 board=$(basename "$(pwd)")
 built=""

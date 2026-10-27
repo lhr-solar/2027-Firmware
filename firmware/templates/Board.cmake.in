@@ -28,3 +28,13 @@ set(BOARD_INCLUDE_DIRS
 # Tests to skip: names without _test.c, separated by spaces or newlines, no quotes
 # e.g. hella_slow can_isr  -- leave as "" to build every test
 set(BOARD_SKIP_TESTS "")
+
+# Preprocessor definitions for every build of this board, e.g. USE_IMU SD_LOGGING=1
+set(BOARD_COMPILE_DEFINITIONS "")
+
+# Variants: one build per instance of this board on the car, picked with `make VARIANT=<name>`.
+# A variant gets BOARD_VARIANT_<NAME> defined, plus its own definitions, e.g.
+#   set(BOARD_VARIANTS front rear)
+#   set(BOARD_VARIANT_front_DEFINITIONS WHEEL_POSITION=0)
+# `make prod-all` builds every variant into build/<name>/ -- leave as "" for a single build
+set(BOARD_VARIANTS "")

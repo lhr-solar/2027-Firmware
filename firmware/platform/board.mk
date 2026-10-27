@@ -7,7 +7,11 @@
 PLATFORM_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 TOOLCHAIN    := $(PLATFORM_DIR)/cmake/toolchain.cmake
 
-BUILD_DIR ?= build
+# board variant (BOARD_VARIANTS in Board.cmake), empty for none
+VARIANT ?=
+
+# each variant gets its own build folder, so switching variants doesn't rebuild everything
+BUILD_DIR ?= build$(if $(VARIANT),/$(VARIANT))
 
 TEST ?=
 
@@ -16,7 +20,7 @@ TIDY ?= OFF
 # plain `make` builds all, even though the board's Makefile defines rules after including this
 .DEFAULT_GOAL := all
 
-.PHONY: all tests prod-all test-all configure flash flash-usb erase dump-symbols dump_size clean format format-check
+.PHONY: all tests variants prod-all test-all configure flash flash-usb erase dump-symbols dump_size clean format format-check
 
 # a board's CMake project has one executable, so building everything builds the board
 all: configure
@@ -24,11 +28,16 @@ all: configure
 
 # paths are quoted: the absolute ones break on checkouts with spaces in the path otherwise
 configure:
-	cmake -B $(BUILD_DIR) -G Ninja "-DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN)" -DTEST=$(TEST) -DCLANG_TIDY=$(TIDY)
+	cmake -B $(BUILD_DIR) -G Ninja "-DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN)" -DTEST=$(TEST) -DVARIANT=$(VARIANT) -DCLANG_TIDY=$(TIDY)
 
 # every test in tests/Src, minus BOARD_SKIP_TESTS in Board.cmake
 tests:
 	sh "$(PLATFORM_DIR)/build_board_tests.sh" "$(CURDIR)"
+
+# production firmware for every variant in BOARD_VARIANTS, each into $(BUILD_DIR)/<variant>/
+# (one plain build when the board has none) -- what most boards' prod-all runs
+variants:
+	sh "$(PLATFORM_DIR)/build_board_variants.sh" "$(CURDIR)" "$(BUILD_DIR)"
 
 flash: configure
 	cmake --build $(BUILD_DIR) --target flash

@@ -3,9 +3,8 @@
 
 include @PLATFORM@/board.mk
 
-# For CI - builds the production firmware
-# boards with several instances on the car build each one here instead
-prod-all: all
+# For CI - builds the production firmware (every variant in BOARD_VARIANTS)
+prod-all: variants
 
 # For CI - builds all tests for this board
 test-all: tests

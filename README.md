@@ -111,6 +111,8 @@ CMake is a build system generator. You'll see `CMakeLists.txt` and `Board.cmake`
 
 `Board.cmake` is made to be easy to read and change. It tells the build system what files in your folder should be included in the build process. If you ever feel special and want to make your folders, you can add their relative paths to `BOARD_INCLUDE_DIRS` (for directories containing `.h` files) and `BOARD_OTHER_SOURCES` (for .c files). If a test is broken and shouldn't be built, add its name to `BOARD_SKIP_TESTS`.
 
+Two more `Board.cmake` settings handle conditional compilation (`#ifdef`). `BOARD_COMPILE_DEFINITIONS` defines macros for every build of your board. If the car has several instances of your board that need slightly different firmware (common for sensor boards), list them in `BOARD_VARIANTS` and give each its own `BOARD_VARIANT_<name>_DEFINITIONS`. Build one with `make VARIANT=<name>` (it goes in `build/<name>/`, and `make VARIANT=<name> flash` flashes it); `make prod-all` builds every variant, so CI compiles each one. In your code, each variant also gets `BOARD_VARIANT_<NAME>` defined, e.g. `#ifdef BOARD_VARIANT_FRONT`.
+
 You'll also see a `Makefile`. A [makefile](https://makefiletutorial.com/) contains recipes for performing commands. For example, to build a test you'd have to run `make TEST=<test>` or `make test-all` to build all tests. These commands call CMake build functions to actually compile and link your code. Your board's `Makefile` only defines `prod-all` and `test-all` (the two targets CI builds); every other target comes from `platform/board.mk`.
 
 The default structure for a board folder contains `core/`, `config/`, `tests/`, and `drivers/`. 
