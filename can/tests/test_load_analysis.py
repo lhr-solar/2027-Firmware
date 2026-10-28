@@ -146,10 +146,10 @@ class LoadAnalysisTests(unittest.TestCase):
 
     def test_car_forwarding_and_filtered_daq_tcp(self):
         report = calculate(self.databases, self.topology, {}, options())
-        # Car 116 + charger interface 10 + lighting 10 + motor 66 + steering 100
+        # Car 116 + charger interface 10 + lighting 15 + motor 66 + steering 100
         # + MPPT power/status 9 + Elcon 3. Mirrored BPS frames add no second copy.
-        self.assertEqual(report["car_can_with_forwarding"]["frames_per_second"], 314)
-        self.assertEqual(report["internet"]["frames_per_second"], 1201)
+        self.assertEqual(report["car_can_with_forwarding"]["frames_per_second"], 319)
+        self.assertEqual(report["internet"]["frames_per_second"], 1211)
         self.assertEqual(
             report["buses_with_forwarding"]["ChargerCAN"]["frames_per_second"], 53
         )

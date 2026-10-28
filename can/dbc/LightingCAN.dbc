@@ -65,15 +65,25 @@ VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 
 
 BO_ 128 BottomShellLightingStatus: 1 DEI
- SG_ Sync : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ LeftSignalOn : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ RightSignalOn : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ HeadlightsOn : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ LeftSignalOn : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RightSignalOn : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ HeadlightsOn : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 129 TopShellLightingStatus: 1 TopShellLighting
  SG_ BrakeOn : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ LeftSignalOn : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ RightSignalOn : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+
+BO_ 131 LightingCommand: 4 DEI
+ SG_ Sync : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Headlight : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Left : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Right : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Brake : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Strobe : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RearRightPWM : 6|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RearCenterPWM : 14|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RearLeftPWM : 22|8@1+ (1,0) [0|255] "" Vector__XXX
 
 
 
@@ -82,11 +92,20 @@ CM_ BO_ 128 "Bottom-shell lighting circuitry is integrated on DEI; DEI transmits
 CM_ SG_ 128 HeadlightsOn "HeadlightsOn";
 CM_ SG_ 128 RightSignalOn "RightSignalOn";
 CM_ SG_ 128 LeftSignalOn "LeftSignalOn";
-CM_ SG_ 128 Sync "Sync";
 CM_ BO_ 129 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 129 RightSignalOn "RightSignalOn";
 CM_ SG_ 129 LeftSignalOn "LeftSignalOn";
 CM_ SG_ 129 BrakeOn "BrakeOn";
+CM_ BO_ 131 "Cyclic lighting commands from DEI; rear PWM raw counts are 0-255.";
+CM_ SG_ 131 RearLeftPWM "PWM command: 0 = off, 255 = full duty.";
+CM_ SG_ 131 RearCenterPWM "PWM command: 0 = off, 255 = full duty.";
+CM_ SG_ 131 RearRightPWM "PWM command: 0 = off, 255 = full duty.";
+CM_ SG_ 131 Strobe "Strobe lighting command.";
+CM_ SG_ 131 Brake "Brake lighting command.";
+CM_ SG_ 131 Right "Right lighting command.";
+CM_ SG_ 131 Left "Left lighting command.";
+CM_ SG_ 131 Headlight "Headlight lighting command.";
+CM_ SG_ 131 Sync "Synchronization signal previously sent in BottomShellLightingStatus.";
 BA_DEF_ SG_  "ValueTable" STRING ;
 BA_DEF_ BO_  "LayoutPending" INT 0 1;
 BA_DEF_ BO_  "ProtocolSource" STRING ;
@@ -121,7 +140,6 @@ BA_ "CANFD_BRS" BO_ 128 0;
 BA_ "ValueTable" SG_ 128 HeadlightsOn "OnOff";
 BA_ "ValueTable" SG_ 128 RightSignalOn "OnOff";
 BA_ "ValueTable" SG_ 128 LeftSignalOn "OnOff";
-BA_ "ValueTable" SG_ 128 Sync "OnOff";
 BA_ "LayoutPending" BO_ 129 0;
 BA_ "ProtocolSource" BO_ 129 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 129 0;
@@ -131,10 +149,27 @@ BA_ "CANFD_BRS" BO_ 129 0;
 BA_ "ValueTable" SG_ 129 RightSignalOn "OnOff";
 BA_ "ValueTable" SG_ 129 LeftSignalOn "OnOff";
 BA_ "ValueTable" SG_ 129 BrakeOn "OnOff";
+BA_ "LayoutPending" BO_ 131 0;
+BA_ "ProtocolSource" BO_ 131 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 131 0;
+BA_ "GenMsgSendType" BO_ 131 0;
+BA_ "GenMsgCycleTime" BO_ 131 200;
+BA_ "CANFD_BRS" BO_ 131 0;
+BA_ "ValueTable" SG_ 131 Strobe "OnOff";
+BA_ "ValueTable" SG_ 131 Brake "OnOff";
+BA_ "ValueTable" SG_ 131 Right "OnOff";
+BA_ "ValueTable" SG_ 131 Left "OnOff";
+BA_ "ValueTable" SG_ 131 Headlight "OnOff";
+BA_ "ValueTable" SG_ 131 Sync "OnOff";
 VAL_ 128 HeadlightsOn 0 "Off" 1 "On" ;
 VAL_ 128 RightSignalOn 0 "Off" 1 "On" ;
 VAL_ 128 LeftSignalOn 0 "Off" 1 "On" ;
-VAL_ 128 Sync 0 "Off" 1 "On" ;
 VAL_ 129 RightSignalOn 0 "Off" 1 "On" ;
 VAL_ 129 LeftSignalOn 0 "Off" 1 "On" ;
 VAL_ 129 BrakeOn 0 "Off" 1 "On" ;
+VAL_ 131 Strobe 0 "Off" 1 "On" ;
+VAL_ 131 Brake 0 "Off" 1 "On" ;
+VAL_ 131 Right 0 "Off" 1 "On" ;
+VAL_ 131 Left 0 "Off" 1 "On" ;
+VAL_ 131 Headlight 0 "Off" 1 "On" ;
+VAL_ 131 Sync 0 "Off" 1 "On" ;

@@ -67,24 +67,27 @@ VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 BO_ 1568 TimestampSync: 2 MIKA
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
 
-BO_ 1569 TelemetryStatus: 24 MIKA
+BO_ 1569 TelemetryStatus: 7 MIKA
+ SG_ CellularConnected : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ CellularTechnology : 1|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
+ SG_ Roaming : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ InternetConnected : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RSSI : 6|8@1- (1,0) [-128.0|127.0] "dBm" Vector__XXX
+ SG_ RSRP : 14|8@1- (1,0) [-128.0|127.0] "dBm" Vector__XXX
+ SG_ RSRQ : 22|8@1- (0.5,0) [-64.0|63.5] "dB" Vector__XXX
+ SG_ SINR : 30|8@1- (0.5,0) [-64.0|63.5] "dB" Vector__XXX
+ SG_ SampleAgeMs : 38|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+
+BO_ 1570 GPSData: 20 MIKA
  SG_ GPSAntennaState : 0|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ GPSFix : 2|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ CellularConnected : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ CellularTechnology : 5|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
- SG_ Roaming : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ InternetConnected : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ GPSLongitude : 10|32@1- (1e-06,0) [-180|180] "deg" Vector__XXX
- SG_ GPSLatitude : 42|32@1- (1e-06,0) [-90|90] "deg" Vector__XXX
- SG_ GPSSpeed : 74|16@1+ (0.01,0) [0.0|655.35] "m/s" Vector__XXX
- SG_ GPSHeading : 90|16@1+ (0.01,0) [0|359.99] "deg" Vector__XXX
- SG_ GPSAltitude : 106|16@1- (0.1,0) [-3276.8|3276.7] "m" Vector__XXX
- SG_ SatellitesInUse : 122|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
- SG_ RSSI : 130|8@1- (1,0) [-128.0|127.0] "dBm" Vector__XXX
- SG_ RSRP : 138|8@1- (1,0) [-128.0|127.0] "dBm" Vector__XXX
- SG_ RSRQ : 146|8@1- (0.5,0) [-64.0|63.5] "dB" Vector__XXX
- SG_ SINR : 154|8@1- (0.5,0) [-64.0|63.5] "dB" Vector__XXX
- SG_ SampleAgeMs : 162|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+ SG_ GPSLongitude : 4|32@1- (1e-06,0) [-180|180] "deg" Vector__XXX
+ SG_ GPSLatitude : 36|32@1- (1e-06,0) [-90|90] "deg" Vector__XXX
+ SG_ GPSSpeed : 68|16@1+ (0.01,0) [0.0|655.35] "m/s" Vector__XXX
+ SG_ GPSHeading : 84|16@1+ (0.01,0) [0|359.99] "deg" Vector__XXX
+ SG_ GPSAltitude : 100|16@1- (0.1,0) [-3276.8|3276.7] "m" Vector__XXX
+ SG_ SatellitesInUse : 116|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ SampleAgeMs : 124|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1571 OnBoardWatchdog: 1 MIKA
  SG_ BPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -353,18 +356,20 @@ CM_ SG_ 1569 SINR "SINR";
 CM_ SG_ 1569 RSRQ "RSRQ";
 CM_ SG_ 1569 RSRP "RSRP";
 CM_ SG_ 1569 RSSI "RSSI";
-CM_ SG_ 1569 SatellitesInUse "SatellitesInUse";
-CM_ SG_ 1569 GPSAltitude "GPSAltitude";
-CM_ SG_ 1569 GPSHeading "GPSHeading";
-CM_ SG_ 1569 GPSSpeed "GPSSpeed";
-CM_ SG_ 1569 GPSLatitude "GPSLatitude";
-CM_ SG_ 1569 GPSLongitude "Longitude range corrected from swapped draft coordinates.";
 CM_ SG_ 1569 InternetConnected "InternetConnected";
 CM_ SG_ 1569 Roaming "Roaming";
 CM_ SG_ 1569 CellularTechnology "CellularTechnology";
 CM_ SG_ 1569 CellularConnected "CellularConnected";
-CM_ SG_ 1569 GPSFix "GPSFix";
-CM_ SG_ 1569 GPSAntennaState "GPSAntennaState";
+CM_ BO_ 1570 "GPS receiver state and measurements. SampleAgeMs is the age of the oldest included GPS measurement, saturated at 65535 ms.";
+CM_ SG_ 1570 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
+CM_ SG_ 1570 SatellitesInUse "SatellitesInUse";
+CM_ SG_ 1570 GPSAltitude "GPSAltitude";
+CM_ SG_ 1570 GPSHeading "GPSHeading";
+CM_ SG_ 1570 GPSSpeed "GPSSpeed";
+CM_ SG_ 1570 GPSLatitude "GPSLatitude";
+CM_ SG_ 1570 GPSLongitude "Longitude range corrected from swapped draft coordinates.";
+CM_ SG_ 1570 GPSFix "GPSFix";
+CM_ SG_ 1570 GPSAntennaState "GPSAntennaState";
 CM_ BO_ 1571 "MIKA reports watchdog state of other boards: 0 alive, 1 timed out. Former MIKA self-watchdog removed; bit 7 is reserved.";
 CM_ SG_ 1571 MPPTInterfaceWatchdog "MPPTInterfaceWatchdog";
 CM_ SG_ 1571 LVCWatchdog "LVCWatchdog";
@@ -640,8 +645,14 @@ BA_ "ValueTable" SG_ 1569 InternetConnected "Connection";
 BA_ "ValueTable" SG_ 1569 Roaming "OnOff";
 BA_ "ValueTable" SG_ 1569 CellularTechnology "CellularTechnology";
 BA_ "ValueTable" SG_ 1569 CellularConnected "Connection";
-BA_ "ValueTable" SG_ 1569 GPSFix "GPSFix";
-BA_ "ValueTable" SG_ 1569 GPSAntennaState "GPSAntennaState";
+BA_ "LayoutPending" BO_ 1570 0;
+BA_ "ProtocolSource" BO_ 1570 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1570 14;
+BA_ "GenMsgSendType" BO_ 1570 0;
+BA_ "GenMsgCycleTime" BO_ 1570 200;
+BA_ "CANFD_BRS" BO_ 1570 0;
+BA_ "ValueTable" SG_ 1570 GPSFix "GPSFix";
+BA_ "ValueTable" SG_ 1570 GPSAntennaState "GPSAntennaState";
 BA_ "LayoutPending" BO_ 1571 0;
 BA_ "ProtocolSource" BO_ 1571 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 1571 14;
@@ -779,8 +790,8 @@ VAL_ 1569 InternetConnected 0 "Disconnected" 1 "Connected" ;
 VAL_ 1569 Roaming 0 "Off" 1 "On" ;
 VAL_ 1569 CellularTechnology 0 "None" 1 "LTE" 2 "LTE_M" 3 "NB_IoT" 4 "Other" ;
 VAL_ 1569 CellularConnected 0 "Disconnected" 1 "Connected" ;
-VAL_ 1569 GPSFix 0 "NoFix" 1 "Fix2D" 2 "Fix3D" ;
-VAL_ 1569 GPSAntennaState 0 "OK" 1 "OpenCircuit" 2 "ShortCircuit" 3 "Unknown" ;
+VAL_ 1570 GPSFix 0 "NoFix" 1 "Fix2D" 2 "Fix3D" ;
+VAL_ 1570 GPSAntennaState 0 "OK" 1 "OpenCircuit" 2 "ShortCircuit" 3 "Unknown" ;
 VAL_ 1571 MPPTInterfaceWatchdog 0 "Alive" 1 "TimedOut" ;
 VAL_ 1571 LVCWatchdog 0 "Alive" 1 "TimedOut" ;
 VAL_ 1571 PDUWatchdog 0 "Alive" 1 "TimedOut" ;

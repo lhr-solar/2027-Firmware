@@ -461,3 +461,13 @@ all producers, consumers and decoders together. CarCAN/ChargerCAN BPS mirrors
 remain identical. IDs, timing, sensor scaling and ChargerCAN snapshot exclusions
 are unchanged. BPSTemperatureData grows from 48 to 64 bytes; upright wheel-speed
 messages grow from 12 to 16 bytes. Some other payloads shrink after removing gaps.
+
+## GPS and lighting commands
+
+MIKA sends `GPSData` on DAqCAN at 0x622 every 200 ms, containing GPS state,
+position, speed, heading, altitude, satellites and SampleAgeMs. Cellular
+connection and radio measurements remain in TelemetryStatus. LightingCAN uses
+classic CAN: DEI sends `LightingCommand` at 0x083 every 200 ms with Sync,
+Headlight, Left, Right, Brake, Strobe and three raw PWM commands (0-255). Sync
+moved from BottomShellLightingStatus. The existing LightingCAN-to-CarCAN route
+forwards LightingCommand; DAqCAN GPS reaches telemetry TCP through the DAq route.

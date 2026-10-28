@@ -247,7 +247,9 @@ class DatabaseTests(unittest.TestCase):
             message.frame_id for message in self.databases["DAqCAN"].messages
         }
         self.assertFalse(identifiers.intersection(range(0x63C, 0x640)))
-        status = self.message("DAqCAN", 0x621)
+        status = self.message("DAqCAN", 0x622)
+        self.assertEqual(status.name, "GPSData")
+        self.assertEqual(status.cycle_time, 200)
         self.assertEqual(
             (
                 status.get_signal_by_name("GPSLongitude").minimum,
@@ -569,7 +571,7 @@ class DatabaseTests(unittest.TestCase):
         self.assertFalse({message.frame_id for message in car.messages} & {0x80, 0x81})
         self.assertNotIn("TopShellLighting", {node.name for node in car.nodes})
         self.assertEqual(
-            {message.frame_id for message in lighting.messages}, {0x80, 0x81}
+            {message.frame_id for message in lighting.messages}, {0x80, 0x81, 0x83}
         )
         self.assertEqual(lighting.dbc.attributes["DBName"].value, "LightingCAN")
         self.assertEqual(self.message("LightingCAN", 0x80).senders, ["DEI"])
@@ -579,9 +581,9 @@ class DatabaseTests(unittest.TestCase):
         self.assertTrue(all(not message.is_fd for message in lighting.messages))
         self.assertEqual(
             self.message("LightingCAN", 0x80).encode(
-                {"Sync": 1, "LeftSignalOn": 1, "RightSignalOn": 0, "HeadlightsOn": 1}
+                {"LeftSignalOn": 1, "RightSignalOn": 0, "HeadlightsOn": 1}
             ),
-            b"\x0b",
+            b"\x05",
         )
         self.assertEqual(
             self.message("LightingCAN", 0x81).encode(
@@ -589,6 +591,15 @@ class DatabaseTests(unittest.TestCase):
             ),
             b"\x05",
         )
+        command = self.message("LightingCAN", 0x83)
+        self.assertEqual((command.name, command.senders, command.cycle_time, command.length),
+                         ("LightingCommand", ["DEI"], 200, 4))
+        self.assertNotIn("Sync", {signal.name for signal in self.message("LightingCAN", 0x80).signals})
+        values = {"Sync": 1, "Headlight": 1, "Left": 0, "Right": 1, "Brake": 0,
+                  "Strobe": 1, "RearRightPWM": 0, "RearCenterPWM": 128, "RearLeftPWM": 255}
+        frame = command.encode(values)
+        self.assertEqual(int.from_bytes(frame, "little"), 0b101011 | (128 << 14) | (255 << 22))
+        self.assertEqual(command.decode(frame, decode_choices=False), values)
         allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
         boards = {board["name"]: board for board in allocation["boards"]}
         self.assertEqual(boards["TopShellLighting"]["can_buses"], ["LightingCAN"])
