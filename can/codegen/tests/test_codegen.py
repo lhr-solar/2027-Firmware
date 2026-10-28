@@ -1,6 +1,10 @@
 """Compile/run generated C against independent Python vectors and invalid DBCs."""
 
 import os
+import contextlib
+import io
+import importlib.util
+from unittest import mock
 from pathlib import Path
 import random
 import shutil
@@ -91,6 +95,94 @@ class CodegenTests(unittest.TestCase):
             )
             subprocess.run([str(executable)], check=True)
 
+    def test_vendor_float_api_matches_wire_bytes(self):
+        """WS22 binary32 payloads round-trip and reject invalid inputs atomically."""
+        dbc = ROOT.parent / "dbc" / "MotorCAN.dbc"
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            generate(load_buses([dbc]), output)
+            source = output / "float_test.c"
+            source.write_text(r"""
+#include "motor_can.h"
+#include <assert.h>
+#include <math.h>
+#include <string.h>
+int main(void) {
+    motor_can_mc_drive_command_t input = {.mc_motor_velocity_setpoint = -20000.0f, .mc_motor_current_setpoint = 0.5f};
+    const unsigned char expected[8] = {0x00, 0x40, 0x9c, 0xc6, 0x00, 0x00, 0x00, 0x3f};
+    can_frame_t frame = {0};
+    assert(motor_can_mc_drive_command_pack(&frame, &input) == CAN_OK);
+    assert(memcmp(frame.data, expected, 8) == 0);
+    motor_can_mc_drive_command_t output = {0};
+    assert(motor_can_mc_drive_command_unpack(&output, &frame) == CAN_OK);
+    assert(output.mc_motor_velocity_setpoint == -20000.0f && output.mc_motor_current_setpoint == 0.5f);
+    input.mc_motor_current_setpoint = 2.0f;
+    assert(motor_can_mc_drive_command_pack(&frame, &input) == CAN_CLAMPED);
+    assert(motor_can_mc_drive_command_unpack(&output, &frame) == CAN_OK && output.mc_motor_current_setpoint == 1.0f);
+    can_frame_t saved = frame;
+    input.mc_motor_current_setpoint = NAN;
+    assert(motor_can_mc_drive_command_pack(&frame, &input) == CAN_INVALID);
+    assert(memcmp(&frame, &saved, sizeof(frame)) == 0);
+    return 0;
+}
+""")
+            executable = output / "float_test"
+            subprocess.run([os.environ.get("CC", "cc"), "-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I", str(output), str(source), str(output / "motor_can.c"), str(output / "detail/motor_can_raw.c"), "-lm", "-o", str(executable)], check=True)
+            subprocess.run([str(executable)], check=True)
+
+    def test_freshness_rejects_stale_missing_and_extra_files(self):
+        from validate_dbc_generation import validate
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            dbcs, output = root / "dbc", root / "generated"
+            dbcs.mkdir()
+            shutil.copy(FIXTURE, dbcs / "TestBus.dbc")
+            generate(load_buses([dbcs / "TestBus.dbc"]), output)
+            self.assertTrue(validate(dbcs, output))
+            (output / "test_bus.h").write_text("stale")
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertFalse(validate(dbcs, output))
+            generate(load_buses([dbcs / "TestBus.dbc"]), output)
+            (output / "test_bus.c").unlink()
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertFalse(validate(dbcs, output))
+            generate(load_buses([dbcs / "TestBus.dbc"]), output)
+            (output / "extra.h").write_text("old")
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertFalse(validate(dbcs, output))
+
+    def test_board_local_generated_copies_are_rejected(self):
+        from validate_dbc_generation import board_copies
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            board = root / "firmware/psys/Example"
+            board.mkdir(parents=True)
+            (board / "Board.cmake").touch()
+            generated = root / "can/generated"
+            generated.mkdir(parents=True)
+            (generated / "car_can.h").touch()
+            (board / "car_can.h").touch()
+            self.assertEqual(board_copies(root, generated), [board.relative_to(root) / "car_can.h"])
+            (board / "car_can.h").unlink()
+            build = board / "build"
+            build.mkdir()
+            (build / "car_can.h").touch()
+            self.assertEqual(board_copies(root, generated), [])
+            (generated / "can.h").write_text('#include "car_can.h"\n')
+            (board / "can.h").write_text('#include "car_can.h"\n')
+            self.assertEqual(board_copies(root, generated), [board.relative_to(root) / "can.h"])
+
+    def test_collector_requires_can_workflow_result(self):
+        path = ROOT.parents[1] / ".github/scripts/collect_ci.py"
+        spec = importlib.util.spec_from_file_location("collect_ci", path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        settings = {"GH_TOKEN": "test", "GITHUB_REPOSITORY": "owner/repo", "HEAD_SHA": "abc", "EVENT": "pull_request", "WORKFLOWS": "validate-can.yml", "REQUIRED_WORKFLOWS": "validate-can.yml", "GRACE_SECONDS": "0"}
+        run = {"status": "completed", "conclusion": "success", "html_url": "https://example.test"}
+        for runs, expected in (({}, 1), ({"validate-can.yml": run}, 0), ({"validate-can.yml": {**run, "conclusion": "failure"}}, 1)):
+            with self.subTest(runs=runs), mock.patch.dict(os.environ, settings, clear=True), mock.patch.object(module, "latest_runs", return_value=runs), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(module.main(), expected)
+
     def test_reproducible_and_stale_cleanup(self):
         """Identical inputs yield identical files; removed buses leave no stale C."""
         with tempfile.TemporaryDirectory() as directory:
@@ -152,7 +244,7 @@ class CodegenTests(unittest.TestCase):
         """Fail explicitly for unsupported or unrepresentable conversion contracts."""
         for conversion, length, minimum, maximum in [
             (BaseConversion.factory(0, 0), 8, None, None),
-            (BaseConversion.factory(1, 0, is_float=True), 32, None, None),
+            (BaseConversion.factory(2, 0, is_float=True), 32, None, None),
             (BaseConversion.factory(2, 0), 64, None, None),
             (BaseConversion.factory(1, 0), 8, 300, 400),
         ]:

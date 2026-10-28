@@ -79,11 +79,9 @@ def header(bus) -> str:
         ]
         for signal in message.signals:
             spec = signal_spec(signal)
-            description = (
-                f"{signal.name}; unit={signal.unit or 'none'}; "
-                f"physical=raw*{spec.scale}+{spec.offset}; raw=[{spec.raw_min},{spec.raw_max}]. "
-                f"{signal.comment or ''}"
-            )
+            encoding = ("IEEE-754 binary32" if signal.is_float else
+                        f"physical=raw*{spec.scale}+{spec.offset}; raw=[{spec.raw_min},{spec.raw_max}]")
+            description = f"{signal.name}; unit={signal.unit or 'none'}; {encoding}. {signal.comment or ''}"
             lines += [
                 f"    /** {comment(description)} */",
                 f"    {spec.c_type} {name(signal.name)};",
@@ -137,6 +135,9 @@ def source(bus) -> str:
         f'#include "{prefix}.h"',
         f'#include "detail/{prefix}_raw.h"',
         "#include <math.h>",
+        "#include <string.h>",
+        "#include <float.h>",
+        "_Static_assert(sizeof(float) == 4 && FLT_RADIX == 2 && FLT_MANT_DIG == 24 && FLT_MAX_EXP == 128, \"IEEE-754 binary32 is required\");",
         "",
     ]
     lines.append(f"const {prefix}_metadata_t {prefix} = {{")
@@ -195,6 +196,7 @@ def generate(buses, output: Path) -> None:
     A manifest removes only files previously owned by this generator on regeneration.
     """
     files = {"can_types.h": (Path(__file__).parent / "runtime/can_types.h").read_text()}
+    files["can.h"] = "#pragma once\n" + "".join(f'#include "{bus.name}.h"\n' for bus in buses)
     for bus in buses:
         prefix = bus.name
         files[f"{prefix}.h"] = header(bus)
@@ -205,6 +207,8 @@ def generate(buses, output: Path) -> None:
         for message in raw_database.messages:
             for signal in message.signals:
                 signal.minimum = signal.maximum = None
+                if signal.is_float:
+                    signal.is_signed = False
                 signal.conversion = BaseConversion.factory(1, 0, signal.choices)
         raw_header, raw_source, _, _ = c_source.generate(
             raw_database,
@@ -225,6 +229,7 @@ def generate(buses, output: Path) -> None:
     previous = manifest.read_text().splitlines() if manifest.exists() else []
     output.mkdir(parents=True, exist_ok=True)
     for relative, text in files.items():
+        text = "\n".join(line.rstrip() for line in text.splitlines()).rstrip() + "\n"
         target = output / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         if not target.exists() or target.read_text() != text:

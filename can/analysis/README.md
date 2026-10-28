@@ -3,17 +3,16 @@
 Run from the repository root:
 
 ```sh
-pip install -r can/analysis/requirements.txt
-python can/analysis/calculate_load.py
-python can/analysis/calculate_load.py --json /tmp/can-load.json
+uv sync --locked
+uv run --locked python can/analysis/calculate_load.py
+uv run --locked python can/analysis/calculate_load.py --json /tmp/can-load.json
 ```
 
 The DBCs own schedules and signal layouts; `../topology.yaml` owns bus settings,
 directed forwarding, bridge names and outputs. DBC bus attributes are
 synchronized copies; validation rejects drift.
 `GenMsgSendType` defaults to `Cyclic`; every cyclic message must explicitly
-assign a positive integer `GenMsgCycleTime` in milliseconds. `Triggered` messages
-have no period. `None` marks reserved, non-transmittable WS22 IDs. Pending layouts
+assign a positive integer `GenMsgCycleTime` in milliseconds. `Triggered` messages may have an explicit repeat period. `None` marks reserved, non-transmittable WS22 IDs. Pending layouts
 can have planned timing, but are never treated as approved zero-byte frames.
 The tests and calculator reject inconsistent timing. These declarations do not
 implement a firmware scheduler or choose receiver watchdog timeouts.
@@ -87,8 +86,8 @@ native and routed bus totals separate and lists CarCAN/TCP message inventories.
 Edit topology bus settings, then synchronize their DBC metadata:
 
 ```sh
-python can/analysis/sync_bus_settings.py
-python can/analysis/calculate_load.py
+uv run --locked python can/analysis/sync_bus_settings.py
+uv run --locked python can/analysis/calculate_load.py
 ```
 
 Synchronization validates changes in memory before writing and preserves IDs,
@@ -112,7 +111,7 @@ A trigger has no intrinsic frequency. Supply expected events/second using JSON:
 ```
 
 ```sh
-python can/analysis/calculate_load.py --event-rates /path/to/event-rates.json
+uv run --locked python can/analysis/calculate_load.py --event-rates /path/to/event-rates.json
 ```
 
 A sweep command and its response stream are separate rates: count every returned
@@ -161,7 +160,7 @@ serializer (which cannot carry CAN-FD payloads unchanged).
 Change assumptions to match the actual serializer and link:
 
 ```sh
-python can/analysis/calculate_load.py --record-header-bytes 10 \
+uv run --locked python can/analysis/calculate_load.py --record-header-bytes 10 \
   --batch-header-bytes 20 --batch-ms 20 --mtu 1500 \
   --ip-header-bytes 20 --tcp-header-bytes 32 --ack-every 2 \
   --tls-record-bytes 22

@@ -1,2 +1,0 @@
--r ../codegen/requirements.txt
-PyYAML==6.0.3

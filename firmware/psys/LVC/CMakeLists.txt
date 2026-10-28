@@ -44,6 +44,10 @@ add_executable(LVC
 )
 target_include_directories(LVC PUBLIC ${PLATFORM_INCLUDE_DIRS} ${BOARD_INCLUDE_DIRS})
 
+# LVC communicates on CarCAN; use the repository-generated shared codec.
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../../../can ${CMAKE_CURRENT_BINARY_DIR}/shared-can)
+target_link_libraries(LVC PRIVATE can_car)
+
 build_firmware(LVC)
 post_build(LVC)
 lint(LVC)

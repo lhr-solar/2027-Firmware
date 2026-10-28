@@ -34,6 +34,20 @@ def assignment(signal, packing: bool) -> list[str]:
     field = name(signal.name)
     source = f"src->{field}" if packing else f"raw.{field}"
     target = f"raw.{field}" if packing else f"result.{field}"
+    if signal.is_float:
+        if packing:
+            lines = ["{", f"    float value = {source};", "    if (!isfinite(value)) return CAN_INVALID;"]
+            if signal.minimum is not None:
+                lines.append(f"    if (value < {floating(signal.minimum)}) {{ value = (float){floating(signal.minimum)}; status = CAN_CLAMPED; }}")
+            if signal.maximum is not None:
+                lines.append(f"    if (value > {floating(signal.maximum)}) {{ value = (float){floating(signal.maximum)}; status = CAN_CLAMPED; }}")
+            return lines + [f"    memcpy(&{target}, &value, sizeof(value));", "}"]
+        lines = ["{", "    float value;", f"    memcpy(&value, &{source}, sizeof(value));", "    if (!isfinite(value)) return CAN_INVALID;"]
+        if signal.minimum is not None:
+            lines.append(f"    if (value < {floating(signal.minimum)}) return CAN_RANGE;")
+        if signal.maximum is not None:
+            lines.append(f"    if (value > {floating(signal.maximum)}) return CAN_RANGE;")
+        return lines + [f"    {target} = value;", "}"]
     if not packing:
         result = []
         bits = int(

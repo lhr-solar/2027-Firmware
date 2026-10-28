@@ -29,7 +29,13 @@ def signal_spec(signal) -> SignalSpec:
 
 def _signal_spec(signal) -> SignalSpec:
     if signal.is_float:
-        raise ValueError(f"{signal.name}: IEEE float wire signals are not supported")
+        if signal.length != 32 or signal.scale != 1 or signal.offset != 0 or signal.choices:
+            raise ValueError(f"{signal.name}: only unscaled 32-bit IEEE float signals are supported")
+        if any(value is not None and not Decimal(str(value)).is_finite() for value in (signal.minimum, signal.maximum)):
+            raise ValueError(f"{signal.name}: nonfinite physical bound")
+        if signal.minimum is not None and signal.maximum is not None and signal.minimum > signal.maximum:
+            raise ValueError(f"{signal.name}: invalid physical bounds")
+        return SignalSpec("float", 0, (1 << 32) - 1, Decimal(1), Decimal(0), True)
     if not 1 <= signal.length <= 64:
         raise ValueError(f"{signal.name}: signal width must be 1..64")
     scale = Decimal(str(signal.scale))

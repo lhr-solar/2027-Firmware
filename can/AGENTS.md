@@ -50,15 +50,15 @@ scaffold is named `debug_telemetry.dbc` following the approved rename.
 Vector lock files. CI builds and publishes the site; generated output on `main`
 is always a mistake.
 
-**Generated headers are outputs, not sources.** Once `generate_can_headers.py`
-works, never hand-edit a generated header — change the DBC and regenerate. If
+**Generated headers and sources are committed outputs, not hand-edited sources.**
+Change the DBC and regenerate `can/generated/`; CI checks the complete output. If
 you find yourself editing generated C, you are fixing the wrong file.
 
 ## Tooling
 
 ```bash
 # Python side
-pip install -r canspec-viewer/requirements.txt      # cantools
+uv sync --locked                                # repository root
 python3 canspec-viewer/export_canspec_json.py -o ./canspec-data.json
 
 # Viewer (Node)

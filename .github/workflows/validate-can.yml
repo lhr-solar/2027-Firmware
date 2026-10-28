@@ -2,13 +2,7 @@ name: Validate CAN contracts
 
 on:
   push:
-    paths:
-      - 'can/**'
-      - '.github/workflows/validate-can.yml'
   pull_request:
-    paths:
-      - 'can/**'
-      - '.github/workflows/validate-can.yml'
 
 permissions:
   contents: read
@@ -18,13 +12,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v6
         with:
           python-version: '3.12'
-      - run: pip install -r can/analysis/requirements.txt
+          enable-cache: true
+      - run: uv sync --locked
+      - name: Check committed generated CAN files
+        id: freshness
+        run: uv run --locked python can/codegen/validate_dbc_generation.py
+      - name: Generate replacement files for download
+        if: failure() && steps.freshness.outcome == 'failure'
+        run: uv run --locked python can/codegen/generate_can_headers.py -o "$RUNNER_TEMP/can-generated"
+      - uses: actions/upload-artifact@v4
+        if: failure() && steps.freshness.outcome == 'failure'
+        with:
+          name: regenerated-can-files
+          path: ${{ runner.temp }}/can-generated
+          include-hidden-files: true
+      - name: Compile every generated CAN codec
+        run: |
+          for source in can/generated/*.c can/generated/detail/*.c; do
+            cc -std=c11 -Wall -Wextra -Werror -pedantic -I can/generated -c "$source" -o "$RUNNER_TEMP/can-codec.o"
+          done
       - name: Validate DBCs, schedules, forwarding and load calculations
-        run: python -m unittest discover -s can/tests -v
+        run: uv run --locked python -m unittest discover -s can/tests -v
       - name: Test generated C API
-        run: python -m unittest discover -s can/codegen/tests -v
+        run: uv run --locked python -m unittest discover -s can/codegen/tests -v
       - name: Calculate declared traffic
-        run: python can/analysis/calculate_load.py --json /tmp/can-load.json
+        run: uv run --locked python can/analysis/calculate_load.py --json /tmp/can-load.json

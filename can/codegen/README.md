@@ -11,15 +11,14 @@ at firmware runtime.
 From the repository root, using Python 3.10 or newer:
 
 ```sh
-python3 -m venv .venv
-.venv/bin/pip install -r can/codegen/requirements.txt
-.venv/bin/python can/codegen/generate_can_headers.py -o build/generated/can
+uv sync --locked
+uv run --locked python can/codegen/generate_can_headers.py -o can/generated
 ```
 
 By default this reads every `can/dbc/*.dbc`. To select buses explicitly:
 
 ```sh
-.venv/bin/python can/codegen/generate_can_headers.py \
+uv run --locked python can/codegen/generate_can_headers.py \
   can/dbc/CarCAN.dbc can/dbc/MotorCAN.dbc -o build/generated/can
 ```
 
@@ -30,7 +29,7 @@ bus modules. They do not supply vehicle messages; the examples below use the
 Output:
 
 ```text
-build/generated/can/
+can/generated/
   can_types.h              Shared frame, status and metadata types
   car_can.h / car_can.c     Physical fields, sender groups, pack/unpack
   motor_can.h / motor_can.c
@@ -40,10 +39,18 @@ build/generated/can/
 
 Use a dedicated output directory. Generation preserves unrelated files, removes
 obsolete files listed in its previous manifest, and avoids rewriting unchanged
-C files. Outputs contain no timestamps. Do not commit or hand-edit outputs.
-Compile both the public and `detail/` C sources; add the output directory to
-your include paths and link the math library (`-lm` where required).
-Board build integration and CI workflows are separate work.
+C files. Outputs contain no timestamps. Commit all generated files together;
+never hand-edit them. CI regenerates and compares every file, including the
+manifest, on every push and pull request. Fix a mismatch by running the command
+above and committing the result. On a mismatch, CI also uploads a
+`regenerated-can-files` artifact for review; it never pushes commits automatically.
+
+Add `can/` as a CMake subdirectory and link the physical buses a board uses:
+`target_link_libraries(board PRIVATE can_car can_charger)`. Available targets:
+`can_car`, `can_charger`, `can_daq`, `can_elcon`, `can_lighting`, `can_motor`,
+`can_mppt`, `can_steering`. Each includes its public and private codecs and math
+library. Include the bus header (or `can.h` for all declarations). CI checks the
+shared package for every board PR; a board must opt into the buses it uses.
 
 ## Use the API
 
@@ -126,8 +133,9 @@ Packing:
 Fractional arithmetic follows C double precision. Identity integer signals use
 integer arithmetic throughout, including full-width signed/unsigned 64-bit values.
 Scaled conversions exceeding double's exact-integer domain are rejected during
-generation. IEEE float wire signals and scaled value-table signals are currently
-rejected explicitly. No byte-level encoding is inferred from host struct layout.
+generation. IEEE binary32 wire signals with identity scaling use C `float`, with finite-value
+validation and DBC bounds; other IEEE widths/scaling and scaled value-table
+signals are rejected explicitly. No byte-level encoding is inferred from host struct layout.
 
 Value tables produce named C enums (or typed-width integer macros for values
 outside the C11 enum range). Signal fields retain their integer storage type,
@@ -168,7 +176,7 @@ scales and cross-byte signal layouts are supported.
 - `runtime/can_types.h`: small shared C frame/status contract, copied to output.
 
 ```sh
-.venv/bin/python -m unittest discover -s can/codegen/tests -v
+uv run --locked python -m unittest discover -s can/codegen/tests -v
 ```
 
 Tests compile generated C with strict warnings and address/undefined-behavior
