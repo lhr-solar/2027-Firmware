@@ -17,9 +17,9 @@ void PDU_GPIO_Init(void)
     HAL_GPIO_WritePin(HSS5_CS_PORT, HSS5_CS_PIN, GPIO_PIN_SET);
     HAL_GPIO_WritePin(HSS6_CS_PORT, HSS6_CS_PIN, GPIO_PIN_SET);
 
-    // TODO: confirm safe power-up level of LIMP_HOME and DI_MODE against the
-    // TPS2HCS08 datasheet. Low matches the CubeMX config, not a verified choice.
+    // high forces LIMP_HOME state, low = normal SPI control (SLVSHR0 8.3.7)
     HAL_GPIO_WritePin(LIMP_HOME_PORT, LIMP_HOME_PIN, GPIO_PIN_RESET);
+    // DI: low = OFF
     HAL_GPIO_WritePin(DI_MODE_PORT, DI_MODE_PIN, GPIO_PIN_RESET);
 
     HAL_GPIO_WritePin(LED_BLUE_PORT, LED_BLUE_PIN, GPIO_PIN_RESET);
@@ -41,11 +41,11 @@ void PDU_GPIO_Init(void)
              | LIMP_HOME_PIN | DI_MODE_PIN | LED_DIN_PIN;
     HAL_GPIO_Init(GPIOB, &init);
 
-    // PC: HSS5_CS (PC13 is low-drive, fine for a CS line)
+    // PC: HSS5_CS 
     init.Pin = HSS5_CS_PIN;
     HAL_GPIO_Init(GPIOC, &init);
 
-    // Fault inputs, pulled up on the board
+    // low = read faults
     init.Mode  = GPIO_MODE_INPUT;
     init.Pull  = GPIO_NOPULL;
     init.Speed = GPIO_SPEED_FREQ_LOW;

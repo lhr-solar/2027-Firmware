@@ -1,16 +1,7 @@
 #include "PDU_USB.h"
 
 /*
- * Why no HAL PCD (MX_USB_PCD_Init from CubeMX):
- * - The repo's USB stack is TinyUSB, which drives the USB peripheral itself
- *   and only needs the clocks + IRQ hookup below.
- * - HAL_PCD_MODULE_ENABLED is off in the shared platform hal_conf.
- * - A PCD with no stack does nothing; enabling its IRQs without a handler
- *   would land in Default_Handler and hang.
- *
- * TODO: once TinyUSB is in the platform build, enable USB_HP_IRQn/USB_LP_IRQn
- * here, route USB_HP_IRQHandler/USB_LP_IRQHandler/USBWakeUp_IRQHandler to
- * tud_int_handler(0), and call tusb_init() (see platform tusb_cdc_test.c).
+will change after i pull
  */
 void PDU_USB_Init(void)
 {

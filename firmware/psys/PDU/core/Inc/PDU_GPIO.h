@@ -1,7 +1,6 @@
-#ifndef PDU_GPIO_H
-#define PDU_GPIO_H
+#pragma once
 
-#include "PDU_Pins.h"
+#include "pinDefs.h"
 
 /**
  * Configures every plain GPIO on the board (HSS CS/fault, shared HSS
@@ -10,4 +9,3 @@
  */
 void PDU_GPIO_Init(void);
 
-#endif

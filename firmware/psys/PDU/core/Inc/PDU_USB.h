@@ -1,5 +1,4 @@
-#ifndef PDU_USB_H
-#define PDU_USB_H
+#pragma once
 
 #include "stm32xx_hal.h"
 
@@ -10,4 +9,3 @@
  */
 void PDU_USB_Init(void);
 
-#endif

@@ -1,36 +1,12 @@
 #include "stm32xx_hal.h"
 
-// Heartbeat pin on stm32l432kcu is PB3
-#if defined(STM32L432xx)
-    #define LED_PIN GPIO_PIN_3
-    #define LED_PORT GPIOB
-#elif defined(STM32L431xx)
-    #define LED_PIN GPIO_PIN_11
-    #define LED_PORT GPIOB
-#elif defined(STM32G473xx)
-    #define LED_PIN GPIO_PIN_0
-    #define LED_PORT GPIOA
-#else
-// Most other nucleos have a heartbeat for A5
-    #define LED_PIN GPIO_PIN_5
-    #define LED_PORT GPIOA
-#endif
-
+#define LED_PIN GPIO_PIN_0
+#define LED_PORT GPIOA
 
 // Initialize clock for heartbeat LED port
-void Heartbeat_Clock_Init() {
-    switch ((uint32_t)LED_PORT) {
-        case (uint32_t)GPIOA:
-            __HAL_RCC_GPIOA_CLK_ENABLE();
-            break;
-        case (uint32_t)GPIOB:
-            __HAL_RCC_GPIOB_CLK_ENABLE();
-            break;
-        case (uint32_t)GPIOC:
-            __HAL_RCC_GPIOC_CLK_ENABLE();
-            break;
-    }
-}
+// HAL_StatusTypeDef enable_gpio_clock(const GPIO_TypeDef* port) {
+// PR #53
+// }
 
 int main(){
     HAL_Init();
@@ -41,7 +17,7 @@ int main(){
         .Pin = LED_PIN
     };
     
-    Heartbeat_Clock_Init(); // enable clock for LED_PORT
+    enable_gpio_clock(LED_PORT); // enable clock for LED_PORT
     HAL_GPIO_Init(LED_PORT, &led_config); // initialize GPIOA with led_config
 
     while(1){

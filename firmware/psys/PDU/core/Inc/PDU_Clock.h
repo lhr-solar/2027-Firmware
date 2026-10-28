@@ -1,6 +1,3 @@
-#ifndef PDU_CLOCK_H
-#define PDU_CLOCK_H
-
 #include "stm32xx_hal.h"
 
 /**
@@ -10,4 +7,3 @@
  */
 void PDU_Clock_Init(void);
 
-#endif

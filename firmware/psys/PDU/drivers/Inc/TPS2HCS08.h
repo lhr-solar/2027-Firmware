@@ -1,21 +1,35 @@
-#ifndef TPS2HCS08_H
-#define TPS2HCS08_H
+// https://www.ti.com/lit/ds/symlink/tps2hcs08-q1.pdf
+#pragma once
 
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "stm32xx_hal.h"
+#include "stm32g4xx_hal_conf.h"
 #include "TPS2HCS08_Regs.h"
 
-#define TPS_FRAME_LEN       3     // 24-bit frame = 3 bytes
-#define TPS_FRAME_WRITE_BIT 0x80  // tx first bit: 1 = write, 0 = read
-#define TPS_FRAME_ADDR_MASK 0x7F  // tx next 7 bits: register address
+// SPI frame format (SLVSHR0 §8.3.3, Figure 8-8)
+#define TPS_FRAME_LEN       3    
+#define TPS_FRAME_WRITE_BIT 0x80  
+#define TPS_FRAME_ADDR_MASK 0x7F  
 
-// One of these per chip. On the PDU you make 6, one per pair.
+#define TPS_ISNS_ADC_FS_MV  1200u
+#define TPS_KSNS            2000u
+#define TPS_RSNS_OHM        1000u
+
+// Bounded so a stuck bus returns an error instead of hanging. A 3-byte frame at 1 MHz is ~24 us.
+#ifndef TPS_SPI_TIMEOUT_MS
+#define TPS_SPI_TIMEOUT_MS  2u
+#endif
+
+// Not thread-safe: every TPS_* call for a given SPI bus must come from ONE task.
+// A register read is two frames (the reply arrives in the next frame), so another
+// task's frame in between would corrupt it. Other tasks request HSS actions from
+// that owner task (e.g. through a queue) instead of calling the driver directly.
+
 typedef struct {
-    // Function that sends len bytes and receives len bytes on the SPI bus.
-    // On the PDU this is PDU_SPI_Xfer. In tests it's a fake.
-    HAL_StatusTypeDef (*xfer)(const uint8_t *tx, uint8_t *rx, uint16_t len);
+    // SPI bus this chip is on, initialized by the board before TPS_Init.
+    // Bus must be SPI mode 1 (CPOL 0, CPHA 1), MSB first, 8-bit (SLVSHR0 §8.3.3).
+    SPI_HandleTypeDef *hspi;
 
     GPIO_TypeDef *cs_port;      // this chip's chip-select pin
     uint16_t      cs_pin;
@@ -46,7 +60,8 @@ TPS_Status_t TPS_Wake(TPS2HCS08_t *dev);
 // PDU funcs
 TPS_Status_t TPS_SetChannel(TPS2HCS08_t *dev, uint8_t ch, bool on); // ch: 0 or 1
 TPS_Status_t TPS_ReadCurrentRaw(TPS2HCS08_t *dev, uint8_t ch, uint16_t *raw); // 0..1023
+uint32_t     TPS_CurrentRawToMilliamps(uint16_t raw);
 TPS_Status_t TPS_ReadFaults(TPS2HCS08_t *dev, uint16_t *global,
                             uint16_t *ch1_flt, uint16_t *ch2_flt);
 
-#endif
+

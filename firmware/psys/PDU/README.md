@@ -2,7 +2,7 @@
 
 <!-- one or two sentences: what this board does -->
 
-**MCU:** TODO -- STM32G473CET6 (LQFP48) or STM32G473VET6 (LQFP100)
+**MCU:** STM32G473CETx (LQFP48)
 
 **KiCad:** <!-- link to the schematic/PCB project -->
 
