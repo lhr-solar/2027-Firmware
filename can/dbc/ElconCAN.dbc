@@ -1,0 +1,169 @@
+VERSION "2027-draft-2026-10-22"
+
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: Elcon ElconInterface
+VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
+VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
+VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
+VAL_TABLE_ WarningState 1 "Warning" 0 "NoWarning" ;
+VAL_TABLE_ DeviceStatus 2 "Waiting" 1 "Fault" 0 "OK" ;
+VAL_TABLE_ Permission 1 "Allowed" 0 "NotAllowed" ;
+VAL_TABLE_ Connection 1 "Connected" 0 "Disconnected" ;
+VAL_TABLE_ Pressed 1 "Pressed" 0 "NotPressed" ;
+VAL_TABLE_ Validity 1 "Valid" 0 "Invalid" ;
+VAL_TABLE_ Watchdog 1 "TimedOut" 0 "Alive" ;
+VAL_TABLE_ NormalAdvanced 1 "Advanced" 0 "Normal" ;
+VAL_TABLE_ MotorCommandSource 1 "External" 0 "VCU" ;
+VAL_TABLE_ Gear 3 "Invalid" 2 "Reverse" 1 "Forward" 0 "Neutral" ;
+VAL_TABLE_ BPSFaultSummary 5 "SMBFault" 4 "PrechargeFault" 3 "ContactorRelayFault" 2 "EmergencyStop" 1 "SetpointFault" 0 "OK" ;
+VAL_TABLE_ VCUState 7 "VehicleNotReady" 6 "Disabled" 5 "CruiseControl" 4 "Regen" 3 "ReverseDrive" 2 "NeutralDrive" 1 "ForwardDrive" 0 "Init" ;
+VAL_TABLE_ ChargeState 2 "Charging" 1 "Standby" 0 "Disabled" ;
+VAL_TABLE_ EVSEState 5 "F_EVSEFault" 4 "E_Fault" 3 "D_VentilationRequired" 2 "C_ChargingReady" 1 "B_Connected" 0 "A_Disconnected" ;
+VAL_TABLE_ GPSAntennaState 3 "Unknown" 2 "ShortCircuit" 1 "OpenCircuit" 0 "OK" ;
+VAL_TABLE_ GPSFix 2 "Fix3D" 1 "Fix2D" 0 "NoFix" ;
+VAL_TABLE_ CellularTechnology 4 "Other" 3 "NB_IoT" 2 "LTE_M" 1 "LTE" 0 "None" ;
+VAL_TABLE_ TPEEControlMode 2 "ConstantInputVoltage" 1 "PerturbAndObserve" 0 "Disabled" ;
+VAL_TABLE_ TPEEOperatingMode 7 "Fault" 6 "MinimumInputVoltage" 5 "TemperatureDerating" 4 "ConstantOutputCurrent" 3 "ConstantOutputVoltage" 2 "MinimumInputCurrent" 1 "ConstantInputCurrent" 0 "ConstantInputVoltage" ;
+VAL_TABLE_ TPEEFault 8 "Fault" 7 "PhaseOverCurrent" 6 "InputUnderCurrent" 5 "InputOverCurrent" 4 "OutputOverCurrent" 3 "OutputOverVoltage" 2 "InputOverVoltage" 1 "ConfigurationError" 0 "OK" ;
+VAL_TABLE_ LWSCalibration 1 "Calibrated" 0 "NotCalibrated" ;
+VAL_TABLE_ LWSTrim 1 "Trimmed" 0 "NotTrimmed" ;
+VAL_TABLE_ LWSCommand 5 "ResetCalibration" 3 "SetAngleZero" ;
+VAL_TABLE_ ElconControl 1 "Disable" 0 "Charge" ;
+VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
+
+
+BO_ 2550588916 Elcon_Control: 5 ElconInterface
+ SG_ Elcon_VOL_SET : 7|16@0+ (0.1,0) [0|6553.5] "V" Vector__XXX
+ SG_ Elcon_CUR_SET : 23|16@0+ (0.1,0) [0|6553.5] "A" Vector__XXX
+ SG_ Elcon_CONTROL_FLAG : 39|8@0+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 2550589172 Elcon_Control_Mux: 8 ElconInterface
+ SG_ Elcon_AH_NOMINAL m2 : 7|16@0+ (0.1,0) [0|6553.5] "Ah" Vector__XXX
+ SG_ Elcon_BATTERY_VOL m4 : 7|16@0+ (0.1,0) [0|6553.5] "V" Vector__XXX
+ SG_ Elcon_MAX_CELL_VOL m3 : 7|16@0+ (0.001,0) [0|65.535] "V" Vector__XXX
+ SG_ Elcon_NUM_CELLS_EXT m5 : 7|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ Elcon_VOL_SET m1 : 7|16@0+ (0.1,0) [0|6553.5] "V" Vector__XXX
+ SG_ Elcon_AH_ACTUAL m2 : 23|16@0+ (0.1,0) [0|6553.5] "Ah" Vector__XXX
+ SG_ Elcon_BATTERY_CHARGE_CUR m4 : 23|16@0+ (0.1,0) [0|6553.5] "A" Vector__XXX
+ SG_ Elcon_CUR_SET m1 : 23|16@0+ (0.1,0) [0|6553.5] "A" Vector__XXX
+ SG_ Elcon_MIN_CELL_VOL m3 : 23|16@0+ (0.001,0) [0|65.535] "V" Vector__XXX
+ SG_ Elcon_BATTERY_SOC m4 : 39|8@0+ (1,0) [0|100] "%" Vector__XXX
+ SG_ Elcon_CELL_OV_THRESH m2 : 39|16@0+ (0.001,0) [0|65.535] "V" Vector__XXX
+ SG_ Elcon_CELL_UV_THRESH m3 : 39|16@0+ (0.001,0) [0|65.535] "V" Vector__XXX
+ SG_ Elcon_CONTROL_FLAG m1 : 39|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ Elcon_DISCUR_MAX m1 : 47|8@0+ (10,0) [0|2550] "A" Vector__XXX
+ SG_ Elcon_TEMP_MAX m4 : 47|8@0+ (1,-100) [-100|155] "degC" Vector__XXX
+ SG_ Elcon_BATTERY_STATE_OV m3 : 48|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Elcon_BATTERY_STATE_UV m3 : 49|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Elcon_NUM_CELLS m2 : 55|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ Elcon_TEMP_MIN m4 : 55|8@0+ (1,-100) [-100|155] "degC" Vector__XXX
+ SG_ Elcon_MuxPage M : 63|8@0+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 2566869221 Elcon_CCS_Status: 5 Elcon
+ SG_ Elcon_VOL_OUT : 7|16@0+ (0.1,0) [0|6553.5] "V" Vector__XXX
+ SG_ Elcon_CUR_OUT : 23|16@0+ (0.1,0) [0|6553.5] "A" Vector__XXX
+ SG_ Elcon_HW_FAULT : 32|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Elcon_OVER_TEMPERATURE : 33|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Elcon_INPUT_VOL_ERROR : 34|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Elcon_START_STATE : 35|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Elcon_CMD_TIMEOUT : 36|1@0+ (1,0) [0|1] "" Vector__XXX
+
+
+
+
+CM_ BO_ 2550588916 "Preserved HighNoon Elcon protocol variant: extended classic CAN, existing DLC and multiplexed layout. Confirm charger model/firmware before using; do not assume CAN-3865 eight-byte extensions apply.";
+CM_ BO_ 2550589172 "Preserved HighNoon Elcon protocol variant: extended classic CAN, existing DLC and multiplexed layout. Confirm charger model/firmware before using; do not assume CAN-3865 eight-byte extensions apply.";
+CM_ BO_ 2566869221 "Preserved HighNoon Elcon protocol variant: extended classic CAN, existing DLC and multiplexed layout. Confirm charger model/firmware before using; do not assume CAN-3865 eight-byte extensions apply.";
+BA_DEF_ SG_  "ValueTable" STRING ;
+BA_DEF_ BO_  "LayoutPending" INT 0 1;
+BA_DEF_ BO_  "ProtocolSource" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","Triggered","None";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;
+BA_DEF_  "Baudrate" INT 1 10000000;
+BA_DEF_ BO_  "CANFD_BRS" ENUM  "0","1";
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_  "DataBaudrate" INT 1 10000000;
+BA_DEF_DEF_  "ValueTable" "";
+BA_DEF_DEF_  "LayoutPending" 0;
+BA_DEF_DEF_  "ProtocolSource" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "CANFD_BRS" "0";
+BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
+BA_ "BusType" "CAN";
+BA_ "DBName" "ElconCAN";
+BA_ "Baudrate" 250000;
+BA_ "LayoutPending" BO_ 2550588916 0;
+BA_ "ProtocolSource" BO_ 2550588916 "Legacy HighNoon ElconCAN protocol variant";
+BA_ "GenMsgSendType" BO_ 2550588916 0;
+BA_ "GenMsgCycleTime" BO_ 2550588916 1000;
+BA_ "VFrameFormat" BO_ 2550588916 1;
+BA_ "CANFD_BRS" BO_ 2550588916 0;
+BA_ "ValueTable" SG_ 2550588916 Elcon_CONTROL_FLAG "ElconControl";
+BA_ "LayoutPending" BO_ 2550589172 0;
+BA_ "ProtocolSource" BO_ 2550589172 "Legacy HighNoon ElconCAN protocol variant";
+BA_ "GenMsgSendType" BO_ 2550589172 0;
+BA_ "GenMsgCycleTime" BO_ 2550589172 1000;
+BA_ "VFrameFormat" BO_ 2550589172 1;
+BA_ "CANFD_BRS" BO_ 2550589172 0;
+BA_ "ValueTable" SG_ 2550589172 Elcon_MuxPage "ElconMuxPage";
+BA_ "ValueTable" SG_ 2550589172 Elcon_BATTERY_STATE_OV "FaultState";
+BA_ "ValueTable" SG_ 2550589172 Elcon_BATTERY_STATE_UV "FaultState";
+BA_ "ValueTable" SG_ 2550589172 Elcon_CONTROL_FLAG "ElconControl";
+BA_ "LayoutPending" BO_ 2566869221 0;
+BA_ "ProtocolSource" BO_ 2566869221 "Legacy HighNoon ElconCAN protocol variant";
+BA_ "GenMsgSendType" BO_ 2566869221 0;
+BA_ "GenMsgCycleTime" BO_ 2566869221 1000;
+BA_ "VFrameFormat" BO_ 2566869221 1;
+BA_ "CANFD_BRS" BO_ 2566869221 0;
+BA_ "ValueTable" SG_ 2566869221 Elcon_HW_FAULT "FaultState";
+BA_ "ValueTable" SG_ 2566869221 Elcon_OVER_TEMPERATURE "FaultState";
+BA_ "ValueTable" SG_ 2566869221 Elcon_INPUT_VOL_ERROR "FaultState";
+BA_ "ValueTable" SG_ 2566869221 Elcon_START_STATE "OnOff";
+BA_ "ValueTable" SG_ 2566869221 Elcon_CMD_TIMEOUT "FaultState";
+VAL_ 2550588916 Elcon_CONTROL_FLAG 0 "Charge" 1 "Disable" ;
+VAL_ 2550589172 Elcon_MuxPage 1 "Page1" 2 "Page2" 3 "Page3" 4 "Page4" 5 "Page5" ;
+VAL_ 2550589172 Elcon_BATTERY_STATE_OV 0 "OK" 1 "Fault" ;
+VAL_ 2550589172 Elcon_BATTERY_STATE_UV 0 "OK" 1 "Fault" ;
+VAL_ 2550589172 Elcon_CONTROL_FLAG 0 "Charge" 1 "Disable" ;
+VAL_ 2566869221 Elcon_HW_FAULT 0 "OK" 1 "Fault" ;
+VAL_ 2566869221 Elcon_OVER_TEMPERATURE 0 "OK" 1 "Fault" ;
+VAL_ 2566869221 Elcon_INPUT_VOL_ERROR 0 "OK" 1 "Fault" ;
+VAL_ 2566869221 Elcon_START_STATE 0 "Off" 1 "On" ;
+VAL_ 2566869221 Elcon_CMD_TIMEOUT 0 "OK" 1 "Fault" ;

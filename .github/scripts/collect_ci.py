@@ -52,6 +52,7 @@ def main() -> int:
     sha = env("HEAD_SHA")
     event = os.environ.get("EVENT", "")
     wanted = [w.strip() for w in env("WORKFLOWS").splitlines() if w.strip()]
+    required = {w.strip() for w in os.environ.get("REQUIRED_WORKFLOWS", "").splitlines() if w.strip()}
     if not wanted:
         sys.exit("error: WORKFLOWS is empty")
 
@@ -89,7 +90,9 @@ def main() -> int:
     for name in wanted:
         run = results.get(name)
         if run is None:
-            state = "not triggered"
+            state = "missing required run" if name in required else "not triggered"
+            if name in required:
+                failed.append(name)
         elif run["status"] != "completed":
             state = f"still {run['status']}"
             pending.append(name)

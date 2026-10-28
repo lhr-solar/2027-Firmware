@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build-site": "tsc -b && vite build",
-    "export-data": "python3 export_canspec_json.py -o canspec-data.json",
-    "export-data:dist": "python3 export_canspec_json.py -o dist/canspec-data.json",
+    "export-data": "uv run --locked python export_canspec_json.py -o canspec-data.json",
+    "export-data:dist": "uv run --locked python export_canspec_json.py -o dist/canspec-data.json",
     "build": "npm run build-site && npm run export-data:dist",
     "preview": "vite preview",
     "preview:local": "npm run build && vite preview --host 127.0.0.1 --port 4173"

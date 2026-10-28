@@ -1,0 +1,109 @@
+# DBCs own IDs, signal layouts and timing; this file owns physical topology.
+# Filters use quoted hex IDs scoped to their source bus.
+# No route means no forwarding. Exclude [] forwards all; include [] forwards none.
+# All routes preserve frame ID, payload, format and arrival rate.
+# Identical native frames win over forwarded copies; unknown IDs are dropped.
+version: 1
+
+buses:
+  CarCAN:
+    dbc: dbc/CarCAN.dbc
+    format: can_fd
+    bitrate: 1000000
+    brs: false
+    forwards:
+      - to: ChargerCAN
+        via: BPS
+        filter:
+          mode: include
+          messages: ["0x060", "0x070", "0x071", "0x072"]
+      - to: TelemetryTCP
+        via: MIKA
+        filter:
+          mode: exclude
+          messages: []
+
+  DAqCAN:
+    dbc: dbc/DAqCAN.dbc
+    format: can_fd
+    bitrate: 1000000
+    brs: false
+    forwards:
+      - to: TelemetryTCP
+        via: MIKA
+        filter:
+          mode: exclude
+          messages: ["0x620"]
+
+  ChargerCAN:
+    dbc: dbc/ChargerCAN.dbc
+    format: can_fd
+    bitrate: 250000
+    brs: false
+    forwards:
+      - to: CarCAN
+        via: BPS
+        filter:
+          mode: exclude
+          # Do not echo the BPS frames received from CarCAN.
+          messages: ["0x060", "0x070", "0x071", "0x072"]
+
+  ElconCAN:
+    dbc: dbc/ElconCAN.dbc
+    format: classic
+    bitrate: 250000
+    forwards:
+      - to: ChargerCAN
+        via: ElconInterface
+        filter:
+          mode: exclude
+          messages: []
+
+  LightingCAN:
+    dbc: dbc/LightingCAN.dbc
+    format: classic
+    bitrate: 250000
+    forwards:
+      - to: CarCAN
+        via: DEI
+        filter:
+          mode: exclude
+          messages: []
+
+  MotorCAN:
+    dbc: dbc/MotorCAN.dbc
+    format: classic
+    bitrate: 250000
+    forwards:
+      - to: CarCAN
+        via: VCU
+        filter:
+          mode: exclude
+          messages: []
+
+  SteeringCAN:
+    dbc: dbc/SteeringCAN.dbc
+    format: classic
+    bitrate: 500000
+    forwards:
+      - to: CarCAN
+        via: DEI
+        filter:
+          mode: exclude
+          messages: []
+
+  MPPTCAN:
+    dbc: dbc/MPPTCAN.dbc
+    format: classic
+    bitrate: 1000000
+    forwards:
+      - to: CarCAN
+        via: MPPTInterface
+        filter:
+          mode: exclude
+          # All commands sent by MPPTInterface stay on this bus.
+          transmitters: [MPPTInterface]
+
+outputs:
+  TelemetryTCP:
+    transport: tcp

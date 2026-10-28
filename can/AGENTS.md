@@ -43,23 +43,22 @@ two buses appears in two DBCs. Do not create a per-board DBC.
 **`ElconCAN.dbc` is vendor-defined.** IDs and layouts come from the Elcon
 charger's datasheet. Do not renumber them to fit our conventions.
 
-**Do not rename DBC files.** `telemetry_bebug.dbc` is misspelled. It is
-referenced by tooling, workflow path filters, and the published site; renaming
-it is a coordinated change a human must approve. Flag it, do not fix it.
+**Do not rename DBC files without explicit user approval.** The telemetry debug
+scaffold is named `debug_telemetry.dbc` following the approved rename.
 
 **Never commit generated artifacts.** `dist/`, `canspec-data.json`, `.ldb`
 Vector lock files. CI builds and publishes the site; generated output on `main`
 is always a mistake.
 
-**Generated headers are outputs, not sources.** Once `generate_can_headers.py`
-works, never hand-edit a generated header — change the DBC and regenerate. If
+**Generated headers and sources are committed outputs, not hand-edited sources.**
+Change the DBC and regenerate `can/generated/`; CI checks the complete output. If
 you find yourself editing generated C, you are fixing the wrong file.
 
 ## Tooling
 
 ```bash
 # Python side
-pip install -r canspec-viewer/requirements.txt      # cantools
+uv sync --locked                                # repository root
 python3 canspec-viewer/export_canspec_json.py -o ./canspec-data.json
 
 # Viewer (Node)

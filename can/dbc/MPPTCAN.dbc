@@ -1,0 +1,503 @@
+VERSION "2027-draft-2026-10-22"
+
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: MPPTA MPPTB MPPTC MPPTInterface
+VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
+VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
+VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
+VAL_TABLE_ WarningState 1 "Warning" 0 "NoWarning" ;
+VAL_TABLE_ DeviceStatus 2 "Waiting" 1 "Fault" 0 "OK" ;
+VAL_TABLE_ Permission 1 "Allowed" 0 "NotAllowed" ;
+VAL_TABLE_ Connection 1 "Connected" 0 "Disconnected" ;
+VAL_TABLE_ Pressed 1 "Pressed" 0 "NotPressed" ;
+VAL_TABLE_ Validity 1 "Valid" 0 "Invalid" ;
+VAL_TABLE_ Watchdog 1 "TimedOut" 0 "Alive" ;
+VAL_TABLE_ NormalAdvanced 1 "Advanced" 0 "Normal" ;
+VAL_TABLE_ MotorCommandSource 1 "External" 0 "VCU" ;
+VAL_TABLE_ Gear 3 "Invalid" 2 "Reverse" 1 "Forward" 0 "Neutral" ;
+VAL_TABLE_ BPSFaultSummary 5 "SMBFault" 4 "PrechargeFault" 3 "ContactorRelayFault" 2 "EmergencyStop" 1 "SetpointFault" 0 "OK" ;
+VAL_TABLE_ VCUState 7 "VehicleNotReady" 6 "Disabled" 5 "CruiseControl" 4 "Regen" 3 "ReverseDrive" 2 "NeutralDrive" 1 "ForwardDrive" 0 "Init" ;
+VAL_TABLE_ ChargeState 2 "Charging" 1 "Standby" 0 "Disabled" ;
+VAL_TABLE_ EVSEState 5 "F_EVSEFault" 4 "E_Fault" 3 "D_VentilationRequired" 2 "C_ChargingReady" 1 "B_Connected" 0 "A_Disconnected" ;
+VAL_TABLE_ GPSAntennaState 3 "Unknown" 2 "ShortCircuit" 1 "OpenCircuit" 0 "OK" ;
+VAL_TABLE_ GPSFix 2 "Fix3D" 1 "Fix2D" 0 "NoFix" ;
+VAL_TABLE_ CellularTechnology 4 "Other" 3 "NB_IoT" 2 "LTE_M" 1 "LTE" 0 "None" ;
+VAL_TABLE_ TPEEControlMode 2 "ConstantInputVoltage" 1 "PerturbAndObserve" 0 "Disabled" ;
+VAL_TABLE_ TPEEOperatingMode 7 "Fault" 6 "MinimumInputVoltage" 5 "TemperatureDerating" 4 "ConstantOutputCurrent" 3 "ConstantOutputVoltage" 2 "MinimumInputCurrent" 1 "ConstantInputCurrent" 0 "ConstantInputVoltage" ;
+VAL_TABLE_ TPEEFault 8 "Fault" 7 "PhaseOverCurrent" 6 "InputUnderCurrent" 5 "InputOverCurrent" 4 "OutputOverCurrent" 3 "OutputOverVoltage" 2 "InputOverVoltage" 1 "ConfigurationError" 0 "OK" ;
+VAL_TABLE_ LWSCalibration 1 "Calibrated" 0 "NotCalibrated" ;
+VAL_TABLE_ LWSTrim 1 "Trimmed" 0 "NotTrimmed" ;
+VAL_TABLE_ LWSCommand 5 "ResetCalibration" 3 "SetAngleZero" ;
+VAL_TABLE_ ElconControl 1 "Disable" 0 "Charge" ;
+VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
+
+
+BO_ 512 MPPTAPowerMeasurements: 8 MPPTA
+ SG_ InputVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ InputCurrent : 23|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ OutputVoltage : 39|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ OutputCurrent : 55|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+
+BO_ 513 MPPTAStatus: 5 MPPTA
+ SG_ OperatingMode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Fault : 8|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Enabled : 16|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ AmbientTemperature : 24|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
+ SG_ HeatsinkTemperature : 32|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
+
+BO_ 514 MPPTASweepData: 5 MPPTA
+ SG_ SampleIndex : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+
+BO_ 517 MPPTAFillRXBuffer: 0 MPPTInterface
+
+BO_ 518 MPPTAFillRXBufferLong: 0 MPPTInterface
+
+BO_ 519 MPPTAProcessRXBuffer: 0 MPPTInterface
+
+BO_ 520 MPPTAProcessShortBuffer: 0 MPPTInterface
+
+BO_ 521 MPPTASetMode: 1 MPPTInterface
+ SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+
+BO_ 522 MPPTAPerformSweep: 5 MPPTInterface
+ SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
+
+BO_ 523 MPPTASetOutputVoltageLimit: 2 MPPTInterface
+ SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+
+BO_ 524 MPPTASetOutputCurrentLimit: 2 MPPTInterface
+ SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+
+BO_ 544 MPPTBPowerMeasurements: 8 MPPTB
+ SG_ InputVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ InputCurrent : 23|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ OutputVoltage : 39|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ OutputCurrent : 55|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+
+BO_ 545 MPPTBStatus: 5 MPPTB
+ SG_ OperatingMode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Fault : 8|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Enabled : 16|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ AmbientTemperature : 24|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
+ SG_ HeatsinkTemperature : 32|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
+
+BO_ 546 MPPTBSweepData: 5 MPPTB
+ SG_ SampleIndex : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+
+BO_ 549 MPPTBFillRXBuffer: 0 MPPTInterface
+
+BO_ 550 MPPTBFillRXBufferLong: 0 MPPTInterface
+
+BO_ 551 MPPTBProcessRXBuffer: 0 MPPTInterface
+
+BO_ 552 MPPTBProcessShortBuffer: 0 MPPTInterface
+
+BO_ 553 MPPTBSetMode: 1 MPPTInterface
+ SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+
+BO_ 554 MPPTBPerformSweep: 5 MPPTInterface
+ SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
+
+BO_ 555 MPPTBSetOutputVoltageLimit: 2 MPPTInterface
+ SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+
+BO_ 556 MPPTBSetOutputCurrentLimit: 2 MPPTInterface
+ SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+
+BO_ 576 MPPTCPowerMeasurements: 8 MPPTC
+ SG_ InputVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ InputCurrent : 23|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ OutputVoltage : 39|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ OutputCurrent : 55|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+
+BO_ 577 MPPTCStatus: 5 MPPTC
+ SG_ OperatingMode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Fault : 8|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Enabled : 16|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ AmbientTemperature : 24|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
+ SG_ HeatsinkTemperature : 32|8@1- (1,0) [-128.0|127.0] "degC" Vector__XXX
+
+BO_ 578 MPPTCSweepData: 5 MPPTC
+ SG_ SampleIndex : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+ SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+
+BO_ 581 MPPTCFillRXBuffer: 0 MPPTInterface
+
+BO_ 582 MPPTCFillRXBufferLong: 0 MPPTInterface
+
+BO_ 583 MPPTCProcessRXBuffer: 0 MPPTInterface
+
+BO_ 584 MPPTCProcessShortBuffer: 0 MPPTInterface
+
+BO_ 585 MPPTCSetMode: 1 MPPTInterface
+ SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+
+BO_ 586 MPPTCPerformSweep: 5 MPPTInterface
+ SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+ SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
+
+BO_ 587 MPPTCSetOutputVoltageLimit: 2 MPPTInterface
+ SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
+
+BO_ 588 MPPTCSetOutputCurrentLimit: 2 MPPTInterface
+ SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+
+
+
+
+CM_ BO_ 512 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 512 OutputCurrent "OutputCurrent";
+CM_ SG_ 512 OutputVoltage "OutputVoltage";
+CM_ SG_ 512 InputCurrent "InputCurrent";
+CM_ SG_ 512 InputVoltage "InputVoltage";
+CM_ BO_ 513 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 513 HeatsinkTemperature "HeatsinkTemperature";
+CM_ SG_ 513 AmbientTemperature "AmbientTemperature";
+CM_ SG_ 513 Enabled "Enabled";
+CM_ SG_ 513 Fault "Fault";
+CM_ SG_ 513 OperatingMode "OperatingMode";
+CM_ BO_ 514 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 514 Voltage "Voltage";
+CM_ SG_ 514 Current "Current";
+CM_ SG_ 514 SampleIndex "SampleIndex";
+CM_ BO_ 517 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 518 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 519 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 520 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 521 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 521 Mode "Mode";
+CM_ BO_ 522 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 522 SampleCount "SampleCount";
+CM_ SG_ 522 EndVoltage "EndVoltage";
+CM_ SG_ 522 StartVoltage "StartVoltage";
+CM_ BO_ 523 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 523 VoltageLimit "VoltageLimit";
+CM_ BO_ 524 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 524 CurrentLimit "CurrentLimit";
+CM_ BO_ 544 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 544 OutputCurrent "OutputCurrent";
+CM_ SG_ 544 OutputVoltage "OutputVoltage";
+CM_ SG_ 544 InputCurrent "InputCurrent";
+CM_ SG_ 544 InputVoltage "InputVoltage";
+CM_ BO_ 545 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 545 HeatsinkTemperature "HeatsinkTemperature";
+CM_ SG_ 545 AmbientTemperature "AmbientTemperature";
+CM_ SG_ 545 Enabled "Enabled";
+CM_ SG_ 545 Fault "Fault";
+CM_ SG_ 545 OperatingMode "OperatingMode";
+CM_ BO_ 546 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 546 Voltage "Voltage";
+CM_ SG_ 546 Current "Current";
+CM_ SG_ 546 SampleIndex "SampleIndex";
+CM_ BO_ 549 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 550 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 551 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 552 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 553 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 553 Mode "Mode";
+CM_ BO_ 554 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 554 SampleCount "SampleCount";
+CM_ SG_ 554 EndVoltage "EndVoltage";
+CM_ SG_ 554 StartVoltage "StartVoltage";
+CM_ BO_ 555 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 555 VoltageLimit "VoltageLimit";
+CM_ BO_ 556 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 556 CurrentLimit "CurrentLimit";
+CM_ BO_ 576 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 576 OutputCurrent "OutputCurrent";
+CM_ SG_ 576 OutputVoltage "OutputVoltage";
+CM_ SG_ 576 InputCurrent "InputCurrent";
+CM_ SG_ 576 InputVoltage "InputVoltage";
+CM_ BO_ 577 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 577 HeatsinkTemperature "HeatsinkTemperature";
+CM_ SG_ 577 AmbientTemperature "AmbientTemperature";
+CM_ SG_ 577 Enabled "Enabled";
+CM_ SG_ 577 Fault "Fault";
+CM_ SG_ 577 OperatingMode "OperatingMode";
+CM_ BO_ 578 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 578 Voltage "Voltage";
+CM_ SG_ 578 Current "Current";
+CM_ SG_ 578 SampleIndex "SampleIndex";
+CM_ BO_ 581 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 582 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 583 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 584 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 585 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 585 Mode "Mode";
+CM_ BO_ 586 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 586 SampleCount "SampleCount";
+CM_ SG_ 586 EndVoltage "EndVoltage";
+CM_ SG_ 586 StartVoltage "StartVoltage";
+CM_ BO_ 587 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 587 VoltageLimit "VoltageLimit";
+CM_ BO_ 588 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
+CM_ SG_ 588 CurrentLimit "CurrentLimit";
+BA_DEF_ SG_  "ValueTable" STRING ;
+BA_DEF_ BO_  "LayoutPending" INT 0 1;
+BA_DEF_ BO_  "ProtocolSource" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","Triggered","None";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;
+BA_DEF_  "Baudrate" INT 1 10000000;
+BA_DEF_ BO_  "CANFD_BRS" ENUM  "0","1";
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_  "DataBaudrate" INT 1 10000000;
+BA_DEF_DEF_  "ValueTable" "";
+BA_DEF_DEF_  "LayoutPending" 0;
+BA_DEF_DEF_  "ProtocolSource" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "CANFD_BRS" "0";
+BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
+BA_ "BusType" "CAN";
+BA_ "DBName" "MPPTCAN";
+BA_ "Baudrate" 1000000;
+BA_ "LayoutPending" BO_ 512 0;
+BA_ "ProtocolSource" BO_ 512 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 512 0;
+BA_ "GenMsgCycleTime" BO_ 512 500;
+BA_ "VFrameFormat" BO_ 512 0;
+BA_ "CANFD_BRS" BO_ 512 0;
+BA_ "LayoutPending" BO_ 513 0;
+BA_ "ProtocolSource" BO_ 513 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 513 0;
+BA_ "GenMsgCycleTime" BO_ 513 1000;
+BA_ "VFrameFormat" BO_ 513 0;
+BA_ "CANFD_BRS" BO_ 513 0;
+BA_ "ValueTable" SG_ 513 Enabled "EnableDisable";
+BA_ "ValueTable" SG_ 513 Fault "TPEEFault";
+BA_ "ValueTable" SG_ 513 OperatingMode "TPEEOperatingMode";
+BA_ "LayoutPending" BO_ 514 0;
+BA_ "ProtocolSource" BO_ 514 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 514 1;
+BA_ "VFrameFormat" BO_ 514 0;
+BA_ "CANFD_BRS" BO_ 514 0;
+BA_ "LayoutPending" BO_ 517 1;
+BA_ "ProtocolSource" BO_ 517 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 517 1;
+BA_ "VFrameFormat" BO_ 517 0;
+BA_ "CANFD_BRS" BO_ 517 0;
+BA_ "LayoutPending" BO_ 518 1;
+BA_ "ProtocolSource" BO_ 518 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 518 1;
+BA_ "VFrameFormat" BO_ 518 0;
+BA_ "CANFD_BRS" BO_ 518 0;
+BA_ "LayoutPending" BO_ 519 1;
+BA_ "ProtocolSource" BO_ 519 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 519 1;
+BA_ "VFrameFormat" BO_ 519 0;
+BA_ "CANFD_BRS" BO_ 519 0;
+BA_ "LayoutPending" BO_ 520 1;
+BA_ "ProtocolSource" BO_ 520 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 520 1;
+BA_ "VFrameFormat" BO_ 520 0;
+BA_ "CANFD_BRS" BO_ 520 0;
+BA_ "LayoutPending" BO_ 521 0;
+BA_ "ProtocolSource" BO_ 521 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 521 0;
+BA_ "GenMsgCycleTime" BO_ 521 100;
+BA_ "VFrameFormat" BO_ 521 0;
+BA_ "CANFD_BRS" BO_ 521 0;
+BA_ "ValueTable" SG_ 521 Mode "TPEEControlMode";
+BA_ "LayoutPending" BO_ 522 0;
+BA_ "ProtocolSource" BO_ 522 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 522 1;
+BA_ "VFrameFormat" BO_ 522 0;
+BA_ "CANFD_BRS" BO_ 522 0;
+BA_ "LayoutPending" BO_ 523 0;
+BA_ "ProtocolSource" BO_ 523 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 523 0;
+BA_ "GenMsgCycleTime" BO_ 523 200;
+BA_ "VFrameFormat" BO_ 523 0;
+BA_ "CANFD_BRS" BO_ 523 0;
+BA_ "LayoutPending" BO_ 524 0;
+BA_ "ProtocolSource" BO_ 524 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 524 0;
+BA_ "GenMsgCycleTime" BO_ 524 200;
+BA_ "VFrameFormat" BO_ 524 0;
+BA_ "CANFD_BRS" BO_ 524 0;
+BA_ "LayoutPending" BO_ 544 0;
+BA_ "ProtocolSource" BO_ 544 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 544 0;
+BA_ "GenMsgCycleTime" BO_ 544 500;
+BA_ "VFrameFormat" BO_ 544 0;
+BA_ "CANFD_BRS" BO_ 544 0;
+BA_ "LayoutPending" BO_ 545 0;
+BA_ "ProtocolSource" BO_ 545 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 545 0;
+BA_ "GenMsgCycleTime" BO_ 545 1000;
+BA_ "VFrameFormat" BO_ 545 0;
+BA_ "CANFD_BRS" BO_ 545 0;
+BA_ "ValueTable" SG_ 545 Enabled "EnableDisable";
+BA_ "ValueTable" SG_ 545 Fault "TPEEFault";
+BA_ "ValueTable" SG_ 545 OperatingMode "TPEEOperatingMode";
+BA_ "LayoutPending" BO_ 546 0;
+BA_ "ProtocolSource" BO_ 546 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 546 1;
+BA_ "VFrameFormat" BO_ 546 0;
+BA_ "CANFD_BRS" BO_ 546 0;
+BA_ "LayoutPending" BO_ 549 1;
+BA_ "ProtocolSource" BO_ 549 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 549 1;
+BA_ "VFrameFormat" BO_ 549 0;
+BA_ "CANFD_BRS" BO_ 549 0;
+BA_ "LayoutPending" BO_ 550 1;
+BA_ "ProtocolSource" BO_ 550 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 550 1;
+BA_ "VFrameFormat" BO_ 550 0;
+BA_ "CANFD_BRS" BO_ 550 0;
+BA_ "LayoutPending" BO_ 551 1;
+BA_ "ProtocolSource" BO_ 551 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 551 1;
+BA_ "VFrameFormat" BO_ 551 0;
+BA_ "CANFD_BRS" BO_ 551 0;
+BA_ "LayoutPending" BO_ 552 1;
+BA_ "ProtocolSource" BO_ 552 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 552 1;
+BA_ "VFrameFormat" BO_ 552 0;
+BA_ "CANFD_BRS" BO_ 552 0;
+BA_ "LayoutPending" BO_ 553 0;
+BA_ "ProtocolSource" BO_ 553 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 553 0;
+BA_ "GenMsgCycleTime" BO_ 553 100;
+BA_ "VFrameFormat" BO_ 553 0;
+BA_ "CANFD_BRS" BO_ 553 0;
+BA_ "ValueTable" SG_ 553 Mode "TPEEControlMode";
+BA_ "LayoutPending" BO_ 554 0;
+BA_ "ProtocolSource" BO_ 554 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 554 1;
+BA_ "VFrameFormat" BO_ 554 0;
+BA_ "CANFD_BRS" BO_ 554 0;
+BA_ "LayoutPending" BO_ 555 0;
+BA_ "ProtocolSource" BO_ 555 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 555 0;
+BA_ "GenMsgCycleTime" BO_ 555 200;
+BA_ "VFrameFormat" BO_ 555 0;
+BA_ "CANFD_BRS" BO_ 555 0;
+BA_ "LayoutPending" BO_ 556 0;
+BA_ "ProtocolSource" BO_ 556 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 556 0;
+BA_ "GenMsgCycleTime" BO_ 556 200;
+BA_ "VFrameFormat" BO_ 556 0;
+BA_ "CANFD_BRS" BO_ 556 0;
+BA_ "LayoutPending" BO_ 576 0;
+BA_ "ProtocolSource" BO_ 576 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 576 0;
+BA_ "GenMsgCycleTime" BO_ 576 500;
+BA_ "VFrameFormat" BO_ 576 0;
+BA_ "CANFD_BRS" BO_ 576 0;
+BA_ "LayoutPending" BO_ 577 0;
+BA_ "ProtocolSource" BO_ 577 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 577 0;
+BA_ "GenMsgCycleTime" BO_ 577 1000;
+BA_ "VFrameFormat" BO_ 577 0;
+BA_ "CANFD_BRS" BO_ 577 0;
+BA_ "ValueTable" SG_ 577 Enabled "EnableDisable";
+BA_ "ValueTable" SG_ 577 Fault "TPEEFault";
+BA_ "ValueTable" SG_ 577 OperatingMode "TPEEOperatingMode";
+BA_ "LayoutPending" BO_ 578 0;
+BA_ "ProtocolSource" BO_ 578 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 578 1;
+BA_ "VFrameFormat" BO_ 578 0;
+BA_ "CANFD_BRS" BO_ 578 0;
+BA_ "LayoutPending" BO_ 581 1;
+BA_ "ProtocolSource" BO_ 581 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 581 1;
+BA_ "VFrameFormat" BO_ 581 0;
+BA_ "CANFD_BRS" BO_ 581 0;
+BA_ "LayoutPending" BO_ 582 1;
+BA_ "ProtocolSource" BO_ 582 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 582 1;
+BA_ "VFrameFormat" BO_ 582 0;
+BA_ "CANFD_BRS" BO_ 582 0;
+BA_ "LayoutPending" BO_ 583 1;
+BA_ "ProtocolSource" BO_ 583 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 583 1;
+BA_ "VFrameFormat" BO_ 583 0;
+BA_ "CANFD_BRS" BO_ 583 0;
+BA_ "LayoutPending" BO_ 584 1;
+BA_ "ProtocolSource" BO_ 584 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 584 1;
+BA_ "VFrameFormat" BO_ 584 0;
+BA_ "CANFD_BRS" BO_ 584 0;
+BA_ "LayoutPending" BO_ 585 0;
+BA_ "ProtocolSource" BO_ 585 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 585 0;
+BA_ "GenMsgCycleTime" BO_ 585 100;
+BA_ "VFrameFormat" BO_ 585 0;
+BA_ "CANFD_BRS" BO_ 585 0;
+BA_ "ValueTable" SG_ 585 Mode "TPEEControlMode";
+BA_ "LayoutPending" BO_ 586 0;
+BA_ "ProtocolSource" BO_ 586 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 586 1;
+BA_ "VFrameFormat" BO_ 586 0;
+BA_ "CANFD_BRS" BO_ 586 0;
+BA_ "LayoutPending" BO_ 587 0;
+BA_ "ProtocolSource" BO_ 587 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 587 0;
+BA_ "GenMsgCycleTime" BO_ 587 200;
+BA_ "VFrameFormat" BO_ 587 0;
+BA_ "CANFD_BRS" BO_ 587 0;
+BA_ "LayoutPending" BO_ 588 0;
+BA_ "ProtocolSource" BO_ 588 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
+BA_ "GenMsgSendType" BO_ 588 0;
+BA_ "GenMsgCycleTime" BO_ 588 200;
+BA_ "VFrameFormat" BO_ 588 0;
+BA_ "CANFD_BRS" BO_ 588 0;
+VAL_ 513 Enabled 0 "Disabled" 1 "Enabled" ;
+VAL_ 513 Fault 0 "OK" 1 "ConfigurationError" 2 "InputOverVoltage" 3 "OutputOverVoltage" 4 "OutputOverCurrent" 5 "InputOverCurrent" 6 "InputUnderCurrent" 7 "PhaseOverCurrent" 8 "Fault" ;
+VAL_ 513 OperatingMode 0 "ConstantInputVoltage" 1 "ConstantInputCurrent" 2 "MinimumInputCurrent" 3 "ConstantOutputVoltage" 4 "ConstantOutputCurrent" 5 "TemperatureDerating" 6 "MinimumInputVoltage" 7 "Fault" ;
+VAL_ 521 Mode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;
+VAL_ 545 Enabled 0 "Disabled" 1 "Enabled" ;
+VAL_ 545 Fault 0 "OK" 1 "ConfigurationError" 2 "InputOverVoltage" 3 "OutputOverVoltage" 4 "OutputOverCurrent" 5 "InputOverCurrent" 6 "InputUnderCurrent" 7 "PhaseOverCurrent" 8 "Fault" ;
+VAL_ 545 OperatingMode 0 "ConstantInputVoltage" 1 "ConstantInputCurrent" 2 "MinimumInputCurrent" 3 "ConstantOutputVoltage" 4 "ConstantOutputCurrent" 5 "TemperatureDerating" 6 "MinimumInputVoltage" 7 "Fault" ;
+VAL_ 553 Mode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;
+VAL_ 577 Enabled 0 "Disabled" 1 "Enabled" ;
+VAL_ 577 Fault 0 "OK" 1 "ConfigurationError" 2 "InputOverVoltage" 3 "OutputOverVoltage" 4 "OutputOverCurrent" 5 "InputOverCurrent" 6 "InputUnderCurrent" 7 "PhaseOverCurrent" 8 "Fault" ;
+VAL_ 577 OperatingMode 0 "ConstantInputVoltage" 1 "ConstantInputCurrent" 2 "MinimumInputCurrent" 3 "ConstantOutputVoltage" 4 "ConstantOutputCurrent" 5 "TemperatureDerating" 6 "MinimumInputVoltage" 7 "Fault" ;
+VAL_ 585 Mode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;

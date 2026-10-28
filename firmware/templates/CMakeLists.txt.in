@@ -45,6 +45,17 @@ add_executable(@BOARD@
 )
 target_include_directories(@BOARD@ PUBLIC ${PLATFORM_INCLUDE_DIRS} ${BOARD_INCLUDE_DIRS})
 
+# Board.cmake may set BOARD_CAN_BUSES to e.g. car;charger.
+if(BOARD_CAN_BUSES)
+    add_subdirectory(${PLATFORM_DIR}/../../can ${CMAKE_CURRENT_BINARY_DIR}/shared-can)
+    foreach(bus IN LISTS BOARD_CAN_BUSES)
+        if(NOT TARGET can_${bus})
+            message(FATAL_ERROR "Unknown shared CAN bus '${bus}' in BOARD_CAN_BUSES")
+        endif()
+        target_link_libraries(@BOARD@ PRIVATE can_${bus})
+    endforeach()
+endif()
+
 build_firmware(@BOARD@)
 post_build(@BOARD@)
 lint(@BOARD@)

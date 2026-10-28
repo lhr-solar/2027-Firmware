@@ -1,0 +1,473 @@
+# 2027 CAN databases
+
+These eight draft databases implement the supplied **2026–2027 ID Allocation &
+Drafting** export (edited October 22, 2026), incorporating the HighNoon DBCs from
+Embedded-Sharepoint and the vendor references below. New team signal bit layouts
+are proposed here; the source allocation did not specify start bits. They are
+not wire-compatible with the old vehicle's team-defined messages.
+
+## Networks and transmitters
+
+| Database | Contents | Frames | Empty placeholders |
+|---|---|---:|---:|
+| CarCAN | Team critical/control, power, battery and HMI status | 29 | 2 |
+| MotorCAN | VCU drive/power/reset commands and WS22 telemetry | 19 | 3 |
+| MPPTCAN | Three SEC-B175-7A MPPTs; commands from MPPTInterface | 33 | 12 |
+| SteeringCAN | LWS measurements; configuration sent by DEI | 2 | 0 |
+| LightingCAN | Bottom-shell status from DEI; top-shell status from TopShellLighting | 2 | 0 |
+| ChargerCAN | BPS status/pack/cell data and ElconInterface status | 5 | 0 |
+| ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
+| DAqCAN | MIKA infrastructure and all 12 sensor boards | 23 | 5 |
+
+Every message has exactly one declared transmitter. `External` is the command
+injection tool/node for IDs 0x051–0x054. MPPTInterface receives BPSStatus
+on **CarCAN** and produces MPPT commands on **MPPTCAN**; BPS is not a transmitter
+on the private MPPT bus. DEI transmits all LWS configuration traffic; LWS remains
+the transmitter of its own measurements.
+
+BPSStatus (0x060), BPSPackData (0x070), BPSVoltageData (0x071), and
+BPSTemperatureData (0x072) are intentionally present on both CarCAN and ChargerCAN
+with identical layouts, periods, and transmitter. These are the only repeated
+numeric IDs across the eight files. BPS transmits these on both networks;
+any actual gateway implementation must match this routing assumption.
+
+CarCAN, ChargerCAN and DAqCAN use CAN-FD, including short team frames.
+LightingCAN uses classic CAN.
+The WS22, TPEE, Bosch and Elcon protocols remain **classic CAN**. Payloads use
+legal CAN-FD wire lengths, with unused bits/bytes reserved as zero. Bus bitrates are explicitly assigned using Baudrate (bits/second): CarCAN and
+DAqCAN 1000000, ChargerCAN/ElconCAN/MotorCAN/LightingCAN 250000, SteeringCAN
+500000, and MPPTCAN 1000000. BRS is explicitly off. See
+[traffic analysis](../analysis/README.md) for timing, forwarding, and load calculations.
+
+The telemetry/sensor bus is **DAqCAN**, using the formerly empty DAqCAN.dbc
+scaffold. TelemetryCAN.dbc is removed at the user's request. The empty
+bootloading.dbc and debug_telemetry.dbc scaffolds remain untouched. Both lighting
+messages live on **LightingCAN**: DEI transmits BottomShellLightingStatus at
+**0x080**, and TopShellLighting transmits TopShellLightingStatus at **0x081**.
+Their IDs and payload layouts are retained. Bottom-shell circuitry is on DEI,
+not a separate CAN node. TopShellLighting is attached only to LightingCAN; its
+former direct CarCAN DEI-status subscription is removed. DEI is attached to
+CarCAN, SteeringCAN and LightingCAN. MIKA is the combined HMI
+and telemetry board: it transmits MIKAStatus (0x082) on CarCAN and
+TimestampSync/TelemetryStatus/OnBoardWatchdog on DAqCAN. Its former
+self-watchdog bit is reserved rather than monitoring a second board identity.
+
+## Shared encodings
+
+| Quantity in team messages | Unit | Step | Offset / representation |
+|---|---|---|---|
+| Bulk voltages | V | 0.05 | 0 |
+| Cell/tap voltages | mV | 1 | 2000; unsigned 12 bits, 2000–6095 mV |
+| Currents | A | 0.01 | 0, except battery currents below |
+| Battery current | A | 0.01 | **−50; unsigned 14 bits, −50.00–113.83 A** |
+| LV battery current | A | 0.01 | −50; unsigned 14 bits, −50.00–113.83 A; positive discharge, negative charge |
+| HSS FET temperatures | degC | 0.05 | −40; unsigned 13 bits, permitted −40–200 degC |
+| Battery temperatures | degC | 0.05 | 0; unsigned 11 bits, 0–102.35 degC |
+| MIKA SoC temperature | degC | **0.5** | **−20; unsigned 8 bits, permitted −20–85 degC** |
+| Fan tachometers | rpm | 5 | 0; unsigned 12 bits |
+| Accelerator position | % | 100/255 | 0; unsigned 8 bits |
+| Brake pressures | PSI | 1 | 0; unsigned 12 bits, permitted 0–3000 PSI |
+
+Battery-current width and offset and the SoC-temperature exception are explicitly
+preserved at the user's request. The 5 V offset from the draft's PDU/LVC voltage
+fields is removed to standardize bulk voltage encoding. LV voltages now use
+10 bits at 0.05 V/bit, including zero for disabled outputs (0–51.15 V). EVSE available current uses 12 bits
+at 0.01 A/bit to retain 0–25.5 A with the standard current resolution.
+
+BPS MPPT limits use the team voltage/current resolutions; MPPTInterface converts
+them to the vendor command resolutions. This conversion does not replace device
+limits or battery protection checks. BPS MPPTSetMode and MPPTInterface MPPTSetMode
+use two bits to represent the vendor's Disabled/PO/ConstantInputVoltage modes.
+
+**Vendor encodings are deliberate exceptions.** Changing a DBC cannot change a
+COTS device's protocol: TPEE retains 0.01 V and 0.0005 A fixed-point values,
+WS22 retains IEEE-754 floats, Bosch retains its angle/speed steps, and Elcon
+retains its own voltage/current/temperature and cell-voltage encodings.
+
+## Signal organization and October 23 updates
+
+Team-defined messages follow **faults → warnings → discrete signals → continuous
+signals**, with a final sample-age field. Measurement messages end with
+`SampleAgeMs`; a main `Status` field remains first when present.
+Category boundaries have no alignment gaps. Status fields using FaultState belong
+with faults unless promoted to the explicit main Status header. Measured counts such as satellites
+in use belong with continuous measurements. Fixed vendor layouts are unchanged.
+This reorganization changes bit positions in the draft team layouts; regenerate
+consumers together rather than mixing versions.
+
+- BPSPackData includes `CellSumVoltage` **before** all pre/post-precharge
+  voltage measurements. It uses unsigned 12-bit bulk encoding (0.05 V/bit,
+  offset 0; 0–204.75 V), covering the sum of all 32 representable cell taps.
+  BPSPackData is 12 bytes on both CarCAN and ChargerCAN. It contains these five voltages, battery current,
+  then SampleAgeMs. Min/max cell voltage follow the 32 cell voltages
+  in BPSVoltageData (64 bytes). Max/average battery temperature follow the 32
+  cell temperatures in BPSTemperatureData (64 bytes). Existing scales, offsets,
+  widths and units are preserved; the added SampleAgeMs shifts signal positions.
+  BPSStatus is now 16 bytes and retains faults, warnings, discrete state,
+  permissions, MPPT limits, and all three fan tachometers.
+  The CarCAN BPS data block is 0x070 BPSPackData, 0x071 BPSVoltageData,
+  0x072 BPSTemperatureData, and 0x073 SMDStatus. The new pack frame is shared across
+  CarCAN/ChargerCAN; the individual-cell frames and their summaries are mirrored
+  on both networks. Send types and periods now follow the reviewed timing CSV.
+- `BPSCommandEcho` at **0x074** on CarCAN is transmitted by BPS and mirrors the
+  12-byte `BPSCommand` (0x051) payload exactly, including shared enum tables.
+  It cyclically reports the command values held by BPS; it is not a per-request
+  acknowledgement or confirmation that a command was successfully applied.
+  The reviewed cyclic period is 1000 ms.
+- MIKA's rear-camera warning is explicitly `WarningRearCameraDisconnected`.
+  A separate one-bit `DriverCameraConnected` uses the shared Connection table.
+- MIKA includes `CM5FanTach`: unsigned 12-bit, 5 rpm/bit, 0–20475 rpm.
+  Its discrete connection bits precede frame rate, temperature and fan speed;
+  the frame is now 7 bytes, including SampleAgeMs. The SoC-temperature encoding remains unchanged.
+
+## Legacy timestamp and linpot formats
+
+`TimestampSync` at **0x620**, TX MIKA, now uses the calibrated HighNoon sync
+layout: **two bytes**, unsigned 16-bit `Timestamp` at bit 0, little-endian,
+scale 1, offset 0. TimestampSync broadcasts every 10 ms, following the reviewed
+timing CSV. The legacy sender increments its raw counter once per broadcast
+(10 ms/count); epoch/interpolation semantics for this year still need firmware
+agreement.
+The 16-bit raw counter wraps after 65536 counts; its DBC scale remains 1.
+The message remains CAN-FD under this year's bus convention. The status message
+at **0x621** is named `TelemetryStatus`, also transmitted by MIKA.
+
+Suspension FR/FL/Rear at **0x670/0x671/0x672** each contain an unsigned 16-bit
+raw timestamp, **four unsigned 12-bit ADC/linpot values**, their
+12-bit average, then SampleAgeMs, in twelve bytes. Fields are named `LinpotPosition1` through
+`LinpotPosition4`, followed by `LinpotPositionAverage`. The average is across
+the four physical channels and must be supplied by the sender. This year's wire order is uniformly little-endian. Each channel uses
+last year's calibrated conversion:
+
+```text
+position_mm = raw_adc * 0.0188885 + 1
+```
+
+The 0..4095 raw domain represents **1..78.3494075 mm**, with approximately
+0.01889 mm per count. These bounds are calculated from the calibration rather
+than copying inconsistent old min/max labels. Quantization is not sensor accuracy.
+The user confirmed the same linpots/measuring scheme is in use this year.
+
+The calibrated definitions were found in the local Electron-v2 and Data Sandbox
+copies of Embedded-Sharepoint's `can/dbc/HighNoon/DAqCAN.dbc`; Photon contains an
+older unitless/raw copy. The calibrated copy also includes signed accel/gyro
+fields with real scales, unlike Photon's copy. The new IMU/gyro/magnetometer layouts are defined below.
+
+Firmware sending ADC counts must use a **raw packing path**; the current public
+codegen API expects physical millimetres. Passing counts directly to that API
+would apply the inverse calibration again. Raw-ADC convenience APIs are separate
+codegen work; they have not been added by this DBC update.
+
+## Receiver assignments
+
+All signal receiver lists are intentionally empty in every DBC. `Vector__XXX`
+is the required DBC syntax placeholder for an unspecified receiver, not a real
+node or subscription. Message TX nodes and bus node inventories remain defined;
+consumer subscriptions and gateway behavior belong in firmware configuration.
+
+## Bootloader IDs
+
+`../bootloader_ids.json` allocates **20 eligible custom CAN boards**, with one
+global, stable node ID per board even when it connects to multiple buses.
+Node IDs **5, 9, 11, 12 and 25–40** are reserved; remaining assignments retain
+their original IDs. Standard 11-bit arbitration IDs follow the supplied scheme:
+
+- Reserved BootloaderHost ID: **0x000** (payload/host protocol not defined here).
+- Board RX: **NodeID**.
+- Board TX: **NodeID + 0x28**.
+
+RX/TX are relative to the board. `can_buses` lists physical attachments from the
+DBCs, not enabled bootloader transports. The user's explicit exclusions are:
+
+- BottomShellLighting: integrated on DEI; no independent firmware target.
+- ElconInterface: excluded from bootloader allocation; retained in the DBCs.
+- MIKA and its former TelemetryLeader identity: one physical board, named MIKA
+  in the DBCs; neither needs CAN bootloading.
+- SMBs (no CAN), COTS devices, and the external host.
+
+Do not renumber assigned IDs when boards are removed. The JSON is an allocation,
+not an implementation of bootloading or routing.
+
+## Global value tables
+
+`value_tables.json` is the shared enum catalog. Every standalone DBC contains
+identical `VAL_TABLE_` definitions. Each enumerated signal has:
+
+- Its usual `VAL_` mapping, required by common DBC readers.
+- A `ValueTable` string attribute naming the shared global definition.
+
+DBC globals are scoped to a file; a standalone DBC cannot import a table from
+another DBC. The repeated definitions make each file independently usable, and
+the validation tests detect divergence from the catalog. Reuse EnableDisable,
+OnOff, FaultState, WarningState, Connection, Permission and the other shared
+tables instead of defining signal-specific copies of equivalent enums.
+
+## Empty messages and unallocated ranges
+
+`LayoutPending=1` identifies an **undefined layout**. These messages have no
+signals and a zero-byte placeholder payload. Zero length is a drafting marker,
+not permission to transmit an empty frame. Owners must define the layout before
+using these messages:
+
+- CarCAN 0x073 SMDStatus: four SMB bitmaps are mentioned, but no widths/bit meanings.
+- Five telemetry placeholders: three blackbody boards and two strain boards.
+- MPPT offsets 0x05–0x08: reserved here as empty placeholders for variable-length
+  configuration-buffer protocols; they are not ordinary fixed-layout commands.
+
+The CarCAN 0x054 sweep request is a **defined empty trigger**, not a pending
+layout. WS22 reset and its two documented reserved frames are defined eight-byte
+frames without named signals.
+
+Unassigned/reserved ranges remain unassigned: no fabricated transmitting node or
+fake message is created for each reserved ID. Bootloader IDs 0x000–0x050
+remain reserved for the separate allocation in `../bootloader_ids.json`;
+bootloader transport, message layouts and gateway behavior are not defined here. No generic HMI, debug or future COTS traffic has been invented.
+
+## Corrections and provenance
+
+- There are **two strain boards**: Front at **0x690**, Rear at **0x691**.
+  Telemetry IDs are grouped by board within 0x630–0x6DF.
+- GPS **longitude is −180..180**, latitude **−90..90**. The draft interchanged them.
+- TPEE SetMode/Sweep/VoltageLimit/CurrentLimit offsets are **0x09/0x0A/0x0B/0x0C**,
+  confirming the new draft rather than last year's stale sweep/limit IDs.
+  Sweep responses are five bytes; sweep start and end are both voltages.
+  The current source's operating-mode enum includes MinimumInputVoltage=6,
+  Fault=7; SetMode has Disabled=0, PO=1, ConstantInputVoltage=2.
+- WS22 power command uses eight bytes with its current fraction at bits 32–63;
+  the reset is eight bytes. Vendor percentage values are represented as `ratio`
+  0.0–1.0, not 0–100. The old positive-only velocity bound is removed so reverse
+  setpoints remain representable; application/controller operational limits apply.
+- Bosch LWS angle is signed. Its OK bit is **1=valid**, not active-high fault.
+  The undocumented legacy counter/checksum and resolution fields are removed:
+  the Bosch sheet marks those bits as reserved. Configuration TX is DEI.
+  Angle 0x7FFF and speed 0xFF remain decodable invalid sentinels; check OK/CAL/TRIM.
+- Elcon IDs, five-byte control/status frames and the eight-byte multiplexed
+  extension are retained from the **legacy HighNoon variant**. Its impossible
+  cell-voltage and temperature bounds are corrected to representable physical
+  ranges without changing wire bits. The currently published CAN-3865 protocol
+  has different eight-byte extensions; confirm the installed charger firmware
+  before choosing a different variant. This file does not claim CAN-3865 compliance.
+
+References:
+
+- Supplied 2026–2027 allocation export, edited October 22, 2026.
+- [Legacy HighNoon DBCs](https://github.com/lhr-solar/Embedded-Sharepoint/tree/42c2d13eeddf2510327d549d5ab4cbdaee9637d3/can/vehicles/HighNoon).
+- [TPEE Open-SEC CAN identifiers](https://github.com/TjitteS/OpenSmartEnergyConverter/blob/11bb2abe40cfa05160a197a04c03e1566eb88c51/Open-SEC%20Firmware/src/can.h),
+  [wire packing/unpacking](https://github.com/TjitteS/OpenSmartEnergyConverter/blob/11bb2abe40cfa05160a197a04c03e1566eb88c51/Open-SEC%20Firmware/src/can.c),
+  [control enums](https://github.com/TjitteS/OpenSmartEnergyConverter/blob/11bb2abe40cfa05160a197a04c03e1566eb88c51/Open-SEC%20Firmware/src/control.h),
+  [MPPT modes](https://github.com/TjitteS/OpenSmartEnergyConverter/blob/11bb2abe40cfa05160a197a04c03e1566eb88c51/Open-SEC%20Firmware/src/mppt.h).
+  These establish the protocol for the examined firmware revision, not the
+  firmware revision currently flashed onto the team's hardware.
+- [WS22 Appendix C](https://docs.prohelion.com/Motor_Controllers/WaveSculptor22/User_Manual/Appendix_C.html).
+- [Bosch LWS datasheet](https://www.bosch-motorsport.com/content/downloads/Raceparts/Resources/pdf/Data%20sheet_191153675_Steering_Wheel_Angle_Sensor_LWS.pdf),
+  cross-checked against the team's local 2021 copy.
+- [Elcon CAN-3865](https://elconchargers.com/wp-content/uploads/2025/05/CAN-3865.pdf),
+  consulted to identify variant differences, not substituted for the legacy format.
+
+## Validation and codegen
+
+From the repository root, with codegen's pinned cantools installed:
+
+```sh
+python -m unittest discover -s can/tests -v
+```
+
+Tests cover strict DBC parsing/layouts, transmitters, receiver declarations,
+ID uniqueness, shared value tables, scaling exceptions, placeholders, vendor
+byte vectors, each Elcon multiplexed page, GPS bounds and corrected strain IDs.
+These are protocol tests, not hardware transmission tests.
+
+The current custom codegen handles the seven non-IEEE buses, but **MotorCAN's
+required IEEE-754 signals are not yet supported by that generator**. Preserve
+those signals in the DBC; do not convert WS22 floats into integers to bypass the
+limitation. Python cantools can encode/decode all eight databases.
+
+## Telemetry allocation and sample batches
+
+| IDs | Measurements |
+|---|---|
+| 0x630–0x632 | Chassis acceleration, gyro, magnetometer |
+| 0x640–0x642 | Front-right upright acceleration, gyro, wheel speed |
+| 0x650–0x652 | Front-left upright acceleration, gyro, wheel speed |
+| 0x660–0x662 | Rear upright acceleration, gyro, wheel speed |
+| 0x670–0x672 | Front-right, front-left, rear suspension linpots |
+| 0x680–0x682 | Blackbody boards 1–3 |
+| 0x690–0x691 | Front and rear strain gauges |
+
+Other slots in 0x630–0x6DF remain unallocated. Infrastructure retains
+TimestampSync 0x620, TelemetryStatus 0x621, and OnBoardWatchdog 0x623.
+Bootloader node IDs are independent and unchanged.
+
+Acceleration, gyro, magnetometer and wheel-speed frames contain four consecutive
+samples per axis/value and a sender-computed arithmetic average. Number suffixes
+follow the quantity, for example `AccelerationX1` through `AccelerationX4`, then
+`AccelerationXAverage`. Packing stores the supplied average; it does not compute
+it. Round averages to the nearest representable step, with raw half-step ties
+away from zero. Send only complete four-sample batches.
+
+`Timestamp` identifies sample 1. `SampleIntervalTicks` is a positive 16-bit gap
+between successive samples, using the same clock. Sample times are Timestamp,
+Timestamp + interval, +2 intervals, +3 intervals, modulo 65536. Tick duration
+remains unresolved. Corresponding acceleration/gyro batches from one board share
+timing; magnetometer batches can use their own cadence.
+
+| Quantity | Encoding | Range |
+|---|---|---|
+| Chassis acceleration | signed 13-bit, 0.001 g | −4.096–4.095 g |
+| Upright acceleration | signed 15-bit, 0.001 g | −16.384–16.383 g |
+| Gyro | signed 16-bit, 0.02 deg/s | −655.36–655.34 deg/s |
+| Magnetometer | signed 12-bit, 0.15 uT | −307.2–307.05 uT |
+| Wheel speed | unsigned 12-bit, 0.5 rpm | 0–2047.5 rpm |
+
+Wheel speed deliberately uses finer resolution than fan tachometers (5 rpm).
+All measurement frames fit CAN-FD's 64-byte limit.
+
+## Timing and forwarding
+
+Every cyclic message explicitly sets `GenMsgCycleTime` in milliseconds;
+`GenMsgSendType` defaults to `Cyclic`. `Triggered` messages may carry an explicit
+positive repeat period; they are not free-running cyclic traffic. Conditional
+fault snapshots also define `GenMsgSendCondition`, which firmware must honor.
+Reserved WS22 IDs use `None` and must not be transmitted. Pending layouts keep
+planned timing but are excluded from active traffic estimates until defined.
+
+The reviewed MPPT A schedule is applied consistently to B/C as requested:
+power 500 ms, status 1000 ms, mode command 100 ms, output limits 200 ms.
+Bus settings, outputs and forwarding policy are in `../topology.yaml`. See
+[the calculator documentation](../analysis/README.md) for exclusions, mirrored
+traffic, physical bus rates, and TCP serialization assumptions.
+
+### BPS fault capture
+
+CarCAN reserves `0x075 BPSFaultSnapshot` (12 bytes),
+`0x076 BPSFaultVoltageSnapshot` (64 bytes), and
+`0x077 BPSFaultTemperatureSnapshot` (64 bytes). These are triggered messages with an active-fault repeat period:
+`GenMsgSendType=Triggered`, `GenMsgCycleTime=1000`, and
+`GenMsgSendCondition="AnyBPSFaultActive && FaultSnapshotValid"`.
+Transmit immediately on capture and repeat at 1 Hz only during an active fault
+episode; transmit nothing in normal operation. DBC metadata describes this
+contract; firmware must implement the condition and capture behavior.
+
+On the first no-fault → fault transition, freeze the fault flags, last valid
+battery current and last completed cell voltage/temperature scans before
+shutdown where possible. No snapshot ID is included. CaptureTimeMs is BPS monotonic uptime in milliseconds, independent of the
+legacy TimestampSync unit. Keep captured data unchanged for that fault episode;
+rearm once all faults clear. Never replace it with post-shutdown readings.
+The frames have no explicit cross-frame capture identifier.
+Sample ages saturate at 65535 ms. Each scan has a 32-bit validity mask (bit 0 is
+cell 01); ignore readings with clear bits. The current frame has CurrentValid and SampleAgeMs.
+This captures the latest available samples, not a guaranteed analog trip peak.
+
+Snapshot frames remain on CarCAN and its existing TCP output; the four-message
+ChargerCAN include list is unchanged. Both BPSStatus mirrors rename
+FaultMainVoltageNotPresent/FaultMotorVoltageNotPresent to FaultMainVoltage/
+FaultMotorVoltage and add FaultMainPrechargeVoltage/FaultMotorPrechargeVoltage
+immediately after FaultMainVoltage/FaultMotorVoltage. Status leads the packed layout and SampleAgeMs is last;
+precharge voltage fault bits are 23/24.
+
+## LV power telemetry: LVC and PDU
+
+These messages replace PDUStatus 0x069, LVCStatus 0x06A and PDUData 0x078.
+The retired IDs are free. All new messages are standard-ID CAN FD on CarCAN,
+with BRS off; existing CarCAN → TCP forwarding includes them. They do not enter
+ChargerCAN's BPS-only forwarding include list. Bootloader IDs are unchanged.
+
+| ID | Message | Bytes | Timing |
+|---|---|---:|---|
+| 0x090 | LVCStatus | 2 | Cyclic, 100 ms |
+| 0x091 | LVCCurrentData | 12 | Cyclic, 100 ms (10 Hz) |
+| 0x092 | LVCVoltageData | 7 | Cyclic, 500 ms |
+| 0x093 | LVCTemperatureData | 4 | Cyclic, 1000 ms |
+| 0x094 | LVCOverCurrentSnapshot | 12 | Triggered, 1000 ms while trip latched |
+| 0x0A0 | PDUStatus | 16 | Cyclic, 100 ms |
+| 0x0A1 | PDUCurrentData | 24 | Cyclic, 100 ms (10 Hz) |
+| 0x0A2 | PDUVoltageData | 20 | Cyclic, 500 ms |
+| 0x0A3 | PDUTemperatureData | 24 | Cyclic, 1000 ms |
+| 0x0A4 | PDUOverCurrentSnapshotA | 64 | Triggered, 1000 ms while group trip latched |
+| 0x0A5 | PDUOverCurrentSnapshotB | 64 | Triggered, 1000 ms while group trip latched |
+
+PDU has exactly twelve outputs; chip n controls channels 2n-1/2n. Each channel
+has enabled state, current, output voltage, internal power-FET temperature,
+overcurrent/I2T/overtemperature/open-load/short-to-battery fault bits, and its own
+separate hardware blown-fuse warning. Open-load does not imply a blown fuse.
+Chip VBB undervoltage, SPI error and watchdog faults are reported once per chip
+(six of each). The existing aggregate blown-fuse warning is retained as the OR of the twelve
+per-channel hardware warnings.
+PDUCommand ChannelIndex is zero-based 0–11, selecting Channel1–Channel12.
+
+Only LVC's BPS feed uses an HSS channel. Its PDU power feed is separate; no
+fictitious PDU HSS channel or unused second-chip-channel telemetry is added.
+Measured upstream currents and voltages are preserved outside LVCStatus.
+TotalCurrent/TotalOutputCurrent are independent measured totals, not inferred
+sums of downstream channels. Output-enable signals describe requested state;
+output-voltage measurements indicate actual powered state.
+
+No LVC/PDU validity bits are sent. Live readings carry a shared maximum
+SampleAgeMs; chip SPI/watchdog diagnostics and sample age provide diagnostic context.
+Unavailable readings cannot be distinguished explicitly from legitimate values.
+The HSS may suspend voltage/temperature updates in some I2T operating modes;
+firmware must not reset the reported sample age just because it retransmits a
+cached measurement. Temperature is FET temperature, not load/ambient temperature.
+
+Trip snapshots freeze independent first-trip records per output until an explicit
+firmware fault-reset action. Overcurrent or I2T triggers capture. A later trip on
+another output does not erase earlier records; repeated trips on an already
+latched output keep its first record. Clearing HSS diagnostic registers does not
+automatically clear the software capture. Each saved record has trip current,
+board-uptime CaptureTimeMs, current sample age at detection and saturation flag.
+PDU group A is channels 1–6; B is 7–12. Send that group immediately on a new trip,
+then at most once per 1000 ms while any record remains latched; send nothing
+from an inactive group. There is no SnapshotId and no validity bit. Current
+saturation means the saved value is a lower bound. Samples are the latest
+available at fault detection, not guaranteed instantaneous analog peaks.
+Capture clocks wrap at 2^32 ms and reset on board reboot; sample ages saturate
+at 65535 ms. Normal readings continue independently of the frozen records.
+
+Current DBCs describe this contract; acquisition, latching, reset and transmit
+scheduling must be implemented in board firmware.
+
+## Sample-age fields and packed layouts
+
+Every defined team measurement message on CarCAN, ChargerCAN and DAqCAN includes
+unsigned 16-bit `SampleAgeMs` (1 ms/bit, offset 0, 0–65535 ms). It is the age of
+the oldest continuous sensor sample represented when the frame is assembled;
+saturate at 65535 ms. Cached readings keep aging instead of resetting on resend.
+Four-sample sensor batches report the age of their oldest sample. Legacy
+Timestamp/SampleIntervalTicks fields and their scaling remain independent.
+`SampleAgeMs` is always the last signal. A main `Status` field, if present,
+remains first. Status-only, command and timestamp-sync messages
+receive no artificial measurement-age field. Fault snapshots freeze SampleAgeMs
+at capture; PDU per-channel captured ages remain separate for independent trips.
+The single captured-current age in BPS/LVC snapshots is named SampleAgeMs rather
+than carrying a duplicate CurrentSampleAgeMs field.
+
+All team-defined signal layouts are contiguous from bit zero, including commands,
+status messages and snapshots. There are no reserved internal alignment gaps.
+Payloads are the smallest legal frame length containing all signals; CAN-FD DLC
+rounding can still require trailing padding. Vendor-defined MotorCAN, MPPTCAN,
+SteeringCAN and ElconCAN wire formats are untouched: adding age fields or packing
+their reserved bits would break compatibility. Age for vendor traffic would need
+separate team-defined wrapper/sidecar messages, which are not added here.
+
+LVCStatus has warnings only: WarningHSSOverCurrent, WarningHSSI2T,
+WarningHSSOverTemperature, WarningHSSOpenLoad, WarningHSSShortToBattery,
+WarningHSSVBBUndervoltage, WarningHSSSPIError, WarningHSSWatchdog,
+WarningNoDCDCOutput and WarningBPSLVBlownFuse. Discrete states are DCDCEnabled
+and BPSLVEnabled. All warning fields use the shared WarningState table;
+none of the LVCStatus signals use fault severity.
+
+These changes are wire-incompatible with earlier team DBCs: regenerate and update
+all producers, consumers and decoders together. CarCAN/ChargerCAN BPS mirrors
+remain identical. IDs, timing, sensor scaling and ChargerCAN snapshot exclusions
+are unchanged. BPSTemperatureData grows from 48 to 64 bytes; upright wheel-speed
+messages grow from 12 to 16 bytes. Some other payloads shrink after removing gaps.
+
+## GPS and lighting commands
+
+MIKA sends `GPSData` on DAqCAN at 0x622 every 200 ms, containing GPS state,
+position, speed, heading, altitude, satellites and SampleAgeMs. Cellular
+connection and radio measurements remain in TelemetryStatus. LightingCAN uses
+classic CAN: DEI sends `LightingCommand` at 0x083 every 200 ms with Sync,
+Headlight, Left, Right, Brake, Strobe and three raw PWM commands (0-255). Sync
+moved from BottomShellLightingStatus. The existing LightingCAN-to-CarCAN route
+forwards LightingCommand; DAqCAN GPS reaches telemetry TCP through the DAq route.
