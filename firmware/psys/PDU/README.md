@@ -1,6 +1,7 @@
 # Power Distribution Unit
 
-<!-- one or two sentences: what this board does -->
+Switches and protects the car's low-voltage loads using six TPS2HCS08-Q1 dual-channel
+high-side switches (12 outputs) controlled over SPI. Reports load current and faults per channel.
 
 **MCU:** STM32G473CETx (LQFP48)
 
