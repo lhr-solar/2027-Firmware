@@ -65,3 +65,21 @@ typedef struct {
 // ESTOP 3 Sense    -- PD4
 #define ESTOP_3_SENSE_PIN  GPIO_PIN_4
 #define ESTOP_3_SENSE_PORT GPIOD
+
+// BQ79600 bridge, on USART3. The BQ79616 driver needs TX and RX on one port.
+// BQ79600 UART TX  -- PC10, LQFP100 pin 79, AF7 USART3_TX
+#define BQ79600_UART_TX_PIN GPIO_PIN_10
+// BQ79600 UART RX  -- PC11, LQFP100 pin 80, AF7 USART3_RX
+#define BQ79600_UART_RX_PIN GPIO_PIN_11
+#define BQ79600_UART_PORT   GPIOC
+#define BQ79600_UART_AF     GPIO_AF7_USART3
+// BQ79600 WAKE ping -- PC10, AF4 TIM8_CH1N, the complementary output of TIM8
+// channel 1. The driver switches TX to it while it sends the ping.
+#define BQ79600_WAKE_TIM               TIM8
+#define BQ79600_WAKE_TIM_CHANNEL       TIM_CHANNEL_1
+#define BQ79600_WAKE_TIM_AF            GPIO_AF4_TIM8
+#define BQ79600_WAKE_TIM_COMPLEMENTARY true
+
+// BQ79600 NFAULT   -- PA3, LQFP100 pin 25, plain GPIO input, no AF
+#define BQ79600_NFAULT_PIN  GPIO_PIN_3
+#define BQ79600_NFAULT_PORT GPIOA
