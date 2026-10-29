@@ -40,6 +40,8 @@ add_executable(BPSL
     ${PSP_SOURCES}
     ${UTILS_SOURCES}
     ${DRIVERS_SOURCES}
+    ${TINYUSB_SOURCES}
+)
 )
 target_include_directories(BPSL PUBLIC ${PLATFORM_INCLUDE_DIRS} ${BOARD_INCLUDE_DIRS})
 
