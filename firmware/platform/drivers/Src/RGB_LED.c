@@ -1,10 +1,8 @@
 #include "RGB_LED.h"
 #include "gpio_helpers.h"
+#include "tim2_shared.h"
 
 #include <stddef.h>
-
-#define RGB_LED_PWM_FREQ_HZ    20000U
-#define RGB_LED_PWM_RESOLUTION 4096U // ARR = 4095, 12-bit duty
 
 #define RGB_LED_WHEEL_THIRD 85U // 120 degrees on a 256-step wheel
 
@@ -29,8 +27,8 @@ static const uint8_t sin_lut[256] = {
 };
 
 // Brightness correction: the eye sees PWM duty non-linearly, so rgb_led_set()
-// maps each 0-255 channel through this to a 12-bit compare value.
-// round(4095 * (i/255)^2.2)
+// maps each 0-255 channel through this to a 12-bit compare value, matching
+// TIM2_SHARED_PERIOD_TICKS. round(4095 * (i/255)^2.2)
 static const uint16_t gamma_lut[256] = {
     0,    0,    0,    0,    0,    1,    1,    2,    2,    3,    3,    4,    5,    6,    7,    8,
     9,    11,   12,   14,   15,   17,   19,   21,   23,   25,   27,   29,   32,   34,   37,   40,
@@ -50,34 +48,6 @@ static const uint16_t gamma_lut[256] = {
     3584, 3617, 3650, 3683, 3716, 3750, 3784, 3818, 3852, 3886, 3920, 3955, 3990, 4025, 4060, 4095,
 };
 
-// Kernel clock of an APB1 timer. The hardware feeds timers PCLK1 when the APB1
-// prescaler is 1, and 2 x PCLK1 otherwise (RM0440, RCC chapter), so a divided
-// APB1 bus doesn't halve the timer clock.
-static uint32_t apb1_timer_clock_hz(void) {
-    uint32_t pclk1 = HAL_RCC_GetPCLK1Freq();
-    if ((RCC->CFGR & RCC_CFGR_PPRE1) != RCC_HCLK_DIV1) {
-        pclk1 *= 2U;
-    }
-    return pclk1;
-}
-
-// Turn on the bus clock for a supported timer. Only APB1 timers are allowed
-// because apb1_timer_clock_hz() is the only clock calculation the driver has.
-static rgb_led_status_t enable_timer_clock(const TIM_TypeDef* timer) {
-    if (timer == TIM2) {
-        __HAL_RCC_TIM2_CLK_ENABLE();
-    } else if (timer == TIM3) {
-        __HAL_RCC_TIM3_CLK_ENABLE();
-    } else if (timer == TIM4) {
-        __HAL_RCC_TIM4_CLK_ENABLE();
-    } else if (timer == TIM5) {
-        __HAL_RCC_TIM5_CLK_ENABLE();
-    } else {
-        return RGB_LED_ERROR;
-    }
-    return RGB_LED_OK;
-}
-
 // Write all three compare registers and remember the color. Caller must hold
 // led->mutex. The registers are preloaded, so the new duty cycles take effect
 // together at the next timer update rather than one channel at a time.
@@ -88,23 +58,31 @@ static void write_compare(rgb_led_handle_t* led, rgb_led_color_t color) {
     led->color = color;
 }
 
-// See RGB_LED.h. Order: clocks, pins, timer base, channels, start PWM, then
-// the mutex last so a handle whose init failed is rejected by set/get.
-rgb_led_status_t rgb_led_init(rgb_led_handle_t* led, TIM_HandleTypeDef* htim,
-                              const rgb_led_config_t* cfg) {
-    if (led == NULL || htim == NULL || cfg == NULL) {
+// See RGB_LED.h. Order: shared time base, channel claims, pins, channels,
+// start PWM, then the mutex last so a handle whose init failed is rejected by
+// set/get.
+rgb_led_status_t rgb_led_init(rgb_led_handle_t* led, const rgb_led_config_t* cfg) {
+    if (led == NULL || cfg == NULL) {
         return RGB_LED_INVALID_PTR;
     }
-    if (enable_timer_clock(cfg->timer) != RGB_LED_OK || enable_gpio_clock(cfg->port) != HAL_OK) {
+    led->mutex = NULL; // set last, so set/get refuse a handle whose init failed
+
+    if (tim2_shared_init() != TIM2_SHARED_OK ||
+        tim2_shared_claim_channel(cfg->red_channel) != TIM2_SHARED_OK ||
+        tim2_shared_claim_channel(cfg->green_channel) != TIM2_SHARED_OK ||
+        tim2_shared_claim_channel(cfg->blue_channel) != TIM2_SHARED_OK) {
+        return RGB_LED_ERROR;
+    }
+    if (enable_gpio_clock(cfg->port) != HAL_OK) {
         return RGB_LED_ERROR;
     }
 
+    TIM_HandleTypeDef* htim = tim2_shared_get_handle();
     led->htim = htim;
     led->red_channel = cfg->red_channel;
     led->green_channel = cfg->green_channel;
     led->blue_channel = cfg->blue_channel;
     led->color = RGB_LED_OFF;
-    led->mutex = NULL; // set last, so set/get refuse a handle whose init failed
 
     GPIO_InitTypeDef gpio = {0};
     gpio.Pin = cfg->red_pin | cfg->green_pin | cfg->blue_pin;
@@ -113,23 +91,6 @@ rgb_led_status_t rgb_led_init(rgb_led_handle_t* led, TIM_HandleTypeDef* htim,
     gpio.Speed = GPIO_SPEED_FREQ_LOW;
     gpio.Alternate = cfg->alternate;
     HAL_GPIO_Init(cfg->port, &gpio);
-
-    // A slow timer clock can make this 0; clamp so PSC can't wrap to 0xFFFFFFFF
-    // (PWM then just runs below RGB_LED_PWM_FREQ_HZ).
-    uint32_t psc_div = apb1_timer_clock_hz() / (RGB_LED_PWM_RESOLUTION * RGB_LED_PWM_FREQ_HZ);
-    if (psc_div == 0U) {
-        psc_div = 1U;
-    }
-
-    htim->Instance = cfg->timer;
-    htim->Init.Prescaler = psc_div - 1U;
-    htim->Init.CounterMode = TIM_COUNTERMODE_UP;
-    htim->Init.Period = RGB_LED_PWM_RESOLUTION - 1U;
-    htim->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-    htim->Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-    if (HAL_TIM_PWM_Init(htim) != HAL_OK) {
-        return RGB_LED_ERROR;
-    }
 
     TIM_OC_InitTypeDef oc_cfg = {0};
     oc_cfg.OCMode = TIM_OCMODE_PWM1;

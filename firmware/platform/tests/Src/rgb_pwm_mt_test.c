@@ -4,6 +4,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "RGB_LED.h"
+#include "tim2_shared.h"
 
 /*
  * RGB LED multi-task test: three tasks fight over one LED.
@@ -38,7 +39,6 @@ typedef struct {
     TickType_t delay_ticks; // 0 = never block
 } writer_args_t;
 
-static TIM_HandleTypeDef htim_rgb;
 static rgb_led_handle_t rgb_led;
 static volatile bool failed = false;
 static volatile bool started = false; // set by the checker after the color check
@@ -132,15 +132,15 @@ static void checker_task(void* argument) {
     // color instead of showing the result.
     done = true;
     vTaskDelay(pdMS_TO_TICKS(FAIL_SETTLE_MS));
-    const uint32_t full = htim_rgb.Init.Period;
+    const uint32_t full = tim2_shared_get_period();
     uint32_t red_blue = 0U;
     if (failed) {
         red_blue = full;
     }
     taskENTER_CRITICAL();
-    __HAL_TIM_SET_COMPARE(&htim_rgb, rgb_led.red_channel, red_blue);
-    __HAL_TIM_SET_COMPARE(&htim_rgb, rgb_led.green_channel, full);
-    __HAL_TIM_SET_COMPARE(&htim_rgb, rgb_led.blue_channel, red_blue);
+    __HAL_TIM_SET_COMPARE(rgb_led.htim, rgb_led.red_channel, red_blue);
+    __HAL_TIM_SET_COMPARE(rgb_led.htim, rgb_led.green_channel, full);
+    __HAL_TIM_SET_COMPARE(rgb_led.htim, rgb_led.blue_channel, red_blue);
     taskEXIT_CRITICAL();
     vTaskSuspend(NULL);
 }
@@ -152,7 +152,7 @@ int main(void) {
     SystemClock_Config();
 
     const rgb_led_config_t cfg = RGB_LED_DEFAULT_CONFIG;
-    if (rgb_led_init(&rgb_led, &htim_rgb, &cfg) != RGB_LED_OK) {
+    if (rgb_led_init(&rgb_led, &cfg) != RGB_LED_OK) {
         Error_Handler();
     }
 

@@ -2,6 +2,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "RGB_LED.h"
+#include "tim2_shared.h"
 
 /*
  * RGB LED PWM test, using the default wiring in RGB_LED.h:
@@ -10,13 +11,16 @@
  * Shows red, orange, yellow, green, blue, indigo, violet for 1 s each so the
  * channel -> pin mapping can be checked by eye, turns off for 0.5 s, then fades
  * around the color wheel forever (~2.56 s per lap).
+ *
+ * Before that, main() checks the shared TIM2 layer: a second init is harmless
+ * and an already-claimed channel can't be claimed again. If either check
+ * fails the LED stays dark (Error_Handler).
  */
 
 #define RAINBOW_STEP_MS  1000U
 #define RAINBOW_PAUSE_MS 500U
 #define FADE_STEP_MS     10U
 
-static TIM_HandleTypeDef htim_rgb;
 static rgb_led_handle_t rgb_led;
 
 static StaticTask_t rgb_task_buffer;
@@ -51,7 +55,15 @@ int main(void) {
     SystemClock_Config();
 
     const rgb_led_config_t cfg = RGB_LED_DEFAULT_CONFIG;
-    if (rgb_led_init(&rgb_led, &htim_rgb, &cfg) != RGB_LED_OK) {
+    if (rgb_led_init(&rgb_led, &cfg) != RGB_LED_OK) {
+        Error_Handler();
+    }
+
+    // Shared-timer checks: a second init is a no-op, the LED's channels can't
+    // be claimed twice, and the free CH4 is still available.
+    if (tim2_shared_init() != TIM2_SHARED_OK ||
+        tim2_shared_claim_channel(RGB_LED_DEFAULT_BLUE_CH) != TIM2_SHARED_BUSY ||
+        tim2_shared_claim_channel(TIM_CHANNEL_4) != TIM2_SHARED_OK) {
         Error_Handler();
     }
 
