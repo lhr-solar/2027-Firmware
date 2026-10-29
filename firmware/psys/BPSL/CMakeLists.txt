@@ -42,7 +42,7 @@ add_executable(BPSL
     ${DRIVERS_SOURCES}
     ${TINYUSB_SOURCES}
 )
-)
+
 target_include_directories(BPSL PUBLIC ${PLATFORM_INCLUDE_DIRS} ${BOARD_INCLUDE_DIRS})
 
 build_firmware(BPSL)
