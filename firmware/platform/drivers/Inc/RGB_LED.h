@@ -6,7 +6,7 @@
  *   1. rgb_led_init()  - before or after the scheduler starts
  *   2. rgb_led_set() / rgb_led_get()  - from tasks only
  *
- * Each colour channel is 0-255 and goes through a gamma 2.2 table onto a
+ * Each color channel is 0-255 and goes through a gamma 2.2 table onto a
  * 12-bit, ~20 kHz PWM, so equal steps look like equal changes in brightness.
  * A mutex in the handle keeps tasks from interleaving their register writes.
  *
@@ -16,9 +16,8 @@
  *  - Clocks and GPIO are set up inside rgb_led_init(). The driver doesn't
  *    define any HAL_TIM_*Msp* callbacks, so it won't clash with a board that
  *    defines its own.
- *  - The default pins (PA0-PA2, TIM2 AF1) exist on both LQFP48 and LQFP100.
- *    PA2 is also USART2_TX / LPUART1_TX, so those UARTs can't use PA2 alongside
- *    this LED.
+ *  - The default pins (PA0-PA2, TIM2 AF1) are the same on both MCUs we use:
+ *    STM32G473CET6 (LQFP48) and STM32G473VET6 (LQFP100).
  *  - rgb_led_set() and rgb_led_get() take a mutex and must not be called from
  *    an ISR.
  */
@@ -32,10 +31,10 @@
 #include "semphr.h"
 
 typedef enum {
-    RGB_LED_OK,         // success
-    RGB_LED_NULL_ERROR, // a pointer argument was NULL
-    RGB_LED_ERROR,      // unsupported timer or HAL failure
-    RGB_LED_BUSY        // mutex not obtained before the timeout
+    RGB_LED_OK,          // success
+    RGB_LED_INVALID_PTR, // a pointer argument was NULL
+    RGB_LED_ERROR,       // unsupported timer or HAL failure
+    RGB_LED_BUSY         // mutex not obtained before the timeout
 } rgb_led_status_t;
 
 typedef struct {
@@ -96,8 +95,8 @@ typedef struct {
     uint32_t red_channel;
     uint32_t green_channel;
     uint32_t blue_channel;
-    rgb_led_color_t color;      // last colour written, guarded by mutex
-    SemaphoreHandle_t mutex;    // serialises access to the timer's compare registers
+    rgb_led_color_t color;      // last color written, guarded by mutex
+    SemaphoreHandle_t mutex;    // serializes access to the timer's compare registers
     StaticSemaphore_t mutexBuf; // static storage for mutex
 } rgb_led_handle_t;
 
@@ -107,36 +106,36 @@ typedef struct {
  * @param led   Handle to fill in. Must outlive every other call that uses it.
  * @param htim  Timer handle the driver will own. Its Instance is set from cfg.
  * @param cfg   Wiring; RGB_LED_DEFAULT_CONFIG for the standard PA0-PA2 layout.
- * @return RGB_LED_OK, RGB_LED_NULL_ERROR, or RGB_LED_ERROR for an unsupported
+ * @return RGB_LED_OK, RGB_LED_INVALID_PTR, or RGB_LED_ERROR for an unsupported
  *         timer or a HAL failure.
  */
 rgb_led_status_t rgb_led_init(rgb_led_handle_t* led, TIM_HandleTypeDef* htim,
                               const rgb_led_config_t* cfg);
 
 /**
- * @brief Change the LED colour. Task context only.
+ * @brief Change the LED color. Task context only.
  *
- * @param led      Initialised handle.
+ * @param led      Initialized handle.
  * @param color    Brightness per channel, 0 = off, 255 = full.
  * @param timeout  Ticks to wait for the mutex.
- * @return RGB_LED_OK, RGB_LED_NULL_ERROR (NULL or uninitialised handle), or
+ * @return RGB_LED_OK, RGB_LED_INVALID_PTR (NULL or uninitialized handle), or
  *         RGB_LED_BUSY on timeout.
  */
 rgb_led_status_t rgb_led_set(rgb_led_handle_t* led, rgb_led_color_t color, TickType_t timeout);
 
 /**
- * @brief Read the colour last written with rgb_led_set(). Task context only.
+ * @brief Read the color last written with rgb_led_set(). Task context only.
  *
- * @param led      Initialised handle.
- * @param color    Receives the colour.
+ * @param led      Initialized handle.
+ * @param color    Receives the color.
  * @param timeout  Ticks to wait for the mutex.
- * @return RGB_LED_OK, RGB_LED_NULL_ERROR (NULL or uninitialised handle), or
+ * @return RGB_LED_OK, RGB_LED_INVALID_PTR (NULL or uninitialized handle), or
  *         RGB_LED_BUSY on timeout.
  */
 rgb_led_status_t rgb_led_get(rgb_led_handle_t* led, rgb_led_color_t* color, TickType_t timeout);
 
 /**
- * @brief Colour at a point on a colour wheel. Doesn't touch hardware.
+ * @brief Color at a point on a color wheel. Doesn't touch hardware.
  *
  * @param phase  Position on the wheel; 256 steps make one full turn and it wraps.
  * @return Red, green and blue as three sine waves 120 degrees apart.

@@ -8,7 +8,7 @@
 
 #define RGB_LED_WHEEL_THIRD 85U // 120 degrees on a 256-step wheel
 
-// Colour wheel shape: one period of a sine scaled to 0-255, read by
+// Color wheel shape: one period of a sine scaled to 0-255, read by
 // rgb_led_wheel() at three offsets to get red, green and blue.
 // round(127.5 + 127.5 * sin(2*pi*i/256))
 static const uint8_t sin_lut[256] = {
@@ -78,7 +78,7 @@ static rgb_led_status_t enable_timer_clock(const TIM_TypeDef* timer) {
     return RGB_LED_OK;
 }
 
-// Write all three compare registers and remember the colour. Caller must hold
+// Write all three compare registers and remember the color. Caller must hold
 // led->mutex. The registers are preloaded, so the new duty cycles take effect
 // together at the next timer update rather than one channel at a time.
 static void write_compare(rgb_led_handle_t* led, rgb_led_color_t color) {
@@ -93,7 +93,7 @@ static void write_compare(rgb_led_handle_t* led, rgb_led_color_t color) {
 rgb_led_status_t rgb_led_init(rgb_led_handle_t* led, TIM_HandleTypeDef* htim,
                               const rgb_led_config_t* cfg) {
     if (led == NULL || htim == NULL || cfg == NULL) {
-        return RGB_LED_NULL_ERROR;
+        return RGB_LED_INVALID_PTR;
     }
     if (enable_timer_clock(cfg->timer) != RGB_LED_OK || enable_gpio_clock(cfg->port) != HAL_OK) {
         return RGB_LED_ERROR;
@@ -155,7 +155,7 @@ rgb_led_status_t rgb_led_init(rgb_led_handle_t* led, TIM_HandleTypeDef* htim,
 // See RGB_LED.h. Holds the mutex only for the three register writes.
 rgb_led_status_t rgb_led_set(rgb_led_handle_t* led, rgb_led_color_t color, TickType_t timeout) {
     if (led == NULL || led->mutex == NULL) {
-        return RGB_LED_NULL_ERROR;
+        return RGB_LED_INVALID_PTR;
     }
     if (xSemaphoreTake(led->mutex, timeout) != pdTRUE) {
         return RGB_LED_BUSY;
@@ -165,10 +165,10 @@ rgb_led_status_t rgb_led_set(rgb_led_handle_t* led, rgb_led_color_t color, TickT
     return RGB_LED_OK;
 }
 
-// See RGB_LED.h. Returns the saved colour, not a read-back of the registers.
+// See RGB_LED.h. Returns the saved color, not a read-back of the registers.
 rgb_led_status_t rgb_led_get(rgb_led_handle_t* led, rgb_led_color_t* color, TickType_t timeout) {
     if (led == NULL || color == NULL || led->mutex == NULL) {
-        return RGB_LED_NULL_ERROR;
+        return RGB_LED_INVALID_PTR;
     }
     if (xSemaphoreTake(led->mutex, timeout) != pdTRUE) {
         return RGB_LED_BUSY;

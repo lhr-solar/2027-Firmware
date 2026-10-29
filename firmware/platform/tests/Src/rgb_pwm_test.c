@@ -9,7 +9,7 @@
  *
  * Shows red, orange, yellow, green, blue, indigo, violet for 1 s each so the
  * channel -> pin mapping can be checked by eye, turns off for 0.5 s, then fades
- * around the colour wheel forever (~2.56 s per lap).
+ * around the color wheel forever (~2.56 s per lap).
  */
 
 #define RAINBOW_STEP_MS  1000U
@@ -22,7 +22,7 @@ static rgb_led_handle_t rgb_led;
 static StaticTask_t rgb_task_buffer;
 static StackType_t rgb_task_stack[configMINIMAL_STACK_SIZE * 2];
 
-// Runs the whole test: rainbow check first, then the endless colour-wheel fade.
+// Runs the whole test: rainbow check first, then the endless color-wheel fade.
 // vTaskDelayUntil keeps the fade steps evenly spaced even if a set call waits.
 static void rgb_task(void* argument) {
     (void)argument;
