@@ -1,4 +1,11 @@
 // https://www.ti.com/lit/ds/symlink/tps2hcs08-q1.pdf
+
+// This driver is not thread-safe: only one task may call TPS_* per SPI bus.
+// If several tasks need it, do this in your board code:
+// - Create one mutex per SPI bus (xSemaphoreCreateMutexStatic).
+// - Take it before each TPS_* call, give it back right after.
+// - Use a bounded timeout and handle the timeout.
+
 #pragma once
 
 
@@ -21,10 +28,6 @@
 #define TPS_SPI_TIMEOUT_MS  2u
 #endif
 
-// Not thread-safe: every TPS_* call for a given SPI bus must come from ONE task.
-// A register read is two frames (the reply arrives in the next frame), so another
-// task's frame in between would corrupt it. Other tasks request HSS actions from
-// that owner task (e.g. through a queue) instead of calling the driver directly.
 
 typedef struct {
     // SPI bus this chip is on, initialized by the board before TPS_Init.

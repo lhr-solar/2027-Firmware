@@ -30,9 +30,6 @@
 #define TPS_REG_ADC_CH2_V           0x1C
 #define TPS_REG_ADC_CH2_VDS         0x1D
 #define TPS_REG_I2T_CONFIG_CH2      0x1E
-
-// Harmless register to read when we only want the reply to the previous frame.
-// DEV_ID has no clear-on-read bits, so reading it never throws away a fault.
 #define TPS_NOP_REG                 TPS_REG_DEV_ID
 
 // DEV_ID for chip ver. A
