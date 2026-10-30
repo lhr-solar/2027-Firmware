@@ -80,6 +80,10 @@ typedef struct {
 #define BQ79600_WAKE_TIM_AF            GPIO_AF4_TIM8
 #define BQ79600_WAKE_TIM_COMPLEMENTARY true
 
+// USB (printf over USB serial) -- PA11 USB_DM, LQFP100 pin 72; PA12 USB_DP, pin 73.
+// Fixed USB pins with no AF to set (not in the references/ AF tables): the USB
+// peripheral takes them over when it's enabled, so there's nothing to define.
+
 // BQ79600 NFAULT   -- PA3, LQFP100 pin 25, plain GPIO input, no AF
 #define BQ79600_NFAULT_PIN  GPIO_PIN_3
 #define BQ79600_NFAULT_PORT GPIOA
