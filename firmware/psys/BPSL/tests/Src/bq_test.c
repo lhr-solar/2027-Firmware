@@ -16,7 +16,7 @@
 #include "BQ79616.h"
 #include "printf.h"
 #include "task.h"
-#include "tusb.h"
+#include "tusb_port.h"
 
 // Task configuration
 #define BQ_TEST_TASK_STACK_SIZE (configMINIMAL_STACK_SIZE * 4) // printf needs the extra room
@@ -26,10 +26,6 @@
 // a USB event, so it doesn't starve the test task.
 #define USB_TASK_STACK_SIZE (configMINIMAL_STACK_SIZE * 2)
 #define USB_TASK_PRIORITY   (tskIDLE_PRIORITY + 2)
-
-// The USB interrupt hands events to tud_task() through FreeRTOS, so it must be at or below
-// configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY's urgency (a numerically higher priority)
-#define USB_IRQ_PRIORITY (configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1)
 
 #define BQ_TEST_NUM_DEVICES    1U    // BQ79616s behind the BQ79600 bridge
 #define BQ_TEST_READ_PERIOD_MS 500U  // how often cell 1 is read and the LED updated
@@ -53,8 +49,6 @@ static StaticTask_t xBqTestTaskBuffer;
 static StackType_t xBqTestStack[BQ_TEST_TASK_STACK_SIZE];
 static StaticTask_t xUsbTaskBuffer;
 static StackType_t xUsbStack[USB_TASK_STACK_SIZE];
-
-static PCD_HandleTypeDef hpcd_USB_FS;
 
 // Where the last failure happened, for GDB
 typedef enum {
@@ -229,44 +223,6 @@ static void vUsbTask(void* pvParameters) {
     }
 }
 
-// Clock and interrupts for the USB peripheral; HAL_PCD_Init() calls this
-void HAL_PCD_MspInit(PCD_HandleTypeDef* hpcd) {
-    RCC_PeriphCLKInitTypeDef clk = {0};
-
-    if (hpcd->Instance != USB) {
-        return;
-    }
-
-    // 48 MHz from the PLL's Q output, see SystemClock_Config()
-    clk.PeriphClockSelection = RCC_PERIPHCLK_USB;
-    clk.UsbClockSelection = RCC_USBCLKSOURCE_PLL;
-    if (HAL_RCCEx_PeriphCLKConfig(&clk) != HAL_OK) {
-        Error_Handler();
-    }
-    __HAL_RCC_USB_CLK_ENABLE();
-
-    // TinyUSB's handlers for these are in platform/common/Src/tusb_port.c
-    HAL_NVIC_SetPriority(USB_HP_IRQn, USB_IRQ_PRIORITY, 0);
-    HAL_NVIC_EnableIRQ(USB_HP_IRQn);
-    HAL_NVIC_SetPriority(USB_LP_IRQn, USB_IRQ_PRIORITY, 0);
-    HAL_NVIC_EnableIRQ(USB_LP_IRQn);
-}
-
-// USB full-speed device on PA11/PA12, as in platform/tests/Src/tusb_cdc_test.c
-static void usb_init(void) {
-    hpcd_USB_FS.Instance = USB;
-    hpcd_USB_FS.Init.dev_endpoints = 8;
-    hpcd_USB_FS.Init.speed = PCD_SPEED_FULL;
-    hpcd_USB_FS.Init.phy_itface = PCD_PHY_EMBEDDED;
-    hpcd_USB_FS.Init.Sof_enable = DISABLE;
-    hpcd_USB_FS.Init.low_power_enable = DISABLE;
-    hpcd_USB_FS.Init.lpm_enable = DISABLE;
-    hpcd_USB_FS.Init.battery_charging_enable = DISABLE;
-    if (HAL_PCD_Init(&hpcd_USB_FS) != HAL_OK) {
-        Error_Handler();
-    }
-}
-
 int main(void) {
     if (HAL_Init() != HAL_OK) {
         Error_Handler();
@@ -278,8 +234,9 @@ int main(void) {
         Error_Handler();
     }
 
-    // USB peripheral first: printf_init() starts TinyUSB on it
-    usb_init();
+    // USB peripheral first (48 MHz clock, interrupts; platform/common/Src/tusb_port.c), then
+    // printf_init() starts TinyUSB on it
+    MX_USB_PCD_Init();
     if (!printf_init()) {
         Error_Handler();
     }

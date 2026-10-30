@@ -20,10 +20,10 @@
 #define STACK_SIZE 200
 
 StaticTask_t xTaskBuffer;
-StackType_t xStack[ STACK_SIZE ];
+StackType_t xStack[STACK_SIZE];
 
-#define QUEUE_LENGTH    10
-#define ITEM_SIZE       sizeof( uint32_t )
+#define QUEUE_LENGTH 10
+#define ITEM_SIZE    sizeof(uint32_t)
 
 uint8_t qStorage[QUEUE_LENGTH * ITEM_SIZE];
 static StaticQueue_t xStaticQueue;
@@ -31,43 +31,43 @@ static StaticQueue_t xStaticQueue;
 QueueHandle_t xReadings;
 
 static void error_handler(adc_status_t err) {
-    while(1) {
+    while (1) {
         // set bkpt here
     }
 }
-  
+
 static void success_handler(void) {
     // blinky
 
     GPIO_InitTypeDef led_config = {
         .Mode = GPIO_MODE_OUTPUT_PP,
         .Pull = GPIO_NOPULL,
-        .Pin = GPIO_PIN_5
+        .Pin = GPIO_PIN_5,
     };
-    
-     // enable clock for GPIOA
+
+    // enable clock for GPIOA
     HAL_GPIO_Init(GPIOA, &led_config); // initialize GPIOA with led_config
 
-    while(1){
+    while (1) {
         HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
         HAL_Delay(500);
     }
-  }
+}
 
 #ifdef ADC_SAMPLETIME_3CYCLES
-void TestQueueFull(void *pvParameters) {
+void TestQueueFull(void* pvParameters) {
     // Set bkpt in error_handler();
     uint32_t reading = 0;
 
     ADC_ChannelConfTypeDef sConfig = {
         .Channel = ADC_CHANNEL_1,
-        .SamplingTime = ADC_SAMPLETIME_3CYCLES
+        .SamplingTime = ADC_SAMPLETIME_3CYCLES,
     };
 
     // read once
     for (int i = 0; i < 10; i++) {
         adc_status_t stat = adc_read(hadc1, &sConfig, xReadings);
-        
+
         if (stat != ADC_OK) {
             error_handler(stat);
         }
@@ -76,7 +76,7 @@ void TestQueueFull(void *pvParameters) {
     // read once
     for (int i = 0; i < 11; i++) {
         adc_status_t stat = adc_read(hadc1, &sConfig, xReadings);
-        
+
         if (stat != ADC_OK) {
             error_handler(stat);
         }
@@ -89,23 +89,23 @@ void TestQueueFull(void *pvParameters) {
 #endif
 
 
-void TestADC1(void *pvParameters) {
+void TestADC1(void* pvParameters) {
     // Set bkpt in error_handler();
     uint32_t reading = 0;
 
     ADC_ChannelConfTypeDef sConfig = {
         .Channel = ADC_CHANNEL_1,
-    #ifdef ADC_SAMPLETIME_3CYCLES
-        .SamplingTime = ADC_SAMPLETIME_3CYCLES
-    #else
-        .SamplingTime = ADC_SAMPLETIME_2CYCLES_5
-    #endif
+        #ifdef ADC_SAMPLETIME_3CYCLES
+        .SamplingTime = ADC_SAMPLETIME_3CYCLES,
+        #else
+        .SamplingTime = ADC_SAMPLETIME_2CYCLES_5,
+        #endif
     };
 
     // read once
     for (int i = 0; i < 10; i++) {
         adc_status_t stat = adc_read(hadc1, &sConfig, xReadings);
-        
+
         if (stat != ADC_OK) {
             error_handler(stat);
         }
@@ -114,59 +114,59 @@ void TestADC1(void *pvParameters) {
     for (int i = 0; i < 10; i++) {
         xQueueReceive(xReadings, &reading, 0);
     }
-    
+
     success_handler();
 }
 
 #ifdef ADC2
-void TestADC2(void *pvParameters) {
+void TestADC2(void* pvParameters) {
     // Set bkpt in error_handler();
     uint32_t reading = 0;
 
     ADC_ChannelConfTypeDef sConfig = {
         .Channel = ADC_CHANNEL_1,
-    #ifdef ADC_SAMPLETIME_3CYCLES
-        .SamplingTime = ADC_SAMPLETIME_3CYCLES
-    #else
-        .SamplingTime = ADC_SAMPLETIME_2CYCLES_5
-    #endif
+        #ifdef ADC_SAMPLETIME_3CYCLES
+        .SamplingTime = ADC_SAMPLETIME_3CYCLES,
+        #else
+        .SamplingTime = ADC_SAMPLETIME_2CYCLES_5,
+        #endif
     };
 
     // read once
     for (int i = 0; i < 10; i++) {
         adc_status_t stat = adc_read(hadc2, &sConfig, xReadings);
-        
+
         if (stat != ADC_OK) {
             error_handler(stat);
         }
     }
-    
+
     for (int i = 0; i < 10; i++) {
         xQueueReceive(xReadings, &reading, 0);
     }
-    
+
     success_handler();
 }
 #endif
 
 #ifdef ADC3
-void TestADC3(void *pvParameters) {
+void TestADC3(void* pvParameters) {
     // Set bkpt in error_handler();
     uint32_t reading = 0;
 
     ADC_ChannelConfTypeDef sConfig = {
         .Channel = ADC_CHANNEL_1,
-    #ifdef ADC_SAMPLETIME_3CYCLES
-        .SamplingTime = ADC_SAMPLETIME_3CYCLES
-    #else
-        .SamplingTime = ADC_SAMPLETIME_2CYCLES_5
-    #endif
+        #ifdef ADC_SAMPLETIME_3CYCLES
+        .SamplingTime = ADC_SAMPLETIME_3CYCLES,
+        #else
+        .SamplingTime = ADC_SAMPLETIME_2CYCLES_5,
+        #endif
     };
-    
+
     // read once
     for (int i = 0; i < 10; i++) {
         adc_status_t stat = adc_read(hadc3, &sConfig, xReadings);
-        
+
         if (stat != ADC_OK) {
             error_handler(stat);
         }
@@ -175,7 +175,7 @@ void TestADC3(void *pvParameters) {
     for (int i = 0; i < 10; i++) {
         xQueueReceive(xReadings, &reading, 0);
     }
-    
+
     success_handler();
 }
 #endif
@@ -184,10 +184,10 @@ int main() {
     // GPIO Init
     HAL_Init();
     SystemClock_Config();
-    
+
     __HAL_RCC_GPIOA_CLK_ENABLE();
 
-    GPIO_InitTypeDef input =  {
+    GPIO_InitTypeDef input = {
         .Pin = GPIO_PIN_0,
         .Mode = GPIO_MODE_ANALOG,
         .Pull = GPIO_NOPULL,
@@ -231,19 +231,19 @@ int main() {
     // adc_init_1.OversamplingMode = DISABLE;
 
     volatile adc_status_t s = adc_init(&adc_init_1, hadc1);
-    s+=0;
-    if (s != ADC_OK) error_handler(ADC_INIT_FAIL);
+    s += 0;
+    if (s != ADC_OK)
+        error_handler(ADC_INIT_FAIL);
 
     #if !defined(STM32L4xx)
     ADC_MultiModeTypeDef multimode = {0};
     multimode.Mode = ADC_MODE_INDEPENDENT;
-    if (HAL_ADCEx_MultiModeConfigChannel(hadc1, &multimode) != HAL_OK)
-    {
-    Error_Handler();
+    if (HAL_ADCEx_MultiModeConfigChannel(hadc1, &multimode) != HAL_OK) {
+        Error_Handler();
     }
     #endif
 
-    
+
     #ifdef ADC2
     ADC_InitTypeDef adc_init_2 = {0};
 
@@ -259,7 +259,8 @@ int main() {
     adc_init_2.DMAContinuousRequests = DISABLE;
     adc_init_2.EOCSelection = ADC_EOC_SINGLE_CONV;
 
-    if (adc_init(&adc_init_2, hadc2) != ADC_OK) error_handler(ADC_INIT_FAIL);
+    if (adc_init(&adc_init_2, hadc2) != ADC_OK)
+        error_handler(ADC_INIT_FAIL);
     #endif
     #ifdef ADC3
     ADC_InitTypeDef adc_init_3 = {0};
@@ -276,19 +277,23 @@ int main() {
     adc_init_3.DMAContinuousRequests = DISABLE;
     adc_init_3.EOCSelection = ADC_EOC_SINGLE_CONV;
 
-    if (adc_init(&adc_init_3, hadc3) != ADC_OK) error_handler(ADC_INIT_FAIL);
+    if (adc_init(&adc_init_3, hadc3) != ADC_OK)
+        error_handler(ADC_INIT_FAIL);
     #endif
 
-    xTaskCreateStatic(TestADC1,
-                    "ADC Test",
-                    configMINIMAL_STACK_SIZE,
-                    (void*) 1,
-                    tskIDLE_PRIORITY+4,
-                    xStack,
-                    &xTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        TestADC1,
+        "ADC Test",
+        configMINIMAL_STACK_SIZE,
+        (void*)1,
+        tskIDLE_PRIORITY + 4,
+        xStack,
+        &xTaskBuffer);
+    // clang-format on
 
     vTaskStartScheduler();
-    
+
     // should never reach
     HAL_ADC_MspDeInit(hadc1);
 
@@ -298,23 +303,24 @@ int main() {
 #define ADC_PRIO 5 /** can't make this 0 because FreeRTOS priorities */
 
 #if defined(STM32G4xx)
-static inline void HAL_ADC_MspG4Init(ADC_HandleTypeDef *h) {
+static inline void HAL_ADC_MspG4Init(ADC_HandleTypeDef* h) {
     __HAL_RCC_SYSCFG_CLK_ENABLE();
     __HAL_RCC_PWR_CLK_ENABLE();
-    
+
     RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-    if (h->Instance == ADC1 || h->Instance == ADC2) { 
+    if (h->Instance == ADC1 || h->Instance == ADC2) {
         PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC12;
         PeriphClkInit.Adc12ClockSelection = RCC_ADC12CLKSOURCE_SYSCLK;
-        __HAL_RCC_ADC12_CLK_ENABLE(); 
-        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) Error_Handler();
-    }   
-    else if (h->Instance == ADC3 || h->Instance == ADC4 || h->Instance == ADC5) {
+        __HAL_RCC_ADC12_CLK_ENABLE();
+        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+            Error_Handler();
+    } else if (h->Instance == ADC3 || h->Instance == ADC4 || h->Instance == ADC5) {
         PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC345;
         PeriphClkInit.Adc345ClockSelection = RCC_ADC345CLKSOURCE_SYSCLK;
-        __HAL_RCC_ADC345_CLK_ENABLE(); 
-        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) Error_Handler();
+        __HAL_RCC_ADC345_CLK_ENABLE();
+        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+            Error_Handler();
     }
 
     #if defined(ADC1) || defined(ADC2)
@@ -340,7 +346,7 @@ static inline void HAL_ADC_MspG4Init(ADC_HandleTypeDef *h) {
 #endif
 
 #if defined(STM32L4xx)
-static inline void HAL_ADC_MspL4Init(ADC_HandleTypeDef *h) {
+static inline void HAL_ADC_MspL4Init(ADC_HandleTypeDef* h) {
 
     // L4 Clock
     __HAL_RCC_ADC_CLK_ENABLE();
@@ -365,18 +371,21 @@ static inline void HAL_ADC_MspL4Init(ADC_HandleTypeDef *h) {
 #endif
 
 #if defined(STM32F4xx)
-static inline void HAL_ADC_MspF4Init(ADC_HandleTypeDef *h) {
+static inline void HAL_ADC_MspF4Init(ADC_HandleTypeDef* h) {
     // GPIO Init
 
     // F4 Clock
-    if (h->Instance == ADC1) __HAL_RCC_ADC1_CLK_ENABLE();
+    if (h->Instance == ADC1)
+        __HAL_RCC_ADC1_CLK_ENABLE();
 
     #ifdef ADC2
-    if (h->Instance == ADC2) __HAL_RCC_ADC2_CLK_ENABLE();
+    if (h->Instance == ADC2)
+        __HAL_RCC_ADC2_CLK_ENABLE();
     #endif
 
     #ifdef ADC3
-    if (h->Instance == ADC3)__HAL_RCC_ADC3_CLK_ENABLE();
+    if (h->Instance == ADC3)
+        __HAL_RCC_ADC3_CLK_ENABLE();
     #endif
 
     HAL_NVIC_SetPriority(ADC_IRQn, ADC_PRIO, 0);
@@ -385,12 +394,12 @@ static inline void HAL_ADC_MspF4Init(ADC_HandleTypeDef *h) {
 #endif
 
 #if defined(STM32G4xx)
-static inline void HAL_ADC_MspG4DeInit(ADC_HandleTypeDef *h) {
-    if (h->Instance == ADC1 || h->Instance == ADC2) { 
-        __HAL_RCC_ADC12_CLK_DISABLE(); 
-    }   
+static inline void HAL_ADC_MspG4DeInit(ADC_HandleTypeDef* h) {
+    if (h->Instance == ADC1 || h->Instance == ADC2) {
+        __HAL_RCC_ADC12_CLK_DISABLE();
+    }
     if (h->Instance == ADC3 || h->Instance == ADC4 || h->Instance == ADC5) {
-        __HAL_RCC_ADC345_CLK_DISABLE(); 
+        __HAL_RCC_ADC345_CLK_DISABLE();
     }
 
     #if defined(ADC1) || defined(ADC2)
@@ -412,7 +421,7 @@ static inline void HAL_ADC_MspG4DeInit(ADC_HandleTypeDef *h) {
 #endif
 
 #if defined(STM32L4xx)
-static inline void HAL_ADC_MspL4DeInit(ADC_HandleTypeDef *h) {
+static inline void HAL_ADC_MspL4DeInit(ADC_HandleTypeDef* h) {
     // GPIO Init
 
     // L4 Clock
@@ -435,27 +444,30 @@ static inline void HAL_ADC_MspL4DeInit(ADC_HandleTypeDef *h) {
 #endif
 
 #if defined(STM32F4xx)
-static inline void HAL_ADC_MspF4DeInit(ADC_HandleTypeDef *h) {
-    if (h->Instance == ADC1) __HAL_RCC_ADC1_CLK_DISABLE();
+static inline void HAL_ADC_MspF4DeInit(ADC_HandleTypeDef* h) {
+    if (h->Instance == ADC1)
+        __HAL_RCC_ADC1_CLK_DISABLE();
 
     #ifdef ADC2
-    if (h->Instance == ADC2) __HAL_RCC_ADC2_CLK_DISABLE();
+    if (h->Instance == ADC2)
+        __HAL_RCC_ADC2_CLK_DISABLE();
     #endif
 
     #ifdef ADC3
-    if (h->Instance == ADC3)__HAL_RCC_ADC3_CLK_DISABLE();
+    if (h->Instance == ADC3)
+        __HAL_RCC_ADC3_CLK_DISABLE();
     #endif
 
     HAL_NVIC_DisableIRQ(ADC_IRQn);
 }
 #endif
 
-void HAL_ADC_MspInit(ADC_HandleTypeDef *h) {
+void HAL_ADC_MspInit(ADC_HandleTypeDef* h) {
     // G4
     #ifdef STM32G4xx
     HAL_ADC_MspG4Init(h);
     #endif
-    
+
     // L4
     #ifdef STM32L4xx
     HAL_ADC_MspL4Init(h);
@@ -467,7 +479,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef *h) {
     #endif
 }
 
-void HAL_ADC_MspDeInit(ADC_HandleTypeDef *h) {
+void HAL_ADC_MspDeInit(ADC_HandleTypeDef* h) {
     // G4
     #ifdef STM32G4xx
     HAL_ADC_MspG4DeInit(h);
