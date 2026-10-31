@@ -29,39 +29,3 @@ typedef struct {
 // RGB LED Green    -- PA2, LQFP100 pin 22
 #define RGB_LED_GREEN_PIN  GPIO_PIN_2
 #define RGB_LED_GREEN_PORT GPIOA
-
-// HV+ Contactor    -- PE1
-#define HV_PLUS_CTRL_PIN  GPIO_PIN_1
-#define HV_PLUS_CTRL_PORT GPIOE
-
-// HV- Contactor    -- PE4
-#define HV_MINUS_CTRL_PIN  GPIO_PIN_4
-#define HV_MINUS_CTRL_PORT GPIOE
-
-// Motor Contactor  -- PC2
-#define MOTOR_CTRL_PIN  GPIO_PIN_2
-#define MOTOR_CTRL_PORT GPIOC
-
-// HV+ Sense        -- PB9
-#define HV_PLUS_SENSE_PIN  GPIO_PIN_9
-#define HV_PLUS_SENSE_PORT GPIOB
-
-// HV- Sense        -- PE2
-#define HV_MINUS_SENSE_PIN  GPIO_PIN_2
-#define HV_MINUS_SENSE_PORT GPIOE
-
-// Motor Sense      -- PC0
-#define MOTOR_SENSE_PIN  GPIO_PIN_0
-#define MOTOR_SENSE_PORT GPIOC
-
-// ESTOP 1 Sense    -- PD2
-#define ESTOP_1_SENSE_PIN  GPIO_PIN_2
-#define ESTOP_1_SENSE_PORT GPIOD
-
-// ESTOP 2 Sense    -- PD3
-#define ESTOP_2_SENSE_PIN  GPIO_PIN_3
-#define ESTOP_2_SENSE_PORT GPIOD
-
-// ESTOP 3 Sense    -- PD4
-#define ESTOP_3_SENSE_PIN  GPIO_PIN_4
-#define ESTOP_3_SENSE_PORT GPIOD
