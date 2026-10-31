@@ -43,15 +43,15 @@ for an interrupt
 
 // LSOM has heartbeat pin defined as PC3
 // Most other nucleos have a heartbeat for A5
-#define LED_PIN  GPIO_PIN_3
-#define LED_PORT GPIOC
+#define LED_PIN  GPIO_PIN_5
+#define LED_PORT GPIOD
 
 // Scope pins toggled from the CAN callbacks
 #define CAN_TX_PROFILE_PORT GPIOB
 #define CAN_TX_PROFILE_PIN  GPIO_PIN_11
 
 #define CAN_RX_PROFILE_PORT GPIOA
-#define CAN_RX_PROFILE_PIN  GPIO_PIN_15
+#define CAN_RX_PROFILE_PIN  GPIO_PIN_11
 
 void can_profile_pins_init() {
     GPIO_InitTypeDef tx_pin_config = {
@@ -69,6 +69,9 @@ void can_profile_pins_init() {
             break;
         case (uint32_t)GPIOC:
             __HAL_RCC_GPIOC_CLK_ENABLE();
+            break;
+        case (uint32_t)GPIOD:
+            __HAL_RCC_GPIOD_CLK_ENABLE();
             break;
         case (uint32_t)GPIOD:
             __HAL_RCC_GPIOD_CLK_ENABLE();
@@ -96,6 +99,9 @@ void can_profile_pins_init() {
         case (uint32_t)GPIOD:
             __HAL_RCC_GPIOD_CLK_ENABLE();
             break;
+        case (uint32_t)GPIOD:
+            __HAL_RCC_GPIOD_CLK_ENABLE();
+            break;
     }
     HAL_GPIO_Init(CAN_RX_PROFILE_PORT, &rx_pin_config);
 }
@@ -118,9 +124,90 @@ void Heartbeat_Init() {
         case (uint32_t)GPIOD:
             __HAL_RCC_GPIOD_CLK_ENABLE();
             break;
+        case (uint32_t)GPIOD:
+            __HAL_RCC_GPIOD_CLK_ENABLE();
+            break;
     }
 
     HAL_GPIO_Init(LED_PORT, &led_config);
+}
+
+void G474_SystemClockConfig() {
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+    /** Configure the main internal regulator output voltage
+   */
+    HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
+
+    /** Initializes the RCC Oscillators according to the specified parameters
+   * in the RCC_OscInitTypeDef structure.
+   */
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+    RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+    RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+    RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV4;
+    RCC_OscInitStruct.PLL.PLLN = 40;
+    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+    RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+        Error_Handler();
+    }
+
+    /** Initializes the CPU, AHB and APB buses clocks
+   */
+    RCC_ClkInitStruct.ClockType =
+        RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
+        Error_Handler();
+    }
+}
+
+void G473_SystemClockConfig(void) {
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+    /** Configure the main internal regulator output voltage
+   */
+    HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
+
+    /** Initializes the RCC Oscillators according to the specified parameters
+   * in the RCC_OscInitTypeDef structure.
+   */
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+    RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+    RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+    RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
+    RCC_OscInitStruct.PLL.PLLN = 12;
+    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+    RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+        Error_Handler();
+    }
+
+    /** Initializes the CPU, AHB and APB buses clocks
+   */
+    RCC_ClkInitStruct.ClockType =
+        RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK) {
+        Error_Handler();
+    }
 }
 
 void Error_Handler() {
@@ -223,6 +310,7 @@ while (1) {
 
         HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
         vTaskDelay(pdMS_TO_TICKS(500));
+        vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
 
@@ -253,11 +341,11 @@ int main(void) {
 
     // internal loopback shorts the CAN RX and TX internally.
     // In production, this should be set to FDCAN_MODE_NORMAL
-    hfdcan1->Init.Mode = FDCAN_MODE_NORMAL;
-    hfdcan1->Init.Mode = FDCAN_MODE_NORMAL;
+    hfdcan1->Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
     hfdcan1->Init.AutoRetransmission = ENABLE;
     hfdcan1->Init.TransmitPause = DISABLE;
     hfdcan1->Init.ProtocolException = DISABLE;
+    hfdcan1->Init.NominalPrescaler = 12;
     hfdcan1->Init.NominalPrescaler = 12;
     hfdcan1->Init.NominalSyncJumpWidth = 1;
     hfdcan1->Init.NominalTimeSeg1 = 13;
@@ -304,6 +392,7 @@ int main(void) {
 
     // internal loopback shorts the CAN RX and TX internally.
     // In production, this should be set to FDCAN_MODE_NORMAL
+    hfdcan2->Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
     hfdcan2->Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
     hfdcan2->Init.AutoRetransmission = ENABLE;
     hfdcan2->Init.TransmitPause = DISABLE;
@@ -355,6 +444,7 @@ int main(void) {
 
     // internal loopback shorts the CAN RX and TX internally.
     // In production, this should be set to FDCAN_MODE_NORMAL
+    hfdcan3->Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
     hfdcan3->Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
     hfdcan3->Init.AutoRetransmission = ENABLE;
     hfdcan3->Init.TransmitPause = DISABLE;
@@ -442,18 +532,17 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
             __HAL_RCC_FDCAN_CLK_ENABLE();
         }
 
-        enable_gpio_clock(FDCAN1_RX_PORT);
-        enable_gpio_clock(FDCAN1_TX_PORT);
-        GPIO_InitStruct.Pin = FDCAN1_RX_PIN;
+        __HAL_RCC_GPIOD_CLK_ENABLE();
+        /**FDCAN1 GPIO Configuration
+    PA11     ------> FDCAN1_RX
+    PA12     ------> FDCAN1_TX
+    */
+        GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-        GPIO_InitStruct.Alternate = FDCAN1_RX_AF;
-        HAL_GPIO_Init(FDCAN1_RX_PORT, &GPIO_InitStruct);
-
-        GPIO_InitStruct.Pin = FDCAN1_TX_PIN;
-        GPIO_InitStruct.Alternate = FDCAN1_TX_AF;
-        HAL_GPIO_Init(FDCAN1_TX_PORT, &GPIO_InitStruct);
+        GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN1;
+        HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
         /* FDCAN1 interrupt Init */
         HAL_NVIC_SetPriority(FDCAN1_IT0_IRQn, FDCAN_NVIC_PRIO, 0);
@@ -557,8 +646,11 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan) {
             __HAL_RCC_FDCAN_CLK_DISABLE();
         }
 
-        HAL_GPIO_DeInit(FDCAN1_RX_PORT, FDCAN1_RX_PIN);
-        HAL_GPIO_DeInit(FDCAN1_TX_PORT, FDCAN1_TX_PIN);
+        /**FDCAN1 GPIO Configuration
+    PA11     ------> FDCAN1_RX
+    PA12     ------> FDCAN1_TX
+    */
+        HAL_GPIO_DeInit(GPIOD, GPIO_PIN_0 | GPIO_PIN_1);
 
         /* FDCAN1 interrupt Deinit */
         HAL_NVIC_DisableIRQ(FDCAN1_IT0_IRQn);
