@@ -17,7 +17,7 @@ StaticTask_t Task_Current_Monitor_Buffer;
 StaticTask_t Task_Test_Buffer;
 
 void Task_Init(void* pvParameters) {
-    
+
     (void)pvParameters;
 
     vTaskDelay(pdMS_TO_TICKS(STARTUP_DELAY_MS));

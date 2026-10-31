@@ -6,12 +6,12 @@
 
 void Task_SMB_Monitor(void* pvParameters) {
 
-    // task variables go here 
+    // task variables go here
 
     TickType_t xLastWakeTime = xTaskGetTickCount();
 
     while (true) {
-        
+
         // code go here :)
 
         vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(TASK_SMB_MONITOR_DELAY_MS));
