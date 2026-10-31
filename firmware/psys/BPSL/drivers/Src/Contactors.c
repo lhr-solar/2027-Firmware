@@ -1,5 +1,5 @@
-#include "Contactors.h"
 #include "pinDefs.h"
+#include "Contactors.h"
 
 static SemaphoreHandle_t contactors_mutex = NULL;
 static StaticSemaphore_t contactors_mutex_buffer;
@@ -45,14 +45,15 @@ contactor_state_t Contactors_Verify(contactor_num_t contactor_num) {
     return (Contactors_Get(contactor_num) == contactor->state) ? CONTACTOR_OK : CONTACTOR_ERROR;
 }
 
-static void prvContactorCallback(TimerHandle_t sense_timer) {
+void vContactorCallback(TimerHandle_t sense_timer) {
 
     contactor_num_t contactor_num = (contactor_num_t)pvTimerGetTimerID(sense_timer);
     contactor_t* contactor = &contactors[contactor_num];
 
     if (contactor->state != Contactors_Get(contactor_num)) {
         contactor->callback_faulted = true;
-        // TODO: Change when we determine how faults/errors should be handled
+        // TODO: Temporary for physical testing. Replace when we determine how faults/errors should be handled
+        Contactors_EmergencyOpenAll();
     }
 }
 
@@ -196,7 +197,7 @@ void Contactors_Init() {
                                CONTACTOR_SENSE_DELAY_TICKS,     /* Timer period in ticks */
                                pdFALSE,                         /* Don't auto-reload */
                                (void*)(uint32_t)contactor_num,  /* Timer ID */
-                               prvContactorCallback,            /* Callback function */
+                               vContactorCallback,              /* Callback function */
                                &(contactor->sense_timer_buffer) /* Buffer to hold timer data */
             );
     }

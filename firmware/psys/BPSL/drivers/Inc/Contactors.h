@@ -95,9 +95,10 @@ estop_status_t Contactors_CheckEstops();
 /** * @brief RTOS Timer callback for contactor state verification.
  * @note This function is called when the sense timer for the contactor times out. 
  * It confirms that the physical contactor state changed successfully and matches the expected value.
+ * On a mismatch it sets callback_faulted and calls Contactors_EmergencyOpenAll() (temporary, for physical testing).
  * * @param sense_timer Handle of the timer that expired.
  */
-/* static void prvContactorCallback( TimerHandle_t sense_timer ); */
+void vContactorCallback(TimerHandle_t sense_timer);
 
 /** * @brief Opens all contactors immediately in case of a system fault.
  * @note Initializes the contactors first if Contactors_Init() has not run yet.
