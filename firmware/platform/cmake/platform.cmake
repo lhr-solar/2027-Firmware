@@ -41,8 +41,7 @@ file(GLOB FREERTOS_SOURCES CONFIGURE_DEPENDS
     "${PLATFORM_DIR}/middleware/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/*.c"
 )
 file(GLOB FATFS_SOURCES CONFIGURE_DEPENDS "${PLATFORM_DIR}/middleware/FatFs/Src/*.c")
-# TinyUSB
-# TODO: in TinyUSB integration PR
+file(GLOB_RECURSE TINYUSB_SOURCES CONFIGURE_DEPENDS "${PLATFORM_DIR}/middleware/TinyUSB/src/*.c")
 
 ## psp/
 file(GLOB PSP_SOURCES CONFIGURE_DEPENDS "${PLATFORM_DIR}/psp/Src/*.c")
@@ -60,6 +59,8 @@ set(PLATFORM_INCLUDE_DIRS
     "${PLATFORM_DIR}/middleware/FreeRTOS-Kernel/include"
     "${PLATFORM_DIR}/middleware/FreeRTOS-Kernel/portable/GCC/ARM_CM4F"
     "${PLATFORM_DIR}/middleware/FatFs/Inc"
+    "${PLATFORM_DIR}/middleware/TinyUSB/src"
+    "${PLATFORM_DIR}/middleware/TinyUSB/hw" # bsp/board_api.h
     "${PLATFORM_DIR}/middleware" # header-only libs (nanoprintf)
     "${PLATFORM_DIR}/psp/Inc"
     "${PLATFORM_DIR}/utils/Inc"

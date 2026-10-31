@@ -16,7 +16,7 @@ API signature.
 | `psp/` | **Editable** | Platform support package — LHR's peripheral drivers |
 | `drivers/` | **Editable** | Off-chip device drivers |
 | `utils/` | **Editable** | Small reusable helpers |
-| `common/` | **Editable** | Used to modify middleware/HAL configurations |
+| `common/` | **Editable** | Used to modify middleware/HAL configurations; ST/FreeRTOS/newlib templates, not LHR-authored — excluded from clang-tidy and clang-format |
 | `tests/` | **Editable** | On-target hardware test programs |
 | `stm/` | **READ-ONLY** | Arm CMSIS headers, STM32 HAL |
 | `middleware/FreeRTOS-Kernel/` | **READ-ONLY** | FreeRTOS |

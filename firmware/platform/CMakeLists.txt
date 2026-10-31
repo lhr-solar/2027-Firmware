@@ -13,6 +13,10 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/platform.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/stm32.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/post_build.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/custom_commands.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/lint.cmake)
+
+# test to build -- cached, so it sticks until -DTEST=<name> changes it
+set(TEST blinky CACHE STRING "Platform test to build (tests/Src/<TEST>_test.c)")
 
 ### Compile Tests
 # unsupported tests on the g473
@@ -21,7 +25,6 @@ set(DISABLED_TESTS
     can_isr
     can_mt
     can_queueSet
-    tusb_cdc # aarav chud
 )
 
 # check if test is disabled for g473
@@ -42,6 +45,7 @@ add_executable(App
     ${HAL_SOURCES}
     ${FREERTOS_SOURCES}
     ${FATFS_SOURCES}
+    ${TINYUSB_SOURCES}
     ${PSP_SOURCES}
     ${UTILS_SOURCES}
     ${DRIVERS_SOURCES}
@@ -50,12 +54,20 @@ target_include_directories(App PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/Inc ${PL
 
 build_firmware(App)
 post_build(App)
+lint(App)
 
 # external commands
 add_flash_target(App)
+add_flash_usb_target(App)
 add_dump_symbols_target(App)
 add_dump_size_target(App)
 add_erase_target()
+add_format_targets(
+    ${CMAKE_CURRENT_SOURCE_DIR}/psp
+    ${CMAKE_CURRENT_SOURCE_DIR}/drivers
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests
+)
 
 # must have jolly good message
 string(ASCII 27 Esc)
