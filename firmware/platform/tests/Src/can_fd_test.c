@@ -375,7 +375,7 @@ int main(void) {
     hfdcan2->Init.AutoRetransmission = ENABLE;
     hfdcan2->Init.TransmitPause = DISABLE;
     hfdcan2->Init.ProtocolException = DISABLE;
-    hfdcan2->Init.NominalPrescaler = 24;
+    hfdcan2->Init.NominalPrescaler = 12;
     hfdcan2->Init.NominalSyncJumpWidth = 1;
     hfdcan2->Init.NominalTimeSeg1 = 13;
     hfdcan2->Init.NominalTimeSeg2 = 2;
@@ -426,7 +426,7 @@ int main(void) {
     hfdcan3->Init.AutoRetransmission = ENABLE;
     hfdcan3->Init.TransmitPause = DISABLE;
     hfdcan3->Init.ProtocolException = DISABLE;
-    hfdcan3->Init.NominalPrescaler = 24;
+    hfdcan3->Init.NominalPrescaler = 12;
     hfdcan3->Init.NominalSyncJumpWidth = 1;
     hfdcan3->Init.NominalTimeSeg1 = 13;
     hfdcan3->Init.NominalTimeSeg2 = 2;
@@ -553,7 +553,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
         GPIO_InitStruct.Pull = GPIO_NOPULL;
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
         GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN2;
-        HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+        HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
         /* FDCAN2 interrupt Init */
         HAL_NVIC_SetPriority(FDCAN2_IT0_IRQn, FDCAN_NVIC_PRIO, 0);
@@ -590,7 +590,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
         GPIO_InitStruct.Pull = GPIO_NOPULL;
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
         GPIO_InitStruct.Alternate = GPIO_AF11_FDCAN3;
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+        HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
         /* FDCAN3 interrupt Init */
         HAL_NVIC_SetPriority(FDCAN3_IT0_IRQn, FDCAN_NVIC_PRIO, 0);
