@@ -1,0 +1,25 @@
+#pragma once
+
+#define GPIO_LED_RED_Pin GPIO_PIN_1
+#define GPIO_LED_RED_GPIO_Port GPIOA
+#define GPIO_LED_GREEN_Pin GPIO_PIN_2
+#define GPIO_LED_GREEN_GPIO_Port GPIOA
+#define SHUNT_UOUT_Pin GPIO_PIN_3
+#define SHUNT_UOUT_GPIO_Port GPIOA
+#define SHUNT_UREF_Pin GPIO_PIN_4
+#define SHUNT_UREF_GPIO_Port GPIOA
+#define HV_ADC_Pin GPIO_PIN_6
+#define HV_ADC_GPIO_Port GPIOA
+#define HV_DIAG_Pin GPIO_PIN_7
+#define HV_DIAG_GPIO_Port GPIOA
+#define MOTOR_ADC_Pin GPIO_PIN_1
+#define MOTOR_ADC_GPIO_Port GPIOB
+#define MOTOR_DIAG_Pin GPIO_PIN_11
+#define MOTOR_DIAG_GPIO_Port GPIOB
+#define HALL_OCD_Pin GPIO_PIN_14
+#define HALL_OCD_GPIO_Port GPIOB
+#define HALL_UREF_Pin GPIO_PIN_15
+#define HALL_UREF_GPIO_Port GPIOB
+#define HALL_UOUT_Pin GPIO_PIN_8
+#define HALL_UOUT_GPIO_Port GPIOA
+
