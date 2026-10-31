@@ -15,15 +15,15 @@ for an interrupt
 
 // LSOM has heartbeat pin defined as PC3
 // Most other nucleos have a heartbeat for A5
-#define LED_PIN  GPIO_PIN_3
-#define LED_PORT GPIOC
+#define LED_PIN  GPIO_PIN_5
+#define LED_PORT GPIOD
 
 // Some pins broken out by LSOM
 #define CAN_TX_PROFILE_PORT GPIOA
 #define CAN_TX_PROFILE_PIN  GPIO_PIN_10
 
-#define CAN_RX_PROFILE_PORT GPIOB
-#define CAN_RX_PROFILE_PIN  GPIO_PIN_4
+#define CAN_RX_PROFILE_PORT GPIOA
+#define CAN_RX_PROFILE_PIN  GPIO_PIN_11
 
 void can_profile_pins_init() {
     GPIO_InitTypeDef tx_pin_config = {
@@ -41,6 +41,9 @@ void can_profile_pins_init() {
             break;
         case (uint32_t)GPIOC:
             __HAL_RCC_GPIOC_CLK_ENABLE();
+            break;
+        case (uint32_t)GPIOD:
+            __HAL_RCC_GPIOD_CLK_ENABLE();
             break;
     }
 
@@ -62,6 +65,9 @@ void can_profile_pins_init() {
         case (uint32_t)GPIOC:
             __HAL_RCC_GPIOC_CLK_ENABLE();
             break;
+        case (uint32_t)GPIOD:
+            __HAL_RCC_GPIOD_CLK_ENABLE();
+            break;
     }
     HAL_GPIO_Init(CAN_RX_PROFILE_PORT, &rx_pin_config);
 }
@@ -80,6 +86,9 @@ void Heartbeat_Init() {
             break;
         case (uint32_t)GPIOC:
             __HAL_RCC_GPIOC_CLK_ENABLE();
+            break;
+        case (uint32_t)GPIOD:
+            __HAL_RCC_GPIOD_CLK_ENABLE();
             break;
     }
 
@@ -142,7 +151,7 @@ void G473_SystemClockConfig(void) {
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
     RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
-    RCC_OscInitStruct.PLL.PLLN = 10;
+    RCC_OscInitStruct.PLL.PLLN = 12;
     RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
     RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
     RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
@@ -159,7 +168,7 @@ void G473_SystemClockConfig(void) {
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK) {
         Error_Handler();
     }
 }
@@ -271,7 +280,7 @@ static void task(void* pvParameters) {
         #endif
 
         HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
-        vTaskDelay(pdMS_TO_TICKS(100));
+        vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
 
@@ -312,11 +321,11 @@ int main(void) {
 
     // internal loopback shorts the CAN RX and TX internally.
     // In production, this should be set to FDCAN_MODE_NORMAL
-    hfdcan1->Init.Mode = FDCAN_MODE_NORMAL;
+    hfdcan1->Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
     hfdcan1->Init.AutoRetransmission = ENABLE;
     hfdcan1->Init.TransmitPause = DISABLE;
     hfdcan1->Init.ProtocolException = DISABLE;
-    hfdcan1->Init.NominalPrescaler = 24;
+    hfdcan1->Init.NominalPrescaler = 12;
     hfdcan1->Init.NominalSyncJumpWidth = 1;
     hfdcan1->Init.NominalTimeSeg1 = 13;
     hfdcan1->Init.NominalTimeSeg2 = 2;
@@ -362,7 +371,7 @@ int main(void) {
 
     // internal loopback shorts the CAN RX and TX internally.
     // In production, this should be set to FDCAN_MODE_NORMAL
-    hfdcan2->Init.Mode = FDCAN_MODE_INTERNAL_LOOPBACK;
+    hfdcan2->Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
     hfdcan2->Init.AutoRetransmission = ENABLE;
     hfdcan2->Init.TransmitPause = DISABLE;
     hfdcan2->Init.ProtocolException = DISABLE;
@@ -413,7 +422,7 @@ int main(void) {
 
     // internal loopback shorts the CAN RX and TX internally.
     // In production, this should be set to FDCAN_MODE_NORMAL
-    hfdcan3->Init.Mode = FDCAN_MODE_INTERNAL_LOOPBACK;
+    hfdcan3->Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
     hfdcan3->Init.AutoRetransmission = ENABLE;
     hfdcan3->Init.TransmitPause = DISABLE;
     hfdcan3->Init.ProtocolException = DISABLE;
@@ -500,17 +509,17 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan) {
             __HAL_RCC_FDCAN_CLK_ENABLE();
         }
 
-        __HAL_RCC_GPIOA_CLK_ENABLE();
+        __HAL_RCC_GPIOD_CLK_ENABLE();
         /**FDCAN1 GPIO Configuration
     PA11     ------> FDCAN1_RX
     PA12     ------> FDCAN1_TX
     */
-        GPIO_InitStruct.Pin = GPIO_PIN_11 | GPIO_PIN_12;
+        GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
         GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN1;
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+        HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
         /* FDCAN1 interrupt Init */
         HAL_NVIC_SetPriority(FDCAN1_IT0_IRQn, FDCAN_NVIC_PRIO, 0);
@@ -604,7 +613,7 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan) {
     PA11     ------> FDCAN1_RX
     PA12     ------> FDCAN1_TX
     */
-        HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11 | GPIO_PIN_12);
+        HAL_GPIO_DeInit(GPIOD, GPIO_PIN_0 | GPIO_PIN_1);
 
         /* FDCAN1 interrupt Deinit */
         HAL_NVIC_DisableIRQ(FDCAN1_IT0_IRQn);
