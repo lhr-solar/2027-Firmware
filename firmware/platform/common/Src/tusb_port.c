@@ -2,6 +2,7 @@
 #include "bsp/board_api.h"
 #include "tusb_port.h"
 
+// somewhere below the rtos kernel interrupts
 #define USB_PRIO (configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1)
 
 PCD_HandleTypeDef hpcd_USB_FS;
