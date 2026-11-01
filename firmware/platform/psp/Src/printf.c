@@ -21,6 +21,11 @@
     #define PRINTF_MTX_DELAY (pdMS_TO_TICKS(100))
 #endif
 
+// Max time to wait for room in the USB TX buffer, what doesn't fit after this is dropped
+#ifndef PRINTF_TX_TIMEOUT
+    #define PRINTF_TX_TIMEOUT (pdMS_TO_TICKS(2))
+#endif
+
 typedef struct {
     char buffer[MAX_PRINTF_SIZE];
     SemaphoreHandle_t buffer_mtx;
@@ -96,8 +101,13 @@ int printf(const char* fmt, ...) {
 
     uint8_t* buf = (uint8_t*)pbuf->buffer;
     uint32_t count = (rv > MAX_PRINTF_SIZE) ? MAX_PRINTF_SIZE : rv;
+    TickType_t start = xTaskGetTickCount();
     for (uint8_t itf = 0; itf < CFG_TUD_CDC; itf++) {
         if (tud_cdc_n_connected(itf)) {
+            while (tud_cdc_n_write_available(itf) < count &&
+                   xTaskGetTickCount() - start < PRINTF_TX_TIMEOUT) {
+                vTaskDelay(1);
+            }
             tud_cdc_n_write(itf, buf, count);
             tud_cdc_n_write_flush(itf);
         }
