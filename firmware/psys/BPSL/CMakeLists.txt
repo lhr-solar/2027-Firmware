@@ -48,6 +48,7 @@ post_build(BPSL)
 
 # external commands
 add_flash_target(BPSL)
+add_flash_usb_target(BPSL)
 add_dump_symbols_target(BPSL)
 add_dump_size_target(BPSL)
 add_erase_target()

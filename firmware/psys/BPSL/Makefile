@@ -17,6 +17,9 @@ configure:
 flash: configure
 	cmake --build $(BUILD_DIR) --target flash
 
+flash-usb: configure
+	cmake --build $(BUILD_DIR) --target flash-usb
+
 erase: configure
 	cmake --build $(BUILD_DIR) --target erase
 
