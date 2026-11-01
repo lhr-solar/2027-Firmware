@@ -1,10 +1,23 @@
 #include "movingAverage.h"
 #include "stm32xx_hal.h"
-#include "UART.h"
+#include "tusb_port.h"
 #include "printf.h"
 
 StaticTask_t txTaskBuffer;
 StackType_t txTaskStack[configMINIMAL_STACK_SIZE];
+/* tusb polling task */
+StaticTask_t pollEventsTaskBuffer;
+StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
+
+static void poll_events(void* argument) {
+    while (1) {
+        // polls event queue
+        tud_task();
+    }
+}
+
+// printf drops what doesn't fit in the USB TX buffer, give it time to drain between lines
+#define PRINT_DRAIN_DELAY pdMS_TO_TICKS(5)
 
 DEFINE_MOVING_AVG(MA_u16, uint16_t, uint32_t, 10)
 DEFINE_MOVING_AVG(MA_u32, uint32_t, uint64_t, 10)
@@ -21,6 +34,7 @@ void test_u16() {
     for (int i = 0; i < sizeof(inputs) / sizeof(inputs[0]); i++) {
         uint16_t avg = MA_u16_update(&ma, inputs[i]);
         printf("input=%u -> avg=%u\n\r", inputs[i], avg);
+        vTaskDelay(PRINT_DRAIN_DELAY);
     }
 }
 
@@ -35,6 +49,7 @@ void test_u32() {
     for (int i = 0; i < sizeof(inputs) / sizeof(inputs[0]); i++) {
         uint32_t avg = MA_u32_update(&ma, inputs[i]);
         printf("input=%lu -> avg=%lu\n\r", inputs[i], avg);
+        vTaskDelay(PRINT_DRAIN_DELAY);
     }
 }
 
@@ -49,24 +64,18 @@ void test_s32() {
     for (int i = 0; i < sizeof(inputs) / sizeof(inputs[0]); i++) {
         int32_t avg = MA_s32_update(&ma, inputs[i]);
         printf("input=%ld -> avg=%ld\n\r", inputs[i], avg);
+        vTaskDelay(PRINT_DRAIN_DELAY);
     }
 }
 
 void TxTask(void* argument) {
-
-    #ifdef USART3
-    husart3->Init.BaudRate = 115200;
-    husart3->Init.WordLength = UART_WORDLENGTH_8B;
-    husart3->Init.StopBits = UART_STOPBITS_1;
-    husart3->Init.Parity = UART_PARITY_NONE;
-    husart3->Init.Mode = UART_MODE_TX_RX;
-    husart3->Init.HwFlowCtl = UART_HWCONTROL_NONE;
-    husart3->Init.OverSampling = UART_OVERSAMPLING_16;
-
-    printf_init(husart3);
-    #endif /*USART3 */
+    // output is dropped until a terminal opens the port
+    while (!tud_cdc_n_connected(0)) {
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
 
     printf("Running moving average tests...\n\r");
+    vTaskDelay(PRINT_DRAIN_DELAY);
 
     test_u16();
     test_u32();
@@ -81,6 +90,20 @@ int main() {
 
     HAL_Init();
     SystemClock_Config();
+    MX_USB_PCD_Init();
+    // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
+    printf_init();
+
+    // clang-format off
+    xTaskCreateStatic(
+        poll_events,
+        "Poll Event Queue",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 3,
+        pollEventsStack,
+        &pollEventsTaskBuffer);
+    // clang-format on
 
     // clang-format off
     xTaskCreateStatic(
@@ -101,22 +124,4 @@ int main() {
 
 
     return 0;
-}
-
-void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
-
-    #ifdef USART3
-    GPIO_InitTypeDef init = {0};
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-    /**USART3 GPIO Configuration
-    PC10     ------> USART3_TX
-    PC11     ------> USART3_RX
-    */
-    init.Pin = GPIO_PIN_10 | GPIO_PIN_11;
-    init.Mode = GPIO_MODE_AF_PP;
-    init.Pull = GPIO_NOPULL;
-    init.Speed = GPIO_SPEED_FREQ_LOW;
-    init.Alternate = GPIO_AF7_USART3;
-    HAL_GPIO_Init(GPIOC, &init);
-    #endif
 }
