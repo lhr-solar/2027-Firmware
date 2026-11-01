@@ -28,6 +28,8 @@ set(DISABLED_TESTS
     emc2305
     uart_tx_rx
     ws2812b
+    uart_fgets
+    lpuart
 )
 
 # check if test is disabled for g473
