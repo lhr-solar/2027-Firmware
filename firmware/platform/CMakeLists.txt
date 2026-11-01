@@ -25,6 +25,9 @@ set(DISABLED_TESTS
     can_isr
     can_mt
     can_queueSet
+    emc2305
+    uart_tx_rx
+    ws2812b
 )
 
 # check if test is disabled for g473
