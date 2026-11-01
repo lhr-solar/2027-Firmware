@@ -19,7 +19,6 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/lint.cmake)
 set(TEST blinky CACHE STRING "Platform test to build (tests/Src/<TEST>_test.c)")
 
 ### Compile Tests
-# unsupported tests on the g473
 set(DISABLED_TESTS
     can
     can_isr

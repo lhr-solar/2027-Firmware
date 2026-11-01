@@ -100,7 +100,8 @@ int printf(const char* fmt, ...) {
     }
 
     uint8_t* buf = (uint8_t*)pbuf->buffer;
-    uint32_t count = (rv > MAX_PRINTF_SIZE) ? MAX_PRINTF_SIZE : rv;
+    // "-1" for null char space
+    uint32_t count = (rv >= MAX_PRINTF_SIZE) ? MAX_PRINTF_SIZE - 1 : rv;
     TickType_t start = xTaskGetTickCount();
     for (uint8_t itf = 0; itf < CFG_TUD_CDC; itf++) {
         if (tud_cdc_n_connected(itf)) {
