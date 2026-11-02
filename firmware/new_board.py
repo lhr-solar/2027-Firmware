@@ -8,7 +8,7 @@
     python3 firmware/new_board.py psys LVC --description "LV Carrier"
 
 Creates firmware/<system>/<board>/ with config/, core/, drivers/, tests/, a
-Board.cmake, CMakeLists.txt, Makefile, build_all_tests.sh and README.md
+Board.cmake, CMakeLists.txt, Makefile and README.md
 (rendered from firmware/templates/).
 The source files are created empty, except core/Src/app.c, which gets a main()
 that only loops.
@@ -48,7 +48,7 @@ cyan = partial(paint, "1;36")
 magenta = partial(paint, "1;35")
 
 # ------------------------------------------------------------- templates
-# CMakeLists.txt, Board.cmake, Makefile and build_all_tests.sh are rendered from
+# CMakeLists.txt, Board.cmake, Makefile and README.md are rendered from
 # firmware/templates/.
 # Placeholders are @KEY@ (not $KEY: the CMake text is full of ${...}):
 #   @BOARD@     board name, used for the folder and the CMake target
@@ -59,7 +59,6 @@ FROM_TEMPLATE = {  # generated file -> template it is rendered from
     "CMakeLists.txt": "CMakeLists.txt.in",
     "Board.cmake": "Board.cmake.in",
     "Makefile": "Makefile.in",
-    "build_all_tests.sh": "build_all_tests.sh.in",
     "README.md": "README.md.in",
 }
 
@@ -234,8 +233,6 @@ def main():
         path.parent.mkdir(parents=True, exist_ok=True)
         with open(path, "w", newline="\n") as f:  # LF on every OS
             f.write(text)
-        if rel.endswith(".sh"):
-            path.chmod(0o755)  # make test-all runs it as ./build_all_tests.sh
         folder, name = os.path.split(path.relative_to(FIRMWARE.parent).as_posix())
         print("  %s %s%s" % (green(CHECK), dim(folder + "/"), name))
 
