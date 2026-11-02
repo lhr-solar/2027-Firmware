@@ -1,6 +1,7 @@
 #include "stm32xx_hal.h"
 #include "common.h"
 #include "StatusLEDs.h"
+#include "BPS_tasks.h"
 
 int main(void) {
     if (HAL_Init() != HAL_OK) {
@@ -12,6 +13,8 @@ int main(void) {
     if (StatusLEDs_Init() != LED_OK) {
         Error_Handler();
     }
+
+    TASK_CREATE(INIT, Init);
 
     vTaskStartScheduler();
 

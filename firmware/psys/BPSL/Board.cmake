@@ -15,6 +15,7 @@ set(BOARD_TEST_SOURCE_DIR
 file(GLOB BOARD_OTHER_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_LIST_DIR}/drivers/Src/*.c" # drivers/
     "${CMAKE_CURRENT_LIST_DIR}/core/Src/common.c" # board-wide Error_Handler, SystemClock_Config
+    "${CMAKE_CURRENT_LIST_DIR}/core/Src/task_*.c" # BPS tasks
 )
 
 ### INCLUDES (*.h)
