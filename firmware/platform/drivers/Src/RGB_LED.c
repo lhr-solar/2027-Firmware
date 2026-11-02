@@ -88,13 +88,15 @@ static void write_compare(rgb_led_handle_t* led, rgb_led_color_t color) {
     led->color = color;
 }
 
-// See RGB_LED.h. Order: clocks, pins, timer base, channels, start PWM, then
-// the mutex last so a handle whose init failed is rejected by set/get.
+// See RGB_LED.h. The mutex is cleared first and created last, so a handle
+// whose init failed (or was never zeroed) is rejected by set/get. Order:
+// clocks, pins, timer base, channels, start PWM, then the mutex.
 rgb_led_status_t rgb_led_init(rgb_led_handle_t* led, TIM_HandleTypeDef* htim,
                               const rgb_led_config_t* cfg) {
     if (led == NULL || htim == NULL || cfg == NULL) {
         return RGB_LED_INVALID_PTR;
     }
+    led->mutex = NULL; // cleared before any early return, so set/get refuse a failed init
     if (enable_timer_clock(cfg->timer) != RGB_LED_OK || enable_gpio_clock(cfg->port) != HAL_OK) {
         return RGB_LED_ERROR;
     }
@@ -104,7 +106,6 @@ rgb_led_status_t rgb_led_init(rgb_led_handle_t* led, TIM_HandleTypeDef* htim,
     led->green_channel = cfg->green_channel;
     led->blue_channel = cfg->blue_channel;
     led->color = RGB_LED_OFF;
-    led->mutex = NULL; // set last, so set/get refuse a handle whose init failed
 
     GPIO_InitTypeDef gpio = {0};
     gpio.Pin = cfg->red_pin | cfg->green_pin | cfg->blue_pin;

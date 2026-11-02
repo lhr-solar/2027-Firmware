@@ -3,6 +3,7 @@
 #include "stm32xx_hal.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "semphr.h"
 #include "RGB_LED.h"
 
 /*
@@ -10,8 +11,9 @@
  *
  * Writers at three priorities each keep setting their own pure color (red,
  * green, blue) and preempt each other. A checker at the highest priority reads
- * the color back and confirms it is exactly one of the three. A mixed color
- * would mean two writes interleaved; a timeout would mean the mutex got stuck.
+ * the three compare registers under the mutex and confirms they hold exactly
+ * one of the three colors. A mixed color would mean two writes interleaved; a
+ * timeout would mean the mutex got stuck.
  *
  * It starts by showing red, green, then blue for COLOR_CHECK_MS each so every
  * channel can be checked by eye. The race then runs for TEST_DURATION_MS, then
@@ -59,14 +61,6 @@ static StackType_t writer_stacks[NUM_WRITERS][TASK_STACK_WORDS];
 static StaticTask_t checker_buffer;
 static StackType_t checker_stack[TASK_STACK_WORDS];
 
-// True when two colors match on all three channels.
-static bool is_color(rgb_led_color_t lhs, rgb_led_color_t rhs) {
-    if (lhs.r != rhs.r || lhs.g != rhs.g || lhs.b != rhs.b) {
-        return false;
-    }
-    return true;
-}
-
 // Keeps setting one pure color until the run ends or a failure is flagged. A timeout on the
 // mutex counts as a failure, since nobody should hold it for 50 ms.
 static void writer_task(void* argument) {
@@ -88,7 +82,9 @@ static void writer_task(void* argument) {
 }
 
 // Highest priority, so it can wake while a writer is partway through a set.
-// Fails if the color read back is anything but off or one writer's color.
+// Reads the compare registers themselves, not the saved color: the saved
+// color is written after the registers, so it can look valid even when two
+// writes interleaved. Fails on anything but off or one pure channel at full.
 // After TEST_DURATION_MS it stops the writers and shows green (pass) or white.
 static void checker_task(void* argument) {
     (void)argument;
@@ -107,18 +103,18 @@ static void checker_task(void* argument) {
     const TickType_t start = xTaskGetTickCount();
 
     while (!failed && (xTaskGetTickCount() - start) < pdMS_TO_TICKS(TEST_DURATION_MS)) {
-        rgb_led_color_t seen;
-        if (rgb_led_get(&rgb_led, &seen, pdMS_TO_TICKS(RGB_TIMEOUT_MS)) != RGB_LED_OK) {
+        if (xSemaphoreTake(rgb_led.mutex, pdMS_TO_TICKS(RGB_TIMEOUT_MS)) != pdTRUE) {
             failed = true;
             break;
         }
-        // RGB_LED_OFF is the value before any writer has run
-        bool valid = is_color(seen, RGB_LED_OFF);
-        for (uint32_t i = 0; i < NUM_WRITERS; i++) {
-            if (is_color(seen, writer_args[i].color)) {
-                valid = true;
-            }
-        }
+        const uint32_t full = htim_rgb.Init.Period;
+        const uint32_t r = __HAL_TIM_GET_COMPARE(&htim_rgb, rgb_led.red_channel);
+        const uint32_t g = __HAL_TIM_GET_COMPARE(&htim_rgb, rgb_led.green_channel);
+        const uint32_t b = __HAL_TIM_GET_COMPARE(&htim_rgb, rgb_led.blue_channel);
+        xSemaphoreGive(rgb_led.mutex);
+        // off (before any writer has run), or exactly one pure channel at full duty
+        bool valid = (r == 0U && g == 0U && b == 0U) || (r == full && g == 0U && b == 0U) ||
+                     (r == 0U && g == full && b == 0U) || (r == 0U && g == 0U && b == full);
         if (!valid) {
             failed = true;
             break;
