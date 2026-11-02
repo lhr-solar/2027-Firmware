@@ -7,3 +7,13 @@ board_cmake_list() {
         | sed -e "s/.*set($1//" -e 's/).*//' -e 's/#.*//' \
         | tr -d '"' | tr '\n' ' '
 }
+
+#   board_variants_to_build <requested>: <requested> if given, otherwise all of BOARD_VARIANTS
+# prints nothing for a board without variants; CMake rejects a <requested> it doesn't know
+board_variants_to_build() {
+    if [ -n "$1" ]; then
+        echo "$1"
+    else
+        board_cmake_list BOARD_VARIANTS
+    fi
+}

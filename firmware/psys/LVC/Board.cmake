@@ -36,6 +36,6 @@ set(BOARD_COMPILE_DEFINITIONS "")
 # A variant gets BOARD_VARIANT_<NAME> defined, plus its own definitions, e.g.
 #   set(BOARD_VARIANTS front rear)
 #   set(BOARD_VARIANT_front_DEFINITIONS WHEEL_POSITION=0)
-# `make prod-all` builds every variant into build/<name>/ -- leave as "" for a single build
+# `make prod-all` and `make test-all` build every variant into build/<name>/ -- leave as "" for a single build
 # LVC is the build demo board: two identical instances, so CI exercises multi-variant builds
 set(BOARD_VARIANTS build1 build2)

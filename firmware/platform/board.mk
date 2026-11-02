@@ -12,7 +12,8 @@ TOOLCHAIN    := $(PLATFORM_DIR)/cmake/toolchain.cmake
 VARIANT ?=
 
 # each variant gets its own build folder, so switching variants doesn't rebuild everything
-BUILD_DIR ?= build$(if $(VARIANT),/$(VARIANT))
+BUILD_ROOT ?= build
+BUILD_DIR ?= $(BUILD_ROOT)$(if $(VARIANT),/$(VARIANT))
 
 TEST ?=
 
@@ -31,14 +32,15 @@ all: configure
 configure:
 	cmake -B $(BUILD_DIR) -G Ninja "-DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN)" -DTEST=$(TEST) -DVARIANT=$(VARIANT) -DCLANG_TIDY=$(TIDY)
 
-# every test in tests/Src, minus BOARD_SKIP_TESTS in Board.cmake
+# every test in tests/Src, minus BOARD_SKIP_TESTS in Board.cmake, for every variant in
+# BOARD_VARIANTS (just VARIANT if set) -- what most boards' test-all runs
 tests:
-	sh "$(PLATFORM_DIR)/build_board_tests.sh" "$(CURDIR)"
+	sh "$(PLATFORM_DIR)/build_board_tests.sh" "$(CURDIR)" "$(BUILD_ROOT)" "$(VARIANT)"
 
-# production firmware for every variant in BOARD_VARIANTS, each into $(BUILD_DIR)/<variant>/
-# (one plain build when the board has none) -- what most boards' prod-all runs
+# production firmware for every variant in BOARD_VARIANTS (just VARIANT if set), each into
+# $(BUILD_ROOT)/<variant>/, or one plain build when the board has none -- what most boards' prod-all runs
 variants:
-	sh "$(PLATFORM_DIR)/build_board_variants.sh" "$(CURDIR)" "$(BUILD_DIR)"
+	sh "$(PLATFORM_DIR)/build_board_variants.sh" "$(CURDIR)" "$(BUILD_ROOT)" "$(VARIANT)"
 
 flash:
 	cmake --build $(BUILD_DIR) --target flash

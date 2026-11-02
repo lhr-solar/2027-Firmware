@@ -35,7 +35,7 @@ stub for working code, and do not describe stubs as implemented.
 | `can/canspec-viewer/` | Real React/Vite source; depends on DBCs that do not exist yet. |
 | `.github/workflows/*.yml` | Jobs exist but bodies are `echo "TODO: ..."`. |
 | `flake.nix` | 0 bytes. |
-| CMake build | **Real.** `firmware/CMakeLists.txt` + `firmware/Makefile`. See §5. |
+| CMake build | **Real.** `firmware/platform/` and each board are separate CMake projects; boards share `platform/cmake/board_build.cmake` + `platform/board.mk`. See §5. |
 
 If a task depends on one of these, say so plainly rather than inventing the
 missing piece. Building the missing piece is fine when that *is* the task.
@@ -160,9 +160,9 @@ to make a build or test pass.
 │   ├── codegen/            ← DBC → C header generation + validators (stubs)
 │   └── canspec-viewer/     ← React/Vite single-file CAN spec browser
 └── firmware/
-    ├── CMakeLists.txt      ← the one CMake entry point for every board + platform test. See §5
-    ├── Makefile            ← wraps cmake/ninja + st-flash/objdump. See §5
-    ├── platform/           ← shared HAL/RTOS/driver platform.  See firmware/platform/AGENTS.md
+    ├── new_board.py        ← generates a board folder from templates/. See §5
+    ├── templates/          ← what new_board.py renders into a new board
+    ├── platform/           ← shared HAL/RTOS/driver platform + shared board build.  See firmware/platform/AGENTS.md
     ├── psys/               ← power systems boards (one dummy board folder; rest are stubs)
     ├── controls/           ← controls boards (stub)
     └── telemetry/          ← telemetry boards (stub)
@@ -196,39 +196,53 @@ for that specific change.
 ## 5. Building, flashing, testing
 
 CMake + Ninja, wrapped by `make`, cross-compiling with `arm-none-eabi-gcc`
-(`toolchain.cmake` at repo root) for STM32G473. All commands below run from
-`firmware/`. `firmware/CMakeLists.txt` is the **only** CMake entry point —
-there is no separate tree per board.
+(`firmware/platform/cmake/toolchain.cmake`) for STM32G473. The toolchain comes
+from the Nix dev shell (`nix develop`, or direnv via `.envrc`). There is no
+top-level CMake project: `firmware/platform/` and each board are built from their
+own directory.
+
+A board directory holds only what is specific to that board. The build logic is
+shared, so changing it changes every board at once:
+
+| File | Holds |
+|---|---|
+| `<board>/CMakeLists.txt` | Stub: the `project()` block (name, version, description) |
+| `<board>/Board.cmake` | Sources, include dirs, `BOARD_SKIP_TESTS`, `BOARD_COMPILE_DEFINITIONS`, `BOARD_VARIANTS` |
+| `<board>/Makefile` | Stub: `prod-all` and `test-all`, the two targets CI runs |
+| `platform/cmake/board_build.cmake` | The shared CMake build every board includes |
+| `platform/board.mk` | The shared make targets every board includes |
+
+Create a board with `python3 firmware/new_board.py`, which renders
+`firmware/templates/`.
+
+From a board directory:
 
 ```bash
-make TEST=<test>               # platform test, no board (default TEST=blinky)
-make BOARD=<BOARD>             # board build, default TEST=app (app = that board's real production firmware, not a test)
-make BOARD=<BOARD> TEST=<test> # <test> is a source file under that board's own entry-point dirs
-make flash                    # st-flash write build/App.bin 0x8000000
-make dump-symbols             # objdump -x build/App.elf -- confirm what actually linked
+make                          # production firmware: build/<BOARD>.{elf,bin,hex}
+make TEST=<test>              # tests/Src/<test>_test.c instead
+make VARIANT=<name>           # one entry of BOARD_VARIANTS, into build/<name>/
+make prod-all                 # production firmware for every variant (CI)
+make test-all                 # every test for every variant, minus BOARD_SKIP_TESTS (CI)
+make VARIANT=<name> test-all  # prod-all and test-all limited to one variant
+make flash                    # st-flash the existing build; VARIANT=<name> picks which
+make dump-symbols             # objdump -x the existing build -- confirm what actually linked
 make clean
-make TIDY=ON ...           # same build, with clang-tidy on LHR sources (CI gates on this)
+make TIDY=ON ...              # same build, with clang-tidy on LHR sources (CI gates on this)
 make format                   # clang-format LHR sources in place; format-check reports drift
 ```
 
-Equivalent from inside a board dir (`BOARD` implicit, `firmware/psys/<BOARD>/Makefile`
-is a pure forwarder to the top-level one):
+From `firmware/platform/`, `make TEST=<test>` builds a platform test (default
+`blinky`) into `build/App.{elf,bin,hex}`, and `make test-all` builds all of them.
 
-```bash
-cd firmware/psys/<BOARD> && make TEST=<test>
-```
-
-Every invocation reconfigures (`cmake -B build` reruns before every build), so
-switching `BOARD`/`TEST` is always safe — no stale cache. Output is always
-`build/App.{elf,bin,hex}`; the exec name is not board-parameterized, only its
-contents are.
+Only `make` itself configures and builds (`format` and `format-check` also
+configure). `flash`, `flash-usb`, `erase`, `dump-symbols` and `dump_size` work on
+the existing build and fail if there isn't one, so build first.
 
 **Debugging whether something actually linked:** `make dump-symbols` runs
-`objdump -x build/App.elf` — check it for the symbol/object file you expect.
-For more detail, `build/App.map` (generated every build) is the full linker
-map. "Unknown BOARD"/"Unknown TEST" build errors mean the
-`psys/<BOARD>/Board.cmake` file or the test source file doesn't exist where
-expected.
+`objdump -x` on the ELF — check it for the symbol/object file you expect. For
+more detail, `build/<BOARD>.map` (generated every build) is the full linker map.
+"Unknown TEST" and "Unknown VARIANT" errors at configure time mean the test source
+file doesn't exist, or the name isn't in `BOARD_VARIANTS`.
 
 ### What *can* be run today
 

@@ -6,5 +6,5 @@ include ../../platform/board.mk
 # For CI - builds the production firmware (every variant in BOARD_VARIANTS)
 prod-all: variants
 
-# For CI - builds all tests for this board
+# For CI - builds all tests for this board (for every variant in BOARD_VARIANTS)
 test-all: tests

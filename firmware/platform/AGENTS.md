@@ -47,6 +47,11 @@ task + semaphore pool), `WS2812B` (addressable LEDs), `SevenSegment`, `sdcard`,
 
 **`utils/`** — `movingAverage` (header-only), `slcanFormat` (SLCAN serial-line CAN framing).
 
+**Shared board build** — `cmake/board_build.cmake` and `board.mk` are the build logic every
+board includes from its stubs, and `build_board_tests.sh`, `build_board_variants.sh` and
+`board_cmake_list.sh` are what `make test-all` and `make prod-all` run. A change here changes
+every board's build. See root `AGENTS.md` §5.
+
 **`common/`** — `stm32g4xx_hal_init.c`, `FreeRTOSConfig.h`,
 `stm32g4xx_hal_conf.h`, and newlib `syscalls.c` / `sysmem.c` / `stubs.c`.
 
