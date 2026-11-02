@@ -1,5 +1,6 @@
 # Shared board build -- included first thing by every board's Makefile
-# thin wrapper -- every target just calls cmake
+# only `make` configures and builds; every other target works on the
+# existing build and fails if there isn't one
 # The board's own Makefile defines prod-all and test-all (the targets CI runs)
 
 # absolute path to firmware/platform/, so it works from any board and under make -C
@@ -39,19 +40,19 @@ tests:
 variants:
 	sh "$(PLATFORM_DIR)/build_board_variants.sh" "$(CURDIR)" "$(BUILD_DIR)"
 
-flash: configure
+flash:
 	cmake --build $(BUILD_DIR) --target flash
 
-flash-usb: configure
+flash-usb:
 	cmake --build $(BUILD_DIR) --target flash-usb
 
-erase: configure
+erase:
 	cmake --build $(BUILD_DIR) --target erase
 
-dump-symbols: configure
+dump-symbols:
 	cmake --build $(BUILD_DIR) --target dump-symbols
 
-dump_size: configure
+dump_size:
 	cmake --build $(BUILD_DIR) --target dump_size
 
 clean:
