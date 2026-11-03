@@ -56,3 +56,13 @@ test('pending and triggered traffic excluded; known wire/TCP calculations', () =
   assert.equal(loadPercent(rows,125000)[1],1.08);
   assert.deepEqual(tcpRate(rows),{payload:0.64,application:3.04,uplink:6.24,ack:1.6});
 });
+
+test('TCP-native messages add to the output without adding CAN load', () => {
+  const data = fixture();
+  data.topology.outputs.TCP.dbc = 'dbc/TCP.dbc';
+  data.vehicles[0].networks.push({filename:'TCP.dbc', messages:[message(9), message(10,{sendType:'Triggered',cycleTimeMs:null})]});
+  const result = calculateLoading(data);
+  assert.deepEqual([...result.resolved.get('TCP').values()].map(r=>r.message.frameId).sort(), [1,2,3,5,9]);
+  assert.deepEqual([...result.resolved.get('DAQ').values()].map(r=>r.message.frameId).sort(), [4,5]);
+  assert.ok(result.omitted.some(row => row.includes('TCP/M10')));
+});

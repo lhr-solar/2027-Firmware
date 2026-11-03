@@ -55,9 +55,13 @@ export function calculateLoading(data: CanspecPayload) {
   );
   const omitted: string[] = [];
   const native = new Map<string, Traffic[]>();
-  for (const [bus, spec] of Object.entries(topology.buses)) {
+  const sources = [
+    ...Object.entries(topology.buses),
+    ...Object.entries(topology.outputs).filter((entry) => entry[1].dbc),
+  ] as const;
+  for (const [bus, spec] of sources) {
     const network = networks.find(
-      (n) => n.filename === spec.dbc.split("/").pop(),
+      (n) => n.filename === spec.dbc!.split("/").pop(),
     );
     if (!network) throw new Error(`${bus}: DBC missing from snapshot`);
     const rows: Traffic[] = [];

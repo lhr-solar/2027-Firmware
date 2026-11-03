@@ -109,5 +109,5 @@ export interface TopologyBus {
 export interface CanTopology {
   version: number;
   buses: Record<string, TopologyBus>;
-  outputs: Record<string, { transport: string }>;
+  outputs: Record<string, { transport: string; dbc?: string }>;
 }
