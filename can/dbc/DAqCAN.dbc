@@ -98,100 +98,85 @@ BO_ 1571 OnBoardWatchdog: 1 MIKA
  SG_ LVCWatchdog : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ MPPTInterfaceWatchdog : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 1584 ChassisAccelerationData: 32 ChassisIMU
+BO_ 1584 ChassisAccelerationData: 24 ChassisIMU
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ AccelerationX1 : 32|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
  SG_ AccelerationX2 : 45|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
  SG_ AccelerationX3 : 58|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
  SG_ AccelerationX4 : 71|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ AccelerationXAverage : 84|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ AccelerationY1 : 97|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ AccelerationY2 : 110|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ AccelerationY3 : 123|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ AccelerationY4 : 136|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ AccelerationYAverage : 149|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ AccelerationZ1 : 162|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ AccelerationZ2 : 175|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ AccelerationZ3 : 188|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ AccelerationZ4 : 201|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ AccelerationZAverage : 214|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationY1 : 84|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationY2 : 97|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationY3 : 110|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationY4 : 123|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationZ1 : 136|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationZ2 : 149|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationZ3 : 162|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationZ4 : 175|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
 
-BO_ 1585 ChassisGyroData: 48 ChassisIMU
+BO_ 1585 ChassisGyroData: 32 ChassisIMU
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ GyroX1 : 32|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX2 : 48|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX3 : 64|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX4 : 80|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroXAverage : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY1 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY2 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY3 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY4 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroYAverage : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ1 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ2 : 208|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ3 : 224|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ4 : 240|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZAverage : 256|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY1 : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY2 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY3 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY4 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ1 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ2 : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ3 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ4 : 208|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
 
-BO_ 1586 ChassisMagnetometerData: 32 ChassisIMU
+BO_ 1586 ChassisMagnetometerData: 24 ChassisIMU
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ MagneticFieldX1 : 32|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
  SG_ MagneticFieldX2 : 44|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
  SG_ MagneticFieldX3 : 56|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
  SG_ MagneticFieldX4 : 68|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldXAverage : 80|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldY1 : 92|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldY2 : 104|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldY3 : 116|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldY4 : 128|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldYAverage : 140|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldZ1 : 152|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldZ2 : 164|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldZ3 : 176|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldZ4 : 188|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldZAverage : 200|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
+ SG_ MagneticFieldY1 : 80|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
+ SG_ MagneticFieldY2 : 92|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
+ SG_ MagneticFieldY3 : 104|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
+ SG_ MagneticFieldY4 : 116|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
+ SG_ MagneticFieldZ1 : 128|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
+ SG_ MagneticFieldZ2 : 140|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
+ SG_ MagneticFieldZ3 : 152|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
+ SG_ MagneticFieldZ4 : 164|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
 
-BO_ 1600 UprightFRAccelerationData: 48 UprightFR
+BO_ 1600 UprightFRAccelerationData: 32 UprightFR
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ AccelerationX1 : 32|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationX2 : 47|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationX3 : 62|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationX4 : 77|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationXAverage : 92|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY1 : 107|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY2 : 122|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY3 : 137|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY4 : 152|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationYAverage : 167|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ1 : 182|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ2 : 197|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ3 : 212|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ4 : 227|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZAverage : 242|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY1 : 92|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY2 : 107|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY3 : 122|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY4 : 137|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ1 : 152|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ2 : 167|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ3 : 182|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ4 : 197|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
 
-BO_ 1601 UprightFRGyroData: 48 UprightFR
+BO_ 1601 UprightFRGyroData: 32 UprightFR
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ GyroX1 : 32|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX2 : 48|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX3 : 64|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX4 : 80|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroXAverage : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY1 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY2 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY3 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY4 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroYAverage : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ1 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ2 : 208|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ3 : 224|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ4 : 240|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZAverage : 256|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY1 : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY2 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY3 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY4 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ1 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ2 : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ3 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ4 : 208|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
 
 BO_ 1602 UprightFRWheelSpeedData: 12 UprightFR
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -200,45 +185,38 @@ BO_ 1602 UprightFRWheelSpeedData: 12 UprightFR
  SG_ WheelRPM2 : 44|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPM3 : 56|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPM4 : 68|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
- SG_ WheelRPMAverage : 80|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
 
-BO_ 1616 UprightFLAccelerationData: 48 UprightFL
+BO_ 1616 UprightFLAccelerationData: 32 UprightFL
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ AccelerationX1 : 32|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationX2 : 47|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationX3 : 62|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationX4 : 77|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationXAverage : 92|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY1 : 107|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY2 : 122|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY3 : 137|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY4 : 152|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationYAverage : 167|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ1 : 182|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ2 : 197|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ3 : 212|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ4 : 227|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZAverage : 242|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY1 : 92|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY2 : 107|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY3 : 122|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY4 : 137|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ1 : 152|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ2 : 167|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ3 : 182|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ4 : 197|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
 
-BO_ 1617 UprightFLGyroData: 48 UprightFL
+BO_ 1617 UprightFLGyroData: 32 UprightFL
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ GyroX1 : 32|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX2 : 48|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX3 : 64|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX4 : 80|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroXAverage : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY1 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY2 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY3 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY4 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroYAverage : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ1 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ2 : 208|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ3 : 224|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ4 : 240|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZAverage : 256|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY1 : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY2 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY3 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY4 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ1 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ2 : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ3 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ4 : 208|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
 
 BO_ 1618 UprightFLWheelSpeedData: 12 UprightFL
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -247,45 +225,38 @@ BO_ 1618 UprightFLWheelSpeedData: 12 UprightFL
  SG_ WheelRPM2 : 44|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPM3 : 56|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPM4 : 68|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
- SG_ WheelRPMAverage : 80|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
 
-BO_ 1632 UprightRearAccelerationData: 48 UprightRear
+BO_ 1632 UprightRearAccelerationData: 32 UprightRear
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ AccelerationX1 : 32|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationX2 : 47|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationX3 : 62|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationX4 : 77|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationXAverage : 92|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY1 : 107|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY2 : 122|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY3 : 137|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationY4 : 152|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationYAverage : 167|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ1 : 182|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ2 : 197|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ3 : 212|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZ4 : 227|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ AccelerationZAverage : 242|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY1 : 92|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY2 : 107|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY3 : 122|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY4 : 137|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ1 : 152|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ2 : 167|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ3 : 182|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ4 : 197|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
 
-BO_ 1633 UprightRearGyroData: 48 UprightRear
+BO_ 1633 UprightRearGyroData: 32 UprightRear
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ GyroX1 : 32|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX2 : 48|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX3 : 64|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroX4 : 80|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroXAverage : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY1 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY2 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY3 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroY4 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroYAverage : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ1 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ2 : 208|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ3 : 224|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZ4 : 240|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ GyroZAverage : 256|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY1 : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY2 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY3 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY4 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ1 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ2 : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ3 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ4 : 208|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
 
 BO_ 1634 UprightRearWheelSpeedData: 12 UprightRear
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -294,31 +265,27 @@ BO_ 1634 UprightRearWheelSpeedData: 12 UprightRear
  SG_ WheelRPM2 : 44|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPM3 : 56|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPM4 : 68|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
- SG_ WheelRPMAverage : 80|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
 
-BO_ 1648 SuspensionFRData: 12 SuspensionFR
+BO_ 1648 SuspensionFRData: 8 SuspensionFR
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ LinpotPosition1 : 16|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition2 : 28|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition3 : 40|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition4 : 52|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
- SG_ LinpotPositionAverage : 64|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
 
-BO_ 1649 SuspensionFLData: 12 SuspensionFL
+BO_ 1649 SuspensionFLData: 8 SuspensionFL
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ LinpotPosition1 : 16|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition2 : 28|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition3 : 40|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition4 : 52|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
- SG_ LinpotPositionAverage : 64|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
 
-BO_ 1650 SuspensionRearData: 12 SuspensionRear
+BO_ 1650 SuspensionRearData: 8 SuspensionRear
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ LinpotPosition1 : 16|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition2 : 28|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition3 : 40|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition4 : 52|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
- SG_ LinpotPositionAverage : 64|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
 
 BO_ 1664 Blackbody1Data: 0 Blackbody1
 
@@ -362,208 +329,175 @@ CM_ SG_ 1571 PedalsWatchdog "PedalsWatchdog";
 CM_ SG_ 1571 DEIWatchdog "DEIWatchdog";
 CM_ SG_ 1571 VCUWatchdog "VCUWatchdog";
 CM_ SG_ 1571 BPSWatchdog "BPSWatchdog";
-CM_ BO_ 1584 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1584 AccelerationZAverage "Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1584 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1584 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationZ1 "Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
-CM_ SG_ 1584 AccelerationYAverage "Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1584 AccelerationY4 "Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationY3 "Chronological sample 3 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationY2 "Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationY1 "Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
-CM_ SG_ 1584 AccelerationXAverage "Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1584 AccelerationX4 "Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationX3 "Chronological sample 3 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1584 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1585 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1585 GyroZAverage "Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1585 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1585 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroZ1 "Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
-CM_ SG_ 1585 GyroYAverage "Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1585 GyroY4 "Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroY3 "Chronological sample 3 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroY2 "Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroY1 "Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
-CM_ SG_ 1585 GyroXAverage "Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1585 GyroX4 "Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroX3 "Chronological sample 3 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1585 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1586 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1586 MagneticFieldZAverage "Sender-populated arithmetic mean of MagneticFieldZ1..MagneticFieldZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1586 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1586 MagneticFieldZ4 "Chronological sample 4 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.";
 CM_ SG_ 1586 MagneticFieldZ3 "Chronological sample 3 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.";
 CM_ SG_ 1586 MagneticFieldZ2 "Chronological sample 2 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.";
 CM_ SG_ 1586 MagneticFieldZ1 "Chronological sample 1 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldYAverage "Sender-populated arithmetic mean of MagneticFieldY1..MagneticFieldY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1586 MagneticFieldY4 "Chronological sample 4 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.";
 CM_ SG_ 1586 MagneticFieldY3 "Chronological sample 3 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.";
 CM_ SG_ 1586 MagneticFieldY2 "Chronological sample 2 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.";
 CM_ SG_ 1586 MagneticFieldY1 "Chronological sample 1 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldXAverage "Sender-populated arithmetic mean of MagneticFieldX1..MagneticFieldX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1586 MagneticFieldX4 "Chronological sample 4 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.";
 CM_ SG_ 1586 MagneticFieldX3 "Chronological sample 3 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.";
 CM_ SG_ 1586 MagneticFieldX2 "Chronological sample 2 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.";
 CM_ SG_ 1586 MagneticFieldX1 "Chronological sample 1 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.";
 CM_ SG_ 1586 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1586 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1600 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1600 AccelerationZAverage "Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1600 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1600 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationZ1 "Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
-CM_ SG_ 1600 AccelerationYAverage "Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1600 AccelerationY4 "Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationY3 "Chronological sample 3 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationY2 "Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationY1 "Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
-CM_ SG_ 1600 AccelerationXAverage "Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1600 AccelerationX4 "Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationX3 "Chronological sample 3 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1600 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1601 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1601 GyroZAverage "Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1601 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1601 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroZ1 "Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
-CM_ SG_ 1601 GyroYAverage "Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1601 GyroY4 "Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroY3 "Chronological sample 3 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroY2 "Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroY1 "Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
-CM_ SG_ 1601 GyroXAverage "Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1601 GyroX4 "Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroX3 "Chronological sample 3 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1601 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1602 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1602 WheelRPMAverage "Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1602 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1602 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1602 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1602 WheelRPM2 "Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1602 WheelRPM1 "Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1602 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1602 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1616 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1616 AccelerationZAverage "Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1616 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1616 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationZ1 "Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
-CM_ SG_ 1616 AccelerationYAverage "Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1616 AccelerationY4 "Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationY3 "Chronological sample 3 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationY2 "Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationY1 "Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
-CM_ SG_ 1616 AccelerationXAverage "Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1616 AccelerationX4 "Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationX3 "Chronological sample 3 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1616 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1617 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1617 GyroZAverage "Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1617 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1617 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroZ1 "Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
-CM_ SG_ 1617 GyroYAverage "Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1617 GyroY4 "Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroY3 "Chronological sample 3 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroY2 "Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroY1 "Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
-CM_ SG_ 1617 GyroXAverage "Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1617 GyroX4 "Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroX3 "Chronological sample 3 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1617 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1618 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1618 WheelRPMAverage "Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1618 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1618 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1618 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1618 WheelRPM2 "Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1618 WheelRPM1 "Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1618 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1618 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1632 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1632 AccelerationZAverage "Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1632 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1632 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationZ1 "Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
-CM_ SG_ 1632 AccelerationYAverage "Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1632 AccelerationY4 "Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationY3 "Chronological sample 3 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationY2 "Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationY1 "Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
-CM_ SG_ 1632 AccelerationXAverage "Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1632 AccelerationX4 "Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationX3 "Chronological sample 3 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1632 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1633 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1633 GyroZAverage "Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1633 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1633 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroZ1 "Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
-CM_ SG_ 1633 GyroYAverage "Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1633 GyroY4 "Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroY3 "Chronological sample 3 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroY2 "Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroY1 "Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
-CM_ SG_ 1633 GyroXAverage "Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1633 GyroX4 "Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroX3 "Chronological sample 3 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1633 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1634 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1634 WheelRPMAverage "Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
+CM_ BO_ 1634 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1634 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1634 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1634 WheelRPM2 "Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1634 WheelRPM1 "Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1634 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1634 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1648 "Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples.";
-CM_ SG_ 1648 LinpotPositionAverage "Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field.";
+CM_ BO_ 1648 "Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples.";
 CM_ SG_ 1648 LinpotPosition4 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1648 LinpotPosition3 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1648 LinpotPosition2 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1648 LinpotPosition1 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1648 Timestamp "Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks.";
-CM_ BO_ 1649 "Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples.";
-CM_ SG_ 1649 LinpotPositionAverage "Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field.";
+CM_ BO_ 1649 "Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples.";
 CM_ SG_ 1649 LinpotPosition4 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1649 LinpotPosition3 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1649 LinpotPosition2 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1649 LinpotPosition1 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1649 Timestamp "Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks.";
-CM_ BO_ 1650 "Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples.";
-CM_ SG_ 1650 LinpotPositionAverage "Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field.";
+CM_ BO_ 1650 "Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples.";
 CM_ SG_ 1650 LinpotPosition4 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1650 LinpotPosition3 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1650 LinpotPosition2 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";

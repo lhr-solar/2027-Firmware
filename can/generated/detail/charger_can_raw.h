@@ -168,21 +168,18 @@ extern "C" {
 #define CHARGER_CAN_RAW_BPS_STATUS_WARNING_BPS_FAN_NO_WARNING_CHOICE (0u)
 #define CHARGER_CAN_RAW_BPS_STATUS_WARNING_BPS_FAN_WARNING_CHOICE (1u)
 
-#define CHARGER_CAN_RAW_BPS_STATUS_DRIVE_OK_NOT_ALLOWED_CHOICE (0u)
-#define CHARGER_CAN_RAW_BPS_STATUS_DRIVE_OK_ALLOWED_CHOICE (1u)
+#define CHARGER_CAN_RAW_BPS_STATUS_DISCHARGE_SAFE_NOT_ALLOWED_CHOICE (0u)
+#define CHARGER_CAN_RAW_BPS_STATUS_DISCHARGE_SAFE_ALLOWED_CHOICE (1u)
 
-#define CHARGER_CAN_RAW_BPS_STATUS_CHARGE_OK_NOT_ALLOWED_CHOICE (0u)
-#define CHARGER_CAN_RAW_BPS_STATUS_CHARGE_OK_ALLOWED_CHOICE (1u)
+#define CHARGER_CAN_RAW_BPS_STATUS_CHARGE_SAFE_NOT_ALLOWED_CHOICE (0u)
+#define CHARGER_CAN_RAW_BPS_STATUS_CHARGE_SAFE_ALLOWED_CHOICE (1u)
 
 #define CHARGER_CAN_RAW_BPS_STATUS_MPPT_SET_MODE_DISABLED_CHOICE (0u)
 #define CHARGER_CAN_RAW_BPS_STATUS_MPPT_SET_MODE_PERTURB_AND_OBSERVE_CHOICE (1u)
 #define CHARGER_CAN_RAW_BPS_STATUS_MPPT_SET_MODE_CONSTANT_INPUT_VOLTAGE_CHOICE (2u)
 
-#define CHARGER_CAN_RAW_BPS_STATUS_ELCON_CHARGE_OK_NOT_ALLOWED_CHOICE (0u)
-#define CHARGER_CAN_RAW_BPS_STATUS_ELCON_CHARGE_OK_ALLOWED_CHOICE (1u)
-
-#define CHARGER_CAN_RAW_BPS_STATUS_REGEN_CHARGE_OK_NOT_ALLOWED_CHOICE (0u)
-#define CHARGER_CAN_RAW_BPS_STATUS_REGEN_CHARGE_OK_ALLOWED_CHOICE (1u)
+#define CHARGER_CAN_RAW_BPS_STATUS_REGEN_SAFE_NOT_ALLOWED_CHOICE (0u)
+#define CHARGER_CAN_RAW_BPS_STATUS_REGEN_SAFE_ALLOWED_CHOICE (1u)
 
 #define CHARGER_CAN_RAW_BPS_STATUS_HV_POSITIVE_CONTACTOR_OFF_CHOICE (0u)
 #define CHARGER_CAN_RAW_BPS_STATUS_HV_POSITIVE_CONTACTOR_ON_CHOICE (1u)
@@ -198,6 +195,9 @@ extern "C" {
 
 #define CHARGER_CAN_RAW_BPS_STATUS_MOTOR_PRECHARGE_RELAY_OFF_CHOICE (0u)
 #define CHARGER_CAN_RAW_BPS_STATUS_MOTOR_PRECHARGE_RELAY_ON_CHOICE (1u)
+
+#define CHARGER_CAN_RAW_BPS_STATUS_BALANCING_ACTIVE_OFF_CHOICE (0u)
+#define CHARGER_CAN_RAW_BPS_STATUS_BALANCING_ACTIVE_ON_CHOICE (1u)
 
 #define CHARGER_CAN_RAW_ELCON_INTERFACE_STATUS_STATUS_OK_CHOICE (0u)
 #define CHARGER_CAN_RAW_ELCON_INTERFACE_STATUS_STATUS_FAULT_CHOICE (1u)
@@ -278,16 +278,16 @@ extern "C" {
 #define CHARGER_CAN_RAW_BPS_STATUS_WARNING_BATTERY_FAN1_NAME "WarningBatteryFan1"
 #define CHARGER_CAN_RAW_BPS_STATUS_WARNING_BATTERY_FAN2_NAME "WarningBatteryFan2"
 #define CHARGER_CAN_RAW_BPS_STATUS_WARNING_BPS_FAN_NAME "WarningBPSFan"
-#define CHARGER_CAN_RAW_BPS_STATUS_DRIVE_OK_NAME "DriveOK"
-#define CHARGER_CAN_RAW_BPS_STATUS_CHARGE_OK_NAME "ChargeOK"
+#define CHARGER_CAN_RAW_BPS_STATUS_DISCHARGE_SAFE_NAME "DischargeSafe"
+#define CHARGER_CAN_RAW_BPS_STATUS_CHARGE_SAFE_NAME "ChargeSafe"
 #define CHARGER_CAN_RAW_BPS_STATUS_MPPT_SET_MODE_NAME "MPPTSetMode"
-#define CHARGER_CAN_RAW_BPS_STATUS_ELCON_CHARGE_OK_NAME "ElconChargeOK"
-#define CHARGER_CAN_RAW_BPS_STATUS_REGEN_CHARGE_OK_NAME "RegenChargeOK"
+#define CHARGER_CAN_RAW_BPS_STATUS_REGEN_SAFE_NAME "RegenSafe"
 #define CHARGER_CAN_RAW_BPS_STATUS_HV_POSITIVE_CONTACTOR_NAME "HVPositiveContactor"
 #define CHARGER_CAN_RAW_BPS_STATUS_MOTOR_CONTACTOR_NAME "MotorContactor"
 #define CHARGER_CAN_RAW_BPS_STATUS_HV_NEGATIVE_CONTACTOR_NAME "HVNegativeContactor"
 #define CHARGER_CAN_RAW_BPS_STATUS_MAIN_PRECHARGE_RELAY_NAME "MainPrechargeRelay"
 #define CHARGER_CAN_RAW_BPS_STATUS_MOTOR_PRECHARGE_RELAY_NAME "MotorPrechargeRelay"
+#define CHARGER_CAN_RAW_BPS_STATUS_BALANCING_ACTIVE_NAME "BalancingActive"
 #define CHARGER_CAN_RAW_BPS_STATUS_MPPT_VOLTAGE_LIMIT_NAME "MPPTVoltageLimit"
 #define CHARGER_CAN_RAW_BPS_STATUS_MPPT_CURRENT_LIMIT_NAME "MPPTCurrentLimit"
 #define CHARGER_CAN_RAW_BPS_STATUS_BATTERY_FAN_TACH1_NAME "BatteryFanTach1"
@@ -299,6 +299,8 @@ extern "C" {
 #define CHARGER_CAN_RAW_BPS_PACK_DATA_MAIN_VOLTAGE_NAME "MainVoltage"
 #define CHARGER_CAN_RAW_BPS_PACK_DATA_MOTOR_VOLTAGE_NAME "MotorVoltage"
 #define CHARGER_CAN_RAW_BPS_PACK_DATA_BATTERY_CURRENT_NAME "BatteryCurrent"
+#define CHARGER_CAN_RAW_BPS_VOLTAGE_DATA_MIN_CELL_VOLTAGE_INDEX_NAME "MinCellVoltageIndex"
+#define CHARGER_CAN_RAW_BPS_VOLTAGE_DATA_MAX_CELL_VOLTAGE_INDEX_NAME "MaxCellVoltageIndex"
 #define CHARGER_CAN_RAW_BPS_VOLTAGE_DATA_CELL_VOLTAGE00_NAME "CellVoltage00"
 #define CHARGER_CAN_RAW_BPS_VOLTAGE_DATA_CELL_VOLTAGE01_NAME "CellVoltage01"
 #define CHARGER_CAN_RAW_BPS_VOLTAGE_DATA_CELL_VOLTAGE02_NAME "CellVoltage02"
@@ -333,6 +335,7 @@ extern "C" {
 #define CHARGER_CAN_RAW_BPS_VOLTAGE_DATA_CELL_VOLTAGE31_NAME "CellVoltage31"
 #define CHARGER_CAN_RAW_BPS_VOLTAGE_DATA_MIN_CELL_VOLTAGE_NAME "MinCellVoltage"
 #define CHARGER_CAN_RAW_BPS_VOLTAGE_DATA_MAX_CELL_VOLTAGE_NAME "MaxCellVoltage"
+#define CHARGER_CAN_RAW_BPS_TEMPERATURE_DATA_MAX_BATTERY_TEMPERATURE_INDEX_NAME "MaxBatteryTemperatureIndex"
 #define CHARGER_CAN_RAW_BPS_TEMPERATURE_DATA_CELL_TEMPERATURE00_NAME "CellTemperature00"
 #define CHARGER_CAN_RAW_BPS_TEMPERATURE_DATA_CELL_TEMPERATURE01_NAME "CellTemperature01"
 #define CHARGER_CAN_RAW_BPS_TEMPERATURE_DATA_CELL_TEMPERATURE02_NAME "CellTemperature02"
@@ -660,22 +663,22 @@ struct charger_can_raw_bps_status_t {
     uint8_t warning_bps_fan;
 
     /**
-     * DriveOK
+     * BPS permission for battery discharge, including motor drive and HV-to-LV DC-DC load. 0 means not permitted.
      *
      * Range: -
      * Scale: 1
      * Offset: 0
      */
-    uint8_t drive_ok;
+    uint8_t discharge_safe;
 
     /**
-     * ChargeOK
+     * BPS permission for charging from charger or solar sources, subject to charging-specific safety checks. 0 means not permitted.
      *
      * Range: -
      * Scale: 1
      * Offset: 0
      */
-    uint8_t charge_ok;
+    uint8_t charge_safe;
 
     /**
      * MPPTSetMode
@@ -687,22 +690,13 @@ struct charger_can_raw_bps_status_t {
     uint8_t mppt_set_mode;
 
     /**
-     * ElconChargeOK
+     * BPS permission for regenerative charging, independently evaluated. 0 means not permitted.
      *
      * Range: -
      * Scale: 1
      * Offset: 0
      */
-    uint8_t elcon_charge_ok;
-
-    /**
-     * RegenChargeOK
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t regen_charge_ok;
+    uint8_t regen_safe;
 
     /**
      * HVPositiveContactor
@@ -748,6 +742,15 @@ struct charger_can_raw_bps_status_t {
      * Offset: 0
      */
     uint8_t motor_precharge_relay;
+
+    /**
+     * 1 when BPS reports at least one cell group actively balancing; 0 otherwise.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t balancing_active;
 
     /**
      * MPPTVoltageLimit
@@ -867,7 +870,25 @@ struct charger_can_raw_bps_pack_data_t {
  */
 struct charger_can_raw_bps_voltage_data_t {
     /**
-     * CellVoltage01
+     * Zero-based cell index (0-31) corresponding to MinCellVoltage.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t min_cell_voltage_index;
+
+    /**
+     * Zero-based cell index (0-31) corresponding to MaxCellVoltage.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t max_cell_voltage_index;
+
+    /**
+     * CellVoltage00
      *
      * Range: -
      * Scale: 1
@@ -876,7 +897,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage00;
 
     /**
-     * CellVoltage02
+     * CellVoltage01
      *
      * Range: -
      * Scale: 1
@@ -885,7 +906,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage01;
 
     /**
-     * CellVoltage03
+     * CellVoltage02
      *
      * Range: -
      * Scale: 1
@@ -894,7 +915,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage02;
 
     /**
-     * CellVoltage04
+     * CellVoltage03
      *
      * Range: -
      * Scale: 1
@@ -903,7 +924,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage03;
 
     /**
-     * CellVoltage05
+     * CellVoltage04
      *
      * Range: -
      * Scale: 1
@@ -912,7 +933,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage04;
 
     /**
-     * CellVoltage06
+     * CellVoltage05
      *
      * Range: -
      * Scale: 1
@@ -921,7 +942,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage05;
 
     /**
-     * CellVoltage07
+     * CellVoltage06
      *
      * Range: -
      * Scale: 1
@@ -930,7 +951,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage06;
 
     /**
-     * CellVoltage08
+     * CellVoltage07
      *
      * Range: -
      * Scale: 1
@@ -939,7 +960,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage07;
 
     /**
-     * CellVoltage09
+     * CellVoltage08
      *
      * Range: -
      * Scale: 1
@@ -948,7 +969,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage08;
 
     /**
-     * CellVoltage10
+     * CellVoltage09
      *
      * Range: -
      * Scale: 1
@@ -957,7 +978,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage09;
 
     /**
-     * CellVoltage11
+     * CellVoltage10
      *
      * Range: -
      * Scale: 1
@@ -966,7 +987,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage10;
 
     /**
-     * CellVoltage12
+     * CellVoltage11
      *
      * Range: -
      * Scale: 1
@@ -975,7 +996,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage11;
 
     /**
-     * CellVoltage13
+     * CellVoltage12
      *
      * Range: -
      * Scale: 1
@@ -984,7 +1005,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage12;
 
     /**
-     * CellVoltage14
+     * CellVoltage13
      *
      * Range: -
      * Scale: 1
@@ -993,7 +1014,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage13;
 
     /**
-     * CellVoltage15
+     * CellVoltage14
      *
      * Range: -
      * Scale: 1
@@ -1002,7 +1023,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage14;
 
     /**
-     * CellVoltage16
+     * CellVoltage15
      *
      * Range: -
      * Scale: 1
@@ -1011,7 +1032,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage15;
 
     /**
-     * CellVoltage17
+     * CellVoltage16
      *
      * Range: -
      * Scale: 1
@@ -1020,7 +1041,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage16;
 
     /**
-     * CellVoltage18
+     * CellVoltage17
      *
      * Range: -
      * Scale: 1
@@ -1029,7 +1050,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage17;
 
     /**
-     * CellVoltage19
+     * CellVoltage18
      *
      * Range: -
      * Scale: 1
@@ -1038,7 +1059,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage18;
 
     /**
-     * CellVoltage20
+     * CellVoltage19
      *
      * Range: -
      * Scale: 1
@@ -1047,7 +1068,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage19;
 
     /**
-     * CellVoltage21
+     * CellVoltage20
      *
      * Range: -
      * Scale: 1
@@ -1056,7 +1077,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage20;
 
     /**
-     * CellVoltage22
+     * CellVoltage21
      *
      * Range: -
      * Scale: 1
@@ -1065,7 +1086,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage21;
 
     /**
-     * CellVoltage23
+     * CellVoltage22
      *
      * Range: -
      * Scale: 1
@@ -1074,7 +1095,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage22;
 
     /**
-     * CellVoltage24
+     * CellVoltage23
      *
      * Range: -
      * Scale: 1
@@ -1083,7 +1104,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage23;
 
     /**
-     * CellVoltage25
+     * CellVoltage24
      *
      * Range: -
      * Scale: 1
@@ -1092,7 +1113,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage24;
 
     /**
-     * CellVoltage26
+     * CellVoltage25
      *
      * Range: -
      * Scale: 1
@@ -1101,7 +1122,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage25;
 
     /**
-     * CellVoltage27
+     * CellVoltage26
      *
      * Range: -
      * Scale: 1
@@ -1110,7 +1131,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage26;
 
     /**
-     * CellVoltage28
+     * CellVoltage27
      *
      * Range: -
      * Scale: 1
@@ -1119,7 +1140,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage27;
 
     /**
-     * CellVoltage29
+     * CellVoltage28
      *
      * Range: -
      * Scale: 1
@@ -1128,7 +1149,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage28;
 
     /**
-     * CellVoltage30
+     * CellVoltage29
      *
      * Range: -
      * Scale: 1
@@ -1137,7 +1158,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage29;
 
     /**
-     * CellVoltage31
+     * CellVoltage30
      *
      * Range: -
      * Scale: 1
@@ -1146,7 +1167,7 @@ struct charger_can_raw_bps_voltage_data_t {
     uint16_t cell_voltage30;
 
     /**
-     * CellVoltage32
+     * CellVoltage31
      *
      * Range: -
      * Scale: 1
@@ -1182,7 +1203,16 @@ struct charger_can_raw_bps_voltage_data_t {
  */
 struct charger_can_raw_bps_temperature_data_t {
     /**
-     * CellTemperature01
+     * Zero-based cell index (0-31) corresponding to MaxBatteryTemperature.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t max_battery_temperature_index;
+
+    /**
+     * CellTemperature00
      *
      * Range: -
      * Scale: 1
@@ -1191,7 +1221,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature00;
 
     /**
-     * CellTemperature02
+     * CellTemperature01
      *
      * Range: -
      * Scale: 1
@@ -1200,7 +1230,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature01;
 
     /**
-     * CellTemperature03
+     * CellTemperature02
      *
      * Range: -
      * Scale: 1
@@ -1209,7 +1239,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature02;
 
     /**
-     * CellTemperature04
+     * CellTemperature03
      *
      * Range: -
      * Scale: 1
@@ -1218,7 +1248,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature03;
 
     /**
-     * CellTemperature05
+     * CellTemperature04
      *
      * Range: -
      * Scale: 1
@@ -1227,7 +1257,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature04;
 
     /**
-     * CellTemperature06
+     * CellTemperature05
      *
      * Range: -
      * Scale: 1
@@ -1236,7 +1266,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature05;
 
     /**
-     * CellTemperature07
+     * CellTemperature06
      *
      * Range: -
      * Scale: 1
@@ -1245,7 +1275,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature06;
 
     /**
-     * CellTemperature08
+     * CellTemperature07
      *
      * Range: -
      * Scale: 1
@@ -1254,7 +1284,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature07;
 
     /**
-     * CellTemperature09
+     * CellTemperature08
      *
      * Range: -
      * Scale: 1
@@ -1263,7 +1293,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature08;
 
     /**
-     * CellTemperature10
+     * CellTemperature09
      *
      * Range: -
      * Scale: 1
@@ -1272,7 +1302,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature09;
 
     /**
-     * CellTemperature11
+     * CellTemperature10
      *
      * Range: -
      * Scale: 1
@@ -1281,7 +1311,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature10;
 
     /**
-     * CellTemperature12
+     * CellTemperature11
      *
      * Range: -
      * Scale: 1
@@ -1290,7 +1320,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature11;
 
     /**
-     * CellTemperature13
+     * CellTemperature12
      *
      * Range: -
      * Scale: 1
@@ -1299,7 +1329,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature12;
 
     /**
-     * CellTemperature14
+     * CellTemperature13
      *
      * Range: -
      * Scale: 1
@@ -1308,7 +1338,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature13;
 
     /**
-     * CellTemperature15
+     * CellTemperature14
      *
      * Range: -
      * Scale: 1
@@ -1317,7 +1347,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature14;
 
     /**
-     * CellTemperature16
+     * CellTemperature15
      *
      * Range: -
      * Scale: 1
@@ -1326,7 +1356,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature15;
 
     /**
-     * CellTemperature17
+     * CellTemperature16
      *
      * Range: -
      * Scale: 1
@@ -1335,7 +1365,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature16;
 
     /**
-     * CellTemperature18
+     * CellTemperature17
      *
      * Range: -
      * Scale: 1
@@ -1344,7 +1374,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature17;
 
     /**
-     * CellTemperature19
+     * CellTemperature18
      *
      * Range: -
      * Scale: 1
@@ -1353,7 +1383,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature18;
 
     /**
-     * CellTemperature20
+     * CellTemperature19
      *
      * Range: -
      * Scale: 1
@@ -1362,7 +1392,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature19;
 
     /**
-     * CellTemperature21
+     * CellTemperature20
      *
      * Range: -
      * Scale: 1
@@ -1371,7 +1401,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature20;
 
     /**
-     * CellTemperature22
+     * CellTemperature21
      *
      * Range: -
      * Scale: 1
@@ -1380,7 +1410,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature21;
 
     /**
-     * CellTemperature23
+     * CellTemperature22
      *
      * Range: -
      * Scale: 1
@@ -1389,7 +1419,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature22;
 
     /**
-     * CellTemperature24
+     * CellTemperature23
      *
      * Range: -
      * Scale: 1
@@ -1398,7 +1428,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature23;
 
     /**
-     * CellTemperature25
+     * CellTemperature24
      *
      * Range: -
      * Scale: 1
@@ -1407,7 +1437,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature24;
 
     /**
-     * CellTemperature26
+     * CellTemperature25
      *
      * Range: -
      * Scale: 1
@@ -1416,7 +1446,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature25;
 
     /**
-     * CellTemperature27
+     * CellTemperature26
      *
      * Range: -
      * Scale: 1
@@ -1425,7 +1455,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature26;
 
     /**
-     * CellTemperature28
+     * CellTemperature27
      *
      * Range: -
      * Scale: 1
@@ -1434,7 +1464,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature27;
 
     /**
-     * CellTemperature29
+     * CellTemperature28
      *
      * Range: -
      * Scale: 1
@@ -1443,7 +1473,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature28;
 
     /**
-     * CellTemperature30
+     * CellTemperature29
      *
      * Range: -
      * Scale: 1
@@ -1452,7 +1482,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature29;
 
     /**
-     * CellTemperature31
+     * CellTemperature30
      *
      * Range: -
      * Scale: 1
@@ -1461,7 +1491,7 @@ struct charger_can_raw_bps_temperature_data_t {
     uint16_t cell_temperature30;
 
     /**
-     * CellTemperature32
+     * CellTemperature31
      *
      * Range: -
      * Scale: 1
@@ -1928,7 +1958,7 @@ bool charger_can_raw_bps_status_warning_bps_fan_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool charger_can_raw_bps_status_drive_ok_is_in_range(uint8_t value);
+bool charger_can_raw_bps_status_discharge_safe_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1937,7 +1967,7 @@ bool charger_can_raw_bps_status_drive_ok_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool charger_can_raw_bps_status_charge_ok_is_in_range(uint8_t value);
+bool charger_can_raw_bps_status_charge_safe_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1955,16 +1985,7 @@ bool charger_can_raw_bps_status_mppt_set_mode_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool charger_can_raw_bps_status_elcon_charge_ok_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool charger_can_raw_bps_status_regen_charge_ok_is_in_range(uint8_t value);
+bool charger_can_raw_bps_status_regen_safe_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -2010,6 +2031,15 @@ bool charger_can_raw_bps_status_main_precharge_relay_is_in_range(uint8_t value);
  * @return true if in range, false otherwise.
  */
 bool charger_can_raw_bps_status_motor_precharge_relay_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool charger_can_raw_bps_status_balancing_active_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -2183,6 +2213,24 @@ int charger_can_raw_bps_voltage_data_unpack(
  * @return zero(0) on success or (-1) in case of nullptr argument.
  */
 int charger_can_raw_bps_voltage_data_init(struct charger_can_raw_bps_voltage_data_t *msg_p);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool charger_can_raw_bps_voltage_data_min_cell_voltage_index_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool charger_can_raw_bps_voltage_data_max_cell_voltage_index_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -2526,6 +2574,15 @@ int charger_can_raw_bps_temperature_data_unpack(
  * @return zero(0) on success or (-1) in case of nullptr argument.
  */
 int charger_can_raw_bps_temperature_data_init(struct charger_can_raw_bps_temperature_data_t *msg_p);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool charger_can_raw_bps_temperature_data_max_battery_temperature_index_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.

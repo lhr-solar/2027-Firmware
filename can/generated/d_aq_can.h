@@ -177,7 +177,7 @@ can_status_t d_aq_can_on_board_watchdog_pack(can_frame_t* dst, const d_aq_can_on
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_on_board_watchdog_unpack(d_aq_can_on_board_watchdog_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -191,8 +191,6 @@ typedef struct {
     double acceleration_x3;
     /** AccelerationX4; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x4;
-    /** AccelerationXAverage; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_x_average;
     /** AccelerationY1; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_y1;
     /** AccelerationY2; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -201,8 +199,6 @@ typedef struct {
     double acceleration_y3;
     /** AccelerationY4; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_y4;
-    /** AccelerationYAverage; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_y_average;
     /** AccelerationZ1; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_z1;
     /** AccelerationZ2; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -211,8 +207,6 @@ typedef struct {
     double acceleration_z3;
     /** AccelerationZ4; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_z4;
-    /** AccelerationZAverage; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_z_average;
 } d_aq_can_chassis_acceleration_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -222,7 +216,7 @@ can_status_t d_aq_can_chassis_acceleration_data_pack(can_frame_t* dst, const d_a
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_chassis_acceleration_data_unpack(d_aq_can_chassis_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -236,8 +230,6 @@ typedef struct {
     double gyro_x3;
     /** GyroX4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x4;
-    /** GyroXAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_x_average;
     /** GyroY1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_y1;
     /** GyroY2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -246,8 +238,6 @@ typedef struct {
     double gyro_y3;
     /** GyroY4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_y4;
-    /** GyroYAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_y_average;
     /** GyroZ1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_z1;
     /** GyroZ2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -256,8 +246,6 @@ typedef struct {
     double gyro_z3;
     /** GyroZ4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_z4;
-    /** GyroZAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_z_average;
 } d_aq_can_chassis_gyro_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -267,7 +255,7 @@ can_status_t d_aq_can_chassis_gyro_data_pack(can_frame_t* dst, const d_aq_can_ch
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_chassis_gyro_data_unpack(d_aq_can_chassis_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -281,8 +269,6 @@ typedef struct {
     double magnetic_field_x3;
     /** MagneticFieldX4; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 4 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT. */
     double magnetic_field_x4;
-    /** MagneticFieldXAverage; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Sender-populated arithmetic mean of MagneticFieldX1..MagneticFieldX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double magnetic_field_x_average;
     /** MagneticFieldY1; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 1 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT. */
     double magnetic_field_y1;
     /** MagneticFieldY2; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 2 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT. */
@@ -291,8 +277,6 @@ typedef struct {
     double magnetic_field_y3;
     /** MagneticFieldY4; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 4 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT. */
     double magnetic_field_y4;
-    /** MagneticFieldYAverage; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Sender-populated arithmetic mean of MagneticFieldY1..MagneticFieldY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double magnetic_field_y_average;
     /** MagneticFieldZ1; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 1 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT. */
     double magnetic_field_z1;
     /** MagneticFieldZ2; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 2 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT. */
@@ -301,8 +285,6 @@ typedef struct {
     double magnetic_field_z3;
     /** MagneticFieldZ4; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 4 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT. */
     double magnetic_field_z4;
-    /** MagneticFieldZAverage; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Sender-populated arithmetic mean of MagneticFieldZ1..MagneticFieldZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double magnetic_field_z_average;
 } d_aq_can_chassis_magnetometer_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -312,7 +294,7 @@ can_status_t d_aq_can_chassis_magnetometer_data_pack(can_frame_t* dst, const d_a
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_chassis_magnetometer_data_unpack(d_aq_can_chassis_magnetometer_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -326,8 +308,6 @@ typedef struct {
     double acceleration_x3;
     /** AccelerationX4; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x4;
-    /** AccelerationXAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_x_average;
     /** AccelerationY1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_y1;
     /** AccelerationY2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -336,8 +316,6 @@ typedef struct {
     double acceleration_y3;
     /** AccelerationY4; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_y4;
-    /** AccelerationYAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_y_average;
     /** AccelerationZ1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_z1;
     /** AccelerationZ2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -346,8 +324,6 @@ typedef struct {
     double acceleration_z3;
     /** AccelerationZ4; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_z4;
-    /** AccelerationZAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_z_average;
 } d_aq_can_upright_fr_acceleration_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -357,7 +333,7 @@ can_status_t d_aq_can_upright_fr_acceleration_data_pack(can_frame_t* dst, const 
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_acceleration_data_unpack(d_aq_can_upright_fr_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -371,8 +347,6 @@ typedef struct {
     double gyro_x3;
     /** GyroX4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x4;
-    /** GyroXAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_x_average;
     /** GyroY1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_y1;
     /** GyroY2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -381,8 +355,6 @@ typedef struct {
     double gyro_y3;
     /** GyroY4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_y4;
-    /** GyroYAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_y_average;
     /** GyroZ1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_z1;
     /** GyroZ2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -391,8 +363,6 @@ typedef struct {
     double gyro_z3;
     /** GyroZ4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_z4;
-    /** GyroZAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_z_average;
 } d_aq_can_upright_fr_gyro_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -402,7 +372,7 @@ can_status_t d_aq_can_upright_fr_gyro_data_pack(can_frame_t* dst, const d_aq_can
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_gyro_data_unpack(d_aq_can_upright_fr_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -416,8 +386,6 @@ typedef struct {
     double wheel_rpm3;
     /** WheelRPM4; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm4;
-    /** WheelRPMAverage; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double wheel_rpm_average;
 } d_aq_can_upright_fr_wheel_speed_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -427,7 +395,7 @@ can_status_t d_aq_can_upright_fr_wheel_speed_data_pack(can_frame_t* dst, const d
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_wheel_speed_data_unpack(d_aq_can_upright_fr_wheel_speed_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -441,8 +409,6 @@ typedef struct {
     double acceleration_x3;
     /** AccelerationX4; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x4;
-    /** AccelerationXAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_x_average;
     /** AccelerationY1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_y1;
     /** AccelerationY2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -451,8 +417,6 @@ typedef struct {
     double acceleration_y3;
     /** AccelerationY4; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_y4;
-    /** AccelerationYAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_y_average;
     /** AccelerationZ1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_z1;
     /** AccelerationZ2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -461,8 +425,6 @@ typedef struct {
     double acceleration_z3;
     /** AccelerationZ4; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_z4;
-    /** AccelerationZAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_z_average;
 } d_aq_can_upright_fl_acceleration_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -472,7 +434,7 @@ can_status_t d_aq_can_upright_fl_acceleration_data_pack(can_frame_t* dst, const 
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_acceleration_data_unpack(d_aq_can_upright_fl_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -486,8 +448,6 @@ typedef struct {
     double gyro_x3;
     /** GyroX4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x4;
-    /** GyroXAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_x_average;
     /** GyroY1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_y1;
     /** GyroY2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -496,8 +456,6 @@ typedef struct {
     double gyro_y3;
     /** GyroY4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_y4;
-    /** GyroYAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_y_average;
     /** GyroZ1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_z1;
     /** GyroZ2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -506,8 +464,6 @@ typedef struct {
     double gyro_z3;
     /** GyroZ4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_z4;
-    /** GyroZAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_z_average;
 } d_aq_can_upright_fl_gyro_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -517,7 +473,7 @@ can_status_t d_aq_can_upright_fl_gyro_data_pack(can_frame_t* dst, const d_aq_can
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_gyro_data_unpack(d_aq_can_upright_fl_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -531,8 +487,6 @@ typedef struct {
     double wheel_rpm3;
     /** WheelRPM4; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm4;
-    /** WheelRPMAverage; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double wheel_rpm_average;
 } d_aq_can_upright_fl_wheel_speed_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -542,7 +496,7 @@ can_status_t d_aq_can_upright_fl_wheel_speed_data_pack(can_frame_t* dst, const d
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_wheel_speed_data_unpack(d_aq_can_upright_fl_wheel_speed_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -556,8 +510,6 @@ typedef struct {
     double acceleration_x3;
     /** AccelerationX4; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x4;
-    /** AccelerationXAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_x_average;
     /** AccelerationY1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_y1;
     /** AccelerationY2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -566,8 +518,6 @@ typedef struct {
     double acceleration_y3;
     /** AccelerationY4; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_y4;
-    /** AccelerationYAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_y_average;
     /** AccelerationZ1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_z1;
     /** AccelerationZ2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -576,8 +526,6 @@ typedef struct {
     double acceleration_z3;
     /** AccelerationZ4; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_z4;
-    /** AccelerationZAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double acceleration_z_average;
 } d_aq_can_upright_rear_acceleration_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -587,7 +535,7 @@ can_status_t d_aq_can_upright_rear_acceleration_data_pack(can_frame_t* dst, cons
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_rear_acceleration_data_unpack(d_aq_can_upright_rear_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -601,8 +549,6 @@ typedef struct {
     double gyro_x3;
     /** GyroX4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x4;
-    /** GyroXAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_x_average;
     /** GyroY1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_y1;
     /** GyroY2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -611,8 +557,6 @@ typedef struct {
     double gyro_y3;
     /** GyroY4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_y4;
-    /** GyroYAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_y_average;
     /** GyroZ1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_z1;
     /** GyroZ2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -621,8 +565,6 @@ typedef struct {
     double gyro_z3;
     /** GyroZ4; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_z4;
-    /** GyroZAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double gyro_z_average;
 } d_aq_can_upright_rear_gyro_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -632,7 +574,7 @@ can_status_t d_aq_can_upright_rear_gyro_data_pack(can_frame_t* dst, const d_aq_c
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_rear_gyro_data_unpack(d_aq_can_upright_rear_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -646,8 +588,6 @@ typedef struct {
     double wheel_rpm3;
     /** WheelRPM4; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm4;
-    /** WheelRPMAverage; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
-    double wheel_rpm_average;
 } d_aq_can_upright_rear_wheel_speed_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -657,7 +597,7 @@ can_status_t d_aq_can_upright_rear_wheel_speed_data_pack(can_frame_t* dst, const
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_rear_wheel_speed_data_unpack(d_aq_can_upright_rear_wheel_speed_data_t* dst, const can_frame_t* src);
 
-/** Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples. */
+/** Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -669,8 +609,6 @@ typedef struct {
     double linpot_position3;
     /** LinpotPosition4; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
     double linpot_position4;
-    /** LinpotPositionAverage; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field. */
-    double linpot_position_average;
 } d_aq_can_suspension_fr_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -680,7 +618,7 @@ can_status_t d_aq_can_suspension_fr_data_pack(can_frame_t* dst, const d_aq_can_s
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_suspension_fr_data_unpack(d_aq_can_suspension_fr_data_t* dst, const can_frame_t* src);
 
-/** Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples. */
+/** Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -692,8 +630,6 @@ typedef struct {
     double linpot_position3;
     /** LinpotPosition4; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
     double linpot_position4;
-    /** LinpotPositionAverage; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field. */
-    double linpot_position_average;
 } d_aq_can_suspension_fl_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -703,7 +639,7 @@ can_status_t d_aq_can_suspension_fl_data_pack(can_frame_t* dst, const d_aq_can_s
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_suspension_fl_data_unpack(d_aq_can_suspension_fl_data_t* dst, const can_frame_t* src);
 
-/** Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples. */
+/** Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -715,8 +651,6 @@ typedef struct {
     double linpot_position3;
     /** LinpotPosition4; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
     double linpot_position4;
-    /** LinpotPositionAverage; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field. */
-    double linpot_position_average;
 } d_aq_can_suspension_rear_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.

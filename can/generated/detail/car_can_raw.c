@@ -57,6 +57,14 @@ static inline uint8_t pack_left_shift_u32(
     return (uint8_t)((uint8_t)(value << shift) & mask);
 }
 
+static inline uint8_t pack_right_shift_u8(
+    uint8_t value,
+    uint8_t shift,
+    uint8_t mask)
+{
+    return (uint8_t)((uint8_t)(value >> shift) & mask);
+}
+
 static inline uint8_t pack_right_shift_u16(
     uint16_t value,
     uint8_t shift,
@@ -71,6 +79,14 @@ static inline uint8_t pack_right_shift_u32(
     uint8_t mask)
 {
     return (uint8_t)((uint8_t)(value >> shift) & mask);
+}
+
+static inline uint8_t unpack_left_shift_u8(
+    uint8_t value,
+    uint8_t shift,
+    uint8_t mask)
+{
+    return (uint8_t)((uint8_t)(value & mask) << shift);
 }
 
 static inline uint16_t unpack_left_shift_u16(
@@ -358,16 +374,16 @@ int car_can_raw_bps_status_pack(
     dst_p[3] |= pack_left_shift_u8(src_p->warning_battery_fan1, 6u, 0x40u);
     dst_p[3] |= pack_left_shift_u8(src_p->warning_battery_fan2, 7u, 0x80u);
     dst_p[4] |= pack_left_shift_u8(src_p->warning_bps_fan, 0u, 0x01u);
-    dst_p[4] |= pack_left_shift_u8(src_p->drive_ok, 1u, 0x02u);
-    dst_p[4] |= pack_left_shift_u8(src_p->charge_ok, 2u, 0x04u);
+    dst_p[4] |= pack_left_shift_u8(src_p->discharge_safe, 1u, 0x02u);
+    dst_p[4] |= pack_left_shift_u8(src_p->charge_safe, 2u, 0x04u);
     dst_p[4] |= pack_left_shift_u8(src_p->mppt_set_mode, 3u, 0x18u);
-    dst_p[4] |= pack_left_shift_u8(src_p->elcon_charge_ok, 5u, 0x20u);
-    dst_p[4] |= pack_left_shift_u8(src_p->regen_charge_ok, 6u, 0x40u);
-    dst_p[4] |= pack_left_shift_u8(src_p->hv_positive_contactor, 7u, 0x80u);
-    dst_p[5] |= pack_left_shift_u8(src_p->motor_contactor, 0u, 0x01u);
-    dst_p[5] |= pack_left_shift_u8(src_p->hv_negative_contactor, 1u, 0x02u);
-    dst_p[5] |= pack_left_shift_u8(src_p->main_precharge_relay, 2u, 0x04u);
-    dst_p[5] |= pack_left_shift_u8(src_p->motor_precharge_relay, 3u, 0x08u);
+    dst_p[4] |= pack_left_shift_u8(src_p->regen_safe, 5u, 0x20u);
+    dst_p[4] |= pack_left_shift_u8(src_p->hv_positive_contactor, 6u, 0x40u);
+    dst_p[4] |= pack_left_shift_u8(src_p->motor_contactor, 7u, 0x80u);
+    dst_p[5] |= pack_left_shift_u8(src_p->hv_negative_contactor, 0u, 0x01u);
+    dst_p[5] |= pack_left_shift_u8(src_p->main_precharge_relay, 1u, 0x02u);
+    dst_p[5] |= pack_left_shift_u8(src_p->motor_precharge_relay, 2u, 0x04u);
+    dst_p[5] |= pack_left_shift_u8(src_p->balancing_active, 3u, 0x08u);
     dst_p[5] |= pack_left_shift_u16(src_p->mppt_voltage_limit, 4u, 0xf0u);
     dst_p[6] |= pack_right_shift_u16(src_p->mppt_voltage_limit, 4u, 0xffu);
     dst_p[7] |= pack_right_shift_u16(src_p->mppt_voltage_limit, 12u, 0x0fu);
@@ -423,16 +439,16 @@ int car_can_raw_bps_status_unpack(
     dst_p->warning_battery_fan1 = unpack_right_shift_u8(src_p[3], 6u, 0x40u);
     dst_p->warning_battery_fan2 = unpack_right_shift_u8(src_p[3], 7u, 0x80u);
     dst_p->warning_bps_fan = unpack_right_shift_u8(src_p[4], 0u, 0x01u);
-    dst_p->drive_ok = unpack_right_shift_u8(src_p[4], 1u, 0x02u);
-    dst_p->charge_ok = unpack_right_shift_u8(src_p[4], 2u, 0x04u);
+    dst_p->discharge_safe = unpack_right_shift_u8(src_p[4], 1u, 0x02u);
+    dst_p->charge_safe = unpack_right_shift_u8(src_p[4], 2u, 0x04u);
     dst_p->mppt_set_mode = unpack_right_shift_u8(src_p[4], 3u, 0x18u);
-    dst_p->elcon_charge_ok = unpack_right_shift_u8(src_p[4], 5u, 0x20u);
-    dst_p->regen_charge_ok = unpack_right_shift_u8(src_p[4], 6u, 0x40u);
-    dst_p->hv_positive_contactor = unpack_right_shift_u8(src_p[4], 7u, 0x80u);
-    dst_p->motor_contactor = unpack_right_shift_u8(src_p[5], 0u, 0x01u);
-    dst_p->hv_negative_contactor = unpack_right_shift_u8(src_p[5], 1u, 0x02u);
-    dst_p->main_precharge_relay = unpack_right_shift_u8(src_p[5], 2u, 0x04u);
-    dst_p->motor_precharge_relay = unpack_right_shift_u8(src_p[5], 3u, 0x08u);
+    dst_p->regen_safe = unpack_right_shift_u8(src_p[4], 5u, 0x20u);
+    dst_p->hv_positive_contactor = unpack_right_shift_u8(src_p[4], 6u, 0x40u);
+    dst_p->motor_contactor = unpack_right_shift_u8(src_p[4], 7u, 0x80u);
+    dst_p->hv_negative_contactor = unpack_right_shift_u8(src_p[5], 0u, 0x01u);
+    dst_p->main_precharge_relay = unpack_right_shift_u8(src_p[5], 1u, 0x02u);
+    dst_p->motor_precharge_relay = unpack_right_shift_u8(src_p[5], 2u, 0x04u);
+    dst_p->balancing_active = unpack_right_shift_u8(src_p[5], 3u, 0x08u);
     dst_p->mppt_voltage_limit = unpack_right_shift_u16(src_p[5], 4u, 0xf0u);
     dst_p->mppt_voltage_limit |= unpack_left_shift_u16(src_p[6], 4u, 0xffu);
     dst_p->mppt_voltage_limit |= unpack_left_shift_u16(src_p[7], 12u, 0x0fu);
@@ -608,12 +624,12 @@ bool car_can_raw_bps_status_warning_bps_fan_is_in_range(uint8_t value)
     return (value <= 1u);
 }
 
-bool car_can_raw_bps_status_drive_ok_is_in_range(uint8_t value)
+bool car_can_raw_bps_status_discharge_safe_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_bps_status_charge_ok_is_in_range(uint8_t value)
+bool car_can_raw_bps_status_charge_safe_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
@@ -623,12 +639,7 @@ bool car_can_raw_bps_status_mppt_set_mode_is_in_range(uint8_t value)
     return (value <= 3u);
 }
 
-bool car_can_raw_bps_status_elcon_charge_ok_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_bps_status_regen_charge_ok_is_in_range(uint8_t value)
+bool car_can_raw_bps_status_regen_safe_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
@@ -654,6 +665,11 @@ bool car_can_raw_bps_status_main_precharge_relay_is_in_range(uint8_t value)
 }
 
 bool car_can_raw_bps_status_motor_precharge_relay_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_bps_status_balancing_active_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
@@ -1243,74 +1259,94 @@ int car_can_raw_bps_voltage_data_pack(
 
     memset(&dst_p[0], 0, 64);
 
-    dst_p[0] |= pack_left_shift_u16(src_p->cell_voltage00, 0u, 0xffu);
-    dst_p[1] |= pack_right_shift_u16(src_p->cell_voltage00, 8u, 0x0fu);
-    dst_p[1] |= pack_left_shift_u16(src_p->cell_voltage01, 4u, 0xf0u);
-    dst_p[2] |= pack_right_shift_u16(src_p->cell_voltage01, 4u, 0xffu);
-    dst_p[3] |= pack_left_shift_u16(src_p->cell_voltage02, 0u, 0xffu);
-    dst_p[4] |= pack_right_shift_u16(src_p->cell_voltage02, 8u, 0x0fu);
-    dst_p[4] |= pack_left_shift_u16(src_p->cell_voltage03, 4u, 0xf0u);
-    dst_p[5] |= pack_right_shift_u16(src_p->cell_voltage03, 4u, 0xffu);
-    dst_p[6] |= pack_left_shift_u16(src_p->cell_voltage04, 0u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(src_p->cell_voltage04, 8u, 0x0fu);
-    dst_p[7] |= pack_left_shift_u16(src_p->cell_voltage05, 4u, 0xf0u);
-    dst_p[8] |= pack_right_shift_u16(src_p->cell_voltage05, 4u, 0xffu);
-    dst_p[9] |= pack_left_shift_u16(src_p->cell_voltage06, 0u, 0xffu);
-    dst_p[10] |= pack_right_shift_u16(src_p->cell_voltage06, 8u, 0x0fu);
-    dst_p[10] |= pack_left_shift_u16(src_p->cell_voltage07, 4u, 0xf0u);
-    dst_p[11] |= pack_right_shift_u16(src_p->cell_voltage07, 4u, 0xffu);
-    dst_p[12] |= pack_left_shift_u16(src_p->cell_voltage08, 0u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(src_p->cell_voltage08, 8u, 0x0fu);
-    dst_p[13] |= pack_left_shift_u16(src_p->cell_voltage09, 4u, 0xf0u);
-    dst_p[14] |= pack_right_shift_u16(src_p->cell_voltage09, 4u, 0xffu);
-    dst_p[15] |= pack_left_shift_u16(src_p->cell_voltage10, 0u, 0xffu);
-    dst_p[16] |= pack_right_shift_u16(src_p->cell_voltage10, 8u, 0x0fu);
-    dst_p[16] |= pack_left_shift_u16(src_p->cell_voltage11, 4u, 0xf0u);
-    dst_p[17] |= pack_right_shift_u16(src_p->cell_voltage11, 4u, 0xffu);
-    dst_p[18] |= pack_left_shift_u16(src_p->cell_voltage12, 0u, 0xffu);
-    dst_p[19] |= pack_right_shift_u16(src_p->cell_voltage12, 8u, 0x0fu);
-    dst_p[19] |= pack_left_shift_u16(src_p->cell_voltage13, 4u, 0xf0u);
-    dst_p[20] |= pack_right_shift_u16(src_p->cell_voltage13, 4u, 0xffu);
-    dst_p[21] |= pack_left_shift_u16(src_p->cell_voltage14, 0u, 0xffu);
-    dst_p[22] |= pack_right_shift_u16(src_p->cell_voltage14, 8u, 0x0fu);
-    dst_p[22] |= pack_left_shift_u16(src_p->cell_voltage15, 4u, 0xf0u);
-    dst_p[23] |= pack_right_shift_u16(src_p->cell_voltage15, 4u, 0xffu);
-    dst_p[24] |= pack_left_shift_u16(src_p->cell_voltage16, 0u, 0xffu);
-    dst_p[25] |= pack_right_shift_u16(src_p->cell_voltage16, 8u, 0x0fu);
-    dst_p[25] |= pack_left_shift_u16(src_p->cell_voltage17, 4u, 0xf0u);
-    dst_p[26] |= pack_right_shift_u16(src_p->cell_voltage17, 4u, 0xffu);
-    dst_p[27] |= pack_left_shift_u16(src_p->cell_voltage18, 0u, 0xffu);
-    dst_p[28] |= pack_right_shift_u16(src_p->cell_voltage18, 8u, 0x0fu);
-    dst_p[28] |= pack_left_shift_u16(src_p->cell_voltage19, 4u, 0xf0u);
-    dst_p[29] |= pack_right_shift_u16(src_p->cell_voltage19, 4u, 0xffu);
-    dst_p[30] |= pack_left_shift_u16(src_p->cell_voltage20, 0u, 0xffu);
-    dst_p[31] |= pack_right_shift_u16(src_p->cell_voltage20, 8u, 0x0fu);
-    dst_p[31] |= pack_left_shift_u16(src_p->cell_voltage21, 4u, 0xf0u);
-    dst_p[32] |= pack_right_shift_u16(src_p->cell_voltage21, 4u, 0xffu);
-    dst_p[33] |= pack_left_shift_u16(src_p->cell_voltage22, 0u, 0xffu);
-    dst_p[34] |= pack_right_shift_u16(src_p->cell_voltage22, 8u, 0x0fu);
-    dst_p[34] |= pack_left_shift_u16(src_p->cell_voltage23, 4u, 0xf0u);
-    dst_p[35] |= pack_right_shift_u16(src_p->cell_voltage23, 4u, 0xffu);
-    dst_p[36] |= pack_left_shift_u16(src_p->cell_voltage24, 0u, 0xffu);
-    dst_p[37] |= pack_right_shift_u16(src_p->cell_voltage24, 8u, 0x0fu);
-    dst_p[37] |= pack_left_shift_u16(src_p->cell_voltage25, 4u, 0xf0u);
-    dst_p[38] |= pack_right_shift_u16(src_p->cell_voltage25, 4u, 0xffu);
-    dst_p[39] |= pack_left_shift_u16(src_p->cell_voltage26, 0u, 0xffu);
-    dst_p[40] |= pack_right_shift_u16(src_p->cell_voltage26, 8u, 0x0fu);
-    dst_p[40] |= pack_left_shift_u16(src_p->cell_voltage27, 4u, 0xf0u);
-    dst_p[41] |= pack_right_shift_u16(src_p->cell_voltage27, 4u, 0xffu);
-    dst_p[42] |= pack_left_shift_u16(src_p->cell_voltage28, 0u, 0xffu);
-    dst_p[43] |= pack_right_shift_u16(src_p->cell_voltage28, 8u, 0x0fu);
-    dst_p[43] |= pack_left_shift_u16(src_p->cell_voltage29, 4u, 0xf0u);
-    dst_p[44] |= pack_right_shift_u16(src_p->cell_voltage29, 4u, 0xffu);
-    dst_p[45] |= pack_left_shift_u16(src_p->cell_voltage30, 0u, 0xffu);
-    dst_p[46] |= pack_right_shift_u16(src_p->cell_voltage30, 8u, 0x0fu);
-    dst_p[46] |= pack_left_shift_u16(src_p->cell_voltage31, 4u, 0xf0u);
-    dst_p[47] |= pack_right_shift_u16(src_p->cell_voltage31, 4u, 0xffu);
-    dst_p[48] |= pack_left_shift_u16(src_p->min_cell_voltage, 0u, 0xffu);
-    dst_p[49] |= pack_right_shift_u16(src_p->min_cell_voltage, 8u, 0x0fu);
-    dst_p[49] |= pack_left_shift_u16(src_p->max_cell_voltage, 4u, 0xf0u);
-    dst_p[50] |= pack_right_shift_u16(src_p->max_cell_voltage, 4u, 0xffu);
+    dst_p[0] |= pack_left_shift_u8(src_p->min_cell_voltage_index, 0u, 0x1fu);
+    dst_p[0] |= pack_left_shift_u8(src_p->max_cell_voltage_index, 5u, 0xe0u);
+    dst_p[1] |= pack_right_shift_u8(src_p->max_cell_voltage_index, 3u, 0x03u);
+    dst_p[1] |= pack_left_shift_u16(src_p->cell_voltage00, 2u, 0xfcu);
+    dst_p[2] |= pack_right_shift_u16(src_p->cell_voltage00, 6u, 0x3fu);
+    dst_p[2] |= pack_left_shift_u16(src_p->cell_voltage01, 6u, 0xc0u);
+    dst_p[3] |= pack_right_shift_u16(src_p->cell_voltage01, 2u, 0xffu);
+    dst_p[4] |= pack_right_shift_u16(src_p->cell_voltage01, 10u, 0x03u);
+    dst_p[4] |= pack_left_shift_u16(src_p->cell_voltage02, 2u, 0xfcu);
+    dst_p[5] |= pack_right_shift_u16(src_p->cell_voltage02, 6u, 0x3fu);
+    dst_p[5] |= pack_left_shift_u16(src_p->cell_voltage03, 6u, 0xc0u);
+    dst_p[6] |= pack_right_shift_u16(src_p->cell_voltage03, 2u, 0xffu);
+    dst_p[7] |= pack_right_shift_u16(src_p->cell_voltage03, 10u, 0x03u);
+    dst_p[7] |= pack_left_shift_u16(src_p->cell_voltage04, 2u, 0xfcu);
+    dst_p[8] |= pack_right_shift_u16(src_p->cell_voltage04, 6u, 0x3fu);
+    dst_p[8] |= pack_left_shift_u16(src_p->cell_voltage05, 6u, 0xc0u);
+    dst_p[9] |= pack_right_shift_u16(src_p->cell_voltage05, 2u, 0xffu);
+    dst_p[10] |= pack_right_shift_u16(src_p->cell_voltage05, 10u, 0x03u);
+    dst_p[10] |= pack_left_shift_u16(src_p->cell_voltage06, 2u, 0xfcu);
+    dst_p[11] |= pack_right_shift_u16(src_p->cell_voltage06, 6u, 0x3fu);
+    dst_p[11] |= pack_left_shift_u16(src_p->cell_voltage07, 6u, 0xc0u);
+    dst_p[12] |= pack_right_shift_u16(src_p->cell_voltage07, 2u, 0xffu);
+    dst_p[13] |= pack_right_shift_u16(src_p->cell_voltage07, 10u, 0x03u);
+    dst_p[13] |= pack_left_shift_u16(src_p->cell_voltage08, 2u, 0xfcu);
+    dst_p[14] |= pack_right_shift_u16(src_p->cell_voltage08, 6u, 0x3fu);
+    dst_p[14] |= pack_left_shift_u16(src_p->cell_voltage09, 6u, 0xc0u);
+    dst_p[15] |= pack_right_shift_u16(src_p->cell_voltage09, 2u, 0xffu);
+    dst_p[16] |= pack_right_shift_u16(src_p->cell_voltage09, 10u, 0x03u);
+    dst_p[16] |= pack_left_shift_u16(src_p->cell_voltage10, 2u, 0xfcu);
+    dst_p[17] |= pack_right_shift_u16(src_p->cell_voltage10, 6u, 0x3fu);
+    dst_p[17] |= pack_left_shift_u16(src_p->cell_voltage11, 6u, 0xc0u);
+    dst_p[18] |= pack_right_shift_u16(src_p->cell_voltage11, 2u, 0xffu);
+    dst_p[19] |= pack_right_shift_u16(src_p->cell_voltage11, 10u, 0x03u);
+    dst_p[19] |= pack_left_shift_u16(src_p->cell_voltage12, 2u, 0xfcu);
+    dst_p[20] |= pack_right_shift_u16(src_p->cell_voltage12, 6u, 0x3fu);
+    dst_p[20] |= pack_left_shift_u16(src_p->cell_voltage13, 6u, 0xc0u);
+    dst_p[21] |= pack_right_shift_u16(src_p->cell_voltage13, 2u, 0xffu);
+    dst_p[22] |= pack_right_shift_u16(src_p->cell_voltage13, 10u, 0x03u);
+    dst_p[22] |= pack_left_shift_u16(src_p->cell_voltage14, 2u, 0xfcu);
+    dst_p[23] |= pack_right_shift_u16(src_p->cell_voltage14, 6u, 0x3fu);
+    dst_p[23] |= pack_left_shift_u16(src_p->cell_voltage15, 6u, 0xc0u);
+    dst_p[24] |= pack_right_shift_u16(src_p->cell_voltage15, 2u, 0xffu);
+    dst_p[25] |= pack_right_shift_u16(src_p->cell_voltage15, 10u, 0x03u);
+    dst_p[25] |= pack_left_shift_u16(src_p->cell_voltage16, 2u, 0xfcu);
+    dst_p[26] |= pack_right_shift_u16(src_p->cell_voltage16, 6u, 0x3fu);
+    dst_p[26] |= pack_left_shift_u16(src_p->cell_voltage17, 6u, 0xc0u);
+    dst_p[27] |= pack_right_shift_u16(src_p->cell_voltage17, 2u, 0xffu);
+    dst_p[28] |= pack_right_shift_u16(src_p->cell_voltage17, 10u, 0x03u);
+    dst_p[28] |= pack_left_shift_u16(src_p->cell_voltage18, 2u, 0xfcu);
+    dst_p[29] |= pack_right_shift_u16(src_p->cell_voltage18, 6u, 0x3fu);
+    dst_p[29] |= pack_left_shift_u16(src_p->cell_voltage19, 6u, 0xc0u);
+    dst_p[30] |= pack_right_shift_u16(src_p->cell_voltage19, 2u, 0xffu);
+    dst_p[31] |= pack_right_shift_u16(src_p->cell_voltage19, 10u, 0x03u);
+    dst_p[31] |= pack_left_shift_u16(src_p->cell_voltage20, 2u, 0xfcu);
+    dst_p[32] |= pack_right_shift_u16(src_p->cell_voltage20, 6u, 0x3fu);
+    dst_p[32] |= pack_left_shift_u16(src_p->cell_voltage21, 6u, 0xc0u);
+    dst_p[33] |= pack_right_shift_u16(src_p->cell_voltage21, 2u, 0xffu);
+    dst_p[34] |= pack_right_shift_u16(src_p->cell_voltage21, 10u, 0x03u);
+    dst_p[34] |= pack_left_shift_u16(src_p->cell_voltage22, 2u, 0xfcu);
+    dst_p[35] |= pack_right_shift_u16(src_p->cell_voltage22, 6u, 0x3fu);
+    dst_p[35] |= pack_left_shift_u16(src_p->cell_voltage23, 6u, 0xc0u);
+    dst_p[36] |= pack_right_shift_u16(src_p->cell_voltage23, 2u, 0xffu);
+    dst_p[37] |= pack_right_shift_u16(src_p->cell_voltage23, 10u, 0x03u);
+    dst_p[37] |= pack_left_shift_u16(src_p->cell_voltage24, 2u, 0xfcu);
+    dst_p[38] |= pack_right_shift_u16(src_p->cell_voltage24, 6u, 0x3fu);
+    dst_p[38] |= pack_left_shift_u16(src_p->cell_voltage25, 6u, 0xc0u);
+    dst_p[39] |= pack_right_shift_u16(src_p->cell_voltage25, 2u, 0xffu);
+    dst_p[40] |= pack_right_shift_u16(src_p->cell_voltage25, 10u, 0x03u);
+    dst_p[40] |= pack_left_shift_u16(src_p->cell_voltage26, 2u, 0xfcu);
+    dst_p[41] |= pack_right_shift_u16(src_p->cell_voltage26, 6u, 0x3fu);
+    dst_p[41] |= pack_left_shift_u16(src_p->cell_voltage27, 6u, 0xc0u);
+    dst_p[42] |= pack_right_shift_u16(src_p->cell_voltage27, 2u, 0xffu);
+    dst_p[43] |= pack_right_shift_u16(src_p->cell_voltage27, 10u, 0x03u);
+    dst_p[43] |= pack_left_shift_u16(src_p->cell_voltage28, 2u, 0xfcu);
+    dst_p[44] |= pack_right_shift_u16(src_p->cell_voltage28, 6u, 0x3fu);
+    dst_p[44] |= pack_left_shift_u16(src_p->cell_voltage29, 6u, 0xc0u);
+    dst_p[45] |= pack_right_shift_u16(src_p->cell_voltage29, 2u, 0xffu);
+    dst_p[46] |= pack_right_shift_u16(src_p->cell_voltage29, 10u, 0x03u);
+    dst_p[46] |= pack_left_shift_u16(src_p->cell_voltage30, 2u, 0xfcu);
+    dst_p[47] |= pack_right_shift_u16(src_p->cell_voltage30, 6u, 0x3fu);
+    dst_p[47] |= pack_left_shift_u16(src_p->cell_voltage31, 6u, 0xc0u);
+    dst_p[48] |= pack_right_shift_u16(src_p->cell_voltage31, 2u, 0xffu);
+    dst_p[49] |= pack_right_shift_u16(src_p->cell_voltage31, 10u, 0x03u);
+    dst_p[49] |= pack_left_shift_u16(src_p->min_cell_voltage, 2u, 0xfcu);
+    dst_p[50] |= pack_right_shift_u16(src_p->min_cell_voltage, 6u, 0x3fu);
+    dst_p[50] |= pack_left_shift_u16(src_p->max_cell_voltage, 6u, 0xc0u);
+    dst_p[51] |= pack_right_shift_u16(src_p->max_cell_voltage, 2u, 0xffu);
+    dst_p[52] |= pack_right_shift_u16(src_p->max_cell_voltage, 10u, 0x03u);
 
     return (64);
 }
@@ -1324,74 +1360,94 @@ int car_can_raw_bps_voltage_data_unpack(
         return (-EINVAL);
     }
 
-    dst_p->cell_voltage00 = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
-    dst_p->cell_voltage00 |= unpack_left_shift_u16(src_p[1], 8u, 0x0fu);
-    dst_p->cell_voltage01 = unpack_right_shift_u16(src_p[1], 4u, 0xf0u);
-    dst_p->cell_voltage01 |= unpack_left_shift_u16(src_p[2], 4u, 0xffu);
-    dst_p->cell_voltage02 = unpack_right_shift_u16(src_p[3], 0u, 0xffu);
-    dst_p->cell_voltage02 |= unpack_left_shift_u16(src_p[4], 8u, 0x0fu);
-    dst_p->cell_voltage03 = unpack_right_shift_u16(src_p[4], 4u, 0xf0u);
-    dst_p->cell_voltage03 |= unpack_left_shift_u16(src_p[5], 4u, 0xffu);
-    dst_p->cell_voltage04 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
-    dst_p->cell_voltage04 |= unpack_left_shift_u16(src_p[7], 8u, 0x0fu);
-    dst_p->cell_voltage05 = unpack_right_shift_u16(src_p[7], 4u, 0xf0u);
-    dst_p->cell_voltage05 |= unpack_left_shift_u16(src_p[8], 4u, 0xffu);
-    dst_p->cell_voltage06 = unpack_right_shift_u16(src_p[9], 0u, 0xffu);
-    dst_p->cell_voltage06 |= unpack_left_shift_u16(src_p[10], 8u, 0x0fu);
-    dst_p->cell_voltage07 = unpack_right_shift_u16(src_p[10], 4u, 0xf0u);
-    dst_p->cell_voltage07 |= unpack_left_shift_u16(src_p[11], 4u, 0xffu);
-    dst_p->cell_voltage08 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
-    dst_p->cell_voltage08 |= unpack_left_shift_u16(src_p[13], 8u, 0x0fu);
-    dst_p->cell_voltage09 = unpack_right_shift_u16(src_p[13], 4u, 0xf0u);
-    dst_p->cell_voltage09 |= unpack_left_shift_u16(src_p[14], 4u, 0xffu);
-    dst_p->cell_voltage10 = unpack_right_shift_u16(src_p[15], 0u, 0xffu);
-    dst_p->cell_voltage10 |= unpack_left_shift_u16(src_p[16], 8u, 0x0fu);
-    dst_p->cell_voltage11 = unpack_right_shift_u16(src_p[16], 4u, 0xf0u);
-    dst_p->cell_voltage11 |= unpack_left_shift_u16(src_p[17], 4u, 0xffu);
-    dst_p->cell_voltage12 = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
-    dst_p->cell_voltage12 |= unpack_left_shift_u16(src_p[19], 8u, 0x0fu);
-    dst_p->cell_voltage13 = unpack_right_shift_u16(src_p[19], 4u, 0xf0u);
-    dst_p->cell_voltage13 |= unpack_left_shift_u16(src_p[20], 4u, 0xffu);
-    dst_p->cell_voltage14 = unpack_right_shift_u16(src_p[21], 0u, 0xffu);
-    dst_p->cell_voltage14 |= unpack_left_shift_u16(src_p[22], 8u, 0x0fu);
-    dst_p->cell_voltage15 = unpack_right_shift_u16(src_p[22], 4u, 0xf0u);
-    dst_p->cell_voltage15 |= unpack_left_shift_u16(src_p[23], 4u, 0xffu);
-    dst_p->cell_voltage16 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
-    dst_p->cell_voltage16 |= unpack_left_shift_u16(src_p[25], 8u, 0x0fu);
-    dst_p->cell_voltage17 = unpack_right_shift_u16(src_p[25], 4u, 0xf0u);
-    dst_p->cell_voltage17 |= unpack_left_shift_u16(src_p[26], 4u, 0xffu);
-    dst_p->cell_voltage18 = unpack_right_shift_u16(src_p[27], 0u, 0xffu);
-    dst_p->cell_voltage18 |= unpack_left_shift_u16(src_p[28], 8u, 0x0fu);
-    dst_p->cell_voltage19 = unpack_right_shift_u16(src_p[28], 4u, 0xf0u);
-    dst_p->cell_voltage19 |= unpack_left_shift_u16(src_p[29], 4u, 0xffu);
-    dst_p->cell_voltage20 = unpack_right_shift_u16(src_p[30], 0u, 0xffu);
-    dst_p->cell_voltage20 |= unpack_left_shift_u16(src_p[31], 8u, 0x0fu);
-    dst_p->cell_voltage21 = unpack_right_shift_u16(src_p[31], 4u, 0xf0u);
-    dst_p->cell_voltage21 |= unpack_left_shift_u16(src_p[32], 4u, 0xffu);
-    dst_p->cell_voltage22 = unpack_right_shift_u16(src_p[33], 0u, 0xffu);
-    dst_p->cell_voltage22 |= unpack_left_shift_u16(src_p[34], 8u, 0x0fu);
-    dst_p->cell_voltage23 = unpack_right_shift_u16(src_p[34], 4u, 0xf0u);
-    dst_p->cell_voltage23 |= unpack_left_shift_u16(src_p[35], 4u, 0xffu);
-    dst_p->cell_voltage24 = unpack_right_shift_u16(src_p[36], 0u, 0xffu);
-    dst_p->cell_voltage24 |= unpack_left_shift_u16(src_p[37], 8u, 0x0fu);
-    dst_p->cell_voltage25 = unpack_right_shift_u16(src_p[37], 4u, 0xf0u);
-    dst_p->cell_voltage25 |= unpack_left_shift_u16(src_p[38], 4u, 0xffu);
-    dst_p->cell_voltage26 = unpack_right_shift_u16(src_p[39], 0u, 0xffu);
-    dst_p->cell_voltage26 |= unpack_left_shift_u16(src_p[40], 8u, 0x0fu);
-    dst_p->cell_voltage27 = unpack_right_shift_u16(src_p[40], 4u, 0xf0u);
-    dst_p->cell_voltage27 |= unpack_left_shift_u16(src_p[41], 4u, 0xffu);
-    dst_p->cell_voltage28 = unpack_right_shift_u16(src_p[42], 0u, 0xffu);
-    dst_p->cell_voltage28 |= unpack_left_shift_u16(src_p[43], 8u, 0x0fu);
-    dst_p->cell_voltage29 = unpack_right_shift_u16(src_p[43], 4u, 0xf0u);
-    dst_p->cell_voltage29 |= unpack_left_shift_u16(src_p[44], 4u, 0xffu);
-    dst_p->cell_voltage30 = unpack_right_shift_u16(src_p[45], 0u, 0xffu);
-    dst_p->cell_voltage30 |= unpack_left_shift_u16(src_p[46], 8u, 0x0fu);
-    dst_p->cell_voltage31 = unpack_right_shift_u16(src_p[46], 4u, 0xf0u);
-    dst_p->cell_voltage31 |= unpack_left_shift_u16(src_p[47], 4u, 0xffu);
-    dst_p->min_cell_voltage = unpack_right_shift_u16(src_p[48], 0u, 0xffu);
-    dst_p->min_cell_voltage |= unpack_left_shift_u16(src_p[49], 8u, 0x0fu);
-    dst_p->max_cell_voltage = unpack_right_shift_u16(src_p[49], 4u, 0xf0u);
-    dst_p->max_cell_voltage |= unpack_left_shift_u16(src_p[50], 4u, 0xffu);
+    dst_p->min_cell_voltage_index = unpack_right_shift_u8(src_p[0], 0u, 0x1fu);
+    dst_p->max_cell_voltage_index = unpack_right_shift_u8(src_p[0], 5u, 0xe0u);
+    dst_p->max_cell_voltage_index |= unpack_left_shift_u8(src_p[1], 3u, 0x03u);
+    dst_p->cell_voltage00 = unpack_right_shift_u16(src_p[1], 2u, 0xfcu);
+    dst_p->cell_voltage00 |= unpack_left_shift_u16(src_p[2], 6u, 0x3fu);
+    dst_p->cell_voltage01 = unpack_right_shift_u16(src_p[2], 6u, 0xc0u);
+    dst_p->cell_voltage01 |= unpack_left_shift_u16(src_p[3], 2u, 0xffu);
+    dst_p->cell_voltage01 |= unpack_left_shift_u16(src_p[4], 10u, 0x03u);
+    dst_p->cell_voltage02 = unpack_right_shift_u16(src_p[4], 2u, 0xfcu);
+    dst_p->cell_voltage02 |= unpack_left_shift_u16(src_p[5], 6u, 0x3fu);
+    dst_p->cell_voltage03 = unpack_right_shift_u16(src_p[5], 6u, 0xc0u);
+    dst_p->cell_voltage03 |= unpack_left_shift_u16(src_p[6], 2u, 0xffu);
+    dst_p->cell_voltage03 |= unpack_left_shift_u16(src_p[7], 10u, 0x03u);
+    dst_p->cell_voltage04 = unpack_right_shift_u16(src_p[7], 2u, 0xfcu);
+    dst_p->cell_voltage04 |= unpack_left_shift_u16(src_p[8], 6u, 0x3fu);
+    dst_p->cell_voltage05 = unpack_right_shift_u16(src_p[8], 6u, 0xc0u);
+    dst_p->cell_voltage05 |= unpack_left_shift_u16(src_p[9], 2u, 0xffu);
+    dst_p->cell_voltage05 |= unpack_left_shift_u16(src_p[10], 10u, 0x03u);
+    dst_p->cell_voltage06 = unpack_right_shift_u16(src_p[10], 2u, 0xfcu);
+    dst_p->cell_voltage06 |= unpack_left_shift_u16(src_p[11], 6u, 0x3fu);
+    dst_p->cell_voltage07 = unpack_right_shift_u16(src_p[11], 6u, 0xc0u);
+    dst_p->cell_voltage07 |= unpack_left_shift_u16(src_p[12], 2u, 0xffu);
+    dst_p->cell_voltage07 |= unpack_left_shift_u16(src_p[13], 10u, 0x03u);
+    dst_p->cell_voltage08 = unpack_right_shift_u16(src_p[13], 2u, 0xfcu);
+    dst_p->cell_voltage08 |= unpack_left_shift_u16(src_p[14], 6u, 0x3fu);
+    dst_p->cell_voltage09 = unpack_right_shift_u16(src_p[14], 6u, 0xc0u);
+    dst_p->cell_voltage09 |= unpack_left_shift_u16(src_p[15], 2u, 0xffu);
+    dst_p->cell_voltage09 |= unpack_left_shift_u16(src_p[16], 10u, 0x03u);
+    dst_p->cell_voltage10 = unpack_right_shift_u16(src_p[16], 2u, 0xfcu);
+    dst_p->cell_voltage10 |= unpack_left_shift_u16(src_p[17], 6u, 0x3fu);
+    dst_p->cell_voltage11 = unpack_right_shift_u16(src_p[17], 6u, 0xc0u);
+    dst_p->cell_voltage11 |= unpack_left_shift_u16(src_p[18], 2u, 0xffu);
+    dst_p->cell_voltage11 |= unpack_left_shift_u16(src_p[19], 10u, 0x03u);
+    dst_p->cell_voltage12 = unpack_right_shift_u16(src_p[19], 2u, 0xfcu);
+    dst_p->cell_voltage12 |= unpack_left_shift_u16(src_p[20], 6u, 0x3fu);
+    dst_p->cell_voltage13 = unpack_right_shift_u16(src_p[20], 6u, 0xc0u);
+    dst_p->cell_voltage13 |= unpack_left_shift_u16(src_p[21], 2u, 0xffu);
+    dst_p->cell_voltage13 |= unpack_left_shift_u16(src_p[22], 10u, 0x03u);
+    dst_p->cell_voltage14 = unpack_right_shift_u16(src_p[22], 2u, 0xfcu);
+    dst_p->cell_voltage14 |= unpack_left_shift_u16(src_p[23], 6u, 0x3fu);
+    dst_p->cell_voltage15 = unpack_right_shift_u16(src_p[23], 6u, 0xc0u);
+    dst_p->cell_voltage15 |= unpack_left_shift_u16(src_p[24], 2u, 0xffu);
+    dst_p->cell_voltage15 |= unpack_left_shift_u16(src_p[25], 10u, 0x03u);
+    dst_p->cell_voltage16 = unpack_right_shift_u16(src_p[25], 2u, 0xfcu);
+    dst_p->cell_voltage16 |= unpack_left_shift_u16(src_p[26], 6u, 0x3fu);
+    dst_p->cell_voltage17 = unpack_right_shift_u16(src_p[26], 6u, 0xc0u);
+    dst_p->cell_voltage17 |= unpack_left_shift_u16(src_p[27], 2u, 0xffu);
+    dst_p->cell_voltage17 |= unpack_left_shift_u16(src_p[28], 10u, 0x03u);
+    dst_p->cell_voltage18 = unpack_right_shift_u16(src_p[28], 2u, 0xfcu);
+    dst_p->cell_voltage18 |= unpack_left_shift_u16(src_p[29], 6u, 0x3fu);
+    dst_p->cell_voltage19 = unpack_right_shift_u16(src_p[29], 6u, 0xc0u);
+    dst_p->cell_voltage19 |= unpack_left_shift_u16(src_p[30], 2u, 0xffu);
+    dst_p->cell_voltage19 |= unpack_left_shift_u16(src_p[31], 10u, 0x03u);
+    dst_p->cell_voltage20 = unpack_right_shift_u16(src_p[31], 2u, 0xfcu);
+    dst_p->cell_voltage20 |= unpack_left_shift_u16(src_p[32], 6u, 0x3fu);
+    dst_p->cell_voltage21 = unpack_right_shift_u16(src_p[32], 6u, 0xc0u);
+    dst_p->cell_voltage21 |= unpack_left_shift_u16(src_p[33], 2u, 0xffu);
+    dst_p->cell_voltage21 |= unpack_left_shift_u16(src_p[34], 10u, 0x03u);
+    dst_p->cell_voltage22 = unpack_right_shift_u16(src_p[34], 2u, 0xfcu);
+    dst_p->cell_voltage22 |= unpack_left_shift_u16(src_p[35], 6u, 0x3fu);
+    dst_p->cell_voltage23 = unpack_right_shift_u16(src_p[35], 6u, 0xc0u);
+    dst_p->cell_voltage23 |= unpack_left_shift_u16(src_p[36], 2u, 0xffu);
+    dst_p->cell_voltage23 |= unpack_left_shift_u16(src_p[37], 10u, 0x03u);
+    dst_p->cell_voltage24 = unpack_right_shift_u16(src_p[37], 2u, 0xfcu);
+    dst_p->cell_voltage24 |= unpack_left_shift_u16(src_p[38], 6u, 0x3fu);
+    dst_p->cell_voltage25 = unpack_right_shift_u16(src_p[38], 6u, 0xc0u);
+    dst_p->cell_voltage25 |= unpack_left_shift_u16(src_p[39], 2u, 0xffu);
+    dst_p->cell_voltage25 |= unpack_left_shift_u16(src_p[40], 10u, 0x03u);
+    dst_p->cell_voltage26 = unpack_right_shift_u16(src_p[40], 2u, 0xfcu);
+    dst_p->cell_voltage26 |= unpack_left_shift_u16(src_p[41], 6u, 0x3fu);
+    dst_p->cell_voltage27 = unpack_right_shift_u16(src_p[41], 6u, 0xc0u);
+    dst_p->cell_voltage27 |= unpack_left_shift_u16(src_p[42], 2u, 0xffu);
+    dst_p->cell_voltage27 |= unpack_left_shift_u16(src_p[43], 10u, 0x03u);
+    dst_p->cell_voltage28 = unpack_right_shift_u16(src_p[43], 2u, 0xfcu);
+    dst_p->cell_voltage28 |= unpack_left_shift_u16(src_p[44], 6u, 0x3fu);
+    dst_p->cell_voltage29 = unpack_right_shift_u16(src_p[44], 6u, 0xc0u);
+    dst_p->cell_voltage29 |= unpack_left_shift_u16(src_p[45], 2u, 0xffu);
+    dst_p->cell_voltage29 |= unpack_left_shift_u16(src_p[46], 10u, 0x03u);
+    dst_p->cell_voltage30 = unpack_right_shift_u16(src_p[46], 2u, 0xfcu);
+    dst_p->cell_voltage30 |= unpack_left_shift_u16(src_p[47], 6u, 0x3fu);
+    dst_p->cell_voltage31 = unpack_right_shift_u16(src_p[47], 6u, 0xc0u);
+    dst_p->cell_voltage31 |= unpack_left_shift_u16(src_p[48], 2u, 0xffu);
+    dst_p->cell_voltage31 |= unpack_left_shift_u16(src_p[49], 10u, 0x03u);
+    dst_p->min_cell_voltage = unpack_right_shift_u16(src_p[49], 2u, 0xfcu);
+    dst_p->min_cell_voltage |= unpack_left_shift_u16(src_p[50], 6u, 0x3fu);
+    dst_p->max_cell_voltage = unpack_right_shift_u16(src_p[50], 6u, 0xc0u);
+    dst_p->max_cell_voltage |= unpack_left_shift_u16(src_p[51], 2u, 0xffu);
+    dst_p->max_cell_voltage |= unpack_left_shift_u16(src_p[52], 10u, 0x03u);
 
     return (0);
 }
@@ -1403,6 +1459,16 @@ int car_can_raw_bps_voltage_data_init(struct car_can_raw_bps_voltage_data_t *msg
     memset(msg_p, 0, sizeof(struct car_can_raw_bps_voltage_data_t));
 
     return 0;
+}
+
+bool car_can_raw_bps_voltage_data_min_cell_voltage_index_is_in_range(uint8_t value)
+{
+    return (value <= 31u);
+}
+
+bool car_can_raw_bps_voltage_data_max_cell_voltage_index_is_in_range(uint8_t value)
+{
+    return (value <= 31u);
 }
 
 bool car_can_raw_bps_voltage_data_cell_voltage00_is_in_range(uint16_t value)
@@ -1586,82 +1652,83 @@ int car_can_raw_bps_temperature_data_pack(
 
     memset(&dst_p[0], 0, 48);
 
-    dst_p[0] |= pack_left_shift_u16(src_p->cell_temperature00, 0u, 0xffu);
-    dst_p[1] |= pack_right_shift_u16(src_p->cell_temperature00, 8u, 0x07u);
-    dst_p[1] |= pack_left_shift_u16(src_p->cell_temperature01, 3u, 0xf8u);
-    dst_p[2] |= pack_right_shift_u16(src_p->cell_temperature01, 5u, 0x3fu);
-    dst_p[2] |= pack_left_shift_u16(src_p->cell_temperature02, 6u, 0xc0u);
-    dst_p[3] |= pack_right_shift_u16(src_p->cell_temperature02, 2u, 0xffu);
-    dst_p[4] |= pack_right_shift_u16(src_p->cell_temperature02, 10u, 0x01u);
-    dst_p[4] |= pack_left_shift_u16(src_p->cell_temperature03, 1u, 0xfeu);
-    dst_p[5] |= pack_right_shift_u16(src_p->cell_temperature03, 7u, 0x0fu);
-    dst_p[5] |= pack_left_shift_u16(src_p->cell_temperature04, 4u, 0xf0u);
-    dst_p[6] |= pack_right_shift_u16(src_p->cell_temperature04, 4u, 0x7fu);
-    dst_p[6] |= pack_left_shift_u16(src_p->cell_temperature05, 7u, 0x80u);
-    dst_p[7] |= pack_right_shift_u16(src_p->cell_temperature05, 1u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->cell_temperature05, 9u, 0x03u);
-    dst_p[8] |= pack_left_shift_u16(src_p->cell_temperature06, 2u, 0xfcu);
-    dst_p[9] |= pack_right_shift_u16(src_p->cell_temperature06, 6u, 0x1fu);
-    dst_p[9] |= pack_left_shift_u16(src_p->cell_temperature07, 5u, 0xe0u);
-    dst_p[10] |= pack_right_shift_u16(src_p->cell_temperature07, 3u, 0xffu);
-    dst_p[11] |= pack_left_shift_u16(src_p->cell_temperature08, 0u, 0xffu);
-    dst_p[12] |= pack_right_shift_u16(src_p->cell_temperature08, 8u, 0x07u);
-    dst_p[12] |= pack_left_shift_u16(src_p->cell_temperature09, 3u, 0xf8u);
-    dst_p[13] |= pack_right_shift_u16(src_p->cell_temperature09, 5u, 0x3fu);
-    dst_p[13] |= pack_left_shift_u16(src_p->cell_temperature10, 6u, 0xc0u);
-    dst_p[14] |= pack_right_shift_u16(src_p->cell_temperature10, 2u, 0xffu);
-    dst_p[15] |= pack_right_shift_u16(src_p->cell_temperature10, 10u, 0x01u);
-    dst_p[15] |= pack_left_shift_u16(src_p->cell_temperature11, 1u, 0xfeu);
-    dst_p[16] |= pack_right_shift_u16(src_p->cell_temperature11, 7u, 0x0fu);
-    dst_p[16] |= pack_left_shift_u16(src_p->cell_temperature12, 4u, 0xf0u);
-    dst_p[17] |= pack_right_shift_u16(src_p->cell_temperature12, 4u, 0x7fu);
-    dst_p[17] |= pack_left_shift_u16(src_p->cell_temperature13, 7u, 0x80u);
-    dst_p[18] |= pack_right_shift_u16(src_p->cell_temperature13, 1u, 0xffu);
-    dst_p[19] |= pack_right_shift_u16(src_p->cell_temperature13, 9u, 0x03u);
-    dst_p[19] |= pack_left_shift_u16(src_p->cell_temperature14, 2u, 0xfcu);
-    dst_p[20] |= pack_right_shift_u16(src_p->cell_temperature14, 6u, 0x1fu);
-    dst_p[20] |= pack_left_shift_u16(src_p->cell_temperature15, 5u, 0xe0u);
-    dst_p[21] |= pack_right_shift_u16(src_p->cell_temperature15, 3u, 0xffu);
-    dst_p[22] |= pack_left_shift_u16(src_p->cell_temperature16, 0u, 0xffu);
-    dst_p[23] |= pack_right_shift_u16(src_p->cell_temperature16, 8u, 0x07u);
-    dst_p[23] |= pack_left_shift_u16(src_p->cell_temperature17, 3u, 0xf8u);
-    dst_p[24] |= pack_right_shift_u16(src_p->cell_temperature17, 5u, 0x3fu);
-    dst_p[24] |= pack_left_shift_u16(src_p->cell_temperature18, 6u, 0xc0u);
-    dst_p[25] |= pack_right_shift_u16(src_p->cell_temperature18, 2u, 0xffu);
-    dst_p[26] |= pack_right_shift_u16(src_p->cell_temperature18, 10u, 0x01u);
-    dst_p[26] |= pack_left_shift_u16(src_p->cell_temperature19, 1u, 0xfeu);
-    dst_p[27] |= pack_right_shift_u16(src_p->cell_temperature19, 7u, 0x0fu);
-    dst_p[27] |= pack_left_shift_u16(src_p->cell_temperature20, 4u, 0xf0u);
-    dst_p[28] |= pack_right_shift_u16(src_p->cell_temperature20, 4u, 0x7fu);
-    dst_p[28] |= pack_left_shift_u16(src_p->cell_temperature21, 7u, 0x80u);
-    dst_p[29] |= pack_right_shift_u16(src_p->cell_temperature21, 1u, 0xffu);
-    dst_p[30] |= pack_right_shift_u16(src_p->cell_temperature21, 9u, 0x03u);
-    dst_p[30] |= pack_left_shift_u16(src_p->cell_temperature22, 2u, 0xfcu);
-    dst_p[31] |= pack_right_shift_u16(src_p->cell_temperature22, 6u, 0x1fu);
-    dst_p[31] |= pack_left_shift_u16(src_p->cell_temperature23, 5u, 0xe0u);
-    dst_p[32] |= pack_right_shift_u16(src_p->cell_temperature23, 3u, 0xffu);
-    dst_p[33] |= pack_left_shift_u16(src_p->cell_temperature24, 0u, 0xffu);
-    dst_p[34] |= pack_right_shift_u16(src_p->cell_temperature24, 8u, 0x07u);
-    dst_p[34] |= pack_left_shift_u16(src_p->cell_temperature25, 3u, 0xf8u);
-    dst_p[35] |= pack_right_shift_u16(src_p->cell_temperature25, 5u, 0x3fu);
-    dst_p[35] |= pack_left_shift_u16(src_p->cell_temperature26, 6u, 0xc0u);
-    dst_p[36] |= pack_right_shift_u16(src_p->cell_temperature26, 2u, 0xffu);
-    dst_p[37] |= pack_right_shift_u16(src_p->cell_temperature26, 10u, 0x01u);
-    dst_p[37] |= pack_left_shift_u16(src_p->cell_temperature27, 1u, 0xfeu);
-    dst_p[38] |= pack_right_shift_u16(src_p->cell_temperature27, 7u, 0x0fu);
-    dst_p[38] |= pack_left_shift_u16(src_p->cell_temperature28, 4u, 0xf0u);
-    dst_p[39] |= pack_right_shift_u16(src_p->cell_temperature28, 4u, 0x7fu);
-    dst_p[39] |= pack_left_shift_u16(src_p->cell_temperature29, 7u, 0x80u);
-    dst_p[40] |= pack_right_shift_u16(src_p->cell_temperature29, 1u, 0xffu);
-    dst_p[41] |= pack_right_shift_u16(src_p->cell_temperature29, 9u, 0x03u);
-    dst_p[41] |= pack_left_shift_u16(src_p->cell_temperature30, 2u, 0xfcu);
-    dst_p[42] |= pack_right_shift_u16(src_p->cell_temperature30, 6u, 0x1fu);
-    dst_p[42] |= pack_left_shift_u16(src_p->cell_temperature31, 5u, 0xe0u);
-    dst_p[43] |= pack_right_shift_u16(src_p->cell_temperature31, 3u, 0xffu);
-    dst_p[44] |= pack_left_shift_u16(src_p->max_battery_temperature, 0u, 0xffu);
-    dst_p[45] |= pack_right_shift_u16(src_p->max_battery_temperature, 8u, 0x07u);
-    dst_p[45] |= pack_left_shift_u16(src_p->average_battery_temperature, 3u, 0xf8u);
-    dst_p[46] |= pack_right_shift_u16(src_p->average_battery_temperature, 5u, 0x3fu);
+    dst_p[0] |= pack_left_shift_u8(src_p->max_battery_temperature_index, 0u, 0x1fu);
+    dst_p[0] |= pack_left_shift_u16(src_p->cell_temperature00, 5u, 0xe0u);
+    dst_p[1] |= pack_right_shift_u16(src_p->cell_temperature00, 3u, 0xffu);
+    dst_p[2] |= pack_left_shift_u16(src_p->cell_temperature01, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(src_p->cell_temperature01, 8u, 0x07u);
+    dst_p[3] |= pack_left_shift_u16(src_p->cell_temperature02, 3u, 0xf8u);
+    dst_p[4] |= pack_right_shift_u16(src_p->cell_temperature02, 5u, 0x3fu);
+    dst_p[4] |= pack_left_shift_u16(src_p->cell_temperature03, 6u, 0xc0u);
+    dst_p[5] |= pack_right_shift_u16(src_p->cell_temperature03, 2u, 0xffu);
+    dst_p[6] |= pack_right_shift_u16(src_p->cell_temperature03, 10u, 0x01u);
+    dst_p[6] |= pack_left_shift_u16(src_p->cell_temperature04, 1u, 0xfeu);
+    dst_p[7] |= pack_right_shift_u16(src_p->cell_temperature04, 7u, 0x0fu);
+    dst_p[7] |= pack_left_shift_u16(src_p->cell_temperature05, 4u, 0xf0u);
+    dst_p[8] |= pack_right_shift_u16(src_p->cell_temperature05, 4u, 0x7fu);
+    dst_p[8] |= pack_left_shift_u16(src_p->cell_temperature06, 7u, 0x80u);
+    dst_p[9] |= pack_right_shift_u16(src_p->cell_temperature06, 1u, 0xffu);
+    dst_p[10] |= pack_right_shift_u16(src_p->cell_temperature06, 9u, 0x03u);
+    dst_p[10] |= pack_left_shift_u16(src_p->cell_temperature07, 2u, 0xfcu);
+    dst_p[11] |= pack_right_shift_u16(src_p->cell_temperature07, 6u, 0x1fu);
+    dst_p[11] |= pack_left_shift_u16(src_p->cell_temperature08, 5u, 0xe0u);
+    dst_p[12] |= pack_right_shift_u16(src_p->cell_temperature08, 3u, 0xffu);
+    dst_p[13] |= pack_left_shift_u16(src_p->cell_temperature09, 0u, 0xffu);
+    dst_p[14] |= pack_right_shift_u16(src_p->cell_temperature09, 8u, 0x07u);
+    dst_p[14] |= pack_left_shift_u16(src_p->cell_temperature10, 3u, 0xf8u);
+    dst_p[15] |= pack_right_shift_u16(src_p->cell_temperature10, 5u, 0x3fu);
+    dst_p[15] |= pack_left_shift_u16(src_p->cell_temperature11, 6u, 0xc0u);
+    dst_p[16] |= pack_right_shift_u16(src_p->cell_temperature11, 2u, 0xffu);
+    dst_p[17] |= pack_right_shift_u16(src_p->cell_temperature11, 10u, 0x01u);
+    dst_p[17] |= pack_left_shift_u16(src_p->cell_temperature12, 1u, 0xfeu);
+    dst_p[18] |= pack_right_shift_u16(src_p->cell_temperature12, 7u, 0x0fu);
+    dst_p[18] |= pack_left_shift_u16(src_p->cell_temperature13, 4u, 0xf0u);
+    dst_p[19] |= pack_right_shift_u16(src_p->cell_temperature13, 4u, 0x7fu);
+    dst_p[19] |= pack_left_shift_u16(src_p->cell_temperature14, 7u, 0x80u);
+    dst_p[20] |= pack_right_shift_u16(src_p->cell_temperature14, 1u, 0xffu);
+    dst_p[21] |= pack_right_shift_u16(src_p->cell_temperature14, 9u, 0x03u);
+    dst_p[21] |= pack_left_shift_u16(src_p->cell_temperature15, 2u, 0xfcu);
+    dst_p[22] |= pack_right_shift_u16(src_p->cell_temperature15, 6u, 0x1fu);
+    dst_p[22] |= pack_left_shift_u16(src_p->cell_temperature16, 5u, 0xe0u);
+    dst_p[23] |= pack_right_shift_u16(src_p->cell_temperature16, 3u, 0xffu);
+    dst_p[24] |= pack_left_shift_u16(src_p->cell_temperature17, 0u, 0xffu);
+    dst_p[25] |= pack_right_shift_u16(src_p->cell_temperature17, 8u, 0x07u);
+    dst_p[25] |= pack_left_shift_u16(src_p->cell_temperature18, 3u, 0xf8u);
+    dst_p[26] |= pack_right_shift_u16(src_p->cell_temperature18, 5u, 0x3fu);
+    dst_p[26] |= pack_left_shift_u16(src_p->cell_temperature19, 6u, 0xc0u);
+    dst_p[27] |= pack_right_shift_u16(src_p->cell_temperature19, 2u, 0xffu);
+    dst_p[28] |= pack_right_shift_u16(src_p->cell_temperature19, 10u, 0x01u);
+    dst_p[28] |= pack_left_shift_u16(src_p->cell_temperature20, 1u, 0xfeu);
+    dst_p[29] |= pack_right_shift_u16(src_p->cell_temperature20, 7u, 0x0fu);
+    dst_p[29] |= pack_left_shift_u16(src_p->cell_temperature21, 4u, 0xf0u);
+    dst_p[30] |= pack_right_shift_u16(src_p->cell_temperature21, 4u, 0x7fu);
+    dst_p[30] |= pack_left_shift_u16(src_p->cell_temperature22, 7u, 0x80u);
+    dst_p[31] |= pack_right_shift_u16(src_p->cell_temperature22, 1u, 0xffu);
+    dst_p[32] |= pack_right_shift_u16(src_p->cell_temperature22, 9u, 0x03u);
+    dst_p[32] |= pack_left_shift_u16(src_p->cell_temperature23, 2u, 0xfcu);
+    dst_p[33] |= pack_right_shift_u16(src_p->cell_temperature23, 6u, 0x1fu);
+    dst_p[33] |= pack_left_shift_u16(src_p->cell_temperature24, 5u, 0xe0u);
+    dst_p[34] |= pack_right_shift_u16(src_p->cell_temperature24, 3u, 0xffu);
+    dst_p[35] |= pack_left_shift_u16(src_p->cell_temperature25, 0u, 0xffu);
+    dst_p[36] |= pack_right_shift_u16(src_p->cell_temperature25, 8u, 0x07u);
+    dst_p[36] |= pack_left_shift_u16(src_p->cell_temperature26, 3u, 0xf8u);
+    dst_p[37] |= pack_right_shift_u16(src_p->cell_temperature26, 5u, 0x3fu);
+    dst_p[37] |= pack_left_shift_u16(src_p->cell_temperature27, 6u, 0xc0u);
+    dst_p[38] |= pack_right_shift_u16(src_p->cell_temperature27, 2u, 0xffu);
+    dst_p[39] |= pack_right_shift_u16(src_p->cell_temperature27, 10u, 0x01u);
+    dst_p[39] |= pack_left_shift_u16(src_p->cell_temperature28, 1u, 0xfeu);
+    dst_p[40] |= pack_right_shift_u16(src_p->cell_temperature28, 7u, 0x0fu);
+    dst_p[40] |= pack_left_shift_u16(src_p->cell_temperature29, 4u, 0xf0u);
+    dst_p[41] |= pack_right_shift_u16(src_p->cell_temperature29, 4u, 0x7fu);
+    dst_p[41] |= pack_left_shift_u16(src_p->cell_temperature30, 7u, 0x80u);
+    dst_p[42] |= pack_right_shift_u16(src_p->cell_temperature30, 1u, 0xffu);
+    dst_p[43] |= pack_right_shift_u16(src_p->cell_temperature30, 9u, 0x03u);
+    dst_p[43] |= pack_left_shift_u16(src_p->cell_temperature31, 2u, 0xfcu);
+    dst_p[44] |= pack_right_shift_u16(src_p->cell_temperature31, 6u, 0x1fu);
+    dst_p[44] |= pack_left_shift_u16(src_p->max_battery_temperature, 5u, 0xe0u);
+    dst_p[45] |= pack_right_shift_u16(src_p->max_battery_temperature, 3u, 0xffu);
+    dst_p[46] |= pack_left_shift_u16(src_p->average_battery_temperature, 0u, 0xffu);
+    dst_p[47] |= pack_right_shift_u16(src_p->average_battery_temperature, 8u, 0x07u);
 
     return (48);
 }
@@ -1675,82 +1742,83 @@ int car_can_raw_bps_temperature_data_unpack(
         return (-EINVAL);
     }
 
-    dst_p->cell_temperature00 = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
-    dst_p->cell_temperature00 |= unpack_left_shift_u16(src_p[1], 8u, 0x07u);
-    dst_p->cell_temperature01 = unpack_right_shift_u16(src_p[1], 3u, 0xf8u);
-    dst_p->cell_temperature01 |= unpack_left_shift_u16(src_p[2], 5u, 0x3fu);
-    dst_p->cell_temperature02 = unpack_right_shift_u16(src_p[2], 6u, 0xc0u);
-    dst_p->cell_temperature02 |= unpack_left_shift_u16(src_p[3], 2u, 0xffu);
-    dst_p->cell_temperature02 |= unpack_left_shift_u16(src_p[4], 10u, 0x01u);
-    dst_p->cell_temperature03 = unpack_right_shift_u16(src_p[4], 1u, 0xfeu);
-    dst_p->cell_temperature03 |= unpack_left_shift_u16(src_p[5], 7u, 0x0fu);
-    dst_p->cell_temperature04 = unpack_right_shift_u16(src_p[5], 4u, 0xf0u);
-    dst_p->cell_temperature04 |= unpack_left_shift_u16(src_p[6], 4u, 0x7fu);
-    dst_p->cell_temperature05 = unpack_right_shift_u16(src_p[6], 7u, 0x80u);
-    dst_p->cell_temperature05 |= unpack_left_shift_u16(src_p[7], 1u, 0xffu);
-    dst_p->cell_temperature05 |= unpack_left_shift_u16(src_p[8], 9u, 0x03u);
-    dst_p->cell_temperature06 = unpack_right_shift_u16(src_p[8], 2u, 0xfcu);
-    dst_p->cell_temperature06 |= unpack_left_shift_u16(src_p[9], 6u, 0x1fu);
-    dst_p->cell_temperature07 = unpack_right_shift_u16(src_p[9], 5u, 0xe0u);
-    dst_p->cell_temperature07 |= unpack_left_shift_u16(src_p[10], 3u, 0xffu);
-    dst_p->cell_temperature08 = unpack_right_shift_u16(src_p[11], 0u, 0xffu);
-    dst_p->cell_temperature08 |= unpack_left_shift_u16(src_p[12], 8u, 0x07u);
-    dst_p->cell_temperature09 = unpack_right_shift_u16(src_p[12], 3u, 0xf8u);
-    dst_p->cell_temperature09 |= unpack_left_shift_u16(src_p[13], 5u, 0x3fu);
-    dst_p->cell_temperature10 = unpack_right_shift_u16(src_p[13], 6u, 0xc0u);
-    dst_p->cell_temperature10 |= unpack_left_shift_u16(src_p[14], 2u, 0xffu);
-    dst_p->cell_temperature10 |= unpack_left_shift_u16(src_p[15], 10u, 0x01u);
-    dst_p->cell_temperature11 = unpack_right_shift_u16(src_p[15], 1u, 0xfeu);
-    dst_p->cell_temperature11 |= unpack_left_shift_u16(src_p[16], 7u, 0x0fu);
-    dst_p->cell_temperature12 = unpack_right_shift_u16(src_p[16], 4u, 0xf0u);
-    dst_p->cell_temperature12 |= unpack_left_shift_u16(src_p[17], 4u, 0x7fu);
-    dst_p->cell_temperature13 = unpack_right_shift_u16(src_p[17], 7u, 0x80u);
-    dst_p->cell_temperature13 |= unpack_left_shift_u16(src_p[18], 1u, 0xffu);
-    dst_p->cell_temperature13 |= unpack_left_shift_u16(src_p[19], 9u, 0x03u);
-    dst_p->cell_temperature14 = unpack_right_shift_u16(src_p[19], 2u, 0xfcu);
-    dst_p->cell_temperature14 |= unpack_left_shift_u16(src_p[20], 6u, 0x1fu);
-    dst_p->cell_temperature15 = unpack_right_shift_u16(src_p[20], 5u, 0xe0u);
-    dst_p->cell_temperature15 |= unpack_left_shift_u16(src_p[21], 3u, 0xffu);
-    dst_p->cell_temperature16 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
-    dst_p->cell_temperature16 |= unpack_left_shift_u16(src_p[23], 8u, 0x07u);
-    dst_p->cell_temperature17 = unpack_right_shift_u16(src_p[23], 3u, 0xf8u);
-    dst_p->cell_temperature17 |= unpack_left_shift_u16(src_p[24], 5u, 0x3fu);
-    dst_p->cell_temperature18 = unpack_right_shift_u16(src_p[24], 6u, 0xc0u);
-    dst_p->cell_temperature18 |= unpack_left_shift_u16(src_p[25], 2u, 0xffu);
-    dst_p->cell_temperature18 |= unpack_left_shift_u16(src_p[26], 10u, 0x01u);
-    dst_p->cell_temperature19 = unpack_right_shift_u16(src_p[26], 1u, 0xfeu);
-    dst_p->cell_temperature19 |= unpack_left_shift_u16(src_p[27], 7u, 0x0fu);
-    dst_p->cell_temperature20 = unpack_right_shift_u16(src_p[27], 4u, 0xf0u);
-    dst_p->cell_temperature20 |= unpack_left_shift_u16(src_p[28], 4u, 0x7fu);
-    dst_p->cell_temperature21 = unpack_right_shift_u16(src_p[28], 7u, 0x80u);
-    dst_p->cell_temperature21 |= unpack_left_shift_u16(src_p[29], 1u, 0xffu);
-    dst_p->cell_temperature21 |= unpack_left_shift_u16(src_p[30], 9u, 0x03u);
-    dst_p->cell_temperature22 = unpack_right_shift_u16(src_p[30], 2u, 0xfcu);
-    dst_p->cell_temperature22 |= unpack_left_shift_u16(src_p[31], 6u, 0x1fu);
-    dst_p->cell_temperature23 = unpack_right_shift_u16(src_p[31], 5u, 0xe0u);
-    dst_p->cell_temperature23 |= unpack_left_shift_u16(src_p[32], 3u, 0xffu);
-    dst_p->cell_temperature24 = unpack_right_shift_u16(src_p[33], 0u, 0xffu);
-    dst_p->cell_temperature24 |= unpack_left_shift_u16(src_p[34], 8u, 0x07u);
-    dst_p->cell_temperature25 = unpack_right_shift_u16(src_p[34], 3u, 0xf8u);
-    dst_p->cell_temperature25 |= unpack_left_shift_u16(src_p[35], 5u, 0x3fu);
-    dst_p->cell_temperature26 = unpack_right_shift_u16(src_p[35], 6u, 0xc0u);
-    dst_p->cell_temperature26 |= unpack_left_shift_u16(src_p[36], 2u, 0xffu);
-    dst_p->cell_temperature26 |= unpack_left_shift_u16(src_p[37], 10u, 0x01u);
-    dst_p->cell_temperature27 = unpack_right_shift_u16(src_p[37], 1u, 0xfeu);
-    dst_p->cell_temperature27 |= unpack_left_shift_u16(src_p[38], 7u, 0x0fu);
-    dst_p->cell_temperature28 = unpack_right_shift_u16(src_p[38], 4u, 0xf0u);
-    dst_p->cell_temperature28 |= unpack_left_shift_u16(src_p[39], 4u, 0x7fu);
-    dst_p->cell_temperature29 = unpack_right_shift_u16(src_p[39], 7u, 0x80u);
-    dst_p->cell_temperature29 |= unpack_left_shift_u16(src_p[40], 1u, 0xffu);
-    dst_p->cell_temperature29 |= unpack_left_shift_u16(src_p[41], 9u, 0x03u);
-    dst_p->cell_temperature30 = unpack_right_shift_u16(src_p[41], 2u, 0xfcu);
-    dst_p->cell_temperature30 |= unpack_left_shift_u16(src_p[42], 6u, 0x1fu);
-    dst_p->cell_temperature31 = unpack_right_shift_u16(src_p[42], 5u, 0xe0u);
-    dst_p->cell_temperature31 |= unpack_left_shift_u16(src_p[43], 3u, 0xffu);
-    dst_p->max_battery_temperature = unpack_right_shift_u16(src_p[44], 0u, 0xffu);
-    dst_p->max_battery_temperature |= unpack_left_shift_u16(src_p[45], 8u, 0x07u);
-    dst_p->average_battery_temperature = unpack_right_shift_u16(src_p[45], 3u, 0xf8u);
-    dst_p->average_battery_temperature |= unpack_left_shift_u16(src_p[46], 5u, 0x3fu);
+    dst_p->max_battery_temperature_index = unpack_right_shift_u8(src_p[0], 0u, 0x1fu);
+    dst_p->cell_temperature00 = unpack_right_shift_u16(src_p[0], 5u, 0xe0u);
+    dst_p->cell_temperature00 |= unpack_left_shift_u16(src_p[1], 3u, 0xffu);
+    dst_p->cell_temperature01 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    dst_p->cell_temperature01 |= unpack_left_shift_u16(src_p[3], 8u, 0x07u);
+    dst_p->cell_temperature02 = unpack_right_shift_u16(src_p[3], 3u, 0xf8u);
+    dst_p->cell_temperature02 |= unpack_left_shift_u16(src_p[4], 5u, 0x3fu);
+    dst_p->cell_temperature03 = unpack_right_shift_u16(src_p[4], 6u, 0xc0u);
+    dst_p->cell_temperature03 |= unpack_left_shift_u16(src_p[5], 2u, 0xffu);
+    dst_p->cell_temperature03 |= unpack_left_shift_u16(src_p[6], 10u, 0x01u);
+    dst_p->cell_temperature04 = unpack_right_shift_u16(src_p[6], 1u, 0xfeu);
+    dst_p->cell_temperature04 |= unpack_left_shift_u16(src_p[7], 7u, 0x0fu);
+    dst_p->cell_temperature05 = unpack_right_shift_u16(src_p[7], 4u, 0xf0u);
+    dst_p->cell_temperature05 |= unpack_left_shift_u16(src_p[8], 4u, 0x7fu);
+    dst_p->cell_temperature06 = unpack_right_shift_u16(src_p[8], 7u, 0x80u);
+    dst_p->cell_temperature06 |= unpack_left_shift_u16(src_p[9], 1u, 0xffu);
+    dst_p->cell_temperature06 |= unpack_left_shift_u16(src_p[10], 9u, 0x03u);
+    dst_p->cell_temperature07 = unpack_right_shift_u16(src_p[10], 2u, 0xfcu);
+    dst_p->cell_temperature07 |= unpack_left_shift_u16(src_p[11], 6u, 0x1fu);
+    dst_p->cell_temperature08 = unpack_right_shift_u16(src_p[11], 5u, 0xe0u);
+    dst_p->cell_temperature08 |= unpack_left_shift_u16(src_p[12], 3u, 0xffu);
+    dst_p->cell_temperature09 = unpack_right_shift_u16(src_p[13], 0u, 0xffu);
+    dst_p->cell_temperature09 |= unpack_left_shift_u16(src_p[14], 8u, 0x07u);
+    dst_p->cell_temperature10 = unpack_right_shift_u16(src_p[14], 3u, 0xf8u);
+    dst_p->cell_temperature10 |= unpack_left_shift_u16(src_p[15], 5u, 0x3fu);
+    dst_p->cell_temperature11 = unpack_right_shift_u16(src_p[15], 6u, 0xc0u);
+    dst_p->cell_temperature11 |= unpack_left_shift_u16(src_p[16], 2u, 0xffu);
+    dst_p->cell_temperature11 |= unpack_left_shift_u16(src_p[17], 10u, 0x01u);
+    dst_p->cell_temperature12 = unpack_right_shift_u16(src_p[17], 1u, 0xfeu);
+    dst_p->cell_temperature12 |= unpack_left_shift_u16(src_p[18], 7u, 0x0fu);
+    dst_p->cell_temperature13 = unpack_right_shift_u16(src_p[18], 4u, 0xf0u);
+    dst_p->cell_temperature13 |= unpack_left_shift_u16(src_p[19], 4u, 0x7fu);
+    dst_p->cell_temperature14 = unpack_right_shift_u16(src_p[19], 7u, 0x80u);
+    dst_p->cell_temperature14 |= unpack_left_shift_u16(src_p[20], 1u, 0xffu);
+    dst_p->cell_temperature14 |= unpack_left_shift_u16(src_p[21], 9u, 0x03u);
+    dst_p->cell_temperature15 = unpack_right_shift_u16(src_p[21], 2u, 0xfcu);
+    dst_p->cell_temperature15 |= unpack_left_shift_u16(src_p[22], 6u, 0x1fu);
+    dst_p->cell_temperature16 = unpack_right_shift_u16(src_p[22], 5u, 0xe0u);
+    dst_p->cell_temperature16 |= unpack_left_shift_u16(src_p[23], 3u, 0xffu);
+    dst_p->cell_temperature17 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
+    dst_p->cell_temperature17 |= unpack_left_shift_u16(src_p[25], 8u, 0x07u);
+    dst_p->cell_temperature18 = unpack_right_shift_u16(src_p[25], 3u, 0xf8u);
+    dst_p->cell_temperature18 |= unpack_left_shift_u16(src_p[26], 5u, 0x3fu);
+    dst_p->cell_temperature19 = unpack_right_shift_u16(src_p[26], 6u, 0xc0u);
+    dst_p->cell_temperature19 |= unpack_left_shift_u16(src_p[27], 2u, 0xffu);
+    dst_p->cell_temperature19 |= unpack_left_shift_u16(src_p[28], 10u, 0x01u);
+    dst_p->cell_temperature20 = unpack_right_shift_u16(src_p[28], 1u, 0xfeu);
+    dst_p->cell_temperature20 |= unpack_left_shift_u16(src_p[29], 7u, 0x0fu);
+    dst_p->cell_temperature21 = unpack_right_shift_u16(src_p[29], 4u, 0xf0u);
+    dst_p->cell_temperature21 |= unpack_left_shift_u16(src_p[30], 4u, 0x7fu);
+    dst_p->cell_temperature22 = unpack_right_shift_u16(src_p[30], 7u, 0x80u);
+    dst_p->cell_temperature22 |= unpack_left_shift_u16(src_p[31], 1u, 0xffu);
+    dst_p->cell_temperature22 |= unpack_left_shift_u16(src_p[32], 9u, 0x03u);
+    dst_p->cell_temperature23 = unpack_right_shift_u16(src_p[32], 2u, 0xfcu);
+    dst_p->cell_temperature23 |= unpack_left_shift_u16(src_p[33], 6u, 0x1fu);
+    dst_p->cell_temperature24 = unpack_right_shift_u16(src_p[33], 5u, 0xe0u);
+    dst_p->cell_temperature24 |= unpack_left_shift_u16(src_p[34], 3u, 0xffu);
+    dst_p->cell_temperature25 = unpack_right_shift_u16(src_p[35], 0u, 0xffu);
+    dst_p->cell_temperature25 |= unpack_left_shift_u16(src_p[36], 8u, 0x07u);
+    dst_p->cell_temperature26 = unpack_right_shift_u16(src_p[36], 3u, 0xf8u);
+    dst_p->cell_temperature26 |= unpack_left_shift_u16(src_p[37], 5u, 0x3fu);
+    dst_p->cell_temperature27 = unpack_right_shift_u16(src_p[37], 6u, 0xc0u);
+    dst_p->cell_temperature27 |= unpack_left_shift_u16(src_p[38], 2u, 0xffu);
+    dst_p->cell_temperature27 |= unpack_left_shift_u16(src_p[39], 10u, 0x01u);
+    dst_p->cell_temperature28 = unpack_right_shift_u16(src_p[39], 1u, 0xfeu);
+    dst_p->cell_temperature28 |= unpack_left_shift_u16(src_p[40], 7u, 0x0fu);
+    dst_p->cell_temperature29 = unpack_right_shift_u16(src_p[40], 4u, 0xf0u);
+    dst_p->cell_temperature29 |= unpack_left_shift_u16(src_p[41], 4u, 0x7fu);
+    dst_p->cell_temperature30 = unpack_right_shift_u16(src_p[41], 7u, 0x80u);
+    dst_p->cell_temperature30 |= unpack_left_shift_u16(src_p[42], 1u, 0xffu);
+    dst_p->cell_temperature30 |= unpack_left_shift_u16(src_p[43], 9u, 0x03u);
+    dst_p->cell_temperature31 = unpack_right_shift_u16(src_p[43], 2u, 0xfcu);
+    dst_p->cell_temperature31 |= unpack_left_shift_u16(src_p[44], 6u, 0x1fu);
+    dst_p->max_battery_temperature = unpack_right_shift_u16(src_p[44], 5u, 0xe0u);
+    dst_p->max_battery_temperature |= unpack_left_shift_u16(src_p[45], 3u, 0xffu);
+    dst_p->average_battery_temperature = unpack_right_shift_u16(src_p[46], 0u, 0xffu);
+    dst_p->average_battery_temperature |= unpack_left_shift_u16(src_p[47], 8u, 0x07u);
 
     return (0);
 }
@@ -1762,6 +1830,11 @@ int car_can_raw_bps_temperature_data_init(struct car_can_raw_bps_temperature_dat
     memset(msg_p, 0, sizeof(struct car_can_raw_bps_temperature_data_t));
 
     return 0;
+}
+
+bool car_can_raw_bps_temperature_data_max_battery_temperature_index_is_in_range(uint8_t value)
+{
+    return (value <= 31u);
 }
 
 bool car_can_raw_bps_temperature_data_cell_temperature00_is_in_range(uint16_t value)

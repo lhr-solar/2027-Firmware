@@ -335,11 +335,12 @@ class DatabaseTests(unittest.TestCase):
                 "BPSFanTach",
                 "MPPTVoltageLimit",
                 "MPPTCurrentLimit",
-                "DriveOK",
-                "ChargeOK",
+                "DischargeSafe",
+                "ChargeSafe",
+                "RegenSafe",
             ):
                 self.assertIn(name, {signal.name for signal in status.signals})
-            self.assertEqual(status.get_signal_by_name("HVPositiveContactor").start, 39)
+            self.assertEqual(status.get_signal_by_name("HVPositiveContactor").start, 38)
             # Known raw values verify the new frame boundaries and padding.
             raw = {signal.name: 0 for signal in pack.signals}
             raw.update(CellSumVoltage=2688, BatteryCurrent=5000)
@@ -357,21 +358,18 @@ class DatabaseTests(unittest.TestCase):
             self.assertEqual(self.message("CarCAN", identifier).name, name)
 
         for identifier, summaries, starts, length, counts in (
-            (0x71, ("MinCellVoltage", "MaxCellVoltage"), (384, 396), 64, (1000, 2000)),
+            (0x71, ("MinCellVoltage", "MaxCellVoltage"), (394, 406), 64, (1000, 2000)),
             (
                 0x72,
                 ("MaxBatteryTemperature", "AverageBatteryTemperature"),
-                (352, 363),
+                (357, 368),
                 48,
                 (800, 600),
             ),
         ):
             message = self.message("CarCAN", identifier)
             self.assertEqual(message.length, length)
-            self.assertEqual(len(message.signals), 34)
-            self.assertEqual(
-                [signal.name for signal in message.signals[-2:]], list(summaries)
-            )
+            self.assertEqual(len(message.signals), 36 if identifier == 0x71 else 35)
             raw = {signal.name: 0 for signal in message.signals}
             expected = 0
             for name, start, count in zip(summaries, starts, counts):
@@ -387,9 +385,34 @@ class DatabaseTests(unittest.TestCase):
                     name,
                     {signal.name for signal in self.message("CarCAN", 0x70).signals},
                 )
-            self.assertEqual(
-                message.encode(raw, scaling=False), expected.to_bytes(length, "little")
-            )
+            indexes = ("MinCellVoltageIndex", "MaxCellVoltageIndex") if identifier == 0x71 else ("MaxBatteryTemperatureIndex",)
+            for index_name in indexes:
+                signal = message.get_signal_by_name(index_name)
+                self.assertEqual((signal.length, signal.minimum, signal.maximum), (5, 0, 31))
+                raw[index_name] = 31
+                expected |= 31 << signal.start
+            frame = message.encode(raw, scaling=False)
+            self.assertEqual(frame, expected.to_bytes(length, "little"))
+            self.assertEqual(message.decode(frame, decode_choices=False, scaling=False), raw)
+            charger = self.message("ChargerCAN", identifier)
+            self.assertEqual(charger.encode(raw, scaling=False), frame)
+
+    def test_bps_safety_permissions_are_independent(self):
+        for bus in ("CarCAN", "ChargerCAN"):
+            message = self.message(bus, 0x60)
+            for name in ("ChargeSafe", "RegenSafe", "DischargeSafe"):
+                signal = message.get_signal_by_name(name)
+                self.assertEqual(signal.dbc.attributes["ValueTable"].value, "Permission")
+            self.assertFalse({"DriveOK", "ChargeOK", "RegenChargeOK", "ElconChargeOK"}
+                             & {signal.name for signal in message.signals})
+            raw = {signal.name: 0 for signal in message.signals}
+            raw["ChargeSafe"] = 1
+            raw["WarningUnderVoltage"] = 1
+            decoded = message.decode(message.encode(raw, scaling=False),
+                                     decode_choices=False, scaling=False)
+            self.assertEqual((decoded["ChargeSafe"], decoded["RegenSafe"],
+                              decoded["DischargeSafe"], decoded["WarningUnderVoltage"]),
+                             (1, 0, 0, 1))
 
     def test_bps_command_echo_mirrors_command(self):
         command = self.message("CarCAN", 0x51)
@@ -664,9 +687,9 @@ class DatabaseTests(unittest.TestCase):
     def test_legacy_linpot_adc_calibration(self):
         for identifier in (0x670, 0x671, 0x672):
             message = self.message("DAqCAN", identifier)
-            self.assertEqual(message.length, 12)
+            self.assertEqual(message.length, 8)
             self.assertFalse(message.dbc.attributes["LayoutPending"].value)
-            self.assertEqual(len(message.signals), 6)
+            self.assertEqual(len(message.signals), 5)
             raw = {"Timestamp": 0x1234}
             packed = 0x1234
             for channel, count in enumerate((0, 1, 2048, 4095), 1):
@@ -680,10 +703,8 @@ class DatabaseTests(unittest.TestCase):
                 )
                 raw[signal.name] = count
                 packed |= count << signal.start
-            raw["LinpotPositionAverage"] = 1536
-            packed |= 1536 << 64
             frame = message.encode(raw, scaling=False)
-            self.assertEqual(frame, packed.to_bytes(12, "little"))
+            self.assertEqual(frame, packed.to_bytes(8, "little"))
             decoded = message.decode(frame, decode_choices=False)
             for channel, count in enumerate((0, 1, 2048, 4095), 1):
                 self.assertAlmostEqual(
@@ -715,17 +736,14 @@ class DatabaseTests(unittest.TestCase):
                 samples = [
                     signal for signal in message.signals if signal.name not in raw
                 ]
-                self.assertEqual(len(samples), 5 if measurement == "WheelSpeed" else 15)
+                self.assertEqual(len(samples), 4 if measurement == "WheelSpeed" else 12)
                 for signal in samples:
-                    if signal.name.endswith("Average"):
-                        value = 1 if signal.is_signed else 3
-                    else:
-                        sample = int(signal.name[-1]) - 1
-                        value = (
-                            (-6, -2, 4, 8)[sample]
-                            if signal.is_signed
-                            else (0, 2, 4, 6)[sample]
-                        )
+                    sample = int(signal.name[-1]) - 1
+                    value = (
+                        (-6, -2, 4, 8)[sample]
+                        if signal.is_signed
+                        else (0, 2, 4, 6)[sample]
+                    )
                     raw[signal.name] = value
                     packed |= (value & ((1 << signal.length) - 1)) << signal.start
                 frame = message.encode(raw, scaling=False)
@@ -773,7 +791,7 @@ class DatabaseTests(unittest.TestCase):
                 message = self.databases[bus].get_message_by_name(name)
                 for index in range(32):
                     signal = message.get_signal_by_name(f"{prefix}{index:02d}")
-                    self.assertEqual((signal.start, signal.length), (index * width, width))
+                    self.assertEqual((signal.start, signal.length), (index * width + (10 if width == 12 else 5), width))
         for name, prefix in (("BPSFaultVoltageSnapshot", "CellVoltage"),
                              ("BPSFaultTemperatureSnapshot", "CellTemperature")):
             message = self.databases["CarCAN"].get_message_by_name(name)

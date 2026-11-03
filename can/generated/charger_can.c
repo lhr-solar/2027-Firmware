@@ -232,18 +232,18 @@ can_status_t charger_can_bps_status_pack(can_frame_t* dst, const charger_can_bps
         raw.warning_bps_fan = (uint8_t)value;
     }
     {
-        uint8_t value = src->drive_ok;
+        uint8_t value = src->discharge_safe;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.drive_ok = (uint8_t)value;
+        raw.discharge_safe = (uint8_t)value;
     }
     {
-        uint8_t value = src->charge_ok;
+        uint8_t value = src->charge_safe;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.charge_ok = (uint8_t)value;
+        raw.charge_safe = (uint8_t)value;
     }
     {
         uint8_t value = src->mppt_set_mode;
@@ -253,18 +253,11 @@ can_status_t charger_can_bps_status_pack(can_frame_t* dst, const charger_can_bps
         raw.mppt_set_mode = (uint8_t)value;
     }
     {
-        uint8_t value = src->elcon_charge_ok;
+        uint8_t value = src->regen_safe;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.elcon_charge_ok = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->regen_charge_ok;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.regen_charge_ok = (uint8_t)value;
+        raw.regen_safe = (uint8_t)value;
     }
     {
         uint8_t value = src->hv_positive_contactor;
@@ -300,6 +293,13 @@ can_status_t charger_can_bps_status_pack(can_frame_t* dst, const charger_can_bps
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
         raw.motor_precharge_relay = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->balancing_active;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.balancing_active = (uint8_t)value;
     }
     {
         double value = (double)src->mppt_voltage_limit;
@@ -428,16 +428,14 @@ can_status_t charger_can_bps_status_unpack(charger_can_bps_status_t* dst, const 
     result.warning_battery_fan2 = (uint8_t)raw.warning_battery_fan2;
     if (raw.warning_bps_fan > INT64_C(1)) return CAN_RANGE;
     result.warning_bps_fan = (uint8_t)raw.warning_bps_fan;
-    if (raw.drive_ok > INT64_C(1)) return CAN_RANGE;
-    result.drive_ok = (uint8_t)raw.drive_ok;
-    if (raw.charge_ok > INT64_C(1)) return CAN_RANGE;
-    result.charge_ok = (uint8_t)raw.charge_ok;
+    if (raw.discharge_safe > INT64_C(1)) return CAN_RANGE;
+    result.discharge_safe = (uint8_t)raw.discharge_safe;
+    if (raw.charge_safe > INT64_C(1)) return CAN_RANGE;
+    result.charge_safe = (uint8_t)raw.charge_safe;
     if (raw.mppt_set_mode > INT64_C(3)) return CAN_RANGE;
     result.mppt_set_mode = (uint8_t)raw.mppt_set_mode;
-    if (raw.elcon_charge_ok > INT64_C(1)) return CAN_RANGE;
-    result.elcon_charge_ok = (uint8_t)raw.elcon_charge_ok;
-    if (raw.regen_charge_ok > INT64_C(1)) return CAN_RANGE;
-    result.regen_charge_ok = (uint8_t)raw.regen_charge_ok;
+    if (raw.regen_safe > INT64_C(1)) return CAN_RANGE;
+    result.regen_safe = (uint8_t)raw.regen_safe;
     if (raw.hv_positive_contactor > INT64_C(1)) return CAN_RANGE;
     result.hv_positive_contactor = (uint8_t)raw.hv_positive_contactor;
     if (raw.motor_contactor > INT64_C(1)) return CAN_RANGE;
@@ -448,6 +446,8 @@ can_status_t charger_can_bps_status_unpack(charger_can_bps_status_t* dst, const 
     result.main_precharge_relay = (uint8_t)raw.main_precharge_relay;
     if (raw.motor_precharge_relay > INT64_C(1)) return CAN_RANGE;
     result.motor_precharge_relay = (uint8_t)raw.motor_precharge_relay;
+    if (raw.balancing_active > INT64_C(1)) return CAN_RANGE;
+    result.balancing_active = (uint8_t)raw.balancing_active;
     if (raw.mppt_voltage_limit > INT64_C(3500)) return CAN_RANGE;
     result.mppt_voltage_limit = (double)((double)raw.mppt_voltage_limit * 0.05 + 0.0);
     if (raw.mppt_current_limit > INT64_C(1638)) return CAN_RANGE;
@@ -563,6 +563,20 @@ can_status_t charger_can_bps_voltage_data_pack(can_frame_t* dst, const charger_c
     if (dst == NULL || src == NULL) return CAN_INVALID;
     struct charger_can_raw_bps_voltage_data_t raw = {0};
     can_status_t status = CAN_OK;
+    {
+        uint8_t value = src->min_cell_voltage_index;
+        if (value > INT64_C(31)) {
+            value = (uint8_t)INT64_C(31); status = CAN_CLAMPED;
+        }
+        raw.min_cell_voltage_index = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->max_cell_voltage_index;
+        if (value > INT64_C(31)) {
+            value = (uint8_t)INT64_C(31); status = CAN_CLAMPED;
+        }
+        raw.max_cell_voltage_index = (uint8_t)value;
+    }
     {
         double value = (double)src->cell_voltage00;
         if (!isfinite(value)) return CAN_INVALID;
@@ -920,6 +934,10 @@ can_status_t charger_can_bps_voltage_data_unpack(charger_can_bps_voltage_data_t*
     struct charger_can_raw_bps_voltage_data_t raw = {0};
     if (charger_can_raw_bps_voltage_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     charger_can_bps_voltage_data_t result = {0};
+    if (raw.min_cell_voltage_index > INT64_C(31)) return CAN_RANGE;
+    result.min_cell_voltage_index = (uint8_t)raw.min_cell_voltage_index;
+    if (raw.max_cell_voltage_index > INT64_C(31)) return CAN_RANGE;
+    result.max_cell_voltage_index = (uint8_t)raw.max_cell_voltage_index;
     if (raw.cell_voltage00 > INT64_C(4095)) return CAN_RANGE;
     result.cell_voltage00 = (uint16_t)((double)raw.cell_voltage00 * 1.0 + 2000.0);
     if (raw.cell_voltage01 > INT64_C(4095)) return CAN_RANGE;
@@ -996,6 +1014,13 @@ can_status_t charger_can_bps_temperature_data_pack(can_frame_t* dst, const charg
     if (dst == NULL || src == NULL) return CAN_INVALID;
     struct charger_can_raw_bps_temperature_data_t raw = {0};
     can_status_t status = CAN_OK;
+    {
+        uint8_t value = src->max_battery_temperature_index;
+        if (value > INT64_C(31)) {
+            value = (uint8_t)INT64_C(31); status = CAN_CLAMPED;
+        }
+        raw.max_battery_temperature_index = (uint8_t)value;
+    }
     {
         double value = (double)src->cell_temperature00;
         if (!isfinite(value)) return CAN_INVALID;
@@ -1353,6 +1378,8 @@ can_status_t charger_can_bps_temperature_data_unpack(charger_can_bps_temperature
     struct charger_can_raw_bps_temperature_data_t raw = {0};
     if (charger_can_raw_bps_temperature_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     charger_can_bps_temperature_data_t result = {0};
+    if (raw.max_battery_temperature_index > INT64_C(31)) return CAN_RANGE;
+    result.max_battery_temperature_index = (uint8_t)raw.max_battery_temperature_index;
     if (raw.cell_temperature00 > INT64_C(2047)) return CAN_RANGE;
     result.cell_temperature00 = (double)((double)raw.cell_temperature00 * 0.05 + 0.0);
     if (raw.cell_temperature01 > INT64_C(2047)) return CAN_RANGE;

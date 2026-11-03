@@ -100,7 +100,9 @@ consumers together rather than mixing versions.
   BPSPackData is 12 bytes on both CarCAN and ChargerCAN. It contains these five voltages, battery current,
   with no sample-age field. Min/max cell voltage follow the 32 cell voltages
   in BPSVoltageData (64 bytes). Max/average battery temperature follow the 32
-  cell temperatures in BPSTemperatureData (48 bytes). Existing scales, offsets,
+  cell temperatures in BPSTemperatureData (48 bytes). Minimum and maximum cell voltage
+  and maximum battery temperature each include a 5-bit zero-based cell index (0–31).
+  Existing scales, offsets,
   widths and units are preserved.
   BPSStatus is now 16 bytes and retains faults, warnings, discrete state,
   permissions, MPPT limits, and all three fan tachometers.
@@ -119,6 +121,18 @@ consumers together rather than mixing versions.
   Its discrete connection bits precede frame rate, temperature and fan speed;
   the frame is 5 bytes. The SoC-temperature encoding remains unchanged.
 
+## BPS directional safety permissions
+
+`BPSStatus` reports `ChargeSafe`, `RegenSafe`, and `DischargeSafe` as independent
+permissions (0 = not allowed, 1 = allowed). Discharge includes motor propulsion
+and the HV-to-LV DC-DC load; charge covers external charging and solar input,
+while regenerative charging is separately controlled. A discharge inhibit does
+not by itself imply that charging is unsafe. BPS firmware must evaluate each
+permission using its applicable conditions; an undervoltage fault blocks charging
+until reset. The DBC does not implement voltage limits, fault recovery,
+contactor behavior, or consumer timeouts. Thresholds, comparison boundaries,
+hysteresis, delay, and reset behavior require BPS firmware review.
+
 ## Legacy timestamp and linpot formats
 
 `TimestampSync` at **0x620**, TX MIKA, now uses the calibrated HighNoon sync
@@ -132,10 +146,8 @@ The message remains CAN-FD under this year's bus convention. The status message
 at **0x621** is named `TelemetryStatus`, also transmitted by MIKA.
 
 Suspension FR/FL/Rear at **0x670/0x671/0x672** each contain an unsigned 16-bit
-raw timestamp, **four unsigned 12-bit ADC/linpot values**, their
-12-bit average, in twelve bytes. Fields are named `LinpotPosition1` through
-`LinpotPosition4`, followed by `LinpotPositionAverage`. The average is across
-the four physical channels and must be supplied by the sender. This year's wire order is uniformly little-endian. Each channel uses
+raw timestamp and **four unsigned 12-bit ADC/linpot values** in eight bytes.
+Fields are named `LinpotPosition1` through `LinpotPosition4`. This year's wire order is uniformly little-endian. Each channel uses
 last year's calibrated conversion:
 
 ```text
@@ -298,11 +310,8 @@ TimestampSync 0x620, TelemetryStatus 0x621, and OnBoardWatchdog 0x623.
 Bootloader node IDs are independent and unchanged.
 
 Acceleration, gyro, magnetometer and wheel-speed frames contain four consecutive
-samples per axis/value and a sender-computed arithmetic average. Number suffixes
-follow the quantity, for example `AccelerationX1` through `AccelerationX4`, then
-`AccelerationXAverage`. Packing stores the supplied average; it does not compute
-it. Round averages to the nearest representable step, with raw half-step ties
-away from zero. Send only complete four-sample batches.
+samples per axis/value. Number suffixes follow the quantity, for example
+`AccelerationX1` through `AccelerationX4`. Send only complete four-sample batches.
 
 `Timestamp` identifies sample 1. `SampleIntervalTicks` is a positive 16-bit gap
 between successive samples, using the same clock. Sample times are Timestamp,

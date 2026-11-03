@@ -75,21 +75,21 @@ extern "C" {
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_LENGTH (5u)
 #define D_AQ_CAN_RAW_GPS_DATA_LENGTH (16u)
 #define D_AQ_CAN_RAW_ON_BOARD_WATCHDOG_LENGTH (1u)
-#define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_LENGTH (32u)
-#define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_LENGTH (48u)
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_LENGTH (32u)
-#define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_LENGTH (48u)
-#define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_LENGTH (48u)
+#define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_LENGTH (24u)
+#define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_LENGTH (32u)
+#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_LENGTH (24u)
+#define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_LENGTH (32u)
+#define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_LENGTH (12u)
-#define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_LENGTH (48u)
-#define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_LENGTH (48u)
+#define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_LENGTH (32u)
+#define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_LENGTH (12u)
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_LENGTH (48u)
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_LENGTH (48u)
+#define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_LENGTH (32u)
+#define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_LENGTH (12u)
-#define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LENGTH (12u)
-#define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LENGTH (12u)
-#define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LENGTH (12u)
+#define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LENGTH (8u)
+#define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LENGTH (8u)
+#define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LENGTH (8u)
 #define D_AQ_CAN_RAW_BLACKBODY1_DATA_LENGTH (0u)
 #define D_AQ_CAN_RAW_BLACKBODY2_DATA_LENGTH (0u)
 #define D_AQ_CAN_RAW_BLACKBODY3_DATA_LENGTH (0u)
@@ -255,192 +255,159 @@ extern "C" {
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_X2_NAME "AccelerationX2"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_X3_NAME "AccelerationX3"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_X4_NAME "AccelerationX4"
-#define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_X_AVERAGE_NAME "AccelerationXAverage"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Y1_NAME "AccelerationY1"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Y2_NAME "AccelerationY2"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Y3_NAME "AccelerationY3"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Y4_NAME "AccelerationY4"
-#define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Y_AVERAGE_NAME "AccelerationYAverage"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Z1_NAME "AccelerationZ1"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Z2_NAME "AccelerationZ2"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
-#define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Z_AVERAGE_NAME "AccelerationZAverage"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_X1_NAME "GyroX1"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_X2_NAME "GyroX2"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_X3_NAME "GyroX3"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_X4_NAME "GyroX4"
-#define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_X_AVERAGE_NAME "GyroXAverage"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Y1_NAME "GyroY1"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Y2_NAME "GyroY2"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Y3_NAME "GyroY3"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Y4_NAME "GyroY4"
-#define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Y_AVERAGE_NAME "GyroYAverage"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z1_NAME "GyroZ1"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z2_NAME "GyroZ2"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
-#define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z_AVERAGE_NAME "GyroZAverage"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_X1_NAME "MagneticFieldX1"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_X2_NAME "MagneticFieldX2"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_X3_NAME "MagneticFieldX3"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_X4_NAME "MagneticFieldX4"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_X_AVERAGE_NAME "MagneticFieldXAverage"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Y1_NAME "MagneticFieldY1"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Y2_NAME "MagneticFieldY2"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Y3_NAME "MagneticFieldY3"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Y4_NAME "MagneticFieldY4"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Y_AVERAGE_NAME "MagneticFieldYAverage"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z1_NAME "MagneticFieldZ1"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z2_NAME "MagneticFieldZ2"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z3_NAME "MagneticFieldZ3"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z4_NAME "MagneticFieldZ4"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z_AVERAGE_NAME "MagneticFieldZAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_X2_NAME "AccelerationX2"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_X3_NAME "AccelerationX3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_X4_NAME "AccelerationX4"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_X_AVERAGE_NAME "AccelerationXAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Y1_NAME "AccelerationY1"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Y2_NAME "AccelerationY2"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Y3_NAME "AccelerationY3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Y4_NAME "AccelerationY4"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Y_AVERAGE_NAME "AccelerationYAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Z1_NAME "AccelerationZ1"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Z2_NAME "AccelerationZ2"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Z_AVERAGE_NAME "AccelerationZAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_X1_NAME "GyroX1"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_X2_NAME "GyroX2"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_X3_NAME "GyroX3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_X4_NAME "GyroX4"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_X_AVERAGE_NAME "GyroXAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Y1_NAME "GyroY1"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Y2_NAME "GyroY2"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Y3_NAME "GyroY3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Y4_NAME "GyroY4"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Y_AVERAGE_NAME "GyroYAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Z1_NAME "GyroZ1"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Z2_NAME "GyroZ2"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Z_AVERAGE_NAME "GyroZAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM1_NAME "WheelRPM1"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM2_NAME "WheelRPM2"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM4_NAME "WheelRPM4"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM_AVERAGE_NAME "WheelRPMAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_X2_NAME "AccelerationX2"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_X3_NAME "AccelerationX3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_X4_NAME "AccelerationX4"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_X_AVERAGE_NAME "AccelerationXAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Y1_NAME "AccelerationY1"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Y2_NAME "AccelerationY2"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Y3_NAME "AccelerationY3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Y4_NAME "AccelerationY4"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Y_AVERAGE_NAME "AccelerationYAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Z1_NAME "AccelerationZ1"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Z2_NAME "AccelerationZ2"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Z_AVERAGE_NAME "AccelerationZAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_X1_NAME "GyroX1"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_X2_NAME "GyroX2"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_X3_NAME "GyroX3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_X4_NAME "GyroX4"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_X_AVERAGE_NAME "GyroXAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Y1_NAME "GyroY1"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Y2_NAME "GyroY2"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Y3_NAME "GyroY3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Y4_NAME "GyroY4"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Y_AVERAGE_NAME "GyroYAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Z1_NAME "GyroZ1"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Z2_NAME "GyroZ2"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Z_AVERAGE_NAME "GyroZAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM1_NAME "WheelRPM1"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM2_NAME "WheelRPM2"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM4_NAME "WheelRPM4"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM_AVERAGE_NAME "WheelRPMAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_X2_NAME "AccelerationX2"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_X3_NAME "AccelerationX3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_X4_NAME "AccelerationX4"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_X_AVERAGE_NAME "AccelerationXAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Y1_NAME "AccelerationY1"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Y2_NAME "AccelerationY2"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Y3_NAME "AccelerationY3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Y4_NAME "AccelerationY4"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Y_AVERAGE_NAME "AccelerationYAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Z1_NAME "AccelerationZ1"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Z2_NAME "AccelerationZ2"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Z_AVERAGE_NAME "AccelerationZAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_X1_NAME "GyroX1"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_X2_NAME "GyroX2"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_X3_NAME "GyroX3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_X4_NAME "GyroX4"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_X_AVERAGE_NAME "GyroXAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Y1_NAME "GyroY1"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Y2_NAME "GyroY2"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Y3_NAME "GyroY3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Y4_NAME "GyroY4"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Y_AVERAGE_NAME "GyroYAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Z1_NAME "GyroZ1"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Z2_NAME "GyroZ2"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Z_AVERAGE_NAME "GyroZAverage"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM1_NAME "WheelRPM1"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM2_NAME "WheelRPM2"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM4_NAME "WheelRPM4"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM_AVERAGE_NAME "WheelRPMAverage"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION1_NAME "LinpotPosition1"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION2_NAME "LinpotPosition2"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION3_NAME "LinpotPosition3"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION4_NAME "LinpotPosition4"
-#define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION_AVERAGE_NAME "LinpotPositionAverage"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION1_NAME "LinpotPosition1"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION2_NAME "LinpotPosition2"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION3_NAME "LinpotPosition3"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION4_NAME "LinpotPosition4"
-#define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION_AVERAGE_NAME "LinpotPositionAverage"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION1_NAME "LinpotPosition1"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION2_NAME "LinpotPosition2"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION3_NAME "LinpotPosition3"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION4_NAME "LinpotPosition4"
-#define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION_AVERAGE_NAME "LinpotPositionAverage"
 
 /**
  * Signals in message TimestampSync.
@@ -706,7 +673,7 @@ struct d_aq_can_raw_on_board_watchdog_t {
 /**
  * Signals in message ChassisAccelerationData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -766,15 +733,6 @@ struct d_aq_can_raw_chassis_acceleration_data_t {
     int16_t acceleration_x4;
 
     /**
-     * Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_x_average;
-
-    /**
      * Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.
      *
      * Range: -
@@ -811,15 +769,6 @@ struct d_aq_can_raw_chassis_acceleration_data_t {
     int16_t acceleration_y4;
 
     /**
-     * Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_y_average;
-
-    /**
      * Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.
      *
      * Range: -
@@ -854,21 +803,12 @@ struct d_aq_can_raw_chassis_acceleration_data_t {
      * Offset: 0
      */
     int16_t acceleration_z4;
-
-    /**
-     * Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_z_average;
 };
 
 /**
  * Signals in message ChassisGyroData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -928,15 +868,6 @@ struct d_aq_can_raw_chassis_gyro_data_t {
     int16_t gyro_x4;
 
     /**
-     * Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_x_average;
-
-    /**
      * Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.
      *
      * Range: -
@@ -973,15 +904,6 @@ struct d_aq_can_raw_chassis_gyro_data_t {
     int16_t gyro_y4;
 
     /**
-     * Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_y_average;
-
-    /**
      * Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.
      *
      * Range: -
@@ -1016,21 +938,12 @@ struct d_aq_can_raw_chassis_gyro_data_t {
      * Offset: 0
      */
     int16_t gyro_z4;
-
-    /**
-     * Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_z_average;
 };
 
 /**
  * Signals in message ChassisMagnetometerData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1090,15 +1003,6 @@ struct d_aq_can_raw_chassis_magnetometer_data_t {
     int16_t magnetic_field_x4;
 
     /**
-     * Sender-populated arithmetic mean of MagneticFieldX1..MagneticFieldX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_x_average;
-
-    /**
      * Chronological sample 1 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.
      *
      * Range: -
@@ -1135,15 +1039,6 @@ struct d_aq_can_raw_chassis_magnetometer_data_t {
     int16_t magnetic_field_y4;
 
     /**
-     * Sender-populated arithmetic mean of MagneticFieldY1..MagneticFieldY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_y_average;
-
-    /**
      * Chronological sample 1 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.
      *
      * Range: -
@@ -1178,21 +1073,12 @@ struct d_aq_can_raw_chassis_magnetometer_data_t {
      * Offset: 0
      */
     int16_t magnetic_field_z4;
-
-    /**
-     * Sender-populated arithmetic mean of MagneticFieldZ1..MagneticFieldZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_z_average;
 };
 
 /**
  * Signals in message UprightFRAccelerationData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1252,15 +1138,6 @@ struct d_aq_can_raw_upright_fr_acceleration_data_t {
     int16_t acceleration_x4;
 
     /**
-     * Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_x_average;
-
-    /**
      * Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.
      *
      * Range: -
@@ -1297,15 +1174,6 @@ struct d_aq_can_raw_upright_fr_acceleration_data_t {
     int16_t acceleration_y4;
 
     /**
-     * Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_y_average;
-
-    /**
      * Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.
      *
      * Range: -
@@ -1340,21 +1208,12 @@ struct d_aq_can_raw_upright_fr_acceleration_data_t {
      * Offset: 0
      */
     int16_t acceleration_z4;
-
-    /**
-     * Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_z_average;
 };
 
 /**
  * Signals in message UprightFRGyroData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1414,15 +1273,6 @@ struct d_aq_can_raw_upright_fr_gyro_data_t {
     int16_t gyro_x4;
 
     /**
-     * Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_x_average;
-
-    /**
      * Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.
      *
      * Range: -
@@ -1459,15 +1309,6 @@ struct d_aq_can_raw_upright_fr_gyro_data_t {
     int16_t gyro_y4;
 
     /**
-     * Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_y_average;
-
-    /**
      * Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.
      *
      * Range: -
@@ -1502,21 +1343,12 @@ struct d_aq_can_raw_upright_fr_gyro_data_t {
      * Offset: 0
      */
     int16_t gyro_z4;
-
-    /**
-     * Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_z_average;
 };
 
 /**
  * Signals in message UprightFRWheelSpeedData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1574,21 +1406,12 @@ struct d_aq_can_raw_upright_fr_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t wheel_rpm4;
-
-    /**
-     * Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t wheel_rpm_average;
 };
 
 /**
  * Signals in message UprightFLAccelerationData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1648,15 +1471,6 @@ struct d_aq_can_raw_upright_fl_acceleration_data_t {
     int16_t acceleration_x4;
 
     /**
-     * Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_x_average;
-
-    /**
      * Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.
      *
      * Range: -
@@ -1693,15 +1507,6 @@ struct d_aq_can_raw_upright_fl_acceleration_data_t {
     int16_t acceleration_y4;
 
     /**
-     * Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_y_average;
-
-    /**
      * Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.
      *
      * Range: -
@@ -1736,21 +1541,12 @@ struct d_aq_can_raw_upright_fl_acceleration_data_t {
      * Offset: 0
      */
     int16_t acceleration_z4;
-
-    /**
-     * Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_z_average;
 };
 
 /**
  * Signals in message UprightFLGyroData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1810,15 +1606,6 @@ struct d_aq_can_raw_upright_fl_gyro_data_t {
     int16_t gyro_x4;
 
     /**
-     * Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_x_average;
-
-    /**
      * Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.
      *
      * Range: -
@@ -1855,15 +1642,6 @@ struct d_aq_can_raw_upright_fl_gyro_data_t {
     int16_t gyro_y4;
 
     /**
-     * Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_y_average;
-
-    /**
      * Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.
      *
      * Range: -
@@ -1898,21 +1676,12 @@ struct d_aq_can_raw_upright_fl_gyro_data_t {
      * Offset: 0
      */
     int16_t gyro_z4;
-
-    /**
-     * Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_z_average;
 };
 
 /**
  * Signals in message UprightFLWheelSpeedData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1970,21 +1739,12 @@ struct d_aq_can_raw_upright_fl_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t wheel_rpm4;
-
-    /**
-     * Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t wheel_rpm_average;
 };
 
 /**
  * Signals in message UprightRearAccelerationData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -2044,15 +1804,6 @@ struct d_aq_can_raw_upright_rear_acceleration_data_t {
     int16_t acceleration_x4;
 
     /**
-     * Sender-populated arithmetic mean of AccelerationX1..AccelerationX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_x_average;
-
-    /**
      * Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.
      *
      * Range: -
@@ -2089,15 +1840,6 @@ struct d_aq_can_raw_upright_rear_acceleration_data_t {
     int16_t acceleration_y4;
 
     /**
-     * Sender-populated arithmetic mean of AccelerationY1..AccelerationY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_y_average;
-
-    /**
      * Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.
      *
      * Range: -
@@ -2132,21 +1874,12 @@ struct d_aq_can_raw_upright_rear_acceleration_data_t {
      * Offset: 0
      */
     int16_t acceleration_z4;
-
-    /**
-     * Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t acceleration_z_average;
 };
 
 /**
  * Signals in message UprightRearGyroData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -2206,15 +1939,6 @@ struct d_aq_can_raw_upright_rear_gyro_data_t {
     int16_t gyro_x4;
 
     /**
-     * Sender-populated arithmetic mean of GyroX1..GyroX4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_x_average;
-
-    /**
      * Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.
      *
      * Range: -
@@ -2251,15 +1975,6 @@ struct d_aq_can_raw_upright_rear_gyro_data_t {
     int16_t gyro_y4;
 
     /**
-     * Sender-populated arithmetic mean of GyroY1..GyroY4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_y_average;
-
-    /**
      * Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.
      *
      * Range: -
@@ -2294,21 +2009,12 @@ struct d_aq_can_raw_upright_rear_gyro_data_t {
      * Offset: 0
      */
     int16_t gyro_z4;
-
-    /**
-     * Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t gyro_z_average;
 };
 
 /**
  * Signals in message UprightRearWheelSpeedData.
  *
- * Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -2366,21 +2072,12 @@ struct d_aq_can_raw_upright_rear_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t wheel_rpm4;
-
-    /**
-     * Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t wheel_rpm_average;
 };
 
 /**
  * Signals in message SuspensionFRData.
  *
- * Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples.
+ * Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples.
  *
  * All signal values are as on the CAN bus.
  */
@@ -2429,21 +2126,12 @@ struct d_aq_can_raw_suspension_fr_data_t {
      * Offset: 0
      */
     uint16_t linpot_position4;
-
-    /**
-     * Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t linpot_position_average;
 };
 
 /**
  * Signals in message SuspensionFLData.
  *
- * Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples.
+ * Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples.
  *
  * All signal values are as on the CAN bus.
  */
@@ -2492,21 +2180,12 @@ struct d_aq_can_raw_suspension_fl_data_t {
      * Offset: 0
      */
     uint16_t linpot_position4;
-
-    /**
-     * Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t linpot_position_average;
 };
 
 /**
  * Signals in message SuspensionRearData.
  *
- * Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples.
+ * Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples.
  *
  * All signal values are as on the CAN bus.
  */
@@ -2555,15 +2234,6 @@ struct d_aq_can_raw_suspension_rear_data_t {
      * Offset: 0
      */
     uint16_t linpot_position4;
-
-    /**
-     * Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t linpot_position_average;
 };
 
 /**
@@ -3107,15 +2777,6 @@ bool d_aq_can_raw_chassis_acceleration_data_acceleration_x4_is_in_range(int16_t 
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_chassis_acceleration_data_acceleration_x_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_chassis_acceleration_data_acceleration_y1_is_in_range(int16_t value);
 
 /**
@@ -3152,15 +2813,6 @@ bool d_aq_can_raw_chassis_acceleration_data_acceleration_y4_is_in_range(int16_t 
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_chassis_acceleration_data_acceleration_y_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_chassis_acceleration_data_acceleration_z1_is_in_range(int16_t value);
 
 /**
@@ -3189,15 +2841,6 @@ bool d_aq_can_raw_chassis_acceleration_data_acceleration_z3_is_in_range(int16_t 
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_chassis_acceleration_data_acceleration_z4_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_acceleration_data_acceleration_z_average_is_in_range(int16_t value);
 
 /**
  * Pack message ChassisGyroData.
@@ -3297,15 +2940,6 @@ bool d_aq_can_raw_chassis_gyro_data_gyro_x4_is_in_range(int16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_chassis_gyro_data_gyro_x_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_chassis_gyro_data_gyro_y1_is_in_range(int16_t value);
 
 /**
@@ -3342,15 +2976,6 @@ bool d_aq_can_raw_chassis_gyro_data_gyro_y4_is_in_range(int16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_chassis_gyro_data_gyro_y_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_chassis_gyro_data_gyro_z1_is_in_range(int16_t value);
 
 /**
@@ -3379,15 +3004,6 @@ bool d_aq_can_raw_chassis_gyro_data_gyro_z3_is_in_range(int16_t value);
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_chassis_gyro_data_gyro_z4_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_gyro_data_gyro_z_average_is_in_range(int16_t value);
 
 /**
  * Pack message ChassisMagnetometerData.
@@ -3487,15 +3103,6 @@ bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_x4_is_in_range(int16_
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_x_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_y1_is_in_range(int16_t value);
 
 /**
@@ -3532,15 +3139,6 @@ bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_y4_is_in_range(int16_
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_y_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_z1_is_in_range(int16_t value);
 
 /**
@@ -3569,15 +3167,6 @@ bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_z3_is_in_range(int16_
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_z4_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_z_average_is_in_range(int16_t value);
 
 /**
  * Pack message UprightFRAccelerationData.
@@ -3677,15 +3266,6 @@ bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_x4_is_in_range(int16
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_x_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_y1_is_in_range(int16_t value);
 
 /**
@@ -3722,15 +3302,6 @@ bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_y4_is_in_range(int16
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_y_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_z1_is_in_range(int16_t value);
 
 /**
@@ -3759,15 +3330,6 @@ bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_z3_is_in_range(int16
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_z4_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_z_average_is_in_range(int16_t value);
 
 /**
  * Pack message UprightFRGyroData.
@@ -3867,15 +3429,6 @@ bool d_aq_can_raw_upright_fr_gyro_data_gyro_x4_is_in_range(int16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fr_gyro_data_gyro_x_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fr_gyro_data_gyro_y1_is_in_range(int16_t value);
 
 /**
@@ -3912,15 +3465,6 @@ bool d_aq_can_raw_upright_fr_gyro_data_gyro_y4_is_in_range(int16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fr_gyro_data_gyro_y_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fr_gyro_data_gyro_z1_is_in_range(int16_t value);
 
 /**
@@ -3949,15 +3493,6 @@ bool d_aq_can_raw_upright_fr_gyro_data_gyro_z3_is_in_range(int16_t value);
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fr_gyro_data_gyro_z4_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fr_gyro_data_gyro_z_average_is_in_range(int16_t value);
 
 /**
  * Pack message UprightFRWheelSpeedData.
@@ -4049,15 +3584,6 @@ bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm3_is_in_range(uint16_t va
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm_average_is_in_range(uint16_t value);
 
 /**
  * Pack message UprightFLAccelerationData.
@@ -4157,15 +3683,6 @@ bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_x4_is_in_range(int16
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_x_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_y1_is_in_range(int16_t value);
 
 /**
@@ -4202,15 +3719,6 @@ bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_y4_is_in_range(int16
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_y_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_z1_is_in_range(int16_t value);
 
 /**
@@ -4239,15 +3747,6 @@ bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_z3_is_in_range(int16
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_z4_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_z_average_is_in_range(int16_t value);
 
 /**
  * Pack message UprightFLGyroData.
@@ -4347,15 +3846,6 @@ bool d_aq_can_raw_upright_fl_gyro_data_gyro_x4_is_in_range(int16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fl_gyro_data_gyro_x_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fl_gyro_data_gyro_y1_is_in_range(int16_t value);
 
 /**
@@ -4392,15 +3882,6 @@ bool d_aq_can_raw_upright_fl_gyro_data_gyro_y4_is_in_range(int16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fl_gyro_data_gyro_y_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fl_gyro_data_gyro_z1_is_in_range(int16_t value);
 
 /**
@@ -4429,15 +3910,6 @@ bool d_aq_can_raw_upright_fl_gyro_data_gyro_z3_is_in_range(int16_t value);
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fl_gyro_data_gyro_z4_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fl_gyro_data_gyro_z_average_is_in_range(int16_t value);
 
 /**
  * Pack message UprightFLWheelSpeedData.
@@ -4529,15 +4001,6 @@ bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm3_is_in_range(uint16_t va
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm_average_is_in_range(uint16_t value);
 
 /**
  * Pack message UprightRearAccelerationData.
@@ -4637,15 +4100,6 @@ bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_x4_is_in_range(int
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_x_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_y1_is_in_range(int16_t value);
 
 /**
@@ -4682,15 +4136,6 @@ bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_y4_is_in_range(int
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_y_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_z1_is_in_range(int16_t value);
 
 /**
@@ -4719,15 +4164,6 @@ bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_z3_is_in_range(int
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_z4_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_z_average_is_in_range(int16_t value);
 
 /**
  * Pack message UprightRearGyroData.
@@ -4827,15 +4263,6 @@ bool d_aq_can_raw_upright_rear_gyro_data_gyro_x4_is_in_range(int16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_rear_gyro_data_gyro_x_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_rear_gyro_data_gyro_y1_is_in_range(int16_t value);
 
 /**
@@ -4872,15 +4299,6 @@ bool d_aq_can_raw_upright_rear_gyro_data_gyro_y4_is_in_range(int16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_rear_gyro_data_gyro_y_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_rear_gyro_data_gyro_z1_is_in_range(int16_t value);
 
 /**
@@ -4909,15 +4327,6 @@ bool d_aq_can_raw_upright_rear_gyro_data_gyro_z3_is_in_range(int16_t value);
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_rear_gyro_data_gyro_z4_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_rear_gyro_data_gyro_z_average_is_in_range(int16_t value);
 
 /**
  * Pack message UprightRearWheelSpeedData.
@@ -5011,15 +4420,6 @@ bool d_aq_can_raw_upright_rear_wheel_speed_data_wheel_rpm3_is_in_range(uint16_t 
 bool d_aq_can_raw_upright_rear_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_rear_wheel_speed_data_wheel_rpm_average_is_in_range(uint16_t value);
-
-/**
  * Pack message SuspensionFRData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -5100,15 +4500,6 @@ bool d_aq_can_raw_suspension_fr_data_linpot_position3_is_in_range(uint16_t value
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_suspension_fr_data_linpot_position4_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_suspension_fr_data_linpot_position_average_is_in_range(uint16_t value);
 
 /**
  * Pack message SuspensionFLData.
@@ -5193,15 +4584,6 @@ bool d_aq_can_raw_suspension_fl_data_linpot_position3_is_in_range(uint16_t value
 bool d_aq_can_raw_suspension_fl_data_linpot_position4_is_in_range(uint16_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_suspension_fl_data_linpot_position_average_is_in_range(uint16_t value);
-
-/**
  * Pack message SuspensionRearData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -5282,15 +4664,6 @@ bool d_aq_can_raw_suspension_rear_data_linpot_position3_is_in_range(uint16_t val
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_suspension_rear_data_linpot_position4_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_suspension_rear_data_linpot_position_average_is_in_range(uint16_t value);
 
 /**
  * Pack message Blackbody1Data.
