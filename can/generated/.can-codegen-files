@@ -26,8 +26,8 @@ detail/mpptcan_raw.c
 detail/mpptcan_raw.h
 detail/steering_can_raw.c
 detail/steering_can_raw.h
-detail/telemetry_tcp_raw.c
-detail/telemetry_tcp_raw.h
+detail/telemetry_link_raw.c
+detail/telemetry_link_raw.h
 elcon_can.c
 elcon_can.h
 lighting_can.c
@@ -38,5 +38,5 @@ mpptcan.c
 mpptcan.h
 steering_can.c
 steering_can.h
-telemetry_tcp.c
-telemetry_tcp.h
+telemetry_link.c
+telemetry_link.h

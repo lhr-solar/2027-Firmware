@@ -1,4 +1,4 @@
-/** @file telemetry_tcp.h
+/** @file telemetry_link.h
  * @brief Generated physical-value API. Edit the DBC, never this file.
  * Pack: physical fields -> zero-padded frame; unpack: frame -> physical fields.
  * Pack returns CAN_OK/CAN_CLAMPED on success. Negative status leaves output unchanged.
@@ -9,32 +9,32 @@
 
 /** Named raw values for CellularConnected; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_TELEMETRY_STATUS_CELLULAR_CONNECTED_DISCONNECTED = 0,
-    TELEMETRY_TCP_TELEMETRY_STATUS_CELLULAR_CONNECTED_CONNECTED = 1,
-} telemetry_tcp_telemetry_status_cellular_connected_choice_t;
+    TELEMETRY_LINK_TELEMETRY_STATUS_CELLULAR_CONNECTED_DISCONNECTED = 0,
+    TELEMETRY_LINK_TELEMETRY_STATUS_CELLULAR_CONNECTED_CONNECTED = 1,
+} telemetry_link_telemetry_status_cellular_connected_choice_t;
 /** Named raw values for CellularTechnology; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_NONE = 0,
-    TELEMETRY_TCP_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_LTE = 1,
-    TELEMETRY_TCP_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_LTE_M = 2,
-    TELEMETRY_TCP_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_NB_IO_T = 3,
-    TELEMETRY_TCP_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_OTHER = 4,
-} telemetry_tcp_telemetry_status_cellular_technology_choice_t;
+    TELEMETRY_LINK_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_NONE = 0,
+    TELEMETRY_LINK_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_LTE = 1,
+    TELEMETRY_LINK_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_LTE_M = 2,
+    TELEMETRY_LINK_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_NB_IO_T = 3,
+    TELEMETRY_LINK_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_OTHER = 4,
+} telemetry_link_telemetry_status_cellular_technology_choice_t;
 /** Named raw values for Roaming; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_TELEMETRY_STATUS_ROAMING_OFF = 0,
-    TELEMETRY_TCP_TELEMETRY_STATUS_ROAMING_ON = 1,
-} telemetry_tcp_telemetry_status_roaming_choice_t;
+    TELEMETRY_LINK_TELEMETRY_STATUS_ROAMING_OFF = 0,
+    TELEMETRY_LINK_TELEMETRY_STATUS_ROAMING_ON = 1,
+} telemetry_link_telemetry_status_roaming_choice_t;
 /** Named raw values for InternetConnected; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_TELEMETRY_STATUS_INTERNET_CONNECTED_DISCONNECTED = 0,
-    TELEMETRY_TCP_TELEMETRY_STATUS_INTERNET_CONNECTED_CONNECTED = 1,
-} telemetry_tcp_telemetry_status_internet_connected_choice_t;
+    TELEMETRY_LINK_TELEMETRY_STATUS_INTERNET_CONNECTED_DISCONNECTED = 0,
+    TELEMETRY_LINK_TELEMETRY_STATUS_INTERNET_CONNECTED_CONNECTED = 1,
+} telemetry_link_telemetry_status_internet_connected_choice_t;
 /** Named raw values for ServerConnected; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_TELEMETRY_STATUS_SERVER_CONNECTED_DISCONNECTED__RETRYING = 0,
-    TELEMETRY_TCP_TELEMETRY_STATUS_SERVER_CONNECTED_CONNECTED = 1,
-} telemetry_tcp_telemetry_status_server_connected_choice_t;
+    TELEMETRY_LINK_TELEMETRY_STATUS_SERVER_CONNECTED_DISCONNECTED__RETRYING = 0,
+    TELEMETRY_LINK_TELEMETRY_STATUS_SERVER_CONNECTED_CONNECTED = 1,
+} telemetry_link_telemetry_status_server_connected_choice_t;
 /** 2027 team-defined layout; physical values use the shared scaling conventions. */
 typedef struct {
     /** CellularConnected; unit=none; physical=raw*1+0; raw=[0,1]. CellularConnected */
@@ -55,28 +55,28 @@ typedef struct {
     double rsrq;
     /** SINR; unit=dB; physical=raw*0.5+0; raw=[-128,127]. SINR */
     double sinr;
-} telemetry_tcp_telemetry_status_t;
+} telemetry_link_telemetry_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t telemetry_tcp_telemetry_status_pack(can_frame_t* dst, const telemetry_tcp_telemetry_status_t* src);
+can_status_t telemetry_link_telemetry_status_pack(can_frame_t* dst, const telemetry_link_telemetry_status_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t telemetry_tcp_telemetry_status_unpack(telemetry_tcp_telemetry_status_t* dst, const can_frame_t* src);
+can_status_t telemetry_link_telemetry_status_unpack(telemetry_link_telemetry_status_t* dst, const can_frame_t* src);
 
 /** Named raw values for GPSAntennaState; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_GPS_DATA_GPS_ANTENNA_STATE_OK = 0,
-    TELEMETRY_TCP_GPS_DATA_GPS_ANTENNA_STATE_OPEN_CIRCUIT = 1,
-    TELEMETRY_TCP_GPS_DATA_GPS_ANTENNA_STATE_SHORT_CIRCUIT = 2,
-    TELEMETRY_TCP_GPS_DATA_GPS_ANTENNA_STATE_UNKNOWN = 3,
-} telemetry_tcp_gps_data_gps_antenna_state_choice_t;
+    TELEMETRY_LINK_GPS_DATA_GPS_ANTENNA_STATE_OK = 0,
+    TELEMETRY_LINK_GPS_DATA_GPS_ANTENNA_STATE_OPEN_CIRCUIT = 1,
+    TELEMETRY_LINK_GPS_DATA_GPS_ANTENNA_STATE_SHORT_CIRCUIT = 2,
+    TELEMETRY_LINK_GPS_DATA_GPS_ANTENNA_STATE_UNKNOWN = 3,
+} telemetry_link_gps_data_gps_antenna_state_choice_t;
 /** Named raw values for GPSFix; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_GPS_DATA_GPS_FIX_NO_FIX = 0,
-    TELEMETRY_TCP_GPS_DATA_GPS_FIX_FIX2_D = 1,
-    TELEMETRY_TCP_GPS_DATA_GPS_FIX_FIX3_D = 2,
-} telemetry_tcp_gps_data_gps_fix_choice_t;
+    TELEMETRY_LINK_GPS_DATA_GPS_FIX_NO_FIX = 0,
+    TELEMETRY_LINK_GPS_DATA_GPS_FIX_FIX2_D = 1,
+    TELEMETRY_LINK_GPS_DATA_GPS_FIX_FIX3_D = 2,
+} telemetry_link_gps_data_gps_fix_choice_t;
 /** GPS receiver state and measurements. */
 typedef struct {
     /** GPSAntennaState; unit=none; physical=raw*1+0; raw=[0,3]. GPSAntennaState */
@@ -95,50 +95,50 @@ typedef struct {
     double gps_altitude;
     /** SatellitesInUse; unit=none; physical=raw*1+0; raw=[0,255]. SatellitesInUse */
     uint8_t satellites_in_use;
-} telemetry_tcp_gps_data_t;
+} telemetry_link_gps_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t telemetry_tcp_gps_data_pack(can_frame_t* dst, const telemetry_tcp_gps_data_t* src);
+can_status_t telemetry_link_gps_data_pack(can_frame_t* dst, const telemetry_link_gps_data_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t telemetry_tcp_gps_data_unpack(telemetry_tcp_gps_data_t* dst, const can_frame_t* src);
+can_status_t telemetry_link_gps_data_unpack(telemetry_link_gps_data_t* dst, const can_frame_t* src);
 
 /** Named raw values for BPSWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_BPS_WATCHDOG_ALIVE = 0,
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_BPS_WATCHDOG_TIMED_OUT = 1,
-} telemetry_tcp_on_board_watchdog_bps_watchdog_choice_t;
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_BPS_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_BPS_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_on_board_watchdog_bps_watchdog_choice_t;
 /** Named raw values for VCUWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_VCU_WATCHDOG_ALIVE = 0,
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_VCU_WATCHDOG_TIMED_OUT = 1,
-} telemetry_tcp_on_board_watchdog_vcu_watchdog_choice_t;
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_VCU_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_VCU_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_on_board_watchdog_vcu_watchdog_choice_t;
 /** Named raw values for DEIWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_DEI_WATCHDOG_ALIVE = 0,
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_DEI_WATCHDOG_TIMED_OUT = 1,
-} telemetry_tcp_on_board_watchdog_dei_watchdog_choice_t;
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_DEI_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_DEI_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_on_board_watchdog_dei_watchdog_choice_t;
 /** Named raw values for PedalsWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_ALIVE = 0,
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_TIMED_OUT = 1,
-} telemetry_tcp_on_board_watchdog_pedals_watchdog_choice_t;
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_on_board_watchdog_pedals_watchdog_choice_t;
 /** Named raw values for PDUWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_PDU_WATCHDOG_ALIVE = 0,
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_PDU_WATCHDOG_TIMED_OUT = 1,
-} telemetry_tcp_on_board_watchdog_pdu_watchdog_choice_t;
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_PDU_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_PDU_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_on_board_watchdog_pdu_watchdog_choice_t;
 /** Named raw values for LVCWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_LVC_WATCHDOG_ALIVE = 0,
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_LVC_WATCHDOG_TIMED_OUT = 1,
-} telemetry_tcp_on_board_watchdog_lvc_watchdog_choice_t;
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_LVC_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_LVC_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_on_board_watchdog_lvc_watchdog_choice_t;
 /** Named raw values for MSVWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_MSV_WATCHDOG_ALIVE = 0,
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_MSV_WATCHDOG_TIMED_OUT = 1,
-} telemetry_tcp_on_board_watchdog_msv_watchdog_choice_t;
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_MSV_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_ON_BOARD_WATCHDOG_MSV_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_on_board_watchdog_msv_watchdog_choice_t;
 /** CM5 reports watchdog state of other boards: 0 alive, 1 timed out. Former CM5 self-watchdog removed; bit 7 is reserved. */
 typedef struct {
     /** BPSWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. BPSWatchdog */
@@ -155,14 +155,14 @@ typedef struct {
     uint8_t lvc_watchdog;
     /** MSVWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. MSVWatchdog */
     uint8_t msv_watchdog;
-} telemetry_tcp_on_board_watchdog_t;
+} telemetry_link_on_board_watchdog_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t telemetry_tcp_on_board_watchdog_pack(can_frame_t* dst, const telemetry_tcp_on_board_watchdog_t* src);
+can_status_t telemetry_link_on_board_watchdog_pack(can_frame_t* dst, const telemetry_link_on_board_watchdog_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t telemetry_tcp_on_board_watchdog_unpack(telemetry_tcp_on_board_watchdog_t* dst, const can_frame_t* src);
+can_status_t telemetry_link_on_board_watchdog_unpack(telemetry_link_on_board_watchdog_t* dst, const can_frame_t* src);
 
 /** On-demand telemetry test frame; no assumed periodic rate. */
 typedef struct {
@@ -170,14 +170,14 @@ typedef struct {
     float sine;
     /** Cosine; unit=none; IEEE-754 binary32. */
     float cosine;
-} telemetry_tcp_sig_wave_t;
+} telemetry_link_sig_wave_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t telemetry_tcp_sig_wave_pack(can_frame_t* dst, const telemetry_tcp_sig_wave_t* src);
+can_status_t telemetry_link_sig_wave_pack(can_frame_t* dst, const telemetry_link_sig_wave_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t telemetry_tcp_sig_wave_unpack(telemetry_tcp_sig_wave_t* dst, const can_frame_t* src);
+can_status_t telemetry_link_sig_wave_unpack(telemetry_link_sig_wave_t* dst, const can_frame_t* src);
 
 /** On-demand telemetry test frame; no assumed periodic rate. */
 typedef struct {
@@ -197,14 +197,14 @@ typedef struct {
     uint8_t sg6;
     /** sg7; unit=unit; physical=raw*1+0; raw=[0,1]. */
     uint8_t sg7;
-} telemetry_tcp_max_message_classical_t;
+} telemetry_link_max_message_classical_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t telemetry_tcp_max_message_classical_pack(can_frame_t* dst, const telemetry_tcp_max_message_classical_t* src);
+can_status_t telemetry_link_max_message_classical_pack(can_frame_t* dst, const telemetry_link_max_message_classical_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t telemetry_tcp_max_message_classical_unpack(telemetry_tcp_max_message_classical_t* dst, const can_frame_t* src);
+can_status_t telemetry_link_max_message_classical_unpack(telemetry_link_max_message_classical_t* dst, const can_frame_t* src);
 
 /** On-demand telemetry test frame; no assumed periodic rate. */
 typedef struct {
@@ -336,23 +336,23 @@ typedef struct {
     uint8_t sg62;
     /** sg63; unit=unit; physical=raw*1+0; raw=[0,255]. */
     uint8_t sg63;
-} telemetry_tcp_max_message_fd_t;
+} telemetry_link_max_message_fd_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t telemetry_tcp_max_message_fd_pack(can_frame_t* dst, const telemetry_tcp_max_message_fd_t* src);
+can_status_t telemetry_link_max_message_fd_pack(can_frame_t* dst, const telemetry_link_max_message_fd_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t telemetry_tcp_max_message_fd_unpack(telemetry_tcp_max_message_fd_t* dst, const can_frame_t* src);
+can_status_t telemetry_link_max_message_fd_unpack(telemetry_link_max_message_fd_t* dst, const can_frame_t* src);
 
 typedef struct {
-    telemetry_tcp_telemetry_status_t telemetry_status;
-    telemetry_tcp_gps_data_t gps_data;
-    telemetry_tcp_on_board_watchdog_t on_board_watchdog;
-    telemetry_tcp_sig_wave_t sig_wave;
-    telemetry_tcp_max_message_classical_t max_message_classical;
-    telemetry_tcp_max_message_fd_t max_message_fd;
-} telemetry_tcp_cm5_t;
+    telemetry_link_telemetry_status_t telemetry_status;
+    telemetry_link_gps_data_t gps_data;
+    telemetry_link_on_board_watchdog_t on_board_watchdog;
+    telemetry_link_sig_wave_t sig_wave;
+    telemetry_link_max_message_classical_t max_message_classical;
+    telemetry_link_max_message_fd_t max_message_fd;
+} telemetry_link_cm5_t;
 
 /** Immutable metadata grouped by sender, for ID/filter/driver configuration. */
 typedef struct {
@@ -364,5 +364,5 @@ typedef struct {
         can_message_info_t max_message_classical;
         can_message_info_t max_message_fd;
     } cm5;
-} telemetry_tcp_metadata_t;
-extern const telemetry_tcp_metadata_t telemetry_tcp;
+} telemetry_link_metadata_t;
+extern const telemetry_link_metadata_t telemetry_link;

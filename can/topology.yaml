@@ -17,7 +17,7 @@ buses:
         filter:
           mode: include
           messages: ["0x060", "0x070", "0x071", "0x072"]
-      - to: TelemetryTCP
+      - to: TelemetryLink
         via: CM5
         filter:
           mode: exclude
@@ -29,7 +29,7 @@ buses:
     bitrate: 1000000
     brs: false
     forwards:
-      - to: TelemetryTCP
+      - to: TelemetryLink
         via: CM5
         filter:
           mode: exclude
@@ -105,6 +105,6 @@ buses:
           transmitters: [MSV]
 
 outputs:
-  TelemetryTCP:
+  TelemetryLink:
     transport: tcp
-    dbc: dbc/TelemetryTCP.dbc
+    dbc: dbc/TelemetryLink.dbc

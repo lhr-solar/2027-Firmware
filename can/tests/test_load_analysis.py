@@ -162,7 +162,7 @@ class LoadAnalysisTests(unittest.TestCase):
             self.assertIn(name, {row["name"] for row in tcp})
             self.assertNotIn(name, {m.name for m in self.databases["DAqCAN"].messages})
         self.assertIn("DAqCAN", report["native_buses"])
-        self.assertNotIn("TelemetryTCP", report["native_buses"])
+        self.assertNotIn("TelemetryLink", report["native_buses"])
 
         for prefix in ("MPPTA", "MPPTB", "MPPTC"):
             for suffix in ("SetMode", "SetOutputVoltageLimit", "SetOutputCurrentLimit"):

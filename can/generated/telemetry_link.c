@@ -1,11 +1,11 @@
-#include "telemetry_tcp.h"
-#include "detail/telemetry_tcp_raw.h"
+#include "telemetry_link.h"
+#include "detail/telemetry_link_raw.h"
 #include <math.h>
 #include <string.h>
 #include <float.h>
 _Static_assert(sizeof(float) == 4 && FLT_RADIX == 2 && FLT_MANT_DIG == 24 && FLT_MAX_EXP == 128, "IEEE-754 binary32 is required");
 
-const telemetry_tcp_metadata_t telemetry_tcp = {
+const telemetry_link_metadata_t telemetry_link = {
     .cm5 = {
         .telemetry_status = { .id = UINT32_C(1569), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
         .gps_data = { .id = UINT32_C(1570), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
@@ -16,9 +16,9 @@ const telemetry_tcp_metadata_t telemetry_tcp = {
     },
 };
 
-can_status_t telemetry_tcp_telemetry_status_pack(can_frame_t* dst, const telemetry_tcp_telemetry_status_t* src) {
+can_status_t telemetry_link_telemetry_status_pack(can_frame_t* dst, const telemetry_link_telemetry_status_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct telemetry_tcp_raw_telemetry_status_t raw = {0};
+    struct telemetry_link_raw_telemetry_status_t raw = {0};
     can_status_t status = CAN_OK;
     {
         uint8_t value = src->cellular_connected;
@@ -86,20 +86,20 @@ can_status_t telemetry_tcp_telemetry_status_pack(can_frame_t* dst, const telemet
     can_frame_t result = { .id = UINT32_C(1569),
         .len = 5, .is_extended = false,
         .is_fd = true };
-    if (telemetry_tcp_raw_telemetry_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (telemetry_link_raw_telemetry_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t telemetry_tcp_telemetry_status_unpack(telemetry_tcp_telemetry_status_t* dst, const can_frame_t* src) {
+can_status_t telemetry_link_telemetry_status_unpack(telemetry_link_telemetry_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(1569) || src->len != 5 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct telemetry_tcp_raw_telemetry_status_t raw = {0};
-    if (telemetry_tcp_raw_telemetry_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    telemetry_tcp_telemetry_status_t result = {0};
+    struct telemetry_link_raw_telemetry_status_t raw = {0};
+    if (telemetry_link_raw_telemetry_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    telemetry_link_telemetry_status_t result = {0};
     if (raw.cellular_connected > INT64_C(1)) return CAN_RANGE;
     result.cellular_connected = (uint8_t)raw.cellular_connected;
     if (raw.cellular_technology > INT64_C(7)) return CAN_RANGE;
@@ -118,9 +118,9 @@ can_status_t telemetry_tcp_telemetry_status_unpack(telemetry_tcp_telemetry_statu
     return CAN_OK;
 }
 
-can_status_t telemetry_tcp_gps_data_pack(can_frame_t* dst, const telemetry_tcp_gps_data_t* src) {
+can_status_t telemetry_link_gps_data_pack(can_frame_t* dst, const telemetry_link_gps_data_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct telemetry_tcp_raw_gps_data_t raw = {0};
+    struct telemetry_link_raw_gps_data_t raw = {0};
     can_status_t status = CAN_OK;
     {
         uint8_t value = src->gps_antenna_state;
@@ -193,20 +193,20 @@ can_status_t telemetry_tcp_gps_data_pack(can_frame_t* dst, const telemetry_tcp_g
     can_frame_t result = { .id = UINT32_C(1570),
         .len = 16, .is_extended = false,
         .is_fd = true };
-    if (telemetry_tcp_raw_gps_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (telemetry_link_raw_gps_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t telemetry_tcp_gps_data_unpack(telemetry_tcp_gps_data_t* dst, const can_frame_t* src) {
+can_status_t telemetry_link_gps_data_unpack(telemetry_link_gps_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(1570) || src->len != 16 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct telemetry_tcp_raw_gps_data_t raw = {0};
-    if (telemetry_tcp_raw_gps_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    telemetry_tcp_gps_data_t result = {0};
+    struct telemetry_link_raw_gps_data_t raw = {0};
+    if (telemetry_link_raw_gps_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    telemetry_link_gps_data_t result = {0};
     if (raw.gps_antenna_state > INT64_C(3)) return CAN_RANGE;
     result.gps_antenna_state = (uint8_t)raw.gps_antenna_state;
     if (raw.gps_fix > INT64_C(3)) return CAN_RANGE;
@@ -226,9 +226,9 @@ can_status_t telemetry_tcp_gps_data_unpack(telemetry_tcp_gps_data_t* dst, const 
     return CAN_OK;
 }
 
-can_status_t telemetry_tcp_on_board_watchdog_pack(can_frame_t* dst, const telemetry_tcp_on_board_watchdog_t* src) {
+can_status_t telemetry_link_on_board_watchdog_pack(can_frame_t* dst, const telemetry_link_on_board_watchdog_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct telemetry_tcp_raw_on_board_watchdog_t raw = {0};
+    struct telemetry_link_raw_on_board_watchdog_t raw = {0};
     can_status_t status = CAN_OK;
     {
         uint8_t value = src->bps_watchdog;
@@ -282,20 +282,20 @@ can_status_t telemetry_tcp_on_board_watchdog_pack(can_frame_t* dst, const teleme
     can_frame_t result = { .id = UINT32_C(1571),
         .len = 1, .is_extended = false,
         .is_fd = true };
-    if (telemetry_tcp_raw_on_board_watchdog_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (telemetry_link_raw_on_board_watchdog_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t telemetry_tcp_on_board_watchdog_unpack(telemetry_tcp_on_board_watchdog_t* dst, const can_frame_t* src) {
+can_status_t telemetry_link_on_board_watchdog_unpack(telemetry_link_on_board_watchdog_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(1571) || src->len != 1 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct telemetry_tcp_raw_on_board_watchdog_t raw = {0};
-    if (telemetry_tcp_raw_on_board_watchdog_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    telemetry_tcp_on_board_watchdog_t result = {0};
+    struct telemetry_link_raw_on_board_watchdog_t raw = {0};
+    if (telemetry_link_raw_on_board_watchdog_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    telemetry_link_on_board_watchdog_t result = {0};
     if (raw.bps_watchdog > INT64_C(1)) return CAN_RANGE;
     result.bps_watchdog = (uint8_t)raw.bps_watchdog;
     if (raw.vcu_watchdog > INT64_C(1)) return CAN_RANGE;
@@ -314,9 +314,9 @@ can_status_t telemetry_tcp_on_board_watchdog_unpack(telemetry_tcp_on_board_watch
     return CAN_OK;
 }
 
-can_status_t telemetry_tcp_sig_wave_pack(can_frame_t* dst, const telemetry_tcp_sig_wave_t* src) {
+can_status_t telemetry_link_sig_wave_pack(can_frame_t* dst, const telemetry_link_sig_wave_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct telemetry_tcp_raw_sig_wave_t raw = {0};
+    struct telemetry_link_raw_sig_wave_t raw = {0};
     can_status_t status = CAN_OK;
     {
         float value = src->sine;
@@ -335,20 +335,20 @@ can_status_t telemetry_tcp_sig_wave_pack(can_frame_t* dst, const telemetry_tcp_s
     can_frame_t result = { .id = UINT32_C(2045),
         .len = 8, .is_extended = false,
         .is_fd = false };
-    if (telemetry_tcp_raw_sig_wave_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (telemetry_link_raw_sig_wave_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t telemetry_tcp_sig_wave_unpack(telemetry_tcp_sig_wave_t* dst, const can_frame_t* src) {
+can_status_t telemetry_link_sig_wave_unpack(telemetry_link_sig_wave_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(2045) || src->len != 8 ||
         src->is_extended != false ||
         src->is_fd != false ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct telemetry_tcp_raw_sig_wave_t raw = {0};
-    if (telemetry_tcp_raw_sig_wave_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    telemetry_tcp_sig_wave_t result = {0};
+    struct telemetry_link_raw_sig_wave_t raw = {0};
+    if (telemetry_link_raw_sig_wave_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    telemetry_link_sig_wave_t result = {0};
     {
         float value;
         memcpy(&value, &raw.sine, sizeof(value));
@@ -369,9 +369,9 @@ can_status_t telemetry_tcp_sig_wave_unpack(telemetry_tcp_sig_wave_t* dst, const 
     return CAN_OK;
 }
 
-can_status_t telemetry_tcp_max_message_classical_pack(can_frame_t* dst, const telemetry_tcp_max_message_classical_t* src) {
+can_status_t telemetry_link_max_message_classical_pack(can_frame_t* dst, const telemetry_link_max_message_classical_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct telemetry_tcp_raw_max_message_classical_t raw = {0};
+    struct telemetry_link_raw_max_message_classical_t raw = {0};
     can_status_t status = CAN_OK;
     {
         uint8_t value = src->sg0;
@@ -432,20 +432,20 @@ can_status_t telemetry_tcp_max_message_classical_pack(can_frame_t* dst, const te
     can_frame_t result = { .id = UINT32_C(2046),
         .len = 8, .is_extended = false,
         .is_fd = false };
-    if (telemetry_tcp_raw_max_message_classical_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (telemetry_link_raw_max_message_classical_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t telemetry_tcp_max_message_classical_unpack(telemetry_tcp_max_message_classical_t* dst, const can_frame_t* src) {
+can_status_t telemetry_link_max_message_classical_unpack(telemetry_link_max_message_classical_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(2046) || src->len != 8 ||
         src->is_extended != false ||
         src->is_fd != false ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct telemetry_tcp_raw_max_message_classical_t raw = {0};
-    if (telemetry_tcp_raw_max_message_classical_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    telemetry_tcp_max_message_classical_t result = {0};
+    struct telemetry_link_raw_max_message_classical_t raw = {0};
+    if (telemetry_link_raw_max_message_classical_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    telemetry_link_max_message_classical_t result = {0};
     if (raw.sg0 > INT64_C(1)) return CAN_RANGE;
     result.sg0 = (uint8_t)raw.sg0;
     if (raw.sg1 > INT64_C(1)) return CAN_RANGE;
@@ -466,9 +466,9 @@ can_status_t telemetry_tcp_max_message_classical_unpack(telemetry_tcp_max_messag
     return CAN_OK;
 }
 
-can_status_t telemetry_tcp_max_message_fd_pack(can_frame_t* dst, const telemetry_tcp_max_message_fd_t* src) {
+can_status_t telemetry_link_max_message_fd_pack(can_frame_t* dst, const telemetry_link_max_message_fd_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct telemetry_tcp_raw_max_message_fd_t raw = {0};
+    struct telemetry_link_raw_max_message_fd_t raw = {0};
     can_status_t status = CAN_OK;
     {
         uint8_t value = src->sg0;
@@ -729,20 +729,20 @@ can_status_t telemetry_tcp_max_message_fd_pack(can_frame_t* dst, const telemetry
     can_frame_t result = { .id = UINT32_C(2047),
         .len = 64, .is_extended = false,
         .is_fd = true };
-    if (telemetry_tcp_raw_max_message_fd_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (telemetry_link_raw_max_message_fd_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t telemetry_tcp_max_message_fd_unpack(telemetry_tcp_max_message_fd_t* dst, const can_frame_t* src) {
+can_status_t telemetry_link_max_message_fd_unpack(telemetry_link_max_message_fd_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(2047) || src->len != 64 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct telemetry_tcp_raw_max_message_fd_t raw = {0};
-    if (telemetry_tcp_raw_max_message_fd_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    telemetry_tcp_max_message_fd_t result = {0};
+    struct telemetry_link_raw_max_message_fd_t raw = {0};
+    if (telemetry_link_raw_max_message_fd_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    telemetry_link_max_message_fd_t result = {0};
     result.sg0 = (uint8_t)raw.sg0;
     result.sg1 = (uint8_t)raw.sg1;
     result.sg2 = (uint8_t)raw.sg2;

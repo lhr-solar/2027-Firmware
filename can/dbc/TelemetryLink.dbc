@@ -232,7 +232,7 @@ BA_DEF_DEF_  "CANFD_BRS" "0";
 BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
 BA_DEF_DEF_  "GenMsgCycleTime" 0;
 BA_ "BusType" "TCP";
-BA_ "DBName" "TelemetryTCP";
+BA_ "DBName" "TelemetryLink";
 BA_ "LayoutPending" BO_ 1569 0;
 BA_ "ProtocolSource" BO_ 1569 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 1569 14;

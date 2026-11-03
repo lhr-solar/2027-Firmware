@@ -7,5 +7,5 @@
 #include "mpptcan.h"
 #include "motor_can.h"
 #include "steering_can.h"
-#include "telemetry_tcp.h"
+#include "telemetry_link.h"
 #include "bootloading.h"

@@ -217,7 +217,7 @@ def calculate(databases, topology, event_rates, args):
         )
     car_rows = resolved["CarCAN"]
     car_total = forwarded_buses["CarCAN"]
-    internet = resolved["TelemetryTCP"]
+    internet = resolved["TelemetryLink"]
     network = tcp_bandwidth(
         internet,
         args.record_header_bytes,

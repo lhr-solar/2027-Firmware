@@ -18,7 +18,7 @@ not wire-compatible with the old vehicle's team-defined messages.
 | ChargerCAN | BPS status/pack/cell data and ElconInterface status | 5 | 0 |
 | ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
 | DAqCAN | CM5 timestamp and sensor-board traffic | 19 | 5 |
-| TelemetryTCP | CM5 TCP-native telemetry and test messages | 6 | 0 |
+| TelemetryLink | CM5 TCP-native telemetry and test messages | 6 | 0 |
 
 Every message has exactly one declared transmitter. `External` is the command
 injection tool/node for IDs 0x051–0x054. MSV receives BPSStatus
@@ -42,7 +42,7 @@ DAqCAN 1000000, ChargerCAN/ElconCAN/MotorCAN/LightingCAN 250000, SteeringCAN
 
 The telemetry/sensor bus is **DAqCAN**, using the formerly empty DAqCAN.dbc
 scaffold. TelemetryCAN.dbc is removed at the user's request. The empty
-bootloading.dbc scaffold remains. TCP-only definitions use TelemetryTCP.dbc. Both lighting
+bootloading.dbc scaffold remains. TCP-only definitions use TelemetryLink.dbc. Both lighting
 messages live on **LightingCAN**: DEI transmits BottomShellLightingStatus at
 **0x080**, and TopShellLighting transmits TopShellLightingStatus at **0x081**.
 Their IDs and payload layouts are retained. Bottom-shell circuitry is on DEI,
@@ -479,7 +479,7 @@ forwards LightingCommand; GPS is produced directly for telemetry TCP.
 
 ## TCP-only telemetry definitions
 
-`TelemetryTCP.dbc` contains frames produced by CM5 directly for telemetry TCP,
+`TelemetryLink.dbc` contains frames produced by CM5 directly for telemetry TCP,
 without DAqCAN transmission. `topology.yaml` associates this DBC with the TCP
 output; forwarded CarCAN and DAqCAN traffic is merged at that output. Native
 TCP messages count toward TCP bandwidth, not CAN bus loading. Chassis IMU

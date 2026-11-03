@@ -120,7 +120,7 @@ Each `.dbc` in `can/dbc/` is one physical bus, not one board:
 | `LightingCAN.dbc` | Lighting |
 | `DAqCAN.dbc` | Data acquisition |
 | `ElconCAN.dbc` | Elcon charger (vendor-defined IDs — follow the charger datasheet, not our conventions) |
-| `TelemetryTCP.dbc` | Telemetry debug |
+| `TelemetryLink.dbc` | Telemetry debug |
 | `bootloading.dbc` | Bootloader protocol |
 
 ### Boards (2027 targets)

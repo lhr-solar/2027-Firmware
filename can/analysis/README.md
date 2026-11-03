@@ -74,8 +74,8 @@ Confirmed paths:
 | ElconCAN | ChargerCAN | ElconInterface | All |
 | CarCAN | ChargerCAN | BPS | Include `"0x060"`, `"0x070"`, `"0x071"`, `"0x072"` |
 | ChargerCAN | CarCAN | BPS | Exclude those four BPS IDs to prevent echo |
-| CarCAN | TelemetryTCP | CM5 | All |
-| DAqCAN | TelemetryTCP | CM5 | Exclude `"0x620"` (TimestampSync) |
+| CarCAN | TelemetryLink | CM5 | All |
+| DAqCAN | TelemetryLink | CM5 | Exclude `"0x620"` (TimestampSync) |
 
 The calculator follows every hop, so forwarded Elcon traffic contributes to
 ChargerCAN occupancy as well as CarCAN. No DAqCAN-to-CarCAN route exists. The

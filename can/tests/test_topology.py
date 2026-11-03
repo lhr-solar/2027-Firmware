@@ -81,7 +81,7 @@ class TopologyTests(unittest.TestCase):
             self.assertFalse(selected(backward["filter"], message))
             resolved = resolve(self.config, {"CarCAN": [message]}, merge_messages)
             self.assertEqual(resolved["ChargerCAN"], [message])
-            self.assertEqual(resolved["TelemetryTCP"], [message])
+            self.assertEqual(resolved["TelemetryLink"], [message])
         command = self.databases["CarCAN"].get_message_by_name("BPSCommand")
         self.assertFalse(selected(forward["filter"], command))
         # Removing the reverse exclusion must expose the real frame-level loop.
