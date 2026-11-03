@@ -17,6 +17,11 @@ typedef enum {
     CAR_CAN_BPS_COMMAND_MPPT_CHARGE_SCHEME_NORMAL = 0,
     CAR_CAN_BPS_COMMAND_MPPT_CHARGE_SCHEME_ADVANCED = 1,
 } car_can_bps_command_mppt_charge_scheme_choice_t;
+/** Named raw values for CurrentOverride; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_BPS_COMMAND_CURRENT_OVERRIDE_DISABLED = 0,
+    CAR_CAN_BPS_COMMAND_CURRENT_OVERRIDE_ENABLED = 1,
+} car_can_bps_command_current_override_choice_t;
 /** 2027 team-defined layout; physical values use the shared scaling conventions. */
 typedef struct {
     /** Mode; unit=none; physical=raw*1+0; raw=[0,1]. Mode */
@@ -27,6 +32,8 @@ typedef struct {
     uint32_t voltage_override_mask;
     /** TemperatureOverrideMask; unit=none; physical=raw*1+0; raw=[0,4294967295]. Bit 0 selects temperature 1; bit 31 selects temperature 32. Set bit requests the corresponding override. */
     uint32_t temperature_override_mask;
+    /** CurrentOverride; unit=none; physical=raw*1+0; raw=[0,1]. Requests a current override when enabled; BPS firmware defines handling. */
+    uint8_t current_override;
 } car_can_bps_command_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -85,6 +92,27 @@ can_status_t car_can_sweep_mpp_ts_pack(can_frame_t* dst, const car_can_sweep_mpp
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t car_can_sweep_mpp_ts_unpack(car_can_sweep_mpp_ts_t* dst, const can_frame_t* src);
+
+/** Named raw values for BalancingMode; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_BPS_BALANCING_COMMAND_BALANCING_MODE_OFF = 0,
+    CAR_CAN_BPS_BALANCING_COMMAND_BALANCING_MODE_AUTOMATIC = 1,
+    CAR_CAN_BPS_BALANCING_COMMAND_BALANCING_MODE_MANUAL = 2,
+} car_can_bps_balancing_command_balancing_mode_choice_t;
+/** Triggered balancing request. BPS evaluates safety conditions independently; manual selection does not bypass protection. */
+typedef struct {
+    /** BalancingMode; unit=none; physical=raw*1+0; raw=[0,2]. Off, automatic selection by BPS, or manual selection by mask. */
+    uint8_t balancing_mode;
+    /** ManualCellMask; unit=none; physical=raw*1+0; raw=[0,4294967295]. Manual mode only: bit 0 selects cell 00; bit 31 selects cell 31. */
+    uint32_t manual_cell_mask;
+} car_can_bps_balancing_command_t;
+
+/** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
+ * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
+can_status_t car_can_bps_balancing_command_pack(can_frame_t* dst, const car_can_bps_balancing_command_t* src);
+/** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
+ * Negative status preserves dst; unknown value-table entries remain numeric. */
+can_status_t car_can_bps_balancing_command_unpack(car_can_bps_balancing_command_t* dst, const can_frame_t* src);
 
 /** Named raw values for Status; unknown values remain integers. */
 typedef enum {
@@ -944,7 +972,12 @@ typedef enum {
     CAR_CAN_BPS_COMMAND_ECHO_MPPT_CHARGE_SCHEME_NORMAL = 0,
     CAR_CAN_BPS_COMMAND_ECHO_MPPT_CHARGE_SCHEME_ADVANCED = 1,
 } car_can_bps_command_echo_mppt_charge_scheme_choice_t;
-/** Cyclic BPS report mirroring the BPSCommand payload: Mode, MPPTChargeScheme, VoltageOverrideMask, and TemperatureOverrideMask. Reports command values held by BPS; does not imply successful application or act as a per-request acknowledgement. Cyclic report every 1000 ms. */
+/** Named raw values for CurrentOverride; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_BPS_COMMAND_ECHO_CURRENT_OVERRIDE_DISABLED = 0,
+    CAR_CAN_BPS_COMMAND_ECHO_CURRENT_OVERRIDE_ENABLED = 1,
+} car_can_bps_command_echo_current_override_choice_t;
+/** Cyclic BPS report mirroring the BPSCommand payload: Mode, MPPTChargeScheme, VoltageOverrideMask, TemperatureOverrideMask, and CurrentOverride. Reports command values held by BPS; does not imply successful application or act as a per-request acknowledgement. Cyclic report every 1000 ms. */
 typedef struct {
     /** Mode; unit=none; physical=raw*1+0; raw=[0,1]. Mode */
     uint8_t mode;
@@ -954,6 +987,8 @@ typedef struct {
     uint32_t voltage_override_mask;
     /** TemperatureOverrideMask; unit=none; physical=raw*1+0; raw=[0,4294967295]. Bit 0 selects temperature 1; bit 31 selects temperature 32. Set bit requests the corresponding override. */
     uint32_t temperature_override_mask;
+    /** CurrentOverride; unit=none; physical=raw*1+0; raw=[0,1]. Requests a current override when enabled; BPS firmware defines handling. */
+    uint8_t current_override;
 } car_can_bps_command_echo_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -1289,6 +1324,46 @@ can_status_t car_can_bps_fault_temperature_snapshot_pack(can_frame_t* dst, const
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t car_can_bps_fault_temperature_snapshot_unpack(car_can_bps_fault_temperature_snapshot_t* dst, const can_frame_t* src);
+
+/** Named raw values for BalancingState; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_BPS_BALANCING_STATUS_BALANCING_STATE_OFF = 0,
+    CAR_CAN_BPS_BALANCING_STATUS_BALANCING_STATE_BALANCING = 1,
+    CAR_CAN_BPS_BALANCING_STATUS_BALANCING_STATE_PAUSED = 2,
+    CAR_CAN_BPS_BALANCING_STATUS_BALANCING_STATE_COMPLETE = 3,
+    CAR_CAN_BPS_BALANCING_STATUS_BALANCING_STATE_BLOCKED_OR_FAULT = 4,
+} car_can_bps_balancing_status_balancing_state_choice_t;
+/** Named raw values for BlockReason; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_BPS_BALANCING_STATUS_BLOCK_REASON_NONE = 0,
+    CAR_CAN_BPS_BALANCING_STATUS_BLOCK_REASON_CELL_TEMPERATURE = 1,
+    CAR_CAN_BPS_BALANCING_STATUS_BLOCK_REASON_CHIP_TEMPERATURE = 2,
+    CAR_CAN_BPS_BALANCING_STATUS_BLOCK_REASON_CELL_VOLTAGE = 3,
+    CAR_CAN_BPS_BALANCING_STATUS_BLOCK_REASON_VEHICLE_STATE = 4,
+    CAR_CAN_BPS_BALANCING_STATUS_BLOCK_REASON_COMMUNICATION = 5,
+    CAR_CAN_BPS_BALANCING_STATUS_BLOCK_REASON_BPS_FAULT = 6,
+    CAR_CAN_BPS_BALANCING_STATUS_BLOCK_REASON_OTHER = 7,
+} car_can_bps_balancing_status_block_reason_choice_t;
+/** BPS sends while at least one cell is actively balancing, immediately on start and every 1000 ms while active. Fully paused, complete or blocked sessions are not transmitted. */
+typedef struct {
+    /** FaultChipMask; unit=none; physical=raw*1+0; raw=[0,15]. Bit 0 through bit 3 represent BQ79616 chips 0 through 3 reporting balancing fault or abort. */
+    uint8_t fault_chip_mask;
+    /** BalancingState; unit=none; physical=raw*1+0; raw=[0,4]. */
+    uint8_t balancing_state;
+    /** SelectedCellMask; unit=none; physical=raw*1+0; raw=[0,4294967295]. Selected cell groups: bit 0 is cell 00 and bit 31 is cell 31. Selection does not imply active bleed. */
+    uint32_t selected_cell_mask;
+    /** PausedChipMask; unit=none; physical=raw*1+0; raw=[0,15]. Bit 0 through bit 3 represent BQ79616 chips 0 through 3 reporting a balancing pause. */
+    uint8_t paused_chip_mask;
+    /** BlockReason; unit=none; physical=raw*1+0; raw=[0,7]. Primary BPS-reported reason for a block or pause; additional simultaneous reasons may exist. */
+    uint8_t block_reason;
+} car_can_bps_balancing_status_t;
+
+/** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
+ * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
+can_status_t car_can_bps_balancing_status_pack(can_frame_t* dst, const car_can_bps_balancing_status_t* src);
+/** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
+ * Negative status preserves dst; unknown value-table entries remain numeric. */
+can_status_t car_can_bps_balancing_status_unpack(car_can_bps_balancing_status_t* dst, const can_frame_t* src);
 
 /** Named raw values for WarningBPSWatchdog; unknown values remain integers. */
 typedef enum {
@@ -2513,6 +2588,7 @@ typedef struct {
     car_can_bps_fault_snapshot_t bps_fault_snapshot;
     car_can_bps_fault_voltage_snapshot_t bps_fault_voltage_snapshot;
     car_can_bps_fault_temperature_snapshot_t bps_fault_temperature_snapshot;
+    car_can_bps_balancing_status_t bps_balancing_status;
 } car_can_bps_t;
 
 typedef struct {
@@ -2524,6 +2600,7 @@ typedef struct {
     car_can_pdu_command_t pdu_command;
     car_can_motor_controller_command_t motor_controller_command;
     car_can_sweep_mpp_ts_t sweep_mpp_ts;
+    car_can_bps_balancing_command_t bps_balancing_command;
 } car_can_external_t;
 
 typedef struct {
@@ -2570,6 +2647,7 @@ typedef struct {
         can_message_info_t bps_fault_snapshot;
         can_message_info_t bps_fault_voltage_snapshot;
         can_message_info_t bps_fault_temperature_snapshot;
+        can_message_info_t bps_balancing_status;
     } bps;
     struct {
         can_message_info_t dei_status;
@@ -2579,6 +2657,7 @@ typedef struct {
         can_message_info_t pdu_command;
         can_message_info_t motor_controller_command;
         can_message_info_t sweep_mpp_ts;
+        can_message_info_t bps_balancing_command;
     } external;
     struct {
         can_message_info_t lvc_status;

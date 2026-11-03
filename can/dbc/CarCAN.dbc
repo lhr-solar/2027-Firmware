@@ -41,6 +41,9 @@ VAL_TABLE_ WarningState 1 "Warning" 0 "NoWarning" ;
 VAL_TABLE_ DeviceStatus 2 "Waiting" 1 "Fault" 0 "OK" ;
 VAL_TABLE_ Permission 1 "Allowed" 0 "NotAllowed" ;
 VAL_TABLE_ Connection 1 "Connected" 0 "Disconnected" ;
+VAL_TABLE_ BalancingMode 2 "Manual" 1 "Automatic" 0 "Off" ;
+VAL_TABLE_ BalancingState 4 "BlockedOrFault" 3 "Complete" 2 "Paused" 1 "Balancing" 0 "Off" ;
+VAL_TABLE_ BalancingBlockReason 7 "Other" 6 "BPSFault" 5 "Communication" 4 "VehicleState" 3 "CellVoltage" 2 "ChipTemperature" 1 "CellTemperature" 0 "None" ;
 VAL_TABLE_ ServerConnection 1 "Connected" 0 "Disconnected/Retrying" ;
 VAL_TABLE_ Pressed 1 "Pressed" 0 "NotPressed" ;
 VAL_TABLE_ Validity 1 "Valid" 0 "Invalid" ;
@@ -70,6 +73,7 @@ BO_ 81 BPSCommand: 12 External
  SG_ MPPTChargeScheme : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ VoltageOverrideMask : 2|32@1+ (1,0) [0.0|4294967295.0] "" Vector__XXX
  SG_ TemperatureOverrideMask : 34|32@1+ (1,0) [0.0|4294967295.0] "" Vector__XXX
+ SG_ CurrentOverride : 66|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 82 PDUCommand: 1 External
  SG_ ChannelIndex : 0|4@1+ (1,0) [0|11] "" Vector__XXX
@@ -79,6 +83,10 @@ BO_ 83 MotorControllerCommand: 1 External
  SG_ CommandSource : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 84 SweepMPPTs: 0 External
+
+BO_ 85 BPSBalancingCommand: 5 External
+ SG_ BalancingMode : 0|2@1+ (1,0) [0|2] "" Vector__XXX
+ SG_ ManualCellMask : 2|32@1+ (1,0) [0|4294967295] "" Vector__XXX
 
 BO_ 96 BPSStatus: 16 BPS
  SG_ Status : 0|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
@@ -270,6 +278,7 @@ BO_ 116 BPSCommandEcho: 12 BPS
  SG_ MPPTChargeScheme : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ VoltageOverrideMask : 2|32@1+ (1,0) [0.0|4294967295.0] "" Vector__XXX
  SG_ TemperatureOverrideMask : 34|32@1+ (1,0) [0.0|4294967295.0] "" Vector__XXX
+ SG_ CurrentOverride : 66|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 117 BPSFaultSnapshot: 12 BPS
  SG_ FaultSummary : 0|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
@@ -366,6 +375,13 @@ BO_ 119 BPSFaultTemperatureSnapshot: 48 BPS
  SG_ CellTemperature29 : 351|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
  SG_ CellTemperature30 : 362|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
  SG_ CellTemperature31 : 373|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+
+BO_ 120 BPSBalancingStatus: 6 BPS
+ SG_ FaultChipMask : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ BalancingState : 4|3@1+ (1,0) [0|4] "" Vector__XXX
+ SG_ SelectedCellMask : 7|32@1+ (1,0) [0|4294967295] "" Vector__XXX
+ SG_ PausedChipMask : 39|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ BlockReason : 43|3@1+ (1,0) [0|7] "" Vector__XXX
 
 BO_ 121 MPPTInterfaceStatus: 3 MPPTInterface
  SG_ WarningBPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -590,6 +606,7 @@ BO_ 164 PDUOverCurrentSnapshot: 12 PDU
 
 
 CM_ BO_ 81 "2027 team-defined layout; physical values use the shared scaling conventions.";
+CM_ SG_ 81 CurrentOverride "Requests a current override when enabled; BPS firmware defines handling.";
 CM_ SG_ 81 TemperatureOverrideMask "Bit 0 selects temperature 1; bit 31 selects temperature 32. Set bit requests the corresponding override.";
 CM_ SG_ 81 VoltageOverrideMask "Bit 0 selects tap 1; bit 31 selects tap 32. Set bit requests the corresponding override.";
 CM_ SG_ 81 MPPTChargeScheme "MPPTChargeScheme";
@@ -600,6 +617,9 @@ CM_ SG_ 82 ChannelIndex "Zero-based channel index: 0 selects Channel0; 11 select
 CM_ BO_ 83 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 83 CommandSource "CommandSource";
 CM_ BO_ 84 "Defined empty trigger: request a sweep from all MPPTs through MPPTInterface. Zero-byte CAN-FD payload.";
+CM_ BO_ 85 "Triggered balancing request. BPS evaluates safety conditions independently; manual selection does not bypass protection.";
+CM_ SG_ 85 ManualCellMask "Manual mode only: bit 0 selects cell 00; bit 31 selects cell 31.";
+CM_ SG_ 85 BalancingMode "Off, automatic selection by BPS, or manual selection by mask.";
 CM_ BO_ 96 "BPS faults, warnings, state, contactors, control permissions, MPPT limits, and fan tachometers. Pack measurements are in BPSPackData (0x070). CAN-FD; no transmit period assigned yet.";
 CM_ SG_ 96 BPSFanTach "BPSFanTach";
 CM_ SG_ 96 BatteryFanTach2 "BatteryFan2Tach";
@@ -777,7 +797,8 @@ CM_ SG_ 114 CellTemperature01 "CellTemperature01";
 CM_ SG_ 114 CellTemperature00 "CellTemperature00";
 CM_ SG_ 114 MaxBatteryTemperatureIndex "Zero-based cell index (0-31) corresponding to MaxBatteryTemperature.";
 CM_ BO_ 115 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. Four SMB status bitmaps: widths and bit definitions pending.";
-CM_ BO_ 116 "Cyclic BPS report mirroring the BPSCommand payload: Mode, MPPTChargeScheme, VoltageOverrideMask, and TemperatureOverrideMask. Reports command values held by BPS; does not imply successful application or act as a per-request acknowledgement. Cyclic report every 1000 ms.";
+CM_ BO_ 116 "Cyclic BPS report mirroring the BPSCommand payload: Mode, MPPTChargeScheme, VoltageOverrideMask, TemperatureOverrideMask, and CurrentOverride. Reports command values held by BPS; does not imply successful application or act as a per-request acknowledgement. Cyclic report every 1000 ms.";
+CM_ SG_ 116 CurrentOverride "Requests a current override when enabled; BPS firmware defines handling.";
 CM_ SG_ 116 TemperatureOverrideMask "Bit 0 selects temperature 1; bit 31 selects temperature 32. Set bit requests the corresponding override.";
 CM_ SG_ 116 VoltageOverrideMask "Bit 0 selects tap 1; bit 31 selects tap 32. Set bit requests the corresponding override.";
 CM_ SG_ 116 MPPTChargeScheme "MPPTChargeScheme";
@@ -875,6 +896,11 @@ CM_ SG_ 119 CellTemperature02 "CellTemperature02";
 CM_ SG_ 119 CellTemperature01 "CellTemperature01";
 CM_ SG_ 119 CellTemperature00 "CellTemperature00";
 CM_ SG_ 119 SampleValidMask "Bit 0 corresponds to cell 00; bit 31 to cell 31. Clear bits mean unavailable readings and their encoded values must be ignored.";
+CM_ BO_ 120 "BPS sends while at least one cell is actively balancing, immediately on start and every 1000 ms while active. Fully paused, complete or blocked sessions are not transmitted.";
+CM_ SG_ 120 BlockReason "Primary BPS-reported reason for a block or pause; additional simultaneous reasons may exist.";
+CM_ SG_ 120 PausedChipMask "Bit 0 through bit 3 represent BQ79616 chips 0 through 3 reporting a balancing pause.";
+CM_ SG_ 120 SelectedCellMask "Selected cell groups: bit 0 is cell 00 and bit 31 is cell 31. Selection does not imply active bleed.";
+CM_ SG_ 120 FaultChipMask "Bit 0 through bit 3 represent BQ79616 chips 0 through 3 reporting balancing fault or abort.";
 CM_ BO_ 121 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 121 FanTach "FanTach";
 CM_ SG_ 121 SweepingActive "SweepingActive";
@@ -1115,6 +1141,7 @@ BA_ "ProtocolSource" BO_ 81 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 81 14;
 BA_ "GenMsgSendType" BO_ 81 1;
 BA_ "CANFD_BRS" BO_ 81 0;
+BA_ "ValueTable" SG_ 81 CurrentOverride "EnableDisable";
 BA_ "ValueTable" SG_ 81 MPPTChargeScheme "NormalAdvanced";
 BA_ "ValueTable" SG_ 81 Mode "NormalAdvanced";
 BA_ "LayoutPending" BO_ 82 0;
@@ -1134,6 +1161,12 @@ BA_ "ProtocolSource" BO_ 84 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 84 14;
 BA_ "GenMsgSendType" BO_ 84 1;
 BA_ "CANFD_BRS" BO_ 84 0;
+BA_ "LayoutPending" BO_ 85 0;
+BA_ "ProtocolSource" BO_ 85 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 85 14;
+BA_ "GenMsgSendType" BO_ 85 1;
+BA_ "CANFD_BRS" BO_ 85 0;
+BA_ "ValueTable" SG_ 85 BalancingMode "BalancingMode";
 BA_ "LayoutPending" BO_ 96 0;
 BA_ "ProtocolSource" BO_ 96 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 96 14;
@@ -1271,6 +1304,7 @@ BA_ "VFrameFormat" BO_ 116 14;
 BA_ "GenMsgSendType" BO_ 116 0;
 BA_ "GenMsgCycleTime" BO_ 116 1000;
 BA_ "CANFD_BRS" BO_ 116 0;
+BA_ "ValueTable" SG_ 116 CurrentOverride "EnableDisable";
 BA_ "ValueTable" SG_ 116 MPPTChargeScheme "NormalAdvanced";
 BA_ "ValueTable" SG_ 116 Mode "NormalAdvanced";
 BA_ "LayoutPending" BO_ 117 0;
@@ -1316,6 +1350,15 @@ BA_ "GenMsgSendType" BO_ 119 1;
 BA_ "GenMsgCycleTime" BO_ 119 1000;
 BA_ "CANFD_BRS" BO_ 119 0;
 BA_ "GenMsgSendCondition" BO_ 119 "AnyBPSFaultActive && FaultSnapshotValid";
+BA_ "LayoutPending" BO_ 120 0;
+BA_ "ProtocolSource" BO_ 120 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 120 14;
+BA_ "GenMsgSendType" BO_ 120 1;
+BA_ "GenMsgCycleTime" BO_ 120 1000;
+BA_ "CANFD_BRS" BO_ 120 0;
+BA_ "GenMsgSendCondition" BO_ 120 "BalancingActive";
+BA_ "ValueTable" SG_ 120 BlockReason "BalancingBlockReason";
+BA_ "ValueTable" SG_ 120 BalancingState "BalancingState";
 BA_ "LayoutPending" BO_ 121 0;
 BA_ "ProtocolSource" BO_ 121 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 121 14;
@@ -1528,10 +1571,12 @@ BA_ "GenMsgSendCondition" BO_ 164 "AnyOverCurrentOrI2TTripLatched";
 BA_ "ValueTable" SG_ 164 TripCurrentSaturated "OnOff";
 BA_ "ValueTable" SG_ 164 FaultI2T "FaultState";
 BA_ "ValueTable" SG_ 164 FaultOverCurrent "FaultState";
+VAL_ 81 CurrentOverride 0 "Disabled" 1 "Enabled" ;
 VAL_ 81 MPPTChargeScheme 0 "Normal" 1 "Advanced" ;
 VAL_ 81 Mode 0 "Normal" 1 "Advanced" ;
 VAL_ 82 Enable 0 "Disabled" 1 "Enabled" ;
 VAL_ 83 CommandSource 0 "VCU" 1 "External" ;
+VAL_ 85 BalancingMode 0 "Off" 1 "Automatic" 2 "Manual" ;
 VAL_ 96 BalancingActive 0 "Off" 1 "On" ;
 VAL_ 96 MotorPrechargeRelay 0 "Off" 1 "On" ;
 VAL_ 96 MainPrechargeRelay 0 "Off" 1 "On" ;
@@ -1613,6 +1658,7 @@ VAL_ 99 FaultPedals 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultBPS 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultMotor 0 "OK" 1 "Fault" ;
 VAL_ 99 Status 0 "OK" 1 "Fault" ;
+VAL_ 116 CurrentOverride 0 "Disabled" 1 "Enabled" ;
 VAL_ 116 MPPTChargeScheme 0 "Normal" 1 "Advanced" ;
 VAL_ 116 Mode 0 "Normal" 1 "Advanced" ;
 VAL_ 117 CurrentValid 1 "Valid" 0 "Invalid" ;
@@ -1637,6 +1683,8 @@ VAL_ 117 FaultUnderVoltage 0 "OK" 1 "Fault" ;
 VAL_ 117 FaultOverVoltage 0 "OK" 1 "Fault" ;
 VAL_ 117 FaultOverTemperature 0 "OK" 1 "Fault" ;
 VAL_ 117 FaultSummary 0 "OK" 1 "SetpointFault" 2 "EmergencyStop" 3 "ContactorRelayFault" 4 "PrechargeFault" 5 "SMBFault" ;
+VAL_ 120 BlockReason 0 "None" 1 "CellTemperature" 2 "ChipTemperature" 3 "CellVoltage" 4 "VehicleState" 5 "Communication" 6 "BPSFault" 7 "Other" ;
+VAL_ 120 BalancingState 0 "Off" 1 "Balancing" 2 "Paused" 3 "Complete" 4 "BlockedOrFault" ;
 VAL_ 121 SweepingActive 0 "Off" 1 "On" ;
 VAL_ 121 MPPTSetMode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;
 VAL_ 121 WarningFan 0 "NoWarning" 1 "Warning" ;

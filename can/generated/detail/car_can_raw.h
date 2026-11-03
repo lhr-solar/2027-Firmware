@@ -49,6 +49,7 @@ extern "C" {
 #define CAR_CAN_RAW_PDU_COMMAND_FRAME_ID (0x52u)
 #define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_FRAME_ID (0x53u)
 #define CAR_CAN_RAW_SWEEP_MPP_TS_FRAME_ID (0x54u)
+#define CAR_CAN_RAW_BPS_BALANCING_COMMAND_FRAME_ID (0x55u)
 #define CAR_CAN_RAW_BPS_STATUS_FRAME_ID (0x60u)
 #define CAR_CAN_RAW_PEDALS_STATUS_FRAME_ID (0x61u)
 #define CAR_CAN_RAW_DEI_STATUS_FRAME_ID (0x62u)
@@ -61,6 +62,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_FRAME_ID (0x75u)
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_FRAME_ID (0x76u)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_FRAME_ID (0x77u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_FRAME_ID (0x78u)
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_FRAME_ID (0x79u)
 #define CAR_CAN_RAW_MIKA_STATUS_FRAME_ID (0x82u)
 #define CAR_CAN_RAW_LVC_STATUS_FRAME_ID (0x90u)
@@ -79,6 +81,7 @@ extern "C" {
 #define CAR_CAN_RAW_PDU_COMMAND_LENGTH (1u)
 #define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_LENGTH (1u)
 #define CAR_CAN_RAW_SWEEP_MPP_TS_LENGTH (0u)
+#define CAR_CAN_RAW_BPS_BALANCING_COMMAND_LENGTH (5u)
 #define CAR_CAN_RAW_BPS_STATUS_LENGTH (16u)
 #define CAR_CAN_RAW_PEDALS_STATUS_LENGTH (6u)
 #define CAR_CAN_RAW_DEI_STATUS_LENGTH (2u)
@@ -91,6 +94,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_LENGTH (12u)
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_LENGTH (64u)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_LENGTH (48u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_LENGTH (6u)
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_LENGTH (3u)
 #define CAR_CAN_RAW_MIKA_STATUS_LENGTH (5u)
 #define CAR_CAN_RAW_LVC_STATUS_LENGTH (2u)
@@ -109,6 +113,7 @@ extern "C" {
 #define CAR_CAN_RAW_PDU_COMMAND_IS_EXTENDED (0)
 #define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_IS_EXTENDED (0)
 #define CAR_CAN_RAW_SWEEP_MPP_TS_IS_EXTENDED (0)
+#define CAR_CAN_RAW_BPS_BALANCING_COMMAND_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_PEDALS_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_DEI_STATUS_IS_EXTENDED (0)
@@ -121,6 +126,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_IS_EXTENDED (0)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_MIKA_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_LVC_STATUS_IS_EXTENDED (0)
@@ -147,6 +153,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_CYCLE_TIME_MS (1000u)
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_CYCLE_TIME_MS (1000u)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_CYCLE_TIME_MS (1000u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_CYCLE_TIME_MS (1000u)
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_CYCLE_TIME_MS (500u)
 #define CAR_CAN_RAW_MIKA_STATUS_CYCLE_TIME_MS (500u)
 #define CAR_CAN_RAW_LVC_STATUS_CYCLE_TIME_MS (100u)
@@ -167,11 +174,18 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_COMMAND_MPPT_CHARGE_SCHEME_NORMAL_CHOICE (0u)
 #define CAR_CAN_RAW_BPS_COMMAND_MPPT_CHARGE_SCHEME_ADVANCED_CHOICE (1u)
 
+#define CAR_CAN_RAW_BPS_COMMAND_CURRENT_OVERRIDE_DISABLED_CHOICE (0u)
+#define CAR_CAN_RAW_BPS_COMMAND_CURRENT_OVERRIDE_ENABLED_CHOICE (1u)
+
 #define CAR_CAN_RAW_PDU_COMMAND_ENABLE_DISABLED_CHOICE (0u)
 #define CAR_CAN_RAW_PDU_COMMAND_ENABLE_ENABLED_CHOICE (1u)
 
 #define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_COMMAND_SOURCE_VCU_CHOICE (0u)
 #define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_COMMAND_SOURCE_EXTERNAL_CHOICE (1u)
+
+#define CAR_CAN_RAW_BPS_BALANCING_COMMAND_BALANCING_MODE_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_BPS_BALANCING_COMMAND_BALANCING_MODE_AUTOMATIC_CHOICE (1u)
+#define CAR_CAN_RAW_BPS_BALANCING_COMMAND_BALANCING_MODE_MANUAL_CHOICE (2u)
 
 #define CAR_CAN_RAW_BPS_STATUS_STATUS_OK_CHOICE (0u)
 #define CAR_CAN_RAW_BPS_STATUS_STATUS_FAULT_CHOICE (1u)
@@ -438,6 +452,9 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_COMMAND_ECHO_MPPT_CHARGE_SCHEME_NORMAL_CHOICE (0u)
 #define CAR_CAN_RAW_BPS_COMMAND_ECHO_MPPT_CHARGE_SCHEME_ADVANCED_CHOICE (1u)
 
+#define CAR_CAN_RAW_BPS_COMMAND_ECHO_CURRENT_OVERRIDE_DISABLED_CHOICE (0u)
+#define CAR_CAN_RAW_BPS_COMMAND_ECHO_CURRENT_OVERRIDE_ENABLED_CHOICE (1u)
+
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_FAULT_SUMMARY_OK_CHOICE (0u)
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_FAULT_SUMMARY_SETPOINT_FAULT_CHOICE (1u)
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_FAULT_SUMMARY_EMERGENCY_STOP_CHOICE (2u)
@@ -507,6 +524,21 @@ extern "C" {
 
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_CURRENT_VALID_INVALID_CHOICE (0u)
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_CURRENT_VALID_VALID_CHOICE (1u)
+
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BALANCING_STATE_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BALANCING_STATE_BALANCING_CHOICE (1u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BALANCING_STATE_PAUSED_CHOICE (2u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BALANCING_STATE_COMPLETE_CHOICE (3u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BALANCING_STATE_BLOCKED_OR_FAULT_CHOICE (4u)
+
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_NONE_CHOICE (0u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_CELL_TEMPERATURE_CHOICE (1u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_CHIP_TEMPERATURE_CHOICE (2u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_CELL_VOLTAGE_CHOICE (3u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_VEHICLE_STATE_CHOICE (4u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_COMMUNICATION_CHOICE (5u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_BPS_FAULT_CHOICE (6u)
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_OTHER_CHOICE (7u)
 
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_BPS_WATCHDOG_NO_WARNING_CHOICE (0u)
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_BPS_WATCHDOG_WARNING_CHOICE (1u)
@@ -928,6 +960,7 @@ extern "C" {
 #define CAR_CAN_RAW_PDU_COMMAND_NAME "PDUCommand"
 #define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_NAME "MotorControllerCommand"
 #define CAR_CAN_RAW_SWEEP_MPP_TS_NAME "SweepMPPTs"
+#define CAR_CAN_RAW_BPS_BALANCING_COMMAND_NAME "BPSBalancingCommand"
 #define CAR_CAN_RAW_BPS_STATUS_NAME "BPSStatus"
 #define CAR_CAN_RAW_PEDALS_STATUS_NAME "PedalsStatus"
 #define CAR_CAN_RAW_DEI_STATUS_NAME "DEIStatus"
@@ -940,6 +973,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_NAME "BPSFaultSnapshot"
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_NAME "BPSFaultVoltageSnapshot"
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_NAME "BPSFaultTemperatureSnapshot"
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_NAME "BPSBalancingStatus"
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_NAME "MPPTInterfaceStatus"
 #define CAR_CAN_RAW_MIKA_STATUS_NAME "MIKAStatus"
 #define CAR_CAN_RAW_LVC_STATUS_NAME "LVCStatus"
@@ -958,9 +992,12 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_COMMAND_MPPT_CHARGE_SCHEME_NAME "MPPTChargeScheme"
 #define CAR_CAN_RAW_BPS_COMMAND_VOLTAGE_OVERRIDE_MASK_NAME "VoltageOverrideMask"
 #define CAR_CAN_RAW_BPS_COMMAND_TEMPERATURE_OVERRIDE_MASK_NAME "TemperatureOverrideMask"
+#define CAR_CAN_RAW_BPS_COMMAND_CURRENT_OVERRIDE_NAME "CurrentOverride"
 #define CAR_CAN_RAW_PDU_COMMAND_CHANNEL_INDEX_NAME "ChannelIndex"
 #define CAR_CAN_RAW_PDU_COMMAND_ENABLE_NAME "Enable"
 #define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_COMMAND_SOURCE_NAME "CommandSource"
+#define CAR_CAN_RAW_BPS_BALANCING_COMMAND_BALANCING_MODE_NAME "BalancingMode"
+#define CAR_CAN_RAW_BPS_BALANCING_COMMAND_MANUAL_CELL_MASK_NAME "ManualCellMask"
 #define CAR_CAN_RAW_BPS_STATUS_STATUS_NAME "Status"
 #define CAR_CAN_RAW_BPS_STATUS_FAULT_SUMMARY_NAME "FaultSummary"
 #define CAR_CAN_RAW_BPS_STATUS_FAULT_OVER_TEMPERATURE_NAME "FaultOverTemperature"
@@ -1134,6 +1171,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_COMMAND_ECHO_MPPT_CHARGE_SCHEME_NAME "MPPTChargeScheme"
 #define CAR_CAN_RAW_BPS_COMMAND_ECHO_VOLTAGE_OVERRIDE_MASK_NAME "VoltageOverrideMask"
 #define CAR_CAN_RAW_BPS_COMMAND_ECHO_TEMPERATURE_OVERRIDE_MASK_NAME "TemperatureOverrideMask"
+#define CAR_CAN_RAW_BPS_COMMAND_ECHO_CURRENT_OVERRIDE_NAME "CurrentOverride"
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_FAULT_SUMMARY_NAME "FaultSummary"
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_FAULT_OVER_TEMPERATURE_NAME "FaultOverTemperature"
 #define CAR_CAN_RAW_BPS_FAULT_SNAPSHOT_FAULT_OVER_VOLTAGE_NAME "FaultOverVoltage"
@@ -1224,6 +1262,11 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_CELL_TEMPERATURE29_NAME "CellTemperature29"
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_CELL_TEMPERATURE30_NAME "CellTemperature30"
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_CELL_TEMPERATURE31_NAME "CellTemperature31"
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_FAULT_CHIP_MASK_NAME "FaultChipMask"
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BALANCING_STATE_NAME "BalancingState"
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_SELECTED_CELL_MASK_NAME "SelectedCellMask"
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_PAUSED_CHIP_MASK_NAME "PausedChipMask"
+#define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_NAME "BlockReason"
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_BPS_WATCHDOG_NAME "WarningBPSWatchdog"
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_MPPTA_WATCHDOG_NAME "WarningMPPTAWatchdog"
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_MPPTB_WATCHDOG_NAME "WarningMPPTBWatchdog"
@@ -1463,6 +1506,15 @@ struct car_can_raw_bps_command_t {
      * Offset: 0
      */
     uint32_t temperature_override_mask;
+
+    /**
+     * Requests a current override when enabled; BPS firmware defines handling.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t current_override;
 };
 
 /**
@@ -1522,6 +1574,33 @@ struct car_can_raw_sweep_mpp_ts_t {
      * Dummy signal in empty message.
      */
     uint8_t dummy;
+};
+
+/**
+ * Signals in message BPSBalancingCommand.
+ *
+ * Triggered balancing request. BPS evaluates safety conditions independently; manual selection does not bypass protection.
+ *
+ * All signal values are as on the CAN bus.
+ */
+struct car_can_raw_bps_balancing_command_t {
+    /**
+     * Off, automatic selection by BPS, or manual selection by mask.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t balancing_mode;
+
+    /**
+     * Manual mode only: bit 0 selects cell 00; bit 31 selects cell 31.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint32_t manual_cell_mask;
 };
 
 /**
@@ -3125,7 +3204,7 @@ struct car_can_raw_smd_status_t {
 /**
  * Signals in message BPSCommandEcho.
  *
- * Cyclic BPS report mirroring the BPSCommand payload: Mode, MPPTChargeScheme, VoltageOverrideMask, and TemperatureOverrideMask. Reports command values held by BPS; does not imply successful application or act as a per-request acknowledgement. Cyclic report every 1000 ms.
+ * Cyclic BPS report mirroring the BPSCommand payload: Mode, MPPTChargeScheme, VoltageOverrideMask, TemperatureOverrideMask, and CurrentOverride. Reports command values held by BPS; does not imply successful application or act as a per-request acknowledgement. Cyclic report every 1000 ms.
  *
  * All signal values are as on the CAN bus.
  */
@@ -3165,6 +3244,15 @@ struct car_can_raw_bps_command_echo_t {
      * Offset: 0
      */
     uint32_t temperature_override_mask;
+
+    /**
+     * Requests a current override when enabled; BPS firmware defines handling.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t current_override;
 };
 
 /**
@@ -4002,6 +4090,58 @@ struct car_can_raw_bps_fault_temperature_snapshot_t {
      * Offset: 0
      */
     uint16_t cell_temperature31;
+};
+
+/**
+ * Signals in message BPSBalancingStatus.
+ *
+ * BPS sends while at least one cell is actively balancing, immediately on start and every 1000 ms while active. Fully paused, complete or blocked sessions are not transmitted.
+ *
+ * All signal values are as on the CAN bus.
+ */
+struct car_can_raw_bps_balancing_status_t {
+    /**
+     * Bit 0 through bit 3 represent BQ79616 chips 0 through 3 reporting balancing fault or abort.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t fault_chip_mask;
+
+    /**
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t balancing_state;
+
+    /**
+     * Selected cell groups: bit 0 is cell 00 and bit 31 is cell 31. Selection does not imply active bleed.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint32_t selected_cell_mask;
+
+    /**
+     * Bit 0 through bit 3 represent BQ79616 chips 0 through 3 reporting a balancing pause.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t paused_chip_mask;
+
+    /**
+     * Primary BPS-reported reason for a block or pause; additional simultaneous reasons may exist.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t block_reason;
 };
 
 /**
@@ -5941,6 +6081,15 @@ bool car_can_raw_bps_command_voltage_override_mask_is_in_range(uint32_t value);
 bool car_can_raw_bps_command_temperature_override_mask_is_in_range(uint32_t value);
 
 /**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_bps_command_current_override_is_in_range(uint8_t value);
+
+/**
  * Pack message PDUCommand.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -6077,6 +6226,61 @@ int car_can_raw_sweep_mpp_ts_unpack(
  * @return zero(0) on success or (-1) in case of nullptr argument.
  */
 int car_can_raw_sweep_mpp_ts_init(struct car_can_raw_sweep_mpp_ts_t *msg_p);
+
+/**
+ * Pack message BPSBalancingCommand.
+ *
+ * @param[out] dst_p Buffer to pack the message into.
+ * @param[in] src_p Data to pack.
+ * @param[in] size Size of dst_p.
+ *
+ * @return Size of packed data, or negative error code.
+ */
+int car_can_raw_bps_balancing_command_pack(
+    uint8_t *dst_p,
+    const struct car_can_raw_bps_balancing_command_t *src_p,
+    size_t size);
+
+/**
+ * Unpack message BPSBalancingCommand.
+ *
+ * @param[out] dst_p Object to unpack the message into.
+ * @param[in] src_p Message to unpack.
+ * @param[in] size Size of src_p.
+ *
+ * @return zero(0) or negative error code.
+ */
+int car_can_raw_bps_balancing_command_unpack(
+    struct car_can_raw_bps_balancing_command_t *dst_p,
+    const uint8_t *src_p,
+    size_t size);
+
+/**
+ * Init message fields to default values from BPSBalancingCommand.
+ *
+ * @param[in] msg_p Message to init.
+ *
+ * @return zero(0) on success or (-1) in case of nullptr argument.
+ */
+int car_can_raw_bps_balancing_command_init(struct car_can_raw_bps_balancing_command_t *msg_p);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_bps_balancing_command_balancing_mode_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_bps_balancing_command_manual_cell_mask_is_in_range(uint32_t value);
 
 /**
  * Pack message BPSStatus.
@@ -7969,6 +8173,15 @@ bool car_can_raw_bps_command_echo_voltage_override_mask_is_in_range(uint32_t val
 bool car_can_raw_bps_command_echo_temperature_override_mask_is_in_range(uint32_t value);
 
 /**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_bps_command_echo_current_override_is_in_range(uint8_t value);
+
+/**
  * Pack message BPSFaultSnapshot.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -8888,6 +9101,88 @@ bool car_can_raw_bps_fault_temperature_snapshot_cell_temperature30_is_in_range(u
  * @return true if in range, false otherwise.
  */
 bool car_can_raw_bps_fault_temperature_snapshot_cell_temperature31_is_in_range(uint16_t value);
+
+/**
+ * Pack message BPSBalancingStatus.
+ *
+ * @param[out] dst_p Buffer to pack the message into.
+ * @param[in] src_p Data to pack.
+ * @param[in] size Size of dst_p.
+ *
+ * @return Size of packed data, or negative error code.
+ */
+int car_can_raw_bps_balancing_status_pack(
+    uint8_t *dst_p,
+    const struct car_can_raw_bps_balancing_status_t *src_p,
+    size_t size);
+
+/**
+ * Unpack message BPSBalancingStatus.
+ *
+ * @param[out] dst_p Object to unpack the message into.
+ * @param[in] src_p Message to unpack.
+ * @param[in] size Size of src_p.
+ *
+ * @return zero(0) or negative error code.
+ */
+int car_can_raw_bps_balancing_status_unpack(
+    struct car_can_raw_bps_balancing_status_t *dst_p,
+    const uint8_t *src_p,
+    size_t size);
+
+/**
+ * Init message fields to default values from BPSBalancingStatus.
+ *
+ * @param[in] msg_p Message to init.
+ *
+ * @return zero(0) on success or (-1) in case of nullptr argument.
+ */
+int car_can_raw_bps_balancing_status_init(struct car_can_raw_bps_balancing_status_t *msg_p);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_bps_balancing_status_fault_chip_mask_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_bps_balancing_status_balancing_state_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_bps_balancing_status_selected_cell_mask_is_in_range(uint32_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_bps_balancing_status_paused_chip_mask_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_bps_balancing_status_block_reason_is_in_range(uint8_t value);
 
 /**
  * Pack message MPPTInterfaceStatus.

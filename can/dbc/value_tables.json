@@ -155,5 +155,27 @@
   "ServerConnection": {
     "0": "Disconnected/Retrying",
     "1": "Connected"
+  },
+  "BalancingMode": {
+    "0": "Off",
+    "1": "Automatic",
+    "2": "Manual"
+  },
+  "BalancingState": {
+    "0": "Off",
+    "1": "Balancing",
+    "2": "Paused",
+    "3": "Complete",
+    "4": "BlockedOrFault"
+  },
+  "BalancingBlockReason": {
+    "0": "None",
+    "1": "CellTemperature",
+    "2": "ChipTemperature",
+    "3": "CellVoltage",
+    "4": "VehicleState",
+    "5": "Communication",
+    "6": "BPSFault",
+    "7": "Other"
   }
 }

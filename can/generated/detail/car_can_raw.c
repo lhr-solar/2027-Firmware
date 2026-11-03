@@ -152,6 +152,7 @@ int car_can_raw_bps_command_pack(
     dst_p[6] |= pack_right_shift_u32(src_p->temperature_override_mask, 14u, 0xffu);
     dst_p[7] |= pack_right_shift_u32(src_p->temperature_override_mask, 22u, 0xffu);
     dst_p[8] |= pack_right_shift_u32(src_p->temperature_override_mask, 30u, 0x03u);
+    dst_p[8] |= pack_left_shift_u8(src_p->current_override, 2u, 0x04u);
 
     return (12);
 }
@@ -177,6 +178,7 @@ int car_can_raw_bps_command_unpack(
     dst_p->temperature_override_mask |= unpack_left_shift_u32(src_p[6], 14u, 0xffu);
     dst_p->temperature_override_mask |= unpack_left_shift_u32(src_p[7], 22u, 0xffu);
     dst_p->temperature_override_mask |= unpack_left_shift_u32(src_p[8], 30u, 0x03u);
+    dst_p->current_override = unpack_right_shift_u8(src_p[8], 2u, 0x04u);
 
     return (0);
 }
@@ -212,6 +214,11 @@ bool car_can_raw_bps_command_temperature_override_mask_is_in_range(uint32_t valu
     (void)value;
 
     return (true);
+}
+
+bool car_can_raw_bps_command_current_override_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
 }
 
 int car_can_raw_pdu_command_pack(
@@ -331,6 +338,67 @@ int car_can_raw_sweep_mpp_ts_unpack(
     (void)size;
 
     return (0);
+}
+
+int car_can_raw_bps_balancing_command_pack(
+    uint8_t *dst_p,
+    const struct car_can_raw_bps_balancing_command_t *src_p,
+    size_t size)
+{
+    if (size < 5u) {
+        return (-EINVAL);
+    }
+
+    memset(&dst_p[0], 0, 5);
+
+    dst_p[0] |= pack_left_shift_u8(src_p->balancing_mode, 0u, 0x03u);
+    dst_p[0] |= pack_left_shift_u32(src_p->manual_cell_mask, 2u, 0xfcu);
+    dst_p[1] |= pack_right_shift_u32(src_p->manual_cell_mask, 6u, 0xffu);
+    dst_p[2] |= pack_right_shift_u32(src_p->manual_cell_mask, 14u, 0xffu);
+    dst_p[3] |= pack_right_shift_u32(src_p->manual_cell_mask, 22u, 0xffu);
+    dst_p[4] |= pack_right_shift_u32(src_p->manual_cell_mask, 30u, 0x03u);
+
+    return (5);
+}
+
+int car_can_raw_bps_balancing_command_unpack(
+    struct car_can_raw_bps_balancing_command_t *dst_p,
+    const uint8_t *src_p,
+    size_t size)
+{
+    if (size < 5u) {
+        return (-EINVAL);
+    }
+
+    dst_p->balancing_mode = unpack_right_shift_u8(src_p[0], 0u, 0x03u);
+    dst_p->manual_cell_mask = unpack_right_shift_u32(src_p[0], 2u, 0xfcu);
+    dst_p->manual_cell_mask |= unpack_left_shift_u32(src_p[1], 6u, 0xffu);
+    dst_p->manual_cell_mask |= unpack_left_shift_u32(src_p[2], 14u, 0xffu);
+    dst_p->manual_cell_mask |= unpack_left_shift_u32(src_p[3], 22u, 0xffu);
+    dst_p->manual_cell_mask |= unpack_left_shift_u32(src_p[4], 30u, 0x03u);
+
+    return (0);
+}
+
+int car_can_raw_bps_balancing_command_init(struct car_can_raw_bps_balancing_command_t *msg_p)
+{
+    if (msg_p == NULL) return -1;
+
+    memset(msg_p, 0, sizeof(struct car_can_raw_bps_balancing_command_t));
+
+    return 0;
+}
+
+bool car_can_raw_bps_balancing_command_balancing_mode_is_in_range(uint8_t value)
+{
+    return (value <= 3u);
+}
+
+bool car_can_raw_bps_balancing_command_manual_cell_mask_is_in_range(uint32_t value)
+{
+    (void)value;
+
+    return (true);
 }
 
 int car_can_raw_bps_status_pack(
@@ -2054,6 +2122,7 @@ int car_can_raw_bps_command_echo_pack(
     dst_p[6] |= pack_right_shift_u32(src_p->temperature_override_mask, 14u, 0xffu);
     dst_p[7] |= pack_right_shift_u32(src_p->temperature_override_mask, 22u, 0xffu);
     dst_p[8] |= pack_right_shift_u32(src_p->temperature_override_mask, 30u, 0x03u);
+    dst_p[8] |= pack_left_shift_u8(src_p->current_override, 2u, 0x04u);
 
     return (12);
 }
@@ -2079,6 +2148,7 @@ int car_can_raw_bps_command_echo_unpack(
     dst_p->temperature_override_mask |= unpack_left_shift_u32(src_p[6], 14u, 0xffu);
     dst_p->temperature_override_mask |= unpack_left_shift_u32(src_p[7], 22u, 0xffu);
     dst_p->temperature_override_mask |= unpack_left_shift_u32(src_p[8], 30u, 0x03u);
+    dst_p->current_override = unpack_right_shift_u8(src_p[8], 2u, 0x04u);
 
     return (0);
 }
@@ -2114,6 +2184,11 @@ bool car_can_raw_bps_command_echo_temperature_override_mask_is_in_range(uint32_t
     (void)value;
 
     return (true);
+}
+
+bool car_can_raw_bps_command_echo_current_override_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
 }
 
 int car_can_raw_bps_fault_snapshot_pack(
@@ -3025,6 +3100,90 @@ bool car_can_raw_bps_fault_temperature_snapshot_cell_temperature30_is_in_range(u
 bool car_can_raw_bps_fault_temperature_snapshot_cell_temperature31_is_in_range(uint16_t value)
 {
     return (value <= 2047u);
+}
+
+int car_can_raw_bps_balancing_status_pack(
+    uint8_t *dst_p,
+    const struct car_can_raw_bps_balancing_status_t *src_p,
+    size_t size)
+{
+    if (size < 6u) {
+        return (-EINVAL);
+    }
+
+    memset(&dst_p[0], 0, 6);
+
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_chip_mask, 0u, 0x0fu);
+    dst_p[0] |= pack_left_shift_u8(src_p->balancing_state, 4u, 0x70u);
+    dst_p[0] |= pack_left_shift_u32(src_p->selected_cell_mask, 7u, 0x80u);
+    dst_p[1] |= pack_right_shift_u32(src_p->selected_cell_mask, 1u, 0xffu);
+    dst_p[2] |= pack_right_shift_u32(src_p->selected_cell_mask, 9u, 0xffu);
+    dst_p[3] |= pack_right_shift_u32(src_p->selected_cell_mask, 17u, 0xffu);
+    dst_p[4] |= pack_right_shift_u32(src_p->selected_cell_mask, 25u, 0x7fu);
+    dst_p[4] |= pack_left_shift_u8(src_p->paused_chip_mask, 7u, 0x80u);
+    dst_p[5] |= pack_right_shift_u8(src_p->paused_chip_mask, 1u, 0x07u);
+    dst_p[5] |= pack_left_shift_u8(src_p->block_reason, 3u, 0x38u);
+
+    return (6);
+}
+
+int car_can_raw_bps_balancing_status_unpack(
+    struct car_can_raw_bps_balancing_status_t *dst_p,
+    const uint8_t *src_p,
+    size_t size)
+{
+    if (size < 6u) {
+        return (-EINVAL);
+    }
+
+    dst_p->fault_chip_mask = unpack_right_shift_u8(src_p[0], 0u, 0x0fu);
+    dst_p->balancing_state = unpack_right_shift_u8(src_p[0], 4u, 0x70u);
+    dst_p->selected_cell_mask = unpack_right_shift_u32(src_p[0], 7u, 0x80u);
+    dst_p->selected_cell_mask |= unpack_left_shift_u32(src_p[1], 1u, 0xffu);
+    dst_p->selected_cell_mask |= unpack_left_shift_u32(src_p[2], 9u, 0xffu);
+    dst_p->selected_cell_mask |= unpack_left_shift_u32(src_p[3], 17u, 0xffu);
+    dst_p->selected_cell_mask |= unpack_left_shift_u32(src_p[4], 25u, 0x7fu);
+    dst_p->paused_chip_mask = unpack_right_shift_u8(src_p[4], 7u, 0x80u);
+    dst_p->paused_chip_mask |= unpack_left_shift_u8(src_p[5], 1u, 0x07u);
+    dst_p->block_reason = unpack_right_shift_u8(src_p[5], 3u, 0x38u);
+
+    return (0);
+}
+
+int car_can_raw_bps_balancing_status_init(struct car_can_raw_bps_balancing_status_t *msg_p)
+{
+    if (msg_p == NULL) return -1;
+
+    memset(msg_p, 0, sizeof(struct car_can_raw_bps_balancing_status_t));
+
+    return 0;
+}
+
+bool car_can_raw_bps_balancing_status_fault_chip_mask_is_in_range(uint8_t value)
+{
+    return (value <= 15u);
+}
+
+bool car_can_raw_bps_balancing_status_balancing_state_is_in_range(uint8_t value)
+{
+    return (value <= 7u);
+}
+
+bool car_can_raw_bps_balancing_status_selected_cell_mask_is_in_range(uint32_t value)
+{
+    (void)value;
+
+    return (true);
+}
+
+bool car_can_raw_bps_balancing_status_paused_chip_mask_is_in_range(uint8_t value)
+{
+    return (value <= 15u);
+}
+
+bool car_can_raw_bps_balancing_status_block_reason_is_in_range(uint8_t value)
+{
+    return (value <= 7u);
 }
 
 int car_can_raw_mppt_interface_status_pack(

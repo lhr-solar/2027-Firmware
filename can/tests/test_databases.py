@@ -397,6 +397,26 @@ class DatabaseTests(unittest.TestCase):
             charger = self.message("ChargerCAN", identifier)
             self.assertEqual(charger.encode(raw, scaling=False), frame)
 
+    def test_bps_balancing_messages(self):
+        command = self.message("CarCAN", 0x55)
+        status = self.message("CarCAN", 0x78)
+        self.assertEqual((command.name, command.senders, command.length),
+                         ("BPSBalancingCommand", ["External"], 5))
+        self.assertEqual(command.dbc.attributes["GenMsgSendType"].value, 1)
+        self.assertIsNone(command.cycle_time)
+        self.assertEqual((status.name, status.senders, status.length, status.cycle_time),
+                         ("BPSBalancingStatus", ["BPS"], 6, 1000))
+        self.assertEqual(status.dbc.attributes["GenMsgSendType"].value, 1)
+        self.assertEqual(status.dbc.attributes["GenMsgSendCondition"].value, "BalancingActive")
+        for message, values in ((command, {"BalancingMode": 2, "ManualCellMask": 0x80000001}),
+                                (status, {"FaultChipMask": 8, "BalancingState": 1,
+                                          "SelectedCellMask": 0x80000001, "PausedChipMask": 2,
+                                          "BlockReason": 2})):
+            self.assertEqual(message.decode(message.encode(values), decode_choices=False), values)
+        self.assertNotIn("ActiveCellMask", {signal.name for signal in status.signals})
+        self.assertEqual(str(status.get_signal_by_name("BlockReason").choices[1]), "CellTemperature")
+        self.assertEqual(str(status.get_signal_by_name("BlockReason").choices[2]), "ChipTemperature")
+
     def test_bps_safety_permissions_are_independent(self):
         for bus in ("CarCAN", "ChargerCAN"):
             message = self.message(bus, 0x60)
@@ -454,12 +474,14 @@ class DatabaseTests(unittest.TestCase):
                 "MPPTChargeScheme": 0,
                 "VoltageOverrideMask": 0,
                 "TemperatureOverrideMask": 0,
+                "CurrentOverride": 0,
             },
             {
                 "Mode": 1,
                 "MPPTChargeScheme": 1,
                 "VoltageOverrideMask": 0xA5A5A5A5,
                 "TemperatureOverrideMask": 0xFFFFFFFF,
+                "CurrentOverride": 1,
             },
         ):
             self.assertEqual(echo.encode(values), command.encode(values))
@@ -776,7 +798,7 @@ class DatabaseTests(unittest.TestCase):
             snapshot = "Snapshot" in name
             self.assertEqual(message.dbc.attributes["GenMsgSendType"].value, 1 if snapshot else 0)
             self.assertEqual(bool(message.dbc.attributes.get("GenMsgSendCondition")), snapshot)
-        self.assertFalse({0x69, 0x6A, 0x78} & {m.frame_id for m in car.messages})
+        self.assertFalse({0x69, 0x6A} & {m.frame_id for m in car.messages})
         for name in ("LVCStatus", "PDUStatus"):
             self.assertFalse(any(signal.unit in ("A", "V", "degC") for signal in car.get_message_by_name(name).signals))
         self.assertEqual(car.get_message_by_name("PDUCommand").get_signal_by_name("ChannelIndex").maximum, 11)

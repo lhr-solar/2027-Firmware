@@ -121,6 +121,23 @@ consumers together rather than mixing versions.
   Its discrete connection bits precede frame rate, temperature and fan speed;
   the frame is 5 bytes. The SoC-temperature encoding remains unchanged.
 
+## BPS balancing messages
+
+`BPSBalancingCommand` (CarCAN 0x055) is triggered and requests Off, Automatic,
+or Manual mode. The 32-bit `ManualCellMask` is used in manual mode, with bit 0
+selecting cell 00. BPS owns cell-selection thresholds, operating-state checks,
+and protection in both modes; a command does not bypass those checks.
+
+`BPSBalancingStatus` (CarCAN 0x078) is triggered when balancing starts and repeats
+every 1000 ms only while at least one cell group is actively balancing. It reports
+state, selected-cell mask, four-chip pause and fault masks, and a primary block
+reason, including separate cell and chip temperature reasons. Fully paused,
+completed, or blocked sessions do not send this message under that condition;
+`BPSStatus.BalancingActive` remains the overall indication. Chip-mask bits are
+zero-based; the actual chip-to-cell wiring must be verified by the hardware team.
+These are CAN definitions; BPS firmware must implement the behavior. The messages
+are not forwarded to ChargerCAN under the existing routing rules.
+
 ## BPS directional safety permissions
 
 `BPSStatus` reports `ChargeSafe`, `RegenSafe`, and `DischargeSafe` as independent

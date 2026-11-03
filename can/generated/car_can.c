@@ -16,6 +16,7 @@ const car_can_metadata_t car_can = {
         .bps_fault_snapshot = { .id = UINT32_C(117), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
         .bps_fault_voltage_snapshot = { .id = UINT32_C(118), .payload_bytes = 64, .wire_bytes = 64, .dlc = 15, .is_extended = false, .is_fd = true },
         .bps_fault_temperature_snapshot = { .id = UINT32_C(119), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
+        .bps_balancing_status = { .id = UINT32_C(120), .payload_bytes = 6, .wire_bytes = 6, .dlc = 6, .is_extended = false, .is_fd = true },
     },
     .dei = {
         .dei_status = { .id = UINT32_C(98), .payload_bytes = 2, .wire_bytes = 2, .dlc = 2, .is_extended = false, .is_fd = true },
@@ -25,6 +26,7 @@ const car_can_metadata_t car_can = {
         .pdu_command = { .id = UINT32_C(82), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
         .motor_controller_command = { .id = UINT32_C(83), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
         .sweep_mpp_ts = { .id = UINT32_C(84), .payload_bytes = 0, .wire_bytes = 0, .dlc = 0, .is_extended = false, .is_fd = true },
+        .bps_balancing_command = { .id = UINT32_C(85), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
     },
     .lvc = {
         .lvc_status = { .id = UINT32_C(144), .payload_bytes = 2, .wire_bytes = 2, .dlc = 2, .is_extended = false, .is_fd = true },
@@ -80,6 +82,13 @@ can_status_t car_can_bps_command_pack(can_frame_t* dst, const car_can_bps_comman
         uint32_t value = src->temperature_override_mask;
         raw.temperature_override_mask = (uint32_t)value;
     }
+    {
+        uint8_t value = src->current_override;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.current_override = (uint8_t)value;
+    }
     can_frame_t result = { .id = UINT32_C(81),
         .len = 12, .is_extended = false,
         .is_fd = true };
@@ -103,6 +112,8 @@ can_status_t car_can_bps_command_unpack(car_can_bps_command_t* dst, const can_fr
     result.mppt_charge_scheme = (uint8_t)raw.mppt_charge_scheme;
     result.voltage_override_mask = (uint32_t)raw.voltage_override_mask;
     result.temperature_override_mask = (uint32_t)raw.temperature_override_mask;
+    if (raw.current_override > INT64_C(1)) return CAN_RANGE;
+    result.current_override = (uint8_t)raw.current_override;
     *dst = result;
     return CAN_OK;
 }
@@ -205,6 +216,45 @@ can_status_t car_can_sweep_mpp_ts_unpack(car_can_sweep_mpp_ts_t* dst, const can_
     struct car_can_raw_sweep_mpp_ts_t raw = {0};
     if (car_can_raw_sweep_mpp_ts_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     car_can_sweep_mpp_ts_t result = {0};
+    *dst = result;
+    return CAN_OK;
+}
+
+can_status_t car_can_bps_balancing_command_pack(can_frame_t* dst, const car_can_bps_balancing_command_t* src) {
+    if (dst == NULL || src == NULL) return CAN_INVALID;
+    struct car_can_raw_bps_balancing_command_t raw = {0};
+    can_status_t status = CAN_OK;
+    {
+        uint8_t value = src->balancing_mode;
+        if (value > INT64_C(2)) {
+            value = (uint8_t)INT64_C(2); status = CAN_CLAMPED;
+        }
+        raw.balancing_mode = (uint8_t)value;
+    }
+    {
+        uint32_t value = src->manual_cell_mask;
+        raw.manual_cell_mask = (uint32_t)value;
+    }
+    can_frame_t result = { .id = UINT32_C(85),
+        .len = 5, .is_extended = false,
+        .is_fd = true };
+    if (car_can_raw_bps_balancing_command_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    *dst = result;
+    return status;
+}
+
+can_status_t car_can_bps_balancing_command_unpack(car_can_bps_balancing_command_t* dst, const can_frame_t* src) {
+    if (dst == NULL || src == NULL) return CAN_INVALID;
+    if (src->id != UINT32_C(85) || src->len != 5 ||
+        src->is_extended != false ||
+        src->is_fd != true ||
+        (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
+    struct car_can_raw_bps_balancing_command_t raw = {0};
+    if (car_can_raw_bps_balancing_command_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    car_can_bps_balancing_command_t result = {0};
+    if (raw.balancing_mode > INT64_C(2)) return CAN_RANGE;
+    result.balancing_mode = (uint8_t)raw.balancing_mode;
+    result.manual_cell_mask = (uint32_t)raw.manual_cell_mask;
     *dst = result;
     return CAN_OK;
 }
@@ -2203,6 +2253,13 @@ can_status_t car_can_bps_command_echo_pack(can_frame_t* dst, const car_can_bps_c
         uint32_t value = src->temperature_override_mask;
         raw.temperature_override_mask = (uint32_t)value;
     }
+    {
+        uint8_t value = src->current_override;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.current_override = (uint8_t)value;
+    }
     can_frame_t result = { .id = UINT32_C(116),
         .len = 12, .is_extended = false,
         .is_fd = true };
@@ -2226,6 +2283,8 @@ can_status_t car_can_bps_command_echo_unpack(car_can_bps_command_echo_t* dst, co
     result.mppt_charge_scheme = (uint8_t)raw.mppt_charge_scheme;
     result.voltage_override_mask = (uint32_t)raw.voltage_override_mask;
     result.temperature_override_mask = (uint32_t)raw.temperature_override_mask;
+    if (raw.current_override > INT64_C(1)) return CAN_RANGE;
+    result.current_override = (uint8_t)raw.current_override;
     *dst = result;
     return CAN_OK;
 }
@@ -3294,6 +3353,72 @@ can_status_t car_can_bps_fault_temperature_snapshot_unpack(car_can_bps_fault_tem
     result.cell_temperature30 = (double)((double)raw.cell_temperature30 * 0.05 + 0.0);
     if (raw.cell_temperature31 > INT64_C(2047)) return CAN_RANGE;
     result.cell_temperature31 = (double)((double)raw.cell_temperature31 * 0.05 + 0.0);
+    *dst = result;
+    return CAN_OK;
+}
+
+can_status_t car_can_bps_balancing_status_pack(can_frame_t* dst, const car_can_bps_balancing_status_t* src) {
+    if (dst == NULL || src == NULL) return CAN_INVALID;
+    struct car_can_raw_bps_balancing_status_t raw = {0};
+    can_status_t status = CAN_OK;
+    {
+        uint8_t value = src->fault_chip_mask;
+        if (value > INT64_C(15)) {
+            value = (uint8_t)INT64_C(15); status = CAN_CLAMPED;
+        }
+        raw.fault_chip_mask = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->balancing_state;
+        if (value > INT64_C(4)) {
+            value = (uint8_t)INT64_C(4); status = CAN_CLAMPED;
+        }
+        raw.balancing_state = (uint8_t)value;
+    }
+    {
+        uint32_t value = src->selected_cell_mask;
+        raw.selected_cell_mask = (uint32_t)value;
+    }
+    {
+        uint8_t value = src->paused_chip_mask;
+        if (value > INT64_C(15)) {
+            value = (uint8_t)INT64_C(15); status = CAN_CLAMPED;
+        }
+        raw.paused_chip_mask = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->block_reason;
+        if (value > INT64_C(7)) {
+            value = (uint8_t)INT64_C(7); status = CAN_CLAMPED;
+        }
+        raw.block_reason = (uint8_t)value;
+    }
+    can_frame_t result = { .id = UINT32_C(120),
+        .len = 6, .is_extended = false,
+        .is_fd = true };
+    if (car_can_raw_bps_balancing_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    *dst = result;
+    return status;
+}
+
+can_status_t car_can_bps_balancing_status_unpack(car_can_bps_balancing_status_t* dst, const can_frame_t* src) {
+    if (dst == NULL || src == NULL) return CAN_INVALID;
+    if (src->id != UINT32_C(120) || src->len != 6 ||
+        src->is_extended != false ||
+        src->is_fd != true ||
+        (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
+    struct car_can_raw_bps_balancing_status_t raw = {0};
+    if (car_can_raw_bps_balancing_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    car_can_bps_balancing_status_t result = {0};
+    if (raw.fault_chip_mask > INT64_C(15)) return CAN_RANGE;
+    result.fault_chip_mask = (uint8_t)raw.fault_chip_mask;
+    if (raw.balancing_state > INT64_C(4)) return CAN_RANGE;
+    result.balancing_state = (uint8_t)raw.balancing_state;
+    result.selected_cell_mask = (uint32_t)raw.selected_cell_mask;
+    if (raw.paused_chip_mask > INT64_C(15)) return CAN_RANGE;
+    result.paused_chip_mask = (uint8_t)raw.paused_chip_mask;
+    if (raw.block_reason > INT64_C(7)) return CAN_RANGE;
+    result.block_reason = (uint8_t)raw.block_reason;
     *dst = result;
     return CAN_OK;
 }
