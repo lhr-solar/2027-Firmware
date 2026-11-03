@@ -126,9 +126,8 @@ BO_ 96 BPSStatus: 16 BPS
  SG_ BatteryFanTach1 : 76|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
  SG_ BatteryFanTach2 : 88|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
  SG_ BPSFanTach : 100|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
- SG_ SampleAgeMs : 112|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 97 PedalsStatus: 8 Pedals
+BO_ 97 PedalsStatus: 6 Pedals
  SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultNoAccelerator : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningMainAcceleratorDisconnect : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -141,7 +140,6 @@ BO_ 97 PedalsStatus: 8 Pedals
  SG_ AcceleratorRedundantPosition : 16|8@1+ (0.39215686274509803,0) [0|100] "%" Vector__XXX
  SG_ FrontPressure : 24|12@1+ (1,0) [0|3000] "PSI" Vector__XXX
  SG_ RearPressure : 36|12@1+ (1,0) [0|3000] "PSI" Vector__XXX
- SG_ SampleAgeMs : 48|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 98 DEIStatus: 2 DEI
  SG_ IgnitionLV : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -157,7 +155,7 @@ BO_ 98 DEIStatus: 2 DEI
  SG_ PushToTalk : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ Headlights : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 99 VCUStatus: 8 VCU
+BO_ 99 VCUStatus: 6 VCU
  SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultMotor : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultBPS : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -181,7 +179,6 @@ BO_ 99 VCUStatus: 8 VCU
  SG_ MotorCommandSource : 23|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ MotorControllerFanTach : 24|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
  SG_ MotorFanTach : 36|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
- SG_ SampleAgeMs : 48|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 112 BPSPackData: 12 BPS
  SG_ CellSumVoltage : 0|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
@@ -190,81 +187,78 @@ BO_ 112 BPSPackData: 12 BPS
  SG_ MainVoltage : 36|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
  SG_ MotorVoltage : 48|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
  SG_ BatteryCurrent : 60|14@1+ (0.01,-50) [-50.0|113.83] "A" Vector__XXX
- SG_ SampleAgeMs : 74|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 113 BPSVoltageData: 64 BPS
- SG_ CellVoltage01 : 0|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage02 : 12|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage03 : 24|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage04 : 36|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage05 : 48|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage06 : 60|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage07 : 72|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage08 : 84|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage09 : 96|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage10 : 108|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage11 : 120|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage12 : 132|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage13 : 144|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage14 : 156|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage15 : 168|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage16 : 180|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage17 : 192|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage18 : 204|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage19 : 216|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage20 : 228|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage21 : 240|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage22 : 252|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage23 : 264|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage24 : 276|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage25 : 288|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage26 : 300|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage27 : 312|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage28 : 324|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage29 : 336|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage30 : 348|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage31 : 360|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage32 : 372|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage00 : 0|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage01 : 12|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage02 : 24|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage03 : 36|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage04 : 48|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage05 : 60|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage06 : 72|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage07 : 84|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage08 : 96|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage09 : 108|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage10 : 120|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage11 : 132|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage12 : 144|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage13 : 156|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage14 : 168|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage15 : 180|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage16 : 192|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage17 : 204|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage18 : 216|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage19 : 228|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage20 : 240|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage21 : 252|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage22 : 264|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage23 : 276|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage24 : 288|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage25 : 300|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage26 : 312|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage27 : 324|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage28 : 336|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage29 : 348|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage30 : 360|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage31 : 372|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
  SG_ MinCellVoltage : 384|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
  SG_ MaxCellVoltage : 396|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ SampleAgeMs : 408|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 114 BPSTemperatureData: 64 BPS
- SG_ CellTemperature01 : 0|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature02 : 11|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature03 : 22|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature04 : 33|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature05 : 44|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature06 : 55|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature07 : 66|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature08 : 77|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature09 : 88|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature10 : 99|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature11 : 110|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature12 : 121|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature13 : 132|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature14 : 143|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature15 : 154|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature16 : 165|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature17 : 176|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature18 : 187|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature19 : 198|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature20 : 209|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature21 : 220|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature22 : 231|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature23 : 242|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature24 : 253|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature25 : 264|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature26 : 275|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature27 : 286|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature28 : 297|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature29 : 308|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature30 : 319|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature31 : 330|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature32 : 341|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+BO_ 114 BPSTemperatureData: 48 BPS
+ SG_ CellTemperature00 : 0|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature01 : 11|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature02 : 22|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature03 : 33|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature04 : 44|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature05 : 55|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature06 : 66|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature07 : 77|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature08 : 88|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature09 : 99|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature10 : 110|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature11 : 121|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature12 : 132|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature13 : 143|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature14 : 154|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature15 : 165|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature16 : 176|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature17 : 187|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature18 : 198|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature19 : 209|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature20 : 220|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature21 : 231|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature22 : 242|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature23 : 253|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature24 : 264|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature25 : 275|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature26 : 286|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature27 : 297|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature28 : 308|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature29 : 319|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature30 : 330|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature31 : 341|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
  SG_ MaxBatteryTemperature : 352|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
  SG_ AverageBatteryTemperature : 363|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ SampleAgeMs : 374|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 115 SMDStatus: 0 BPS
 
@@ -299,81 +293,78 @@ BO_ 117 BPSFaultSnapshot: 12 BPS
  SG_ CurrentValid : 23|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ CaptureTimeMs : 24|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
  SG_ BatteryCurrent : 56|14@1+ (0.01,-50) [-50.0|113.83] "A" Vector__XXX
- SG_ SampleAgeMs : 70|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 118 BPSFaultVoltageSnapshot: 64 BPS
  SG_ SampleValidMask : 0|32@1+ (1,0) [0|4294967295] "" Vector__XXX
- SG_ CellVoltage01 : 32|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage02 : 44|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage03 : 56|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage04 : 68|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage05 : 80|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage06 : 92|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage07 : 104|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage08 : 116|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage09 : 128|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage10 : 140|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage11 : 152|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage12 : 164|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage13 : 176|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage14 : 188|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage15 : 200|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage16 : 212|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage17 : 224|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage18 : 236|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage19 : 248|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage20 : 260|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage21 : 272|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage22 : 284|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage23 : 296|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage24 : 308|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage25 : 320|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage26 : 332|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage27 : 344|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage28 : 356|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage29 : 368|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage30 : 380|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage31 : 392|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ CellVoltage32 : 404|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
- SG_ SampleAgeMs : 416|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+ SG_ CellVoltage00 : 32|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage01 : 44|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage02 : 56|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage03 : 68|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage04 : 80|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage05 : 92|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage06 : 104|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage07 : 116|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage08 : 128|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage09 : 140|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage10 : 152|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage11 : 164|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage12 : 176|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage13 : 188|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage14 : 200|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage15 : 212|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage16 : 224|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage17 : 236|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage18 : 248|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage19 : 260|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage20 : 272|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage21 : 284|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage22 : 296|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage23 : 308|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage24 : 320|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage25 : 332|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage26 : 344|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage27 : 356|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage28 : 368|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage29 : 380|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage30 : 392|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
+ SG_ CellVoltage31 : 404|12@1+ (1,2000) [2000.0|6095.0] "mV" Vector__XXX
 
-BO_ 119 BPSFaultTemperatureSnapshot: 64 BPS
+BO_ 119 BPSFaultTemperatureSnapshot: 48 BPS
  SG_ SampleValidMask : 0|32@1+ (1,0) [0|4294967295] "" Vector__XXX
- SG_ CellTemperature01 : 32|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature02 : 43|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature03 : 54|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature04 : 65|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature05 : 76|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature06 : 87|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature07 : 98|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature08 : 109|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature09 : 120|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature10 : 131|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature11 : 142|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature12 : 153|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature13 : 164|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature14 : 175|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature15 : 186|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature16 : 197|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature17 : 208|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature18 : 219|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature19 : 230|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature20 : 241|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature21 : 252|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature22 : 263|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature23 : 274|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature24 : 285|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature25 : 296|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature26 : 307|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature27 : 318|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature28 : 329|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature29 : 340|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature30 : 351|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature31 : 362|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ CellTemperature32 : 373|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
- SG_ SampleAgeMs : 384|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+ SG_ CellTemperature00 : 32|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature01 : 43|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature02 : 54|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature03 : 65|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature04 : 76|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature05 : 87|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature06 : 98|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature07 : 109|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature08 : 120|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature09 : 131|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature10 : 142|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature11 : 153|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature12 : 164|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature13 : 175|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature14 : 186|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature15 : 197|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature16 : 208|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature17 : 219|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature18 : 230|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature19 : 241|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature20 : 252|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature21 : 263|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature22 : 274|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature23 : 285|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature24 : 296|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature25 : 307|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature26 : 318|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature27 : 329|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature28 : 340|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature29 : 351|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature30 : 362|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
+ SG_ CellTemperature31 : 373|11@1+ (0.05,0) [0.0|102.35] "degC" Vector__XXX
 
-BO_ 121 MPPTInterfaceStatus: 5 MPPTInterface
+BO_ 121 MPPTInterfaceStatus: 3 MPPTInterface
  SG_ WarningBPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningMPPTAWatchdog : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningMPPTBWatchdog : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -382,9 +373,8 @@ BO_ 121 MPPTInterfaceStatus: 5 MPPTInterface
  SG_ MPPTSetMode : 5|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ SweepingActive : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FanTach : 8|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
- SG_ SampleAgeMs : 20|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 130 MIKAStatus: 7 MIKA
+BO_ 130 MIKAStatus: 5 MIKA
  SG_ WarningTemperature : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningOverTemperature : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningDisplayDisconnected : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -398,7 +388,6 @@ BO_ 130 MIKAStatus: 7 MIKA
  SG_ DisplayFrameRate : 10|6@1+ (1,0) [0|60] "FPS" Vector__XXX
  SG_ SoCTemperature : 16|8@1+ (0.5,-20) [-20|85] "degC" Vector__XXX
  SG_ CM5FanTach : 24|12@1+ (5,0) [0|20475] "rpm" Vector__XXX
- SG_ SampleAgeMs : 36|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 144 LVCStatus: 2 LVC
  SG_ WarningHSSOverCurrent : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -414,261 +403,185 @@ BO_ 144 LVCStatus: 2 LVC
  SG_ DCDCEnabled : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ BPSLVEnabled : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 145 LVCCurrentData: 12 LVC
+BO_ 145 LVCCurrentData: 7 LVC
  SG_ DCDCCurrent : 0|14@1+ (0.01,0) [0|163.83] "A" Vector__XXX
  SG_ LVBCurrent : 14|14@1+ (0.01,-50) [-50|113.83000000000001] "A" Vector__XXX
  SG_ TotalOutputCurrent : 28|14@1+ (0.01,0) [0|163.83] "A" Vector__XXX
  SG_ BPSLVCurrent : 42|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ SampleAgeMs : 54|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 146 LVCVoltageData: 7 LVC
+BO_ 146 LVCVoltageData: 5 LVC
  SG_ DCDCVoltage : 0|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
  SG_ LVBVoltage : 10|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
  SG_ PowerSupplyVoltage : 20|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
  SG_ BPSLVVoltage : 30|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ SampleAgeMs : 40|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 147 LVCTemperatureData: 4 LVC
+BO_ 147 LVCTemperatureData: 2 LVC
  SG_ BPSFETTemperature : 0|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ SampleAgeMs : 13|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 148 LVCOverCurrentSnapshot: 12 LVC
+BO_ 148 LVCOverCurrentSnapshot: 7 LVC
  SG_ FaultOverCurrent : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultI2T : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ TripCurrentSaturated : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ CaptureTimeMs : 3|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
  SG_ TripCurrent : 35|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ SampleAgeMs : 51|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 160 PDUStatus: 16 PDU
- SG_ FaultChannelOverCurrent1 : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T1 : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature1 : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad1 : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery1 : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverCurrent2 : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T2 : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature2 : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad2 : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery2 : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverCurrent3 : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T3 : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature3 : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad3 : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery3 : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverCurrent4 : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T4 : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature4 : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad4 : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery4 : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverCurrent5 : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T5 : 21|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature5 : 22|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad5 : 23|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery5 : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverCurrent6 : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T6 : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature6 : 27|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad6 : 28|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery6 : 29|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverCurrent7 : 30|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T7 : 31|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature7 : 32|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad7 : 33|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery7 : 34|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverCurrent8 : 35|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T8 : 36|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature8 : 37|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad8 : 38|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery8 : 39|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverCurrent9 : 40|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T9 : 41|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature9 : 42|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad9 : 43|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery9 : 44|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverCurrent10 : 45|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T10 : 46|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature10 : 47|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad10 : 48|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery10 : 49|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverCurrent11 : 50|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T11 : 51|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature11 : 52|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad11 : 53|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery11 : 54|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverCurrent12 : 55|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelI2T12 : 56|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOverTemperature12 : 57|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelOpenLoad12 : 58|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChannelShortToBattery12 : 59|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipVBBUndervoltage1 : 60|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipSPIError1 : 61|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipWatchdog1 : 62|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipVBBUndervoltage2 : 63|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipSPIError2 : 64|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipWatchdog2 : 65|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipVBBUndervoltage3 : 66|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipSPIError3 : 67|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipWatchdog3 : 68|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipVBBUndervoltage4 : 69|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipSPIError4 : 70|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipWatchdog4 : 71|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipVBBUndervoltage5 : 72|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipSPIError5 : 73|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipWatchdog5 : 74|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipVBBUndervoltage6 : 75|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipSPIError6 : 76|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultChipWatchdog6 : 77|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent0 : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T0 : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature0 : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad0 : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery0 : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent1 : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T1 : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature1 : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad1 : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery1 : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent2 : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T2 : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature2 : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad2 : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery2 : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent3 : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T3 : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature3 : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad3 : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery3 : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent4 : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T4 : 21|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature4 : 22|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad4 : 23|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery4 : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent5 : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T5 : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature5 : 27|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad5 : 28|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery5 : 29|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent6 : 30|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T6 : 31|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature6 : 32|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad6 : 33|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery6 : 34|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent7 : 35|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T7 : 36|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature7 : 37|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad7 : 38|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery7 : 39|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent8 : 40|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T8 : 41|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature8 : 42|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad8 : 43|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery8 : 44|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent9 : 45|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T9 : 46|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature9 : 47|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad9 : 48|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery9 : 49|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent10 : 50|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T10 : 51|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature10 : 52|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad10 : 53|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery10 : 54|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverCurrent11 : 55|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelI2T11 : 56|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOverTemperature11 : 57|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelOpenLoad11 : 58|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChannelShortToBattery11 : 59|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipVBBUndervoltage0 : 60|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipSPIError0 : 61|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipWatchdog0 : 62|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipVBBUndervoltage1 : 63|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipSPIError1 : 64|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipWatchdog1 : 65|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipVBBUndervoltage2 : 66|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipSPIError2 : 67|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipWatchdog2 : 68|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipVBBUndervoltage3 : 69|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipSPIError3 : 70|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipWatchdog3 : 71|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipVBBUndervoltage4 : 72|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipSPIError4 : 73|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipWatchdog4 : 74|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipVBBUndervoltage5 : 75|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipSPIError5 : 76|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultChipWatchdog5 : 77|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningBlownFuse : 78|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse1 : 79|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse2 : 80|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse3 : 81|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse4 : 82|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse5 : 83|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse6 : 84|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse7 : 85|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse8 : 86|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse9 : 87|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse10 : 88|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse11 : 89|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningChannelBlownFuse12 : 90|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled1 : 91|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled2 : 92|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled3 : 93|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled4 : 94|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled5 : 95|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled6 : 96|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled7 : 97|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled8 : 98|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled9 : 99|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled10 : 100|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled11 : 101|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ ChannelEnabled12 : 102|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse0 : 79|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse1 : 80|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse2 : 81|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse3 : 82|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse4 : 83|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse5 : 84|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse6 : 85|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse7 : 86|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse8 : 87|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse9 : 88|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse10 : 89|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningChannelBlownFuse11 : 90|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled0 : 91|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled1 : 92|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled2 : 93|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled3 : 94|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled4 : 95|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled5 : 96|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled6 : 97|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled7 : 98|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled8 : 99|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled9 : 100|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled10 : 101|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelEnabled11 : 102|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 161 PDUCurrentData: 24 PDU
- SG_ ChannelCurrent1 : 0|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ ChannelCurrent2 : 12|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ ChannelCurrent3 : 24|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ ChannelCurrent4 : 36|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ ChannelCurrent5 : 48|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ ChannelCurrent6 : 60|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ ChannelCurrent7 : 72|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ ChannelCurrent8 : 84|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ ChannelCurrent9 : 96|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ ChannelCurrent10 : 108|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ ChannelCurrent11 : 120|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
- SG_ ChannelCurrent12 : 132|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+BO_ 161 PDUCurrentData: 20 PDU
+ SG_ ChannelCurrent0 : 0|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+ SG_ ChannelCurrent1 : 12|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+ SG_ ChannelCurrent2 : 24|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+ SG_ ChannelCurrent3 : 36|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+ SG_ ChannelCurrent4 : 48|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+ SG_ ChannelCurrent5 : 60|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+ SG_ ChannelCurrent6 : 72|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+ SG_ ChannelCurrent7 : 84|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+ SG_ ChannelCurrent8 : 96|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+ SG_ ChannelCurrent9 : 108|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+ SG_ ChannelCurrent10 : 120|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
+ SG_ ChannelCurrent11 : 132|12@1+ (0.01,0) [0|40.95] "A" Vector__XXX
  SG_ TotalCurrent : 144|14@1+ (0.01,0) [0|163.83] "A" Vector__XXX
- SG_ SampleAgeMs : 158|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 162 PDUVoltageData: 20 PDU
  SG_ InputVoltage : 0|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage1 : 10|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage2 : 20|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage3 : 30|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage4 : 40|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage5 : 50|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage6 : 60|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage7 : 70|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage8 : 80|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage9 : 90|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage10 : 100|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage11 : 110|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ ChannelVoltage12 : 120|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
- SG_ SampleAgeMs : 130|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+ SG_ ChannelVoltage0 : 10|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
+ SG_ ChannelVoltage1 : 20|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
+ SG_ ChannelVoltage2 : 30|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
+ SG_ ChannelVoltage3 : 40|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
+ SG_ ChannelVoltage4 : 50|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
+ SG_ ChannelVoltage5 : 60|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
+ SG_ ChannelVoltage6 : 70|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
+ SG_ ChannelVoltage7 : 80|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
+ SG_ ChannelVoltage8 : 90|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
+ SG_ ChannelVoltage9 : 100|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
+ SG_ ChannelVoltage10 : 110|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
+ SG_ ChannelVoltage11 : 120|10@1+ (0.05,0) [0|51.150000000000006] "V" Vector__XXX
 
-BO_ 163 PDUTemperatureData: 24 PDU
- SG_ ChannelTemperature1 : 0|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ ChannelTemperature2 : 13|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ ChannelTemperature3 : 26|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ ChannelTemperature4 : 39|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ ChannelTemperature5 : 52|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ ChannelTemperature6 : 65|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ ChannelTemperature7 : 78|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ ChannelTemperature8 : 91|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ ChannelTemperature9 : 104|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ ChannelTemperature10 : 117|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ ChannelTemperature11 : 130|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ ChannelTemperature12 : 143|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
- SG_ SampleAgeMs : 156|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+BO_ 163 PDUTemperatureData: 20 PDU
+ SG_ ChannelTemperature0 : 0|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
+ SG_ ChannelTemperature1 : 13|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
+ SG_ ChannelTemperature2 : 26|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
+ SG_ ChannelTemperature3 : 39|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
+ SG_ ChannelTemperature4 : 52|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
+ SG_ ChannelTemperature5 : 65|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
+ SG_ ChannelTemperature6 : 78|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
+ SG_ ChannelTemperature7 : 91|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
+ SG_ ChannelTemperature8 : 104|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
+ SG_ ChannelTemperature9 : 117|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
+ SG_ ChannelTemperature10 : 130|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
+ SG_ ChannelTemperature11 : 143|13@1+ (0.05,-40) [-40|200] "degC" Vector__XXX
 
-BO_ 164 PDUOverCurrentSnapshotA: 64 PDU
- SG_ FaultOverCurrent1 : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultOverCurrent2 : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultOverCurrent3 : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultOverCurrent4 : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultOverCurrent5 : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultOverCurrent6 : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T1 : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T2 : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T3 : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T4 : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T5 : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T6 : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated1 : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated2 : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated3 : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated4 : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated5 : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated6 : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ CaptureTimeMs1 : 18|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs1 : 50|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent1 : 66|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ CaptureTimeMs2 : 82|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs2 : 114|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent2 : 130|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ CaptureTimeMs3 : 146|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs3 : 178|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent3 : 194|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ CaptureTimeMs4 : 210|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs4 : 242|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent4 : 258|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ CaptureTimeMs5 : 274|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs5 : 306|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent5 : 322|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ CaptureTimeMs6 : 338|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs6 : 370|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent6 : 386|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ SampleAgeMs : 402|16@1+ (1,0) [0|65535] "ms" Vector__XXX
-
-BO_ 165 PDUOverCurrentSnapshotB: 64 PDU
- SG_ FaultOverCurrent7 : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultOverCurrent8 : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultOverCurrent9 : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultOverCurrent10 : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultOverCurrent11 : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultOverCurrent12 : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T7 : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T8 : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T9 : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T10 : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T11 : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultI2T12 : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated7 : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated8 : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated9 : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated10 : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated11 : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ TripCurrentSaturated12 : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ CaptureTimeMs7 : 18|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs7 : 50|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent7 : 66|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ CaptureTimeMs8 : 82|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs8 : 114|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent8 : 130|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ CaptureTimeMs9 : 146|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs9 : 178|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent9 : 194|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ CaptureTimeMs10 : 210|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs10 : 242|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent10 : 258|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ CaptureTimeMs11 : 274|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs11 : 306|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent11 : 322|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ CaptureTimeMs12 : 338|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
- SG_ CurrentSampleAgeMs12 : 370|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ TripCurrent12 : 386|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
- SG_ SampleAgeMs : 402|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+BO_ 164 PDUOverCurrentSnapshot: 12 PDU
+ SG_ FaultOverCurrent : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultI2T : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ TripCurrentSaturated : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ChannelIndex : 3|4@1+ (1,0) [0|11] "" Vector__XXX
+ SG_ CaptureTimeMs : 7|32@1+ (1,0) [0|4294967295] "ms" Vector__XXX
+ SG_ CurrentSampleAgeMs : 39|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+ SG_ TripCurrent : 55|16@1+ (0.01,0) [0|655.35] "A" Vector__XXX
 
 
 
@@ -680,12 +593,11 @@ CM_ SG_ 81 MPPTChargeScheme "MPPTChargeScheme";
 CM_ SG_ 81 Mode "Mode";
 CM_ BO_ 82 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 82 Enable "Enable";
-CM_ SG_ 82 ChannelIndex "Zero-based output index 0..11 selects Channel1..Channel12. Chip n controls Channel(2n-1) and Channel(2n). Indices 12..15 are invalid.";
+CM_ SG_ 82 ChannelIndex "Zero-based channel index: 0 selects Channel0; 11 selects Channel11.";
 CM_ BO_ 83 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 83 CommandSource "CommandSource";
 CM_ BO_ 84 "Defined empty trigger: request a sweep from all MPPTs through MPPTInterface. Zero-byte CAN-FD payload.";
 CM_ BO_ 96 "BPS faults, warnings, state, contactors, control permissions, MPPT limits, and fan tachometers. Pack measurements are in BPSPackData (0x070). CAN-FD; no transmit period assigned yet.";
-CM_ SG_ 96 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 96 BPSFanTach "BPSFanTach";
 CM_ SG_ 96 BatteryFanTach2 "BatteryFan2Tach";
 CM_ SG_ 96 BatteryFanTach1 "BatteryFan1Tach";
@@ -732,7 +644,6 @@ CM_ SG_ 96 FaultOverTemperature "FaultOverTemperature";
 CM_ SG_ 96 FaultSummary "FaultSummary";
 CM_ SG_ 96 Status "Status";
 CM_ BO_ 97 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 97 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 97 RearPressure "RearPressure";
 CM_ SG_ 97 FrontPressure "FrontPressure";
 CM_ SG_ 97 AcceleratorRedundantPosition "AcceleratorRedundantPosition";
@@ -759,7 +670,6 @@ CM_ SG_ 98 IgnitionDrive "IgnitionDrive";
 CM_ SG_ 98 IgnitionCharge "IgnitionCharge";
 CM_ SG_ 98 IgnitionLV "IgnitionLV";
 CM_ BO_ 99 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 99 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 99 MotorFanTach "MotorFanTach";
 CM_ SG_ 99 MotorControllerFanTach "MotorControllerFanTach";
 CM_ SG_ 99 MotorCommandSource "MotorCommandSource";
@@ -784,7 +694,6 @@ CM_ SG_ 99 FaultBPS "FaultBPS";
 CM_ SG_ 99 FaultMotor "FaultMotor";
 CM_ SG_ 99 Status "Status";
 CM_ BO_ 112 "BPS pack electrical measurements: cell-sum and main/motor battery and precharge voltages, then battery current. Cell-voltage extrema are in BPSVoltageData; temperature summaries are in BPSTemperatureData. Signal encodings unchanged; no transmit period assigned yet.";
-CM_ SG_ 112 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 112 BatteryCurrent "BatteryCurrent";
 CM_ SG_ 112 MotorVoltage "MotorVoltage";
 CM_ SG_ 112 MainVoltage "MainVoltage";
@@ -792,77 +701,75 @@ CM_ SG_ 112 MotorBatteryVoltage "MotorBatteryVoltage";
 CM_ SG_ 112 MainBatteryVoltage "MainBatteryVoltage";
 CM_ SG_ 112 CellSumVoltage "Sum of the 32 cell-tap voltages, independent of precharge measurements. Bulk voltage encoding: unsigned 12 bits, 0.05 V/bit, offset 0 V.";
 CM_ BO_ 113 "BPS individual cell voltages followed by minimum/maximum cell voltage; unchanged physical encodings.";
-CM_ SG_ 113 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 113 MaxCellVoltage "MaxCellVoltage";
 CM_ SG_ 113 MinCellVoltage "MinCellVoltage";
-CM_ SG_ 113 CellVoltage32 "CellVoltage32";
-CM_ SG_ 113 CellVoltage31 "CellVoltage31";
-CM_ SG_ 113 CellVoltage30 "CellVoltage30";
-CM_ SG_ 113 CellVoltage29 "CellVoltage29";
-CM_ SG_ 113 CellVoltage28 "CellVoltage28";
-CM_ SG_ 113 CellVoltage27 "CellVoltage27";
-CM_ SG_ 113 CellVoltage26 "CellVoltage26";
-CM_ SG_ 113 CellVoltage25 "CellVoltage25";
-CM_ SG_ 113 CellVoltage24 "CellVoltage24";
-CM_ SG_ 113 CellVoltage23 "CellVoltage23";
-CM_ SG_ 113 CellVoltage22 "CellVoltage22";
-CM_ SG_ 113 CellVoltage21 "CellVoltage21";
-CM_ SG_ 113 CellVoltage20 "CellVoltage20";
-CM_ SG_ 113 CellVoltage19 "CellVoltage19";
-CM_ SG_ 113 CellVoltage18 "CellVoltage18";
-CM_ SG_ 113 CellVoltage17 "CellVoltage17";
-CM_ SG_ 113 CellVoltage16 "CellVoltage16";
-CM_ SG_ 113 CellVoltage15 "CellVoltage15";
-CM_ SG_ 113 CellVoltage14 "CellVoltage14";
-CM_ SG_ 113 CellVoltage13 "CellVoltage13";
-CM_ SG_ 113 CellVoltage12 "CellVoltage12";
-CM_ SG_ 113 CellVoltage11 "CellVoltage11";
-CM_ SG_ 113 CellVoltage10 "CellVoltage10";
-CM_ SG_ 113 CellVoltage09 "CellVoltage09";
-CM_ SG_ 113 CellVoltage08 "CellVoltage08";
-CM_ SG_ 113 CellVoltage07 "CellVoltage07";
-CM_ SG_ 113 CellVoltage06 "CellVoltage06";
-CM_ SG_ 113 CellVoltage05 "CellVoltage05";
-CM_ SG_ 113 CellVoltage04 "CellVoltage04";
-CM_ SG_ 113 CellVoltage03 "CellVoltage03";
-CM_ SG_ 113 CellVoltage02 "CellVoltage02";
-CM_ SG_ 113 CellVoltage01 "CellVoltage01";
+CM_ SG_ 113 CellVoltage31 "CellVoltage32";
+CM_ SG_ 113 CellVoltage30 "CellVoltage31";
+CM_ SG_ 113 CellVoltage29 "CellVoltage30";
+CM_ SG_ 113 CellVoltage28 "CellVoltage29";
+CM_ SG_ 113 CellVoltage27 "CellVoltage28";
+CM_ SG_ 113 CellVoltage26 "CellVoltage27";
+CM_ SG_ 113 CellVoltage25 "CellVoltage26";
+CM_ SG_ 113 CellVoltage24 "CellVoltage25";
+CM_ SG_ 113 CellVoltage23 "CellVoltage24";
+CM_ SG_ 113 CellVoltage22 "CellVoltage23";
+CM_ SG_ 113 CellVoltage21 "CellVoltage22";
+CM_ SG_ 113 CellVoltage20 "CellVoltage21";
+CM_ SG_ 113 CellVoltage19 "CellVoltage20";
+CM_ SG_ 113 CellVoltage18 "CellVoltage19";
+CM_ SG_ 113 CellVoltage17 "CellVoltage18";
+CM_ SG_ 113 CellVoltage16 "CellVoltage17";
+CM_ SG_ 113 CellVoltage15 "CellVoltage16";
+CM_ SG_ 113 CellVoltage14 "CellVoltage15";
+CM_ SG_ 113 CellVoltage13 "CellVoltage14";
+CM_ SG_ 113 CellVoltage12 "CellVoltage13";
+CM_ SG_ 113 CellVoltage11 "CellVoltage12";
+CM_ SG_ 113 CellVoltage10 "CellVoltage11";
+CM_ SG_ 113 CellVoltage09 "CellVoltage10";
+CM_ SG_ 113 CellVoltage08 "CellVoltage09";
+CM_ SG_ 113 CellVoltage07 "CellVoltage08";
+CM_ SG_ 113 CellVoltage06 "CellVoltage07";
+CM_ SG_ 113 CellVoltage05 "CellVoltage06";
+CM_ SG_ 113 CellVoltage04 "CellVoltage05";
+CM_ SG_ 113 CellVoltage03 "CellVoltage04";
+CM_ SG_ 113 CellVoltage02 "CellVoltage03";
+CM_ SG_ 113 CellVoltage01 "CellVoltage02";
+CM_ SG_ 113 CellVoltage00 "CellVoltage01";
 CM_ BO_ 114 "BPS individual cell temperatures followed by maximum/average battery temperature; unchanged physical encodings.";
-CM_ SG_ 114 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 114 AverageBatteryTemperature "AverageBatteryTemperature";
 CM_ SG_ 114 MaxBatteryTemperature "MaxBatteryTemperature";
-CM_ SG_ 114 CellTemperature32 "CellTemperature32";
-CM_ SG_ 114 CellTemperature31 "CellTemperature31";
-CM_ SG_ 114 CellTemperature30 "CellTemperature30";
-CM_ SG_ 114 CellTemperature29 "CellTemperature29";
-CM_ SG_ 114 CellTemperature28 "CellTemperature28";
-CM_ SG_ 114 CellTemperature27 "CellTemperature27";
-CM_ SG_ 114 CellTemperature26 "CellTemperature26";
-CM_ SG_ 114 CellTemperature25 "CellTemperature25";
-CM_ SG_ 114 CellTemperature24 "CellTemperature24";
-CM_ SG_ 114 CellTemperature23 "CellTemperature23";
-CM_ SG_ 114 CellTemperature22 "CellTemperature22";
-CM_ SG_ 114 CellTemperature21 "CellTemperature21";
-CM_ SG_ 114 CellTemperature20 "CellTemperature20";
-CM_ SG_ 114 CellTemperature19 "CellTemperature19";
-CM_ SG_ 114 CellTemperature18 "CellTemperature18";
-CM_ SG_ 114 CellTemperature17 "CellTemperature17";
-CM_ SG_ 114 CellTemperature16 "CellTemperature16";
-CM_ SG_ 114 CellTemperature15 "CellTemperature15";
-CM_ SG_ 114 CellTemperature14 "CellTemperature14";
-CM_ SG_ 114 CellTemperature13 "CellTemperature13";
-CM_ SG_ 114 CellTemperature12 "CellTemperature12";
-CM_ SG_ 114 CellTemperature11 "CellTemperature11";
-CM_ SG_ 114 CellTemperature10 "CellTemperature10";
-CM_ SG_ 114 CellTemperature09 "CellTemperature09";
-CM_ SG_ 114 CellTemperature08 "CellTemperature08";
-CM_ SG_ 114 CellTemperature07 "CellTemperature07";
-CM_ SG_ 114 CellTemperature06 "CellTemperature06";
-CM_ SG_ 114 CellTemperature05 "CellTemperature05";
-CM_ SG_ 114 CellTemperature04 "CellTemperature04";
-CM_ SG_ 114 CellTemperature03 "CellTemperature03";
-CM_ SG_ 114 CellTemperature02 "CellTemperature02";
-CM_ SG_ 114 CellTemperature01 "CellTemperature01";
+CM_ SG_ 114 CellTemperature31 "CellTemperature32";
+CM_ SG_ 114 CellTemperature30 "CellTemperature31";
+CM_ SG_ 114 CellTemperature29 "CellTemperature30";
+CM_ SG_ 114 CellTemperature28 "CellTemperature29";
+CM_ SG_ 114 CellTemperature27 "CellTemperature28";
+CM_ SG_ 114 CellTemperature26 "CellTemperature27";
+CM_ SG_ 114 CellTemperature25 "CellTemperature26";
+CM_ SG_ 114 CellTemperature24 "CellTemperature25";
+CM_ SG_ 114 CellTemperature23 "CellTemperature24";
+CM_ SG_ 114 CellTemperature22 "CellTemperature23";
+CM_ SG_ 114 CellTemperature21 "CellTemperature22";
+CM_ SG_ 114 CellTemperature20 "CellTemperature21";
+CM_ SG_ 114 CellTemperature19 "CellTemperature20";
+CM_ SG_ 114 CellTemperature18 "CellTemperature19";
+CM_ SG_ 114 CellTemperature17 "CellTemperature18";
+CM_ SG_ 114 CellTemperature16 "CellTemperature17";
+CM_ SG_ 114 CellTemperature15 "CellTemperature16";
+CM_ SG_ 114 CellTemperature14 "CellTemperature15";
+CM_ SG_ 114 CellTemperature13 "CellTemperature14";
+CM_ SG_ 114 CellTemperature12 "CellTemperature13";
+CM_ SG_ 114 CellTemperature11 "CellTemperature12";
+CM_ SG_ 114 CellTemperature10 "CellTemperature11";
+CM_ SG_ 114 CellTemperature09 "CellTemperature10";
+CM_ SG_ 114 CellTemperature08 "CellTemperature09";
+CM_ SG_ 114 CellTemperature07 "CellTemperature08";
+CM_ SG_ 114 CellTemperature06 "CellTemperature07";
+CM_ SG_ 114 CellTemperature05 "CellTemperature06";
+CM_ SG_ 114 CellTemperature04 "CellTemperature05";
+CM_ SG_ 114 CellTemperature03 "CellTemperature04";
+CM_ SG_ 114 CellTemperature02 "CellTemperature03";
+CM_ SG_ 114 CellTemperature01 "CellTemperature02";
+CM_ SG_ 114 CellTemperature00 "CellTemperature01";
 CM_ BO_ 115 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. Four SMB status bitmaps: widths and bit definitions pending.";
 CM_ BO_ 116 "Cyclic BPS report mirroring the BPSCommand payload: Mode, MPPTChargeScheme, VoltageOverrideMask, and TemperatureOverrideMask. Reports command values held by BPS; does not imply successful application or act as a per-request acknowledgement. Cyclic report every 1000 ms.";
 CM_ SG_ 116 TemperatureOverrideMask "Bit 0 selects temperature 1; bit 31 selects temperature 32. Set bit requests the corresponding override.";
@@ -870,7 +777,6 @@ CM_ SG_ 116 VoltageOverrideMask "Bit 0 selects tap 1; bit 31 selects tap 32. Set
 CM_ SG_ 116 MPPTChargeScheme "MPPTChargeScheme";
 CM_ SG_ 116 Mode "Mode";
 CM_ BO_ 117 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. Keep captured samples frozen; never replace them with post-trip zeros. Rearm after all faults clear. Triggered transmission with a 1000 ms active-fault repeat interval; no transmission outside the send condition. Fault bits record the first fault state. BatteryCurrent preserves the live message scaling. CurrentSampleAgeMs describes sampling latency; this is not a guaranteed instantaneous peak measurement.";
-CM_ SG_ 117 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 117 BatteryCurrent "BatteryCurrent";
 CM_ SG_ 117 CaptureTimeMs "BPS monotonic uptime at fault detection, wraps at 2^32 ms; independent of legacy TimestampSync ticks.";
 CM_ SG_ 117 CurrentValid "1 only if BatteryCurrent was sampled successfully before capture; otherwise ignore BatteryCurrent and CurrentSampleAgeMs.";
@@ -896,77 +802,74 @@ CM_ SG_ 117 FaultOverVoltage "FaultOverVoltage";
 CM_ SG_ 117 FaultOverTemperature "FaultOverTemperature";
 CM_ SG_ 117 FaultSummary "FaultSummary";
 CM_ BO_ 118 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. Keep captured samples frozen; never replace them with post-trip zeros. Rearm after all faults clear. Triggered transmission with a 1000 ms active-fault repeat interval; no transmission outside the send condition. The last completed scan available at fault detection is frozen, not acquired after shutdown. Scaling and offsets match BPSVoltageData.";
-CM_ SG_ 118 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
-CM_ SG_ 118 CellVoltage32 "CellVoltage32";
-CM_ SG_ 118 CellVoltage31 "CellVoltage31";
-CM_ SG_ 118 CellVoltage30 "CellVoltage30";
-CM_ SG_ 118 CellVoltage29 "CellVoltage29";
-CM_ SG_ 118 CellVoltage28 "CellVoltage28";
-CM_ SG_ 118 CellVoltage27 "CellVoltage27";
-CM_ SG_ 118 CellVoltage26 "CellVoltage26";
-CM_ SG_ 118 CellVoltage25 "CellVoltage25";
-CM_ SG_ 118 CellVoltage24 "CellVoltage24";
-CM_ SG_ 118 CellVoltage23 "CellVoltage23";
-CM_ SG_ 118 CellVoltage22 "CellVoltage22";
-CM_ SG_ 118 CellVoltage21 "CellVoltage21";
-CM_ SG_ 118 CellVoltage20 "CellVoltage20";
-CM_ SG_ 118 CellVoltage19 "CellVoltage19";
-CM_ SG_ 118 CellVoltage18 "CellVoltage18";
-CM_ SG_ 118 CellVoltage17 "CellVoltage17";
-CM_ SG_ 118 CellVoltage16 "CellVoltage16";
-CM_ SG_ 118 CellVoltage15 "CellVoltage15";
-CM_ SG_ 118 CellVoltage14 "CellVoltage14";
-CM_ SG_ 118 CellVoltage13 "CellVoltage13";
-CM_ SG_ 118 CellVoltage12 "CellVoltage12";
-CM_ SG_ 118 CellVoltage11 "CellVoltage11";
-CM_ SG_ 118 CellVoltage10 "CellVoltage10";
-CM_ SG_ 118 CellVoltage09 "CellVoltage09";
-CM_ SG_ 118 CellVoltage08 "CellVoltage08";
-CM_ SG_ 118 CellVoltage07 "CellVoltage07";
-CM_ SG_ 118 CellVoltage06 "CellVoltage06";
-CM_ SG_ 118 CellVoltage05 "CellVoltage05";
-CM_ SG_ 118 CellVoltage04 "CellVoltage04";
-CM_ SG_ 118 CellVoltage03 "CellVoltage03";
-CM_ SG_ 118 CellVoltage02 "CellVoltage02";
-CM_ SG_ 118 CellVoltage01 "CellVoltage01";
-CM_ SG_ 118 SampleValidMask "Bit 0 corresponds to cell 01; bit 31 to cell 32. Clear bits mean unavailable readings and their encoded values must be ignored.";
+CM_ SG_ 118 CellVoltage31 "CellVoltage32";
+CM_ SG_ 118 CellVoltage30 "CellVoltage31";
+CM_ SG_ 118 CellVoltage29 "CellVoltage30";
+CM_ SG_ 118 CellVoltage28 "CellVoltage29";
+CM_ SG_ 118 CellVoltage27 "CellVoltage28";
+CM_ SG_ 118 CellVoltage26 "CellVoltage27";
+CM_ SG_ 118 CellVoltage25 "CellVoltage26";
+CM_ SG_ 118 CellVoltage24 "CellVoltage25";
+CM_ SG_ 118 CellVoltage23 "CellVoltage24";
+CM_ SG_ 118 CellVoltage22 "CellVoltage23";
+CM_ SG_ 118 CellVoltage21 "CellVoltage22";
+CM_ SG_ 118 CellVoltage20 "CellVoltage21";
+CM_ SG_ 118 CellVoltage19 "CellVoltage20";
+CM_ SG_ 118 CellVoltage18 "CellVoltage19";
+CM_ SG_ 118 CellVoltage17 "CellVoltage18";
+CM_ SG_ 118 CellVoltage16 "CellVoltage17";
+CM_ SG_ 118 CellVoltage15 "CellVoltage16";
+CM_ SG_ 118 CellVoltage14 "CellVoltage15";
+CM_ SG_ 118 CellVoltage13 "CellVoltage14";
+CM_ SG_ 118 CellVoltage12 "CellVoltage13";
+CM_ SG_ 118 CellVoltage11 "CellVoltage12";
+CM_ SG_ 118 CellVoltage10 "CellVoltage11";
+CM_ SG_ 118 CellVoltage09 "CellVoltage10";
+CM_ SG_ 118 CellVoltage08 "CellVoltage09";
+CM_ SG_ 118 CellVoltage07 "CellVoltage08";
+CM_ SG_ 118 CellVoltage06 "CellVoltage07";
+CM_ SG_ 118 CellVoltage05 "CellVoltage06";
+CM_ SG_ 118 CellVoltage04 "CellVoltage05";
+CM_ SG_ 118 CellVoltage03 "CellVoltage04";
+CM_ SG_ 118 CellVoltage02 "CellVoltage03";
+CM_ SG_ 118 CellVoltage01 "CellVoltage02";
+CM_ SG_ 118 CellVoltage00 "CellVoltage01";
+CM_ SG_ 118 SampleValidMask "Bit 0 corresponds to cell 00; bit 31 to cell 31. Clear bits mean unavailable readings and their encoded values must be ignored.";
 CM_ BO_ 119 "Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. Keep captured samples frozen; never replace them with post-trip zeros. Rearm after all faults clear. Triggered transmission with a 1000 ms active-fault repeat interval; no transmission outside the send condition. The last completed scan available at fault detection is frozen, not acquired after shutdown. Scaling and offsets match BPSTemperatureData.";
-CM_ SG_ 119 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
-CM_ SG_ 119 CellTemperature32 "CellTemperature32";
-CM_ SG_ 119 CellTemperature31 "CellTemperature31";
-CM_ SG_ 119 CellTemperature30 "CellTemperature30";
-CM_ SG_ 119 CellTemperature29 "CellTemperature29";
-CM_ SG_ 119 CellTemperature28 "CellTemperature28";
-CM_ SG_ 119 CellTemperature27 "CellTemperature27";
-CM_ SG_ 119 CellTemperature26 "CellTemperature26";
-CM_ SG_ 119 CellTemperature25 "CellTemperature25";
-CM_ SG_ 119 CellTemperature24 "CellTemperature24";
-CM_ SG_ 119 CellTemperature23 "CellTemperature23";
-CM_ SG_ 119 CellTemperature22 "CellTemperature22";
-CM_ SG_ 119 CellTemperature21 "CellTemperature21";
-CM_ SG_ 119 CellTemperature20 "CellTemperature20";
-CM_ SG_ 119 CellTemperature19 "CellTemperature19";
-CM_ SG_ 119 CellTemperature18 "CellTemperature18";
-CM_ SG_ 119 CellTemperature17 "CellTemperature17";
-CM_ SG_ 119 CellTemperature16 "CellTemperature16";
-CM_ SG_ 119 CellTemperature15 "CellTemperature15";
-CM_ SG_ 119 CellTemperature14 "CellTemperature14";
-CM_ SG_ 119 CellTemperature13 "CellTemperature13";
-CM_ SG_ 119 CellTemperature12 "CellTemperature12";
-CM_ SG_ 119 CellTemperature11 "CellTemperature11";
-CM_ SG_ 119 CellTemperature10 "CellTemperature10";
-CM_ SG_ 119 CellTemperature09 "CellTemperature09";
-CM_ SG_ 119 CellTemperature08 "CellTemperature08";
-CM_ SG_ 119 CellTemperature07 "CellTemperature07";
-CM_ SG_ 119 CellTemperature06 "CellTemperature06";
-CM_ SG_ 119 CellTemperature05 "CellTemperature05";
-CM_ SG_ 119 CellTemperature04 "CellTemperature04";
-CM_ SG_ 119 CellTemperature03 "CellTemperature03";
-CM_ SG_ 119 CellTemperature02 "CellTemperature02";
-CM_ SG_ 119 CellTemperature01 "CellTemperature01";
-CM_ SG_ 119 SampleValidMask "Bit 0 corresponds to cell 01; bit 31 to cell 32. Clear bits mean unavailable readings and their encoded values must be ignored.";
+CM_ SG_ 119 CellTemperature31 "CellTemperature32";
+CM_ SG_ 119 CellTemperature30 "CellTemperature31";
+CM_ SG_ 119 CellTemperature29 "CellTemperature30";
+CM_ SG_ 119 CellTemperature28 "CellTemperature29";
+CM_ SG_ 119 CellTemperature27 "CellTemperature28";
+CM_ SG_ 119 CellTemperature26 "CellTemperature27";
+CM_ SG_ 119 CellTemperature25 "CellTemperature26";
+CM_ SG_ 119 CellTemperature24 "CellTemperature25";
+CM_ SG_ 119 CellTemperature23 "CellTemperature24";
+CM_ SG_ 119 CellTemperature22 "CellTemperature23";
+CM_ SG_ 119 CellTemperature21 "CellTemperature22";
+CM_ SG_ 119 CellTemperature20 "CellTemperature21";
+CM_ SG_ 119 CellTemperature19 "CellTemperature20";
+CM_ SG_ 119 CellTemperature18 "CellTemperature19";
+CM_ SG_ 119 CellTemperature17 "CellTemperature18";
+CM_ SG_ 119 CellTemperature16 "CellTemperature17";
+CM_ SG_ 119 CellTemperature15 "CellTemperature16";
+CM_ SG_ 119 CellTemperature14 "CellTemperature15";
+CM_ SG_ 119 CellTemperature13 "CellTemperature14";
+CM_ SG_ 119 CellTemperature12 "CellTemperature13";
+CM_ SG_ 119 CellTemperature11 "CellTemperature12";
+CM_ SG_ 119 CellTemperature10 "CellTemperature11";
+CM_ SG_ 119 CellTemperature09 "CellTemperature10";
+CM_ SG_ 119 CellTemperature08 "CellTemperature09";
+CM_ SG_ 119 CellTemperature07 "CellTemperature08";
+CM_ SG_ 119 CellTemperature06 "CellTemperature07";
+CM_ SG_ 119 CellTemperature05 "CellTemperature06";
+CM_ SG_ 119 CellTemperature04 "CellTemperature05";
+CM_ SG_ 119 CellTemperature03 "CellTemperature04";
+CM_ SG_ 119 CellTemperature02 "CellTemperature03";
+CM_ SG_ 119 CellTemperature01 "CellTemperature02";
+CM_ SG_ 119 CellTemperature00 "CellTemperature01";
+CM_ SG_ 119 SampleValidMask "Bit 0 corresponds to cell 00; bit 31 to cell 31. Clear bits mean unavailable readings and their encoded values must be ignored.";
 CM_ BO_ 121 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 121 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 121 FanTach "FanTach";
 CM_ SG_ 121 SweepingActive "SweepingActive";
 CM_ SG_ 121 MPPTSetMode "MPPTSetMode";
@@ -976,7 +879,6 @@ CM_ SG_ 121 WarningMPPTBWatchdog "WarningMPPTBWatchdog";
 CM_ SG_ 121 WarningMPPTAWatchdog "WarningMPPTAWatchdog";
 CM_ SG_ 121 WarningBPSWatchdog "WarningBPSWatchdog";
 CM_ BO_ 130 "HMI and CM5 status from MIKA (combined HMI and telemetry board). Application ID 0x082 and signal layout retained.";
-CM_ SG_ 130 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 130 CM5FanTach "CM5 cooling fan tachometer: unsigned 12 bits, 5 rpm/bit, offset 0 rpm.";
 CM_ SG_ 130 SoCTemperature "User-approved explicit exception: uint8, 0.5 degC/bit, -20 degC offset.";
 CM_ SG_ 130 DisplayFrameRate "DisplayFrameRate";
@@ -1004,29 +906,24 @@ CM_ SG_ 144 WarningHSSOverTemperature "BPS HSS output OverTemperature warning; o
 CM_ SG_ 144 WarningHSSI2T "BPS HSS output I2T warning; overtemperature combines absolute and relative thermal shutdown.";
 CM_ SG_ 144 WarningHSSOverCurrent "BPS HSS output OverCurrent warning; overtemperature combines absolute and relative thermal shutdown.";
 CM_ BO_ 145 "10 Hz measured LV currents. BPSLVCurrent belongs to the single populated HSS output; no fictitious PDU HSS channel is reported.";
-CM_ SG_ 145 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 145 BPSLVCurrent "Measured BPSLVCurrent.";
 CM_ SG_ 145 TotalOutputCurrent "Measured TotalOutputCurrent. Independently measured total output, not a sum of HSS channels. The PDU feed is included only through this actual total measurement.";
 CM_ SG_ 145 LVBCurrent "Measured LVBCurrent. Positive = battery discharge into LV supply; negative = battery charging.";
 CM_ SG_ 145 DCDCCurrent "Measured DCDCCurrent.";
 CM_ BO_ 146 "2 Hz LV voltage telemetry. HSS-derived BPSLVVoltage can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 146 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 146 BPSLVVoltage "Measured BPSLVVoltage; zero is representable to expose a powered-off output.";
 CM_ SG_ 146 PowerSupplyVoltage "Measured PowerSupplyVoltage; zero is representable to expose a powered-off output.";
 CM_ SG_ 146 LVBVoltage "Measured LVBVoltage; zero is representable to expose a powered-off output.";
 CM_ SG_ 146 DCDCVoltage "Measured DCDCVoltage; zero is representable to expose a powered-off output.";
 CM_ BO_ 147 "1 Hz BPS HSS FET temperature; temperature conversions can be suspended in applicable I2T modes; consult sample age and chip diagnostics.";
-CM_ SG_ 147 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 147 BPSFETTemperature "Internal temperature of the BPS channel power FET, not load/ambient temperature.";
 CM_ BO_ 148 "Latch the first overcurrent or I2T trip per output until an explicit firmware fault-reset action. Freeze the last pre-trip current, its age at detection and the sending board monotonic uptime at detection. Reading diagnostic registers does not clear the telemetry latch. Send immediately on a new trip, then every 1000 ms while a trip remains latched. Never overwrite a captured current with post-shutdown zero. No snapshot/event identifier is sent. Capture time resets on board reboot. This records a sampled current, not a guaranteed instantaneous analog peak.";
-CM_ SG_ 148 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 148 TripCurrent "Captured current; independent record per output; saturation marks a lower bound.";
 CM_ SG_ 148 CaptureTimeMs "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
 CM_ SG_ 148 TripCurrentSaturated "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
 CM_ SG_ 148 FaultI2T "Latched I2T trip for BPS feed.";
 CM_ SG_ 148 FaultOverCurrent "Latched OverCurrent trip for BPS feed.";
 CM_ BO_ 160 "12 outputs, 6 TPS2HCS08A dual-channel chips. Faults -> warnings -> discrete states. Chip n owns channels 2n-1/2n. Per-channel fuse warnings come from separate hardware. No continuous measurements.";
-CM_ SG_ 160 ChannelEnabled12 "Requested channel 12 enable state; not proof of output voltage.";
 CM_ SG_ 160 ChannelEnabled11 "Requested channel 11 enable state; not proof of output voltage.";
 CM_ SG_ 160 ChannelEnabled10 "Requested channel 10 enable state; not proof of output voltage.";
 CM_ SG_ 160 ChannelEnabled9 "Requested channel 9 enable state; not proof of output voltage.";
@@ -1038,7 +935,7 @@ CM_ SG_ 160 ChannelEnabled4 "Requested channel 4 enable state; not proof of outp
 CM_ SG_ 160 ChannelEnabled3 "Requested channel 3 enable state; not proof of output voltage.";
 CM_ SG_ 160 ChannelEnabled2 "Requested channel 2 enable state; not proof of output voltage.";
 CM_ SG_ 160 ChannelEnabled1 "Requested channel 1 enable state; not proof of output voltage.";
-CM_ SG_ 160 WarningChannelBlownFuse12 "Separate hardware blown-fuse monitor for channel 12; not inferred from HSS open-load fault.";
+CM_ SG_ 160 ChannelEnabled0 "Requested channel 0 enable state; not proof of output voltage.";
 CM_ SG_ 160 WarningChannelBlownFuse11 "Separate hardware blown-fuse monitor for channel 11; not inferred from HSS open-load fault.";
 CM_ SG_ 160 WarningChannelBlownFuse10 "Separate hardware blown-fuse monitor for channel 10; not inferred from HSS open-load fault.";
 CM_ SG_ 160 WarningChannelBlownFuse9 "Separate hardware blown-fuse monitor for channel 9; not inferred from HSS open-load fault.";
@@ -1050,118 +947,115 @@ CM_ SG_ 160 WarningChannelBlownFuse4 "Separate hardware blown-fuse monitor for c
 CM_ SG_ 160 WarningChannelBlownFuse3 "Separate hardware blown-fuse monitor for channel 3; not inferred from HSS open-load fault.";
 CM_ SG_ 160 WarningChannelBlownFuse2 "Separate hardware blown-fuse monitor for channel 2; not inferred from HSS open-load fault.";
 CM_ SG_ 160 WarningChannelBlownFuse1 "Separate hardware blown-fuse monitor for channel 1; not inferred from HSS open-load fault.";
+CM_ SG_ 160 WarningChannelBlownFuse0 "Separate hardware blown-fuse monitor for channel 0; not inferred from HSS open-load fault.";
 CM_ SG_ 160 WarningBlownFuse "Aggregate OR of WarningChannelBlownFuse1..12 from the separate hardware channel monitors.";
-CM_ SG_ 160 FaultChipWatchdog6 "Chip 6, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipSPIError6 "Chip 6, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipVBBUndervoltage6 "Chip 6, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipWatchdog5 "Chip 5, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipSPIError5 "Chip 5, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipVBBUndervoltage5 "Chip 5, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipWatchdog4 "Chip 4, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipSPIError4 "Chip 4, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipVBBUndervoltage4 "Chip 4, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipWatchdog3 "Chip 3, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipSPIError3 "Chip 3, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipVBBUndervoltage3 "Chip 3, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipWatchdog2 "Chip 2, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipSPIError2 "Chip 2, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipVBBUndervoltage2 "Chip 2, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipWatchdog1 "Chip 1, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipSPIError1 "Chip 1, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChipVBBUndervoltage1 "Chip 1, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors.";
-CM_ SG_ 160 FaultChannelShortToBattery12 "Channel 12, HSS chip 6, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad12 "Channel 12, HSS chip 6, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature12 "Channel 12, HSS chip 6, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T12 "Channel 12, HSS chip 6, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent12 "Channel 12, HSS chip 6, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelShortToBattery11 "Channel 11, HSS chip 6, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad11 "Channel 11, HSS chip 6, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature11 "Channel 11, HSS chip 6, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T11 "Channel 11, HSS chip 6, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent11 "Channel 11, HSS chip 6, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelShortToBattery10 "Channel 10, HSS chip 5, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad10 "Channel 10, HSS chip 5, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature10 "Channel 10, HSS chip 5, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T10 "Channel 10, HSS chip 5, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent10 "Channel 10, HSS chip 5, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelShortToBattery9 "Channel 9, HSS chip 5, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad9 "Channel 9, HSS chip 5, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature9 "Channel 9, HSS chip 5, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T9 "Channel 9, HSS chip 5, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent9 "Channel 9, HSS chip 5, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelShortToBattery8 "Channel 8, HSS chip 4, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad8 "Channel 8, HSS chip 4, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature8 "Channel 8, HSS chip 4, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T8 "Channel 8, HSS chip 4, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent8 "Channel 8, HSS chip 4, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelShortToBattery7 "Channel 7, HSS chip 4, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad7 "Channel 7, HSS chip 4, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature7 "Channel 7, HSS chip 4, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T7 "Channel 7, HSS chip 4, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent7 "Channel 7, HSS chip 4, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelShortToBattery6 "Channel 6, HSS chip 3, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad6 "Channel 6, HSS chip 3, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature6 "Channel 6, HSS chip 3, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T6 "Channel 6, HSS chip 3, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent6 "Channel 6, HSS chip 3, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelShortToBattery5 "Channel 5, HSS chip 3, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad5 "Channel 5, HSS chip 3, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature5 "Channel 5, HSS chip 3, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T5 "Channel 5, HSS chip 3, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent5 "Channel 5, HSS chip 3, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelShortToBattery4 "Channel 4, HSS chip 2, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad4 "Channel 4, HSS chip 2, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature4 "Channel 4, HSS chip 2, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T4 "Channel 4, HSS chip 2, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent4 "Channel 4, HSS chip 2, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelShortToBattery3 "Channel 3, HSS chip 2, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad3 "Channel 3, HSS chip 2, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature3 "Channel 3, HSS chip 2, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T3 "Channel 3, HSS chip 2, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent3 "Channel 3, HSS chip 2, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelShortToBattery2 "Channel 2, HSS chip 1, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad2 "Channel 2, HSS chip 1, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature2 "Channel 2, HSS chip 1, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T2 "Channel 2, HSS chip 1, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent2 "Channel 2, HSS chip 1, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelShortToBattery1 "Channel 1, HSS chip 1, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOpenLoad1 "Channel 1, HSS chip 1, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverTemperature1 "Channel 1, HSS chip 1, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelI2T1 "Channel 1, HSS chip 1, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
-CM_ SG_ 160 FaultChannelOverCurrent1 "Channel 1, HSS chip 1, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChipWatchdog5 "Chip 5, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipSPIError5 "Chip 5, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipVBBUndervoltage5 "Chip 5, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipWatchdog4 "Chip 4, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipSPIError4 "Chip 4, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipVBBUndervoltage4 "Chip 4, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipWatchdog3 "Chip 3, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipSPIError3 "Chip 3, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipVBBUndervoltage3 "Chip 3, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipWatchdog2 "Chip 2, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipSPIError2 "Chip 2, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipVBBUndervoltage2 "Chip 2, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipWatchdog1 "Chip 1, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipSPIError1 "Chip 1, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipVBBUndervoltage1 "Chip 1, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipWatchdog0 "Chip 0, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipSPIError0 "Chip 0, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChipVBBUndervoltage0 "Chip 0, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors.";
+CM_ SG_ 160 FaultChannelShortToBattery11 "Channel 11, HSS chip 5, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad11 "Channel 11, HSS chip 5, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature11 "Channel 11, HSS chip 5, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T11 "Channel 11, HSS chip 5, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent11 "Channel 11, HSS chip 5, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelShortToBattery10 "Channel 10, HSS chip 5, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad10 "Channel 10, HSS chip 5, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature10 "Channel 10, HSS chip 5, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T10 "Channel 10, HSS chip 5, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent10 "Channel 10, HSS chip 5, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelShortToBattery9 "Channel 9, HSS chip 4, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad9 "Channel 9, HSS chip 4, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature9 "Channel 9, HSS chip 4, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T9 "Channel 9, HSS chip 4, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent9 "Channel 9, HSS chip 4, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelShortToBattery8 "Channel 8, HSS chip 4, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad8 "Channel 8, HSS chip 4, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature8 "Channel 8, HSS chip 4, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T8 "Channel 8, HSS chip 4, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent8 "Channel 8, HSS chip 4, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelShortToBattery7 "Channel 7, HSS chip 3, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad7 "Channel 7, HSS chip 3, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature7 "Channel 7, HSS chip 3, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T7 "Channel 7, HSS chip 3, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent7 "Channel 7, HSS chip 3, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelShortToBattery6 "Channel 6, HSS chip 3, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad6 "Channel 6, HSS chip 3, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature6 "Channel 6, HSS chip 3, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T6 "Channel 6, HSS chip 3, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent6 "Channel 6, HSS chip 3, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelShortToBattery5 "Channel 5, HSS chip 2, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad5 "Channel 5, HSS chip 2, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature5 "Channel 5, HSS chip 2, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T5 "Channel 5, HSS chip 2, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent5 "Channel 5, HSS chip 2, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelShortToBattery4 "Channel 4, HSS chip 2, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad4 "Channel 4, HSS chip 2, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature4 "Channel 4, HSS chip 2, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T4 "Channel 4, HSS chip 2, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent4 "Channel 4, HSS chip 2, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelShortToBattery3 "Channel 3, HSS chip 1, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad3 "Channel 3, HSS chip 1, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature3 "Channel 3, HSS chip 1, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T3 "Channel 3, HSS chip 1, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent3 "Channel 3, HSS chip 1, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelShortToBattery2 "Channel 2, HSS chip 1, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad2 "Channel 2, HSS chip 1, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature2 "Channel 2, HSS chip 1, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T2 "Channel 2, HSS chip 1, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent2 "Channel 2, HSS chip 1, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelShortToBattery1 "Channel 1, HSS chip 0, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad1 "Channel 1, HSS chip 0, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature1 "Channel 1, HSS chip 0, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T1 "Channel 1, HSS chip 0, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent1 "Channel 1, HSS chip 0, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelShortToBattery0 "Channel 0, HSS chip 0, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOpenLoad0 "Channel 0, HSS chip 0, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverTemperature0 "Channel 0, HSS chip 0, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelI2T0 "Channel 0, HSS chip 0, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown.";
+CM_ SG_ 160 FaultChannelOverCurrent0 "Channel 0, HSS chip 0, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown.";
 CM_ BO_ 161 "10 Hz channel and total current measurements. Independent input measurement can include board consumption; do not label a computed channel sum as TotalCurrent.";
-CM_ SG_ 161 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 161 TotalCurrent "Independently measured PDU input/total current, not a calculated channel sum.";
-CM_ SG_ 161 ChannelCurrent12 "Measured HSS output current for channel 12; See chip SPI/watchdog faults and sample age when interpreting this reading.";
-CM_ SG_ 161 ChannelCurrent11 "Measured HSS output current for channel 11; See chip SPI/watchdog faults and sample age when interpreting this reading.";
-CM_ SG_ 161 ChannelCurrent10 "Measured HSS output current for channel 10; See chip SPI/watchdog faults and sample age when interpreting this reading.";
-CM_ SG_ 161 ChannelCurrent9 "Measured HSS output current for channel 9; See chip SPI/watchdog faults and sample age when interpreting this reading.";
-CM_ SG_ 161 ChannelCurrent8 "Measured HSS output current for channel 8; See chip SPI/watchdog faults and sample age when interpreting this reading.";
-CM_ SG_ 161 ChannelCurrent7 "Measured HSS output current for channel 7; See chip SPI/watchdog faults and sample age when interpreting this reading.";
-CM_ SG_ 161 ChannelCurrent6 "Measured HSS output current for channel 6; See chip SPI/watchdog faults and sample age when interpreting this reading.";
-CM_ SG_ 161 ChannelCurrent5 "Measured HSS output current for channel 5; See chip SPI/watchdog faults and sample age when interpreting this reading.";
-CM_ SG_ 161 ChannelCurrent4 "Measured HSS output current for channel 4; See chip SPI/watchdog faults and sample age when interpreting this reading.";
-CM_ SG_ 161 ChannelCurrent3 "Measured HSS output current for channel 3; See chip SPI/watchdog faults and sample age when interpreting this reading.";
-CM_ SG_ 161 ChannelCurrent2 "Measured HSS output current for channel 2; See chip SPI/watchdog faults and sample age when interpreting this reading.";
-CM_ SG_ 161 ChannelCurrent1 "Measured HSS output current for channel 1; See chip SPI/watchdog faults and sample age when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent11 "Measured HSS output current for channel 11; See chip SPI/watchdog faults when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent10 "Measured HSS output current for channel 10; See chip SPI/watchdog faults when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent9 "Measured HSS output current for channel 9; See chip SPI/watchdog faults when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent8 "Measured HSS output current for channel 8; See chip SPI/watchdog faults when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent7 "Measured HSS output current for channel 7; See chip SPI/watchdog faults when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent6 "Measured HSS output current for channel 6; See chip SPI/watchdog faults when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent5 "Measured HSS output current for channel 5; See chip SPI/watchdog faults when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent4 "Measured HSS output current for channel 4; See chip SPI/watchdog faults when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent3 "Measured HSS output current for channel 3; See chip SPI/watchdog faults when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent2 "Measured HSS output current for channel 2; See chip SPI/watchdog faults when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent1 "Measured HSS output current for channel 1; See chip SPI/watchdog faults when interpreting this reading.";
+CM_ SG_ 161 ChannelCurrent0 "Measured HSS output current for channel 0; See chip SPI/watchdog faults when interpreting this reading.";
 CM_ BO_ 162 "2 Hz input and per-channel output voltages, including 0 V when disabled. No per-reading validity bits are transmitted.";
-CM_ SG_ 162 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
-CM_ SG_ 162 ChannelVoltage12 "Measured ChannelVoltage12. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 162 ChannelVoltage11 "Measured ChannelVoltage11. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 162 ChannelVoltage10 "Measured ChannelVoltage10. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 162 ChannelVoltage9 "Measured ChannelVoltage9. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 162 ChannelVoltage8 "Measured ChannelVoltage8. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 162 ChannelVoltage7 "Measured ChannelVoltage7. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 162 ChannelVoltage6 "Measured ChannelVoltage6. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 162 ChannelVoltage5 "Measured ChannelVoltage5. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 162 ChannelVoltage4 "Measured ChannelVoltage4. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 162 ChannelVoltage3 "Measured ChannelVoltage3. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 162 ChannelVoltage2 "Measured ChannelVoltage2. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
-CM_ SG_ 162 ChannelVoltage1 "Measured ChannelVoltage1. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage11 "Measured ChannelVoltage12. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage10 "Measured ChannelVoltage11. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage9 "Measured ChannelVoltage10. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage8 "Measured ChannelVoltage9. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage7 "Measured ChannelVoltage8. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage6 "Measured ChannelVoltage7. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage5 "Measured ChannelVoltage6. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage4 "Measured ChannelVoltage5. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage3 "Measured ChannelVoltage4. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage2 "Measured ChannelVoltage3. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage1 "Measured ChannelVoltage2. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
+CM_ SG_ 162 ChannelVoltage0 "Measured ChannelVoltage1. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
 CM_ SG_ 162 InputVoltage "Measured InputVoltage. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics.";
 CM_ BO_ 163 "1 Hz per-channel FET temperatures; conversions may pause in some I2T modes; consult sample age and chip diagnostics.";
-CM_ SG_ 163 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
-CM_ SG_ 163 ChannelTemperature12 "Channel 12 internal power-FET temperature, not load temperature.";
 CM_ SG_ 163 ChannelTemperature11 "Channel 11 internal power-FET temperature, not load temperature.";
 CM_ SG_ 163 ChannelTemperature10 "Channel 10 internal power-FET temperature, not load temperature.";
 CM_ SG_ 163 ChannelTemperature9 "Channel 9 internal power-FET temperature, not load temperature.";
@@ -1173,82 +1067,15 @@ CM_ SG_ 163 ChannelTemperature4 "Channel 4 internal power-FET temperature, not l
 CM_ SG_ 163 ChannelTemperature3 "Channel 3 internal power-FET temperature, not load temperature.";
 CM_ SG_ 163 ChannelTemperature2 "Channel 2 internal power-FET temperature, not load temperature.";
 CM_ SG_ 163 ChannelTemperature1 "Channel 1 internal power-FET temperature, not load temperature.";
-CM_ BO_ 164 "Latch the first overcurrent or I2T trip per output until an explicit firmware fault-reset action. Freeze the last pre-trip current, its age at detection and the sending board monotonic uptime at detection. Reading diagnostic registers does not clear the telemetry latch. Send immediately on a new trip, then every 1000 ms while a trip remains latched. Never overwrite a captured current with post-shutdown zero. No snapshot/event identifier is sent. Capture time resets on board reboot. This records a sampled current, not a guaranteed instantaneous analog peak. Each output retains its own first trip; a later trip on another channel never replaces existing channel records.";
-CM_ SG_ 164 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
-CM_ SG_ 164 TripCurrent6 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 164 CurrentSampleAgeMs6 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 164 CaptureTimeMs6 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 164 TripCurrent5 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 164 CurrentSampleAgeMs5 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 164 CaptureTimeMs5 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 164 TripCurrent4 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 164 CurrentSampleAgeMs4 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 164 CaptureTimeMs4 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 164 TripCurrent3 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 164 CurrentSampleAgeMs3 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 164 CaptureTimeMs3 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 164 TripCurrent2 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 164 CurrentSampleAgeMs2 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 164 CaptureTimeMs2 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 164 TripCurrent1 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 164 CurrentSampleAgeMs1 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 164 CaptureTimeMs1 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 164 TripCurrentSaturated6 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 164 TripCurrentSaturated5 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 164 TripCurrentSaturated4 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 164 TripCurrentSaturated3 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 164 TripCurrentSaturated2 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 164 TripCurrentSaturated1 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 164 FaultI2T6 "Latched I2T trip for channel 6.";
-CM_ SG_ 164 FaultI2T5 "Latched I2T trip for channel 5.";
-CM_ SG_ 164 FaultI2T4 "Latched I2T trip for channel 4.";
-CM_ SG_ 164 FaultI2T3 "Latched I2T trip for channel 3.";
-CM_ SG_ 164 FaultI2T2 "Latched I2T trip for channel 2.";
-CM_ SG_ 164 FaultI2T1 "Latched I2T trip for channel 1.";
-CM_ SG_ 164 FaultOverCurrent6 "Latched OverCurrent trip for channel 6.";
-CM_ SG_ 164 FaultOverCurrent5 "Latched OverCurrent trip for channel 5.";
-CM_ SG_ 164 FaultOverCurrent4 "Latched OverCurrent trip for channel 4.";
-CM_ SG_ 164 FaultOverCurrent3 "Latched OverCurrent trip for channel 3.";
-CM_ SG_ 164 FaultOverCurrent2 "Latched OverCurrent trip for channel 2.";
-CM_ SG_ 164 FaultOverCurrent1 "Latched OverCurrent trip for channel 1.";
-CM_ BO_ 165 "Latch the first overcurrent or I2T trip per output until an explicit firmware fault-reset action. Freeze the last pre-trip current, its age at detection and the sending board monotonic uptime at detection. Reading diagnostic registers does not clear the telemetry latch. Send immediately on a new trip, then every 1000 ms while a trip remains latched. Never overwrite a captured current with post-shutdown zero. No snapshot/event identifier is sent. Capture time resets on board reboot. This records a sampled current, not a guaranteed instantaneous analog peak. Each output retains its own first trip; a later trip on another channel never replaces existing channel records.";
-CM_ SG_ 165 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
-CM_ SG_ 165 TripCurrent12 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 165 CurrentSampleAgeMs12 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 165 CaptureTimeMs12 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 165 TripCurrent11 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 165 CurrentSampleAgeMs11 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 165 CaptureTimeMs11 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 165 TripCurrent10 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 165 CurrentSampleAgeMs10 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 165 CaptureTimeMs10 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 165 TripCurrent9 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 165 CurrentSampleAgeMs9 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 165 CaptureTimeMs9 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 165 TripCurrent8 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 165 CurrentSampleAgeMs8 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 165 CaptureTimeMs8 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 165 TripCurrent7 "Captured current; independent record per output; saturation marks a lower bound.";
-CM_ SG_ 165 CurrentSampleAgeMs7 "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
-CM_ SG_ 165 CaptureTimeMs7 "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
-CM_ SG_ 165 TripCurrentSaturated12 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 165 TripCurrentSaturated11 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 165 TripCurrentSaturated10 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 165 TripCurrentSaturated9 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 165 TripCurrentSaturated8 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 165 TripCurrentSaturated7 "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
-CM_ SG_ 165 FaultI2T12 "Latched I2T trip for channel 12.";
-CM_ SG_ 165 FaultI2T11 "Latched I2T trip for channel 11.";
-CM_ SG_ 165 FaultI2T10 "Latched I2T trip for channel 10.";
-CM_ SG_ 165 FaultI2T9 "Latched I2T trip for channel 9.";
-CM_ SG_ 165 FaultI2T8 "Latched I2T trip for channel 8.";
-CM_ SG_ 165 FaultI2T7 "Latched I2T trip for channel 7.";
-CM_ SG_ 165 FaultOverCurrent12 "Latched OverCurrent trip for channel 12.";
-CM_ SG_ 165 FaultOverCurrent11 "Latched OverCurrent trip for channel 11.";
-CM_ SG_ 165 FaultOverCurrent10 "Latched OverCurrent trip for channel 10.";
-CM_ SG_ 165 FaultOverCurrent9 "Latched OverCurrent trip for channel 9.";
-CM_ SG_ 165 FaultOverCurrent8 "Latched OverCurrent trip for channel 8.";
-CM_ SG_ 165 FaultOverCurrent7 "Latched OverCurrent trip for channel 7.";
+CM_ SG_ 163 ChannelTemperature0 "Channel 0 internal power-FET temperature, not load temperature.";
+CM_ BO_ 164 "First latched overcurrent or I2T trip for the selected output. Retain each channel record until explicit reset. Send a newly captured trip promptly, then cycle through latched channels, sending one record at each 1000 ms interval while any trip remains latched. CaptureTimeMs is board uptime at detection; CurrentSampleAgeMs is age of the sampled current at detection. A saturated trip current is a lower bound, not an instantaneous peak.";
+CM_ SG_ 164 TripCurrent "Captured current; independent record per output; saturation marks a lower bound.";
+CM_ SG_ 164 CurrentSampleAgeMs "Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms.";
+CM_ SG_ 164 CaptureTimeMs "Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set.";
+CM_ SG_ 164 ChannelIndex "Zero-based channel index: 0 selects Channel0; 11 selects Channel11.";
+CM_ SG_ 164 TripCurrentSaturated "1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak.";
+CM_ SG_ 164 FaultI2T "Latched I2T trip for selected channel.";
+CM_ SG_ 164 FaultOverCurrent "Latched OverCurrent trip for selected channel.";
 BA_DEF_ SG_  "ValueTable" STRING ;
 BA_DEF_ BO_  "LayoutPending" INT 0 1;
 BA_DEF_ BO_  "ProtocolSource" STRING ;
@@ -1564,7 +1391,6 @@ BA_ "VFrameFormat" BO_ 160 14;
 BA_ "GenMsgSendType" BO_ 160 0;
 BA_ "GenMsgCycleTime" BO_ 160 100;
 BA_ "CANFD_BRS" BO_ 160 0;
-BA_ "ValueTable" SG_ 160 ChannelEnabled12 "EnableDisable";
 BA_ "ValueTable" SG_ 160 ChannelEnabled11 "EnableDisable";
 BA_ "ValueTable" SG_ 160 ChannelEnabled10 "EnableDisable";
 BA_ "ValueTable" SG_ 160 ChannelEnabled9 "EnableDisable";
@@ -1576,7 +1402,7 @@ BA_ "ValueTable" SG_ 160 ChannelEnabled4 "EnableDisable";
 BA_ "ValueTable" SG_ 160 ChannelEnabled3 "EnableDisable";
 BA_ "ValueTable" SG_ 160 ChannelEnabled2 "EnableDisable";
 BA_ "ValueTable" SG_ 160 ChannelEnabled1 "EnableDisable";
-BA_ "ValueTable" SG_ 160 WarningChannelBlownFuse12 "WarningState";
+BA_ "ValueTable" SG_ 160 ChannelEnabled0 "EnableDisable";
 BA_ "ValueTable" SG_ 160 WarningChannelBlownFuse11 "WarningState";
 BA_ "ValueTable" SG_ 160 WarningChannelBlownFuse10 "WarningState";
 BA_ "ValueTable" SG_ 160 WarningChannelBlownFuse9 "WarningState";
@@ -1588,10 +1414,8 @@ BA_ "ValueTable" SG_ 160 WarningChannelBlownFuse4 "WarningState";
 BA_ "ValueTable" SG_ 160 WarningChannelBlownFuse3 "WarningState";
 BA_ "ValueTable" SG_ 160 WarningChannelBlownFuse2 "WarningState";
 BA_ "ValueTable" SG_ 160 WarningChannelBlownFuse1 "WarningState";
+BA_ "ValueTable" SG_ 160 WarningChannelBlownFuse0 "WarningState";
 BA_ "ValueTable" SG_ 160 WarningBlownFuse "WarningState";
-BA_ "ValueTable" SG_ 160 FaultChipWatchdog6 "FaultState";
-BA_ "ValueTable" SG_ 160 FaultChipSPIError6 "FaultState";
-BA_ "ValueTable" SG_ 160 FaultChipVBBUndervoltage6 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChipWatchdog5 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChipSPIError5 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChipVBBUndervoltage5 "FaultState";
@@ -1607,11 +1431,9 @@ BA_ "ValueTable" SG_ 160 FaultChipVBBUndervoltage2 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChipWatchdog1 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChipSPIError1 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChipVBBUndervoltage1 "FaultState";
-BA_ "ValueTable" SG_ 160 FaultChannelShortToBattery12 "FaultState";
-BA_ "ValueTable" SG_ 160 FaultChannelOpenLoad12 "FaultState";
-BA_ "ValueTable" SG_ 160 FaultChannelOverTemperature12 "FaultState";
-BA_ "ValueTable" SG_ 160 FaultChannelI2T12 "FaultState";
-BA_ "ValueTable" SG_ 160 FaultChannelOverCurrent12 "FaultState";
+BA_ "ValueTable" SG_ 160 FaultChipWatchdog0 "FaultState";
+BA_ "ValueTable" SG_ 160 FaultChipSPIError0 "FaultState";
+BA_ "ValueTable" SG_ 160 FaultChipVBBUndervoltage0 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChannelShortToBattery11 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChannelOpenLoad11 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChannelOverTemperature11 "FaultState";
@@ -1667,6 +1489,11 @@ BA_ "ValueTable" SG_ 160 FaultChannelOpenLoad1 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChannelOverTemperature1 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChannelI2T1 "FaultState";
 BA_ "ValueTable" SG_ 160 FaultChannelOverCurrent1 "FaultState";
+BA_ "ValueTable" SG_ 160 FaultChannelShortToBattery0 "FaultState";
+BA_ "ValueTable" SG_ 160 FaultChannelOpenLoad0 "FaultState";
+BA_ "ValueTable" SG_ 160 FaultChannelOverTemperature0 "FaultState";
+BA_ "ValueTable" SG_ 160 FaultChannelI2T0 "FaultState";
+BA_ "ValueTable" SG_ 160 FaultChannelOverCurrent0 "FaultState";
 BA_ "LayoutPending" BO_ 161 0;
 BA_ "ProtocolSource" BO_ 161 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 161 14;
@@ -1691,50 +1518,10 @@ BA_ "VFrameFormat" BO_ 164 14;
 BA_ "GenMsgSendType" BO_ 164 1;
 BA_ "GenMsgCycleTime" BO_ 164 1000;
 BA_ "CANFD_BRS" BO_ 164 0;
-BA_ "GenMsgSendCondition" BO_ 164 "AnyOverCurrentOrI2TTripLatched1To6";
-BA_ "ValueTable" SG_ 164 TripCurrentSaturated6 "OnOff";
-BA_ "ValueTable" SG_ 164 TripCurrentSaturated5 "OnOff";
-BA_ "ValueTable" SG_ 164 TripCurrentSaturated4 "OnOff";
-BA_ "ValueTable" SG_ 164 TripCurrentSaturated3 "OnOff";
-BA_ "ValueTable" SG_ 164 TripCurrentSaturated2 "OnOff";
-BA_ "ValueTable" SG_ 164 TripCurrentSaturated1 "OnOff";
-BA_ "ValueTable" SG_ 164 FaultI2T6 "FaultState";
-BA_ "ValueTable" SG_ 164 FaultI2T5 "FaultState";
-BA_ "ValueTable" SG_ 164 FaultI2T4 "FaultState";
-BA_ "ValueTable" SG_ 164 FaultI2T3 "FaultState";
-BA_ "ValueTable" SG_ 164 FaultI2T2 "FaultState";
-BA_ "ValueTable" SG_ 164 FaultI2T1 "FaultState";
-BA_ "ValueTable" SG_ 164 FaultOverCurrent6 "FaultState";
-BA_ "ValueTable" SG_ 164 FaultOverCurrent5 "FaultState";
-BA_ "ValueTable" SG_ 164 FaultOverCurrent4 "FaultState";
-BA_ "ValueTable" SG_ 164 FaultOverCurrent3 "FaultState";
-BA_ "ValueTable" SG_ 164 FaultOverCurrent2 "FaultState";
-BA_ "ValueTable" SG_ 164 FaultOverCurrent1 "FaultState";
-BA_ "LayoutPending" BO_ 165 0;
-BA_ "ProtocolSource" BO_ 165 "2027 allocation draft";
-BA_ "VFrameFormat" BO_ 165 14;
-BA_ "GenMsgSendType" BO_ 165 1;
-BA_ "GenMsgCycleTime" BO_ 165 1000;
-BA_ "CANFD_BRS" BO_ 165 0;
-BA_ "GenMsgSendCondition" BO_ 165 "AnyOverCurrentOrI2TTripLatched7To12";
-BA_ "ValueTable" SG_ 165 TripCurrentSaturated12 "OnOff";
-BA_ "ValueTable" SG_ 165 TripCurrentSaturated11 "OnOff";
-BA_ "ValueTable" SG_ 165 TripCurrentSaturated10 "OnOff";
-BA_ "ValueTable" SG_ 165 TripCurrentSaturated9 "OnOff";
-BA_ "ValueTable" SG_ 165 TripCurrentSaturated8 "OnOff";
-BA_ "ValueTable" SG_ 165 TripCurrentSaturated7 "OnOff";
-BA_ "ValueTable" SG_ 165 FaultI2T12 "FaultState";
-BA_ "ValueTable" SG_ 165 FaultI2T11 "FaultState";
-BA_ "ValueTable" SG_ 165 FaultI2T10 "FaultState";
-BA_ "ValueTable" SG_ 165 FaultI2T9 "FaultState";
-BA_ "ValueTable" SG_ 165 FaultI2T8 "FaultState";
-BA_ "ValueTable" SG_ 165 FaultI2T7 "FaultState";
-BA_ "ValueTable" SG_ 165 FaultOverCurrent12 "FaultState";
-BA_ "ValueTable" SG_ 165 FaultOverCurrent11 "FaultState";
-BA_ "ValueTable" SG_ 165 FaultOverCurrent10 "FaultState";
-BA_ "ValueTable" SG_ 165 FaultOverCurrent9 "FaultState";
-BA_ "ValueTable" SG_ 165 FaultOverCurrent8 "FaultState";
-BA_ "ValueTable" SG_ 165 FaultOverCurrent7 "FaultState";
+BA_ "GenMsgSendCondition" BO_ 164 "AnyOverCurrentOrI2TTripLatched";
+BA_ "ValueTable" SG_ 164 TripCurrentSaturated "OnOff";
+BA_ "ValueTable" SG_ 164 FaultI2T "FaultState";
+BA_ "ValueTable" SG_ 164 FaultOverCurrent "FaultState";
 VAL_ 81 MPPTChargeScheme 0 "Normal" 1 "Advanced" ;
 VAL_ 81 Mode 0 "Normal" 1 "Advanced" ;
 VAL_ 82 Enable 0 "Disabled" 1 "Enabled" ;
@@ -1876,7 +1663,6 @@ VAL_ 144 WarningHSSOverCurrent 1 "Warning" 0 "NoWarning" ;
 VAL_ 148 TripCurrentSaturated 1 "On" 0 "Off" ;
 VAL_ 148 FaultI2T 1 "Fault" 0 "OK" ;
 VAL_ 148 FaultOverCurrent 1 "Fault" 0 "OK" ;
-VAL_ 160 ChannelEnabled12 1 "Enabled" 0 "Disabled" ;
 VAL_ 160 ChannelEnabled11 1 "Enabled" 0 "Disabled" ;
 VAL_ 160 ChannelEnabled10 1 "Enabled" 0 "Disabled" ;
 VAL_ 160 ChannelEnabled9 1 "Enabled" 0 "Disabled" ;
@@ -1888,7 +1674,7 @@ VAL_ 160 ChannelEnabled4 1 "Enabled" 0 "Disabled" ;
 VAL_ 160 ChannelEnabled3 1 "Enabled" 0 "Disabled" ;
 VAL_ 160 ChannelEnabled2 1 "Enabled" 0 "Disabled" ;
 VAL_ 160 ChannelEnabled1 1 "Enabled" 0 "Disabled" ;
-VAL_ 160 WarningChannelBlownFuse12 1 "Warning" 0 "NoWarning" ;
+VAL_ 160 ChannelEnabled0 1 "Enabled" 0 "Disabled" ;
 VAL_ 160 WarningChannelBlownFuse11 1 "Warning" 0 "NoWarning" ;
 VAL_ 160 WarningChannelBlownFuse10 1 "Warning" 0 "NoWarning" ;
 VAL_ 160 WarningChannelBlownFuse9 1 "Warning" 0 "NoWarning" ;
@@ -1900,10 +1686,8 @@ VAL_ 160 WarningChannelBlownFuse4 1 "Warning" 0 "NoWarning" ;
 VAL_ 160 WarningChannelBlownFuse3 1 "Warning" 0 "NoWarning" ;
 VAL_ 160 WarningChannelBlownFuse2 1 "Warning" 0 "NoWarning" ;
 VAL_ 160 WarningChannelBlownFuse1 1 "Warning" 0 "NoWarning" ;
+VAL_ 160 WarningChannelBlownFuse0 1 "Warning" 0 "NoWarning" ;
 VAL_ 160 WarningBlownFuse 1 "Warning" 0 "NoWarning" ;
-VAL_ 160 FaultChipWatchdog6 1 "Fault" 0 "OK" ;
-VAL_ 160 FaultChipSPIError6 1 "Fault" 0 "OK" ;
-VAL_ 160 FaultChipVBBUndervoltage6 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChipWatchdog5 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChipSPIError5 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChipVBBUndervoltage5 1 "Fault" 0 "OK" ;
@@ -1919,11 +1703,9 @@ VAL_ 160 FaultChipVBBUndervoltage2 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChipWatchdog1 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChipSPIError1 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChipVBBUndervoltage1 1 "Fault" 0 "OK" ;
-VAL_ 160 FaultChannelShortToBattery12 1 "Fault" 0 "OK" ;
-VAL_ 160 FaultChannelOpenLoad12 1 "Fault" 0 "OK" ;
-VAL_ 160 FaultChannelOverTemperature12 1 "Fault" 0 "OK" ;
-VAL_ 160 FaultChannelI2T12 1 "Fault" 0 "OK" ;
-VAL_ 160 FaultChannelOverCurrent12 1 "Fault" 0 "OK" ;
+VAL_ 160 FaultChipWatchdog0 1 "Fault" 0 "OK" ;
+VAL_ 160 FaultChipSPIError0 1 "Fault" 0 "OK" ;
+VAL_ 160 FaultChipVBBUndervoltage0 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChannelShortToBattery11 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChannelOpenLoad11 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChannelOverTemperature11 1 "Fault" 0 "OK" ;
@@ -1979,39 +1761,11 @@ VAL_ 160 FaultChannelOpenLoad1 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChannelOverTemperature1 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChannelI2T1 1 "Fault" 0 "OK" ;
 VAL_ 160 FaultChannelOverCurrent1 1 "Fault" 0 "OK" ;
-VAL_ 164 TripCurrentSaturated6 1 "On" 0 "Off" ;
-VAL_ 164 TripCurrentSaturated5 1 "On" 0 "Off" ;
-VAL_ 164 TripCurrentSaturated4 1 "On" 0 "Off" ;
-VAL_ 164 TripCurrentSaturated3 1 "On" 0 "Off" ;
-VAL_ 164 TripCurrentSaturated2 1 "On" 0 "Off" ;
-VAL_ 164 TripCurrentSaturated1 1 "On" 0 "Off" ;
-VAL_ 164 FaultI2T6 1 "Fault" 0 "OK" ;
-VAL_ 164 FaultI2T5 1 "Fault" 0 "OK" ;
-VAL_ 164 FaultI2T4 1 "Fault" 0 "OK" ;
-VAL_ 164 FaultI2T3 1 "Fault" 0 "OK" ;
-VAL_ 164 FaultI2T2 1 "Fault" 0 "OK" ;
-VAL_ 164 FaultI2T1 1 "Fault" 0 "OK" ;
-VAL_ 164 FaultOverCurrent6 1 "Fault" 0 "OK" ;
-VAL_ 164 FaultOverCurrent5 1 "Fault" 0 "OK" ;
-VAL_ 164 FaultOverCurrent4 1 "Fault" 0 "OK" ;
-VAL_ 164 FaultOverCurrent3 1 "Fault" 0 "OK" ;
-VAL_ 164 FaultOverCurrent2 1 "Fault" 0 "OK" ;
-VAL_ 164 FaultOverCurrent1 1 "Fault" 0 "OK" ;
-VAL_ 165 TripCurrentSaturated12 1 "On" 0 "Off" ;
-VAL_ 165 TripCurrentSaturated11 1 "On" 0 "Off" ;
-VAL_ 165 TripCurrentSaturated10 1 "On" 0 "Off" ;
-VAL_ 165 TripCurrentSaturated9 1 "On" 0 "Off" ;
-VAL_ 165 TripCurrentSaturated8 1 "On" 0 "Off" ;
-VAL_ 165 TripCurrentSaturated7 1 "On" 0 "Off" ;
-VAL_ 165 FaultI2T12 1 "Fault" 0 "OK" ;
-VAL_ 165 FaultI2T11 1 "Fault" 0 "OK" ;
-VAL_ 165 FaultI2T10 1 "Fault" 0 "OK" ;
-VAL_ 165 FaultI2T9 1 "Fault" 0 "OK" ;
-VAL_ 165 FaultI2T8 1 "Fault" 0 "OK" ;
-VAL_ 165 FaultI2T7 1 "Fault" 0 "OK" ;
-VAL_ 165 FaultOverCurrent12 1 "Fault" 0 "OK" ;
-VAL_ 165 FaultOverCurrent11 1 "Fault" 0 "OK" ;
-VAL_ 165 FaultOverCurrent10 1 "Fault" 0 "OK" ;
-VAL_ 165 FaultOverCurrent9 1 "Fault" 0 "OK" ;
-VAL_ 165 FaultOverCurrent8 1 "Fault" 0 "OK" ;
-VAL_ 165 FaultOverCurrent7 1 "Fault" 0 "OK" ;
+VAL_ 160 FaultChannelShortToBattery0 1 "Fault" 0 "OK" ;
+VAL_ 160 FaultChannelOpenLoad0 1 "Fault" 0 "OK" ;
+VAL_ 160 FaultChannelOverTemperature0 1 "Fault" 0 "OK" ;
+VAL_ 160 FaultChannelI2T0 1 "Fault" 0 "OK" ;
+VAL_ 160 FaultChannelOverCurrent0 1 "Fault" 0 "OK" ;
+VAL_ 164 TripCurrentSaturated 1 "On" 0 "Off" ;
+VAL_ 164 FaultI2T 1 "Fault" 0 "OK" ;
+VAL_ 164 FaultOverCurrent 1 "Fault" 0 "OK" ;

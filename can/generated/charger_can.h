@@ -305,8 +305,6 @@ typedef struct {
     uint16_t battery_fan_tach2;
     /** BPSFanTach; unit=rpm; physical=raw*5+0; raw=[0,4095]. BPSFanTach */
     uint16_t bps_fan_tach;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } charger_can_bps_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -330,8 +328,6 @@ typedef struct {
     double motor_voltage;
     /** BatteryCurrent; unit=A; physical=raw*0.01+-50; raw=[0,16383]. BatteryCurrent */
     double battery_current;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } charger_can_bps_pack_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -343,76 +339,74 @@ can_status_t charger_can_bps_pack_data_unpack(charger_can_bps_pack_data_t* dst, 
 
 /** BPS individual cell voltages followed by minimum/maximum cell voltage; unchanged physical encodings. */
 typedef struct {
-    /** CellVoltage01; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage01 */
+    /** CellVoltage00; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage01 */
+    uint16_t cell_voltage00;
+    /** CellVoltage01; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage02 */
     uint16_t cell_voltage01;
-    /** CellVoltage02; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage02 */
+    /** CellVoltage02; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage03 */
     uint16_t cell_voltage02;
-    /** CellVoltage03; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage03 */
+    /** CellVoltage03; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage04 */
     uint16_t cell_voltage03;
-    /** CellVoltage04; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage04 */
+    /** CellVoltage04; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage05 */
     uint16_t cell_voltage04;
-    /** CellVoltage05; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage05 */
+    /** CellVoltage05; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage06 */
     uint16_t cell_voltage05;
-    /** CellVoltage06; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage06 */
+    /** CellVoltage06; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage07 */
     uint16_t cell_voltage06;
-    /** CellVoltage07; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage07 */
+    /** CellVoltage07; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage08 */
     uint16_t cell_voltage07;
-    /** CellVoltage08; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage08 */
+    /** CellVoltage08; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage09 */
     uint16_t cell_voltage08;
-    /** CellVoltage09; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage09 */
+    /** CellVoltage09; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage10 */
     uint16_t cell_voltage09;
-    /** CellVoltage10; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage10 */
+    /** CellVoltage10; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage11 */
     uint16_t cell_voltage10;
-    /** CellVoltage11; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage11 */
+    /** CellVoltage11; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage12 */
     uint16_t cell_voltage11;
-    /** CellVoltage12; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage12 */
+    /** CellVoltage12; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage13 */
     uint16_t cell_voltage12;
-    /** CellVoltage13; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage13 */
+    /** CellVoltage13; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage14 */
     uint16_t cell_voltage13;
-    /** CellVoltage14; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage14 */
+    /** CellVoltage14; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage15 */
     uint16_t cell_voltage14;
-    /** CellVoltage15; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage15 */
+    /** CellVoltage15; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage16 */
     uint16_t cell_voltage15;
-    /** CellVoltage16; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage16 */
+    /** CellVoltage16; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage17 */
     uint16_t cell_voltage16;
-    /** CellVoltage17; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage17 */
+    /** CellVoltage17; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage18 */
     uint16_t cell_voltage17;
-    /** CellVoltage18; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage18 */
+    /** CellVoltage18; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage19 */
     uint16_t cell_voltage18;
-    /** CellVoltage19; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage19 */
+    /** CellVoltage19; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage20 */
     uint16_t cell_voltage19;
-    /** CellVoltage20; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage20 */
+    /** CellVoltage20; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage21 */
     uint16_t cell_voltage20;
-    /** CellVoltage21; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage21 */
+    /** CellVoltage21; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage22 */
     uint16_t cell_voltage21;
-    /** CellVoltage22; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage22 */
+    /** CellVoltage22; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage23 */
     uint16_t cell_voltage22;
-    /** CellVoltage23; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage23 */
+    /** CellVoltage23; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage24 */
     uint16_t cell_voltage23;
-    /** CellVoltage24; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage24 */
+    /** CellVoltage24; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage25 */
     uint16_t cell_voltage24;
-    /** CellVoltage25; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage25 */
+    /** CellVoltage25; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage26 */
     uint16_t cell_voltage25;
-    /** CellVoltage26; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage26 */
+    /** CellVoltage26; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage27 */
     uint16_t cell_voltage26;
-    /** CellVoltage27; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage27 */
+    /** CellVoltage27; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage28 */
     uint16_t cell_voltage27;
-    /** CellVoltage28; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage28 */
+    /** CellVoltage28; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage29 */
     uint16_t cell_voltage28;
-    /** CellVoltage29; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage29 */
+    /** CellVoltage29; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage30 */
     uint16_t cell_voltage29;
-    /** CellVoltage30; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage30 */
+    /** CellVoltage30; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage31 */
     uint16_t cell_voltage30;
-    /** CellVoltage31; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage31 */
+    /** CellVoltage31; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage32 */
     uint16_t cell_voltage31;
-    /** CellVoltage32; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage32 */
-    uint16_t cell_voltage32;
     /** MinCellVoltage; unit=mV; physical=raw*1+2000; raw=[0,4095]. MinCellVoltage */
     uint16_t min_cell_voltage;
     /** MaxCellVoltage; unit=mV; physical=raw*1+2000; raw=[0,4095]. MaxCellVoltage */
     uint16_t max_cell_voltage;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } charger_can_bps_voltage_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -424,76 +418,74 @@ can_status_t charger_can_bps_voltage_data_unpack(charger_can_bps_voltage_data_t*
 
 /** BPS individual cell temperatures followed by maximum/average battery temperature; unchanged physical encodings. */
 typedef struct {
-    /** CellTemperature01; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature01 */
+    /** CellTemperature00; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature01 */
+    double cell_temperature00;
+    /** CellTemperature01; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature02 */
     double cell_temperature01;
-    /** CellTemperature02; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature02 */
+    /** CellTemperature02; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature03 */
     double cell_temperature02;
-    /** CellTemperature03; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature03 */
+    /** CellTemperature03; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature04 */
     double cell_temperature03;
-    /** CellTemperature04; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature04 */
+    /** CellTemperature04; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature05 */
     double cell_temperature04;
-    /** CellTemperature05; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature05 */
+    /** CellTemperature05; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature06 */
     double cell_temperature05;
-    /** CellTemperature06; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature06 */
+    /** CellTemperature06; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature07 */
     double cell_temperature06;
-    /** CellTemperature07; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature07 */
+    /** CellTemperature07; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature08 */
     double cell_temperature07;
-    /** CellTemperature08; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature08 */
+    /** CellTemperature08; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature09 */
     double cell_temperature08;
-    /** CellTemperature09; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature09 */
+    /** CellTemperature09; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature10 */
     double cell_temperature09;
-    /** CellTemperature10; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature10 */
+    /** CellTemperature10; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature11 */
     double cell_temperature10;
-    /** CellTemperature11; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature11 */
+    /** CellTemperature11; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature12 */
     double cell_temperature11;
-    /** CellTemperature12; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature12 */
+    /** CellTemperature12; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature13 */
     double cell_temperature12;
-    /** CellTemperature13; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature13 */
+    /** CellTemperature13; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature14 */
     double cell_temperature13;
-    /** CellTemperature14; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature14 */
+    /** CellTemperature14; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature15 */
     double cell_temperature14;
-    /** CellTemperature15; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature15 */
+    /** CellTemperature15; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature16 */
     double cell_temperature15;
-    /** CellTemperature16; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature16 */
+    /** CellTemperature16; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature17 */
     double cell_temperature16;
-    /** CellTemperature17; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature17 */
+    /** CellTemperature17; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature18 */
     double cell_temperature17;
-    /** CellTemperature18; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature18 */
+    /** CellTemperature18; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature19 */
     double cell_temperature18;
-    /** CellTemperature19; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature19 */
+    /** CellTemperature19; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature20 */
     double cell_temperature19;
-    /** CellTemperature20; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature20 */
+    /** CellTemperature20; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature21 */
     double cell_temperature20;
-    /** CellTemperature21; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature21 */
+    /** CellTemperature21; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature22 */
     double cell_temperature21;
-    /** CellTemperature22; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature22 */
+    /** CellTemperature22; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature23 */
     double cell_temperature22;
-    /** CellTemperature23; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature23 */
+    /** CellTemperature23; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature24 */
     double cell_temperature23;
-    /** CellTemperature24; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature24 */
+    /** CellTemperature24; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature25 */
     double cell_temperature24;
-    /** CellTemperature25; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature25 */
+    /** CellTemperature25; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature26 */
     double cell_temperature25;
-    /** CellTemperature26; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature26 */
+    /** CellTemperature26; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature27 */
     double cell_temperature26;
-    /** CellTemperature27; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature27 */
+    /** CellTemperature27; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature28 */
     double cell_temperature27;
-    /** CellTemperature28; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature28 */
+    /** CellTemperature28; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature29 */
     double cell_temperature28;
-    /** CellTemperature29; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature29 */
+    /** CellTemperature29; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature30 */
     double cell_temperature29;
-    /** CellTemperature30; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature30 */
+    /** CellTemperature30; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature31 */
     double cell_temperature30;
-    /** CellTemperature31; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature31 */
+    /** CellTemperature31; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature32 */
     double cell_temperature31;
-    /** CellTemperature32; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature32 */
-    double cell_temperature32;
     /** MaxBatteryTemperature; unit=degC; physical=raw*0.05+0; raw=[0,2047]. MaxBatteryTemperature */
     double max_battery_temperature;
     /** AverageBatteryTemperature; unit=degC; physical=raw*0.05+0; raw=[0,2047]. AverageBatteryTemperature */
     double average_battery_temperature;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } charger_can_bps_temperature_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -596,8 +588,6 @@ typedef struct {
     uint8_t evsecp_valid;
     /** EVSEAvailableCurrent; unit=A; physical=raw*0.01+0; raw=[0,2550]. EVSEAvailableCurrent */
     double evse_available_current;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } charger_can_elcon_interface_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.

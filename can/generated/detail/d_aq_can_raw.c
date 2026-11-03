@@ -187,11 +187,11 @@ int d_aq_can_raw_telemetry_status_pack(
     uint8_t rssi;
     uint8_t sinr;
 
-    if (size < 7u) {
+    if (size < 5u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 7);
+    memset(&dst_p[0], 0, 5);
 
     dst_p[0] |= pack_left_shift_u8(src_p->cellular_connected, 0u, 0x01u);
     dst_p[0] |= pack_left_shift_u8(src_p->cellular_technology, 1u, 0x0eu);
@@ -210,11 +210,8 @@ int d_aq_can_raw_telemetry_status_pack(
     sinr = (uint8_t)src_p->sinr;
     dst_p[3] |= pack_left_shift_u8(sinr, 7u, 0x80u);
     dst_p[4] |= pack_right_shift_u8(sinr, 1u, 0x7fu);
-    dst_p[4] |= pack_left_shift_u16(src_p->sample_age_ms, 7u, 0x80u);
-    dst_p[5] |= pack_right_shift_u16(src_p->sample_age_ms, 1u, 0xffu);
-    dst_p[6] |= pack_right_shift_u16(src_p->sample_age_ms, 9u, 0x7fu);
 
-    return (7);
+    return (5);
 }
 
 int d_aq_can_raw_telemetry_status_unpack(
@@ -227,7 +224,7 @@ int d_aq_can_raw_telemetry_status_unpack(
     uint8_t rssi;
     uint8_t sinr;
 
-    if (size < 7u) {
+    if (size < 5u) {
         return (-EINVAL);
     }
 
@@ -248,9 +245,6 @@ int d_aq_can_raw_telemetry_status_unpack(
     sinr = unpack_right_shift_u8(src_p[3], 7u, 0x80u);
     sinr |= unpack_left_shift_u8(src_p[4], 1u, 0x7fu);
     dst_p->sinr = (int8_t)sinr;
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[4], 7u, 0x80u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[5], 1u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[6], 9u, 0x7fu);
 
     return (0);
 }
@@ -317,13 +311,6 @@ bool d_aq_can_raw_telemetry_status_sinr_is_in_range(int8_t value)
     return (true);
 }
 
-bool d_aq_can_raw_telemetry_status_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_gps_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_gps_data_t *src_p,
@@ -333,11 +320,11 @@ int d_aq_can_raw_gps_data_pack(
     uint32_t gps_latitude;
     uint32_t gps_longitude;
 
-    if (size < 20u) {
+    if (size < 16u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 20);
+    memset(&dst_p[0], 0, 16);
 
     dst_p[0] |= pack_left_shift_u8(src_p->gps_antenna_state, 0u, 0x03u);
     dst_p[0] |= pack_left_shift_u8(src_p->gps_fix, 2u, 0x0cu);
@@ -365,11 +352,8 @@ int d_aq_can_raw_gps_data_pack(
     dst_p[14] |= pack_right_shift_u16(gps_altitude, 12u, 0x0fu);
     dst_p[14] |= pack_left_shift_u8(src_p->satellites_in_use, 4u, 0xf0u);
     dst_p[15] |= pack_right_shift_u8(src_p->satellites_in_use, 4u, 0x0fu);
-    dst_p[15] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
-    dst_p[16] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
-    dst_p[17] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
 
-    return (20);
+    return (16);
 }
 
 int d_aq_can_raw_gps_data_unpack(
@@ -381,7 +365,7 @@ int d_aq_can_raw_gps_data_unpack(
     uint32_t gps_latitude;
     uint32_t gps_longitude;
 
-    if (size < 20u) {
+    if (size < 16u) {
         return (-EINVAL);
     }
 
@@ -411,9 +395,6 @@ int d_aq_can_raw_gps_data_unpack(
     dst_p->gps_altitude = (int16_t)gps_altitude;
     dst_p->satellites_in_use = unpack_right_shift_u8(src_p[14], 4u, 0xf0u);
     dst_p->satellites_in_use |= unpack_left_shift_u8(src_p[15], 4u, 0x0fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[15], 4u, 0xf0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[16], 4u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[17], 12u, 0x0fu);
 
     return (0);
 }
@@ -473,13 +454,6 @@ bool d_aq_can_raw_gps_data_gps_altitude_is_in_range(int16_t value)
 }
 
 bool d_aq_can_raw_gps_data_satellites_in_use_is_in_range(uint8_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_gps_data_sample_age_ms_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -656,9 +630,6 @@ int d_aq_can_raw_chassis_acceleration_data_pack(
     dst_p[26] |= pack_left_shift_u16(acceleration_z_average, 6u, 0xc0u);
     dst_p[27] |= pack_right_shift_u16(acceleration_z_average, 2u, 0xffu);
     dst_p[28] |= pack_right_shift_u16(acceleration_z_average, 10u, 0x07u);
-    dst_p[28] |= pack_left_shift_u16(src_p->sample_age_ms, 3u, 0xf8u);
-    dst_p[29] |= pack_right_shift_u16(src_p->sample_age_ms, 5u, 0xffu);
-    dst_p[30] |= pack_right_shift_u16(src_p->sample_age_ms, 13u, 0x07u);
 
     return (32);
 }
@@ -820,9 +791,6 @@ int d_aq_can_raw_chassis_acceleration_data_unpack(
     }
 
     dst_p->acceleration_z_average = (int16_t)acceleration_z_average;
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[28], 3u, 0xf8u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[29], 5u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[30], 13u, 0x07u);
 
     return (0);
 }
@@ -925,13 +893,6 @@ bool d_aq_can_raw_chassis_acceleration_data_acceleration_z_average_is_in_range(i
     return ((value >= -4096) && (value <= 4095));
 }
 
-bool d_aq_can_raw_chassis_acceleration_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_chassis_gyro_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_chassis_gyro_data_t *src_p,
@@ -1008,8 +969,6 @@ int d_aq_can_raw_chassis_gyro_data_pack(
     gyro_z_average = (uint16_t)src_p->gyro_z_average;
     dst_p[32] |= pack_left_shift_u16(gyro_z_average, 0u, 0xffu);
     dst_p[33] |= pack_right_shift_u16(gyro_z_average, 8u, 0xffu);
-    dst_p[34] |= pack_left_shift_u16(src_p->sample_age_ms, 0u, 0xffu);
-    dst_p[35] |= pack_right_shift_u16(src_p->sample_age_ms, 8u, 0xffu);
 
     return (48);
 }
@@ -1088,8 +1047,6 @@ int d_aq_can_raw_chassis_gyro_data_unpack(
     gyro_z_average = unpack_right_shift_u16(src_p[32], 0u, 0xffu);
     gyro_z_average |= unpack_left_shift_u16(src_p[33], 8u, 0xffu);
     dst_p->gyro_z_average = (int16_t)gyro_z_average;
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[34], 0u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[35], 8u, 0xffu);
 
     return (0);
 }
@@ -1222,13 +1179,6 @@ bool d_aq_can_raw_chassis_gyro_data_gyro_z_average_is_in_range(int16_t value)
     return (true);
 }
 
-bool d_aq_can_raw_chassis_gyro_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_chassis_magnetometer_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_chassis_magnetometer_data_t *src_p,
@@ -1305,9 +1255,6 @@ int d_aq_can_raw_chassis_magnetometer_data_pack(
     magnetic_field_z_average = (uint16_t)src_p->magnetic_field_z_average;
     dst_p[25] |= pack_left_shift_u16(magnetic_field_z_average, 0u, 0xffu);
     dst_p[26] |= pack_right_shift_u16(magnetic_field_z_average, 8u, 0x0fu);
-    dst_p[26] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
-    dst_p[27] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
-    dst_p[28] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
 
     return (32);
 }
@@ -1461,9 +1408,6 @@ int d_aq_can_raw_chassis_magnetometer_data_unpack(
     }
 
     dst_p->magnetic_field_z_average = (int16_t)magnetic_field_z_average;
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[26], 4u, 0xf0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[27], 4u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[28], 12u, 0x0fu);
 
     return (0);
 }
@@ -1566,13 +1510,6 @@ bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_z_average_is_in_range
     return ((value >= -2048) && (value <= 2047));
 }
 
-bool d_aq_can_raw_chassis_magnetometer_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_upright_fr_acceleration_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_upright_fr_acceleration_data_t *src_p,
@@ -1661,9 +1598,6 @@ int d_aq_can_raw_upright_fr_acceleration_data_pack(
     dst_p[30] |= pack_left_shift_u16(acceleration_z_average, 2u, 0xfcu);
     dst_p[31] |= pack_right_shift_u16(acceleration_z_average, 6u, 0xffu);
     dst_p[32] |= pack_right_shift_u16(acceleration_z_average, 14u, 0x01u);
-    dst_p[32] |= pack_left_shift_u16(src_p->sample_age_ms, 1u, 0xfeu);
-    dst_p[33] |= pack_right_shift_u16(src_p->sample_age_ms, 7u, 0xffu);
-    dst_p[34] |= pack_right_shift_u16(src_p->sample_age_ms, 15u, 0x01u);
 
     return (48);
 }
@@ -1829,9 +1763,6 @@ int d_aq_can_raw_upright_fr_acceleration_data_unpack(
     }
 
     dst_p->acceleration_z_average = (int16_t)acceleration_z_average;
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[32], 1u, 0xfeu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[33], 7u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[34], 15u, 0x01u);
 
     return (0);
 }
@@ -1934,13 +1865,6 @@ bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_z_average_is_in_rang
     return ((value >= -16384) && (value <= 16383));
 }
 
-bool d_aq_can_raw_upright_fr_acceleration_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_upright_fr_gyro_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_upright_fr_gyro_data_t *src_p,
@@ -2017,8 +1941,6 @@ int d_aq_can_raw_upright_fr_gyro_data_pack(
     gyro_z_average = (uint16_t)src_p->gyro_z_average;
     dst_p[32] |= pack_left_shift_u16(gyro_z_average, 0u, 0xffu);
     dst_p[33] |= pack_right_shift_u16(gyro_z_average, 8u, 0xffu);
-    dst_p[34] |= pack_left_shift_u16(src_p->sample_age_ms, 0u, 0xffu);
-    dst_p[35] |= pack_right_shift_u16(src_p->sample_age_ms, 8u, 0xffu);
 
     return (48);
 }
@@ -2097,8 +2019,6 @@ int d_aq_can_raw_upright_fr_gyro_data_unpack(
     gyro_z_average = unpack_right_shift_u16(src_p[32], 0u, 0xffu);
     gyro_z_average |= unpack_left_shift_u16(src_p[33], 8u, 0xffu);
     dst_p->gyro_z_average = (int16_t)gyro_z_average;
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[34], 0u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[35], 8u, 0xffu);
 
     return (0);
 }
@@ -2231,23 +2151,16 @@ bool d_aq_can_raw_upright_fr_gyro_data_gyro_z_average_is_in_range(int16_t value)
     return (true);
 }
 
-bool d_aq_can_raw_upright_fr_gyro_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_upright_fr_wheel_speed_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_upright_fr_wheel_speed_data_t *src_p,
     size_t size)
 {
-    if (size < 16u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 16);
+    memset(&dst_p[0], 0, 12);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
@@ -2263,11 +2176,8 @@ int d_aq_can_raw_upright_fr_wheel_speed_data_pack(
     dst_p[9] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
     dst_p[10] |= pack_left_shift_u16(src_p->wheel_rpm_average, 0u, 0xffu);
     dst_p[11] |= pack_right_shift_u16(src_p->wheel_rpm_average, 8u, 0x0fu);
-    dst_p[11] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
-    dst_p[12] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
 
-    return (16);
+    return (12);
 }
 
 int d_aq_can_raw_upright_fr_wheel_speed_data_unpack(
@@ -2275,7 +2185,7 @@ int d_aq_can_raw_upright_fr_wheel_speed_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 16u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
@@ -2293,9 +2203,6 @@ int d_aq_can_raw_upright_fr_wheel_speed_data_unpack(
     dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[9], 4u, 0xffu);
     dst_p->wheel_rpm_average = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
     dst_p->wheel_rpm_average |= unpack_left_shift_u16(src_p[11], 8u, 0x0fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[11], 4u, 0xf0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[12], 4u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[13], 12u, 0x0fu);
 
     return (0);
 }
@@ -2346,13 +2253,6 @@ bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t va
 bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm_average_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
-}
-
-bool d_aq_can_raw_upright_fr_wheel_speed_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
 }
 
 int d_aq_can_raw_upright_fl_acceleration_data_pack(
@@ -2443,9 +2343,6 @@ int d_aq_can_raw_upright_fl_acceleration_data_pack(
     dst_p[30] |= pack_left_shift_u16(acceleration_z_average, 2u, 0xfcu);
     dst_p[31] |= pack_right_shift_u16(acceleration_z_average, 6u, 0xffu);
     dst_p[32] |= pack_right_shift_u16(acceleration_z_average, 14u, 0x01u);
-    dst_p[32] |= pack_left_shift_u16(src_p->sample_age_ms, 1u, 0xfeu);
-    dst_p[33] |= pack_right_shift_u16(src_p->sample_age_ms, 7u, 0xffu);
-    dst_p[34] |= pack_right_shift_u16(src_p->sample_age_ms, 15u, 0x01u);
 
     return (48);
 }
@@ -2611,9 +2508,6 @@ int d_aq_can_raw_upright_fl_acceleration_data_unpack(
     }
 
     dst_p->acceleration_z_average = (int16_t)acceleration_z_average;
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[32], 1u, 0xfeu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[33], 7u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[34], 15u, 0x01u);
 
     return (0);
 }
@@ -2716,13 +2610,6 @@ bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_z_average_is_in_rang
     return ((value >= -16384) && (value <= 16383));
 }
 
-bool d_aq_can_raw_upright_fl_acceleration_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_upright_fl_gyro_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_upright_fl_gyro_data_t *src_p,
@@ -2799,8 +2686,6 @@ int d_aq_can_raw_upright_fl_gyro_data_pack(
     gyro_z_average = (uint16_t)src_p->gyro_z_average;
     dst_p[32] |= pack_left_shift_u16(gyro_z_average, 0u, 0xffu);
     dst_p[33] |= pack_right_shift_u16(gyro_z_average, 8u, 0xffu);
-    dst_p[34] |= pack_left_shift_u16(src_p->sample_age_ms, 0u, 0xffu);
-    dst_p[35] |= pack_right_shift_u16(src_p->sample_age_ms, 8u, 0xffu);
 
     return (48);
 }
@@ -2879,8 +2764,6 @@ int d_aq_can_raw_upright_fl_gyro_data_unpack(
     gyro_z_average = unpack_right_shift_u16(src_p[32], 0u, 0xffu);
     gyro_z_average |= unpack_left_shift_u16(src_p[33], 8u, 0xffu);
     dst_p->gyro_z_average = (int16_t)gyro_z_average;
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[34], 0u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[35], 8u, 0xffu);
 
     return (0);
 }
@@ -3013,23 +2896,16 @@ bool d_aq_can_raw_upright_fl_gyro_data_gyro_z_average_is_in_range(int16_t value)
     return (true);
 }
 
-bool d_aq_can_raw_upright_fl_gyro_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_upright_fl_wheel_speed_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_upright_fl_wheel_speed_data_t *src_p,
     size_t size)
 {
-    if (size < 16u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 16);
+    memset(&dst_p[0], 0, 12);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
@@ -3045,11 +2921,8 @@ int d_aq_can_raw_upright_fl_wheel_speed_data_pack(
     dst_p[9] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
     dst_p[10] |= pack_left_shift_u16(src_p->wheel_rpm_average, 0u, 0xffu);
     dst_p[11] |= pack_right_shift_u16(src_p->wheel_rpm_average, 8u, 0x0fu);
-    dst_p[11] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
-    dst_p[12] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
 
-    return (16);
+    return (12);
 }
 
 int d_aq_can_raw_upright_fl_wheel_speed_data_unpack(
@@ -3057,7 +2930,7 @@ int d_aq_can_raw_upright_fl_wheel_speed_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 16u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
@@ -3075,9 +2948,6 @@ int d_aq_can_raw_upright_fl_wheel_speed_data_unpack(
     dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[9], 4u, 0xffu);
     dst_p->wheel_rpm_average = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
     dst_p->wheel_rpm_average |= unpack_left_shift_u16(src_p[11], 8u, 0x0fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[11], 4u, 0xf0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[12], 4u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[13], 12u, 0x0fu);
 
     return (0);
 }
@@ -3128,13 +2998,6 @@ bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t va
 bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm_average_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
-}
-
-bool d_aq_can_raw_upright_fl_wheel_speed_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
 }
 
 int d_aq_can_raw_upright_rear_acceleration_data_pack(
@@ -3225,9 +3088,6 @@ int d_aq_can_raw_upright_rear_acceleration_data_pack(
     dst_p[30] |= pack_left_shift_u16(acceleration_z_average, 2u, 0xfcu);
     dst_p[31] |= pack_right_shift_u16(acceleration_z_average, 6u, 0xffu);
     dst_p[32] |= pack_right_shift_u16(acceleration_z_average, 14u, 0x01u);
-    dst_p[32] |= pack_left_shift_u16(src_p->sample_age_ms, 1u, 0xfeu);
-    dst_p[33] |= pack_right_shift_u16(src_p->sample_age_ms, 7u, 0xffu);
-    dst_p[34] |= pack_right_shift_u16(src_p->sample_age_ms, 15u, 0x01u);
 
     return (48);
 }
@@ -3393,9 +3253,6 @@ int d_aq_can_raw_upright_rear_acceleration_data_unpack(
     }
 
     dst_p->acceleration_z_average = (int16_t)acceleration_z_average;
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[32], 1u, 0xfeu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[33], 7u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[34], 15u, 0x01u);
 
     return (0);
 }
@@ -3498,13 +3355,6 @@ bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_z_average_is_in_ra
     return ((value >= -16384) && (value <= 16383));
 }
 
-bool d_aq_can_raw_upright_rear_acceleration_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_upright_rear_gyro_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_upright_rear_gyro_data_t *src_p,
@@ -3581,8 +3431,6 @@ int d_aq_can_raw_upright_rear_gyro_data_pack(
     gyro_z_average = (uint16_t)src_p->gyro_z_average;
     dst_p[32] |= pack_left_shift_u16(gyro_z_average, 0u, 0xffu);
     dst_p[33] |= pack_right_shift_u16(gyro_z_average, 8u, 0xffu);
-    dst_p[34] |= pack_left_shift_u16(src_p->sample_age_ms, 0u, 0xffu);
-    dst_p[35] |= pack_right_shift_u16(src_p->sample_age_ms, 8u, 0xffu);
 
     return (48);
 }
@@ -3661,8 +3509,6 @@ int d_aq_can_raw_upright_rear_gyro_data_unpack(
     gyro_z_average = unpack_right_shift_u16(src_p[32], 0u, 0xffu);
     gyro_z_average |= unpack_left_shift_u16(src_p[33], 8u, 0xffu);
     dst_p->gyro_z_average = (int16_t)gyro_z_average;
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[34], 0u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[35], 8u, 0xffu);
 
     return (0);
 }
@@ -3795,23 +3641,16 @@ bool d_aq_can_raw_upright_rear_gyro_data_gyro_z_average_is_in_range(int16_t valu
     return (true);
 }
 
-bool d_aq_can_raw_upright_rear_gyro_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_upright_rear_wheel_speed_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_upright_rear_wheel_speed_data_t *src_p,
     size_t size)
 {
-    if (size < 16u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 16);
+    memset(&dst_p[0], 0, 12);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
@@ -3827,11 +3666,8 @@ int d_aq_can_raw_upright_rear_wheel_speed_data_pack(
     dst_p[9] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
     dst_p[10] |= pack_left_shift_u16(src_p->wheel_rpm_average, 0u, 0xffu);
     dst_p[11] |= pack_right_shift_u16(src_p->wheel_rpm_average, 8u, 0x0fu);
-    dst_p[11] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
-    dst_p[12] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
 
-    return (16);
+    return (12);
 }
 
 int d_aq_can_raw_upright_rear_wheel_speed_data_unpack(
@@ -3839,7 +3675,7 @@ int d_aq_can_raw_upright_rear_wheel_speed_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 16u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
@@ -3857,9 +3693,6 @@ int d_aq_can_raw_upright_rear_wheel_speed_data_unpack(
     dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[9], 4u, 0xffu);
     dst_p->wheel_rpm_average = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
     dst_p->wheel_rpm_average |= unpack_left_shift_u16(src_p[11], 8u, 0x0fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[11], 4u, 0xf0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[12], 4u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[13], 12u, 0x0fu);
 
     return (0);
 }
@@ -3912,13 +3745,6 @@ bool d_aq_can_raw_upright_rear_wheel_speed_data_wheel_rpm_average_is_in_range(ui
     return (value <= 4095u);
 }
 
-bool d_aq_can_raw_upright_rear_wheel_speed_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_suspension_fr_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_suspension_fr_data_t *src_p,
@@ -3942,9 +3768,6 @@ int d_aq_can_raw_suspension_fr_data_pack(
     dst_p[7] |= pack_right_shift_u16(src_p->linpot_position4, 4u, 0xffu);
     dst_p[8] |= pack_left_shift_u16(src_p->linpot_position_average, 0u, 0xffu);
     dst_p[9] |= pack_right_shift_u16(src_p->linpot_position_average, 8u, 0x0fu);
-    dst_p[9] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
-    dst_p[10] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
 
     return (12);
 }
@@ -3970,9 +3793,6 @@ int d_aq_can_raw_suspension_fr_data_unpack(
     dst_p->linpot_position4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
     dst_p->linpot_position_average = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
     dst_p->linpot_position_average |= unpack_left_shift_u16(src_p[9], 8u, 0x0fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[9], 4u, 0xf0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[10], 4u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[11], 12u, 0x0fu);
 
     return (0);
 }
@@ -4018,13 +3838,6 @@ bool d_aq_can_raw_suspension_fr_data_linpot_position_average_is_in_range(uint16_
     return (value <= 4095u);
 }
 
-bool d_aq_can_raw_suspension_fr_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_suspension_fl_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_suspension_fl_data_t *src_p,
@@ -4048,9 +3861,6 @@ int d_aq_can_raw_suspension_fl_data_pack(
     dst_p[7] |= pack_right_shift_u16(src_p->linpot_position4, 4u, 0xffu);
     dst_p[8] |= pack_left_shift_u16(src_p->linpot_position_average, 0u, 0xffu);
     dst_p[9] |= pack_right_shift_u16(src_p->linpot_position_average, 8u, 0x0fu);
-    dst_p[9] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
-    dst_p[10] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
 
     return (12);
 }
@@ -4076,9 +3886,6 @@ int d_aq_can_raw_suspension_fl_data_unpack(
     dst_p->linpot_position4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
     dst_p->linpot_position_average = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
     dst_p->linpot_position_average |= unpack_left_shift_u16(src_p[9], 8u, 0x0fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[9], 4u, 0xf0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[10], 4u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[11], 12u, 0x0fu);
 
     return (0);
 }
@@ -4124,13 +3931,6 @@ bool d_aq_can_raw_suspension_fl_data_linpot_position_average_is_in_range(uint16_
     return (value <= 4095u);
 }
 
-bool d_aq_can_raw_suspension_fl_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int d_aq_can_raw_suspension_rear_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_suspension_rear_data_t *src_p,
@@ -4154,9 +3954,6 @@ int d_aq_can_raw_suspension_rear_data_pack(
     dst_p[7] |= pack_right_shift_u16(src_p->linpot_position4, 4u, 0xffu);
     dst_p[8] |= pack_left_shift_u16(src_p->linpot_position_average, 0u, 0xffu);
     dst_p[9] |= pack_right_shift_u16(src_p->linpot_position_average, 8u, 0x0fu);
-    dst_p[9] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
-    dst_p[10] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
 
     return (12);
 }
@@ -4182,9 +3979,6 @@ int d_aq_can_raw_suspension_rear_data_unpack(
     dst_p->linpot_position4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
     dst_p->linpot_position_average = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
     dst_p->linpot_position_average |= unpack_left_shift_u16(src_p[9], 8u, 0x0fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[9], 4u, 0xf0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[10], 4u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[11], 12u, 0x0fu);
 
     return (0);
 }
@@ -4228,13 +4022,6 @@ bool d_aq_can_raw_suspension_rear_data_linpot_position4_is_in_range(uint16_t val
 bool d_aq_can_raw_suspension_rear_data_linpot_position_average_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
-}
-
-bool d_aq_can_raw_suspension_rear_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
 }
 
 int d_aq_can_raw_blackbody1_data_pack(

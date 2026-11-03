@@ -87,8 +87,7 @@ retains its own voltage/current/temperature and cell-voltage encodings.
 ## Signal organization and October 23 updates
 
 Team-defined messages follow **faults → warnings → discrete signals → continuous
-signals**, with a final sample-age field. Measurement messages end with
-`SampleAgeMs`; a main `Status` field remains first when present.
+signals**. A main `Status` field remains first when present.
 Category boundaries have no alignment gaps. Status fields using FaultState belong
 with faults unless promoted to the explicit main Status header. Measured counts such as satellites
 in use belong with continuous measurements. Fixed vendor layouts are unchanged.
@@ -99,10 +98,10 @@ consumers together rather than mixing versions.
   voltage measurements. It uses unsigned 12-bit bulk encoding (0.05 V/bit,
   offset 0; 0–204.75 V), covering the sum of all 32 representable cell taps.
   BPSPackData is 12 bytes on both CarCAN and ChargerCAN. It contains these five voltages, battery current,
-  then SampleAgeMs. Min/max cell voltage follow the 32 cell voltages
+  with no sample-age field. Min/max cell voltage follow the 32 cell voltages
   in BPSVoltageData (64 bytes). Max/average battery temperature follow the 32
-  cell temperatures in BPSTemperatureData (64 bytes). Existing scales, offsets,
-  widths and units are preserved; the added SampleAgeMs shifts signal positions.
+  cell temperatures in BPSTemperatureData (48 bytes). Existing scales, offsets,
+  widths and units are preserved.
   BPSStatus is now 16 bytes and retains faults, warnings, discrete state,
   permissions, MPPT limits, and all three fan tachometers.
   The CarCAN BPS data block is 0x070 BPSPackData, 0x071 BPSVoltageData,
@@ -118,7 +117,7 @@ consumers together rather than mixing versions.
   A separate one-bit `DriverCameraConnected` uses the shared Connection table.
 - MIKA includes `CM5FanTach`: unsigned 12-bit, 5 rpm/bit, 0–20475 rpm.
   Its discrete connection bits precede frame rate, temperature and fan speed;
-  the frame is now 7 bytes, including SampleAgeMs. The SoC-temperature encoding remains unchanged.
+  the frame is 5 bytes. The SoC-temperature encoding remains unchanged.
 
 ## Legacy timestamp and linpot formats
 
@@ -134,7 +133,7 @@ at **0x621** is named `TelemetryStatus`, also transmitted by MIKA.
 
 Suspension FR/FL/Rear at **0x670/0x671/0x672** each contain an unsigned 16-bit
 raw timestamp, **four unsigned 12-bit ADC/linpot values**, their
-12-bit average, then SampleAgeMs, in twelve bytes. Fields are named `LinpotPosition1` through
+12-bit average, in twelve bytes. Fields are named `LinpotPosition1` through
 `LinpotPosition4`, followed by `LinpotPositionAverage`. The average is across
 the four physical channels and must be supplied by the sender. This year's wire order is uniformly little-endian. Each channel uses
 last year's calibrated conversion:
@@ -354,15 +353,15 @@ shutdown where possible. No snapshot ID is included. CaptureTimeMs is BPS monoto
 legacy TimestampSync unit. Keep captured data unchanged for that fault episode;
 rearm once all faults clear. Never replace it with post-shutdown readings.
 The frames have no explicit cross-frame capture identifier.
-Sample ages saturate at 65535 ms. Each scan has a 32-bit validity mask (bit 0 is
-cell 01); ignore readings with clear bits. The current frame has CurrentValid and SampleAgeMs.
+Each scan has a 32-bit validity mask (bit 0 is
+cell 00); ignore readings with clear bits. The current frame has CurrentValid.
 This captures the latest available samples, not a guaranteed analog trip peak.
 
 Snapshot frames remain on CarCAN and its existing TCP output; the four-message
 ChargerCAN include list is unchanged. Both BPSStatus mirrors rename
 FaultMainVoltageNotPresent/FaultMotorVoltageNotPresent to FaultMainVoltage/
 FaultMotorVoltage and add FaultMainPrechargeVoltage/FaultMotorPrechargeVoltage
-immediately after FaultMainVoltage/FaultMotorVoltage. Status leads the packed layout and SampleAgeMs is last;
+immediately after FaultMainVoltage/FaultMotorVoltage. Status leads the packed layout;
 precharge voltage fault bits are 23/24.
 
 ## LV power telemetry: LVC and PDU
@@ -383,8 +382,7 @@ ChargerCAN's BPS-only forwarding include list. Bootloader IDs are unchanged.
 | 0x0A1 | PDUCurrentData | 24 | Cyclic, 100 ms (10 Hz) |
 | 0x0A2 | PDUVoltageData | 20 | Cyclic, 500 ms |
 | 0x0A3 | PDUTemperatureData | 24 | Cyclic, 1000 ms |
-| 0x0A4 | PDUOverCurrentSnapshotA | 64 | Triggered, 1000 ms while group trip latched |
-| 0x0A5 | PDUOverCurrentSnapshotB | 64 | Triggered, 1000 ms while group trip latched |
+| 0x0A4 | PDUOverCurrentSnapshot | 12 | Triggered, 1000 ms while any trip is latched |
 
 PDU has exactly twelve outputs; chip n controls channels 2n-1/2n. Each channel
 has enabled state, current, output voltage, internal power-FET temperature,
@@ -393,7 +391,7 @@ separate hardware blown-fuse warning. Open-load does not imply a blown fuse.
 Chip VBB undervoltage, SPI error and watchdog faults are reported once per chip
 (six of each). The existing aggregate blown-fuse warning is retained as the OR of the twelve
 per-channel hardware warnings.
-PDUCommand ChannelIndex is zero-based 0–11, selecting Channel1–Channel12.
+PDUCommand ChannelIndex is zero-based 0–11, selecting Channel0–Channel11.
 
 Only LVC's BPS feed uses an HSS channel. Its PDU power feed is separate; no
 fictitious PDU HSS channel or unused second-chip-channel telemetry is added.
@@ -402,12 +400,10 @@ TotalCurrent/TotalOutputCurrent are independent measured totals, not inferred
 sums of downstream channels. Output-enable signals describe requested state;
 output-voltage measurements indicate actual powered state.
 
-No LVC/PDU validity bits are sent. Live readings carry a shared maximum
-SampleAgeMs; chip SPI/watchdog diagnostics and sample age provide diagnostic context.
+No LVC/PDU validity bits are sent. Chip SPI/watchdog diagnostics provide diagnostic context.
 Unavailable readings cannot be distinguished explicitly from legitimate values.
 The HSS may suspend voltage/temperature updates in some I2T operating modes;
-firmware must not reset the reported sample age just because it retransmits a
-cached measurement. Temperature is FET temperature, not load/ambient temperature.
+cached measurements may therefore be stale. Temperature is FET temperature, not load/ambient temperature.
 
 Trip snapshots freeze independent first-trip records per output until an explicit
 firmware fault-reset action. Overcurrent or I2T triggers capture. A later trip on
@@ -415,9 +411,7 @@ another output does not erase earlier records; repeated trips on an already
 latched output keep its first record. Clearing HSS diagnostic registers does not
 automatically clear the software capture. Each saved record has trip current,
 board-uptime CaptureTimeMs, current sample age at detection and saturation flag.
-PDU group A is channels 1–6; B is 7–12. Send that group immediately on a new trip,
-then at most once per 1000 ms while any record remains latched; send nothing
-from an inactive group. There is no SnapshotId and no validity bit. Current
+PDU channel and HSS chip signal indexes are zero-based (0–11 and 0–5). Battery cell indexes are 00–31 on live and snapshot messages. PDU sends one channel per snapshot, using zero-based ChannelIndex (0–11). Send a newly captured trip promptly, then cycle through latched channels with one frame every 1000 ms while any trip remains latched; send nothing when none are latched. A full cycle takes up to 12 seconds if all channels have latched trips. There is no SnapshotId and no validity bit. Current
 saturation means the saved value is a lower bound. Samples are the latest
 available at fault detection, not guaranteed instantaneous analog peaks.
 Capture clocks wrap at 2^32 ms and reset on board reboot; sample ages saturate
@@ -426,20 +420,9 @@ at 65535 ms. Normal readings continue independently of the frozen records.
 Current DBCs describe this contract; acquisition, latching, reset and transmit
 scheduling must be implemented in board firmware.
 
-## Sample-age fields and packed layouts
+## Packed layouts
 
-Every defined team measurement message on CarCAN, ChargerCAN and DAqCAN includes
-unsigned 16-bit `SampleAgeMs` (1 ms/bit, offset 0, 0–65535 ms). It is the age of
-the oldest continuous sensor sample represented when the frame is assembled;
-saturate at 65535 ms. Cached readings keep aging instead of resetting on resend.
-Four-sample sensor batches report the age of their oldest sample. Legacy
-Timestamp/SampleIntervalTicks fields and their scaling remain independent.
-`SampleAgeMs` is always the last signal. A main `Status` field, if present,
-remains first. Status-only, command and timestamp-sync messages
-receive no artificial measurement-age field. Fault snapshots freeze SampleAgeMs
-at capture; PDU per-channel captured ages remain separate for independent trips.
-The single captured-current age in BPS/LVC snapshots is named SampleAgeMs rather
-than carrying a duplicate CurrentSampleAgeMs field.
+Measurement messages do not include a frame-level sample-age field. The selected channel’s current sample age in PDU trip snapshots remains available.
 
 All team-defined signal layouts are contiguous from bit zero, including commands,
 status messages and snapshots. There are no reserved internal alignment gaps.
@@ -459,13 +442,12 @@ none of the LVCStatus signals use fault severity.
 These changes are wire-incompatible with earlier team DBCs: regenerate and update
 all producers, consumers and decoders together. CarCAN/ChargerCAN BPS mirrors
 remain identical. IDs, timing, sensor scaling and ChargerCAN snapshot exclusions
-are unchanged. BPSTemperatureData grows from 48 to 64 bytes; upright wheel-speed
-messages grow from 12 to 16 bytes. Some other payloads shrink after removing gaps.
+are unchanged. Some payloads shrink when their sample-age fields are removed.
 
 ## GPS and lighting commands
 
 MIKA sends `GPSData` on DAqCAN at 0x622 every 200 ms, containing GPS state,
-position, speed, heading, altitude, satellites and SampleAgeMs. Cellular
+position, speed, heading, altitude and satellites. Cellular
 connection and radio measurements remain in TelemetryStatus. LightingCAN uses
 classic CAN: DEI sends `LightingCommand` at 0x083 every 200 ms with BlinkPhase,
 Headlight, Left, Right, Brake, Strobe and three raw PWM commands (0-255). BlinkPhase

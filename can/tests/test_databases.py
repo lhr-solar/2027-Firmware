@@ -327,7 +327,7 @@ class DatabaseTests(unittest.TestCase):
             self.assertEqual(pack.senders, ["BPS"])
             self.assertTrue(pack.is_fd)
             self.assertEqual((status.length, pack.length), (16, 12))
-            self.assertEqual({signal.name for signal in pack.signals}, measurements | {"SampleAgeMs"})
+            self.assertEqual({signal.name for signal in pack.signals}, measurements)
             self.assertFalse(measurements & {signal.name for signal in status.signals})
             for name in (
                 "BatteryFanTach1",
@@ -362,15 +362,15 @@ class DatabaseTests(unittest.TestCase):
                 0x72,
                 ("MaxBatteryTemperature", "AverageBatteryTemperature"),
                 (352, 363),
-                64,
+                48,
                 (800, 600),
             ),
         ):
             message = self.message("CarCAN", identifier)
             self.assertEqual(message.length, length)
-            self.assertEqual(len(message.signals), 35)
+            self.assertEqual(len(message.signals), 34)
             self.assertEqual(
-                [signal.name for signal in message.signals[-3:-1]], list(summaries)
+                [signal.name for signal in message.signals[-2:]], list(summaries)
             )
             raw = {signal.name: 0 for signal in message.signals}
             expected = 0
@@ -666,9 +666,9 @@ class DatabaseTests(unittest.TestCase):
             message = self.message("DAqCAN", identifier)
             self.assertEqual(message.length, 12)
             self.assertFalse(message.dbc.attributes["LayoutPending"].value)
-            self.assertEqual(len(message.signals), 7)
-            raw = {"SampleAgeMs": 7, "Timestamp": 0x1234}
-            packed = 0x1234 | (7 << 76)
+            self.assertEqual(len(message.signals), 6)
+            raw = {"Timestamp": 0x1234}
+            packed = 0x1234
             for channel, count in enumerate((0, 1, 2048, 4095), 1):
                 signal = message.get_signal_by_name(f"LinpotPosition{channel}")
                 self.assertEqual(
@@ -710,8 +710,8 @@ class DatabaseTests(unittest.TestCase):
                 self.assertEqual(
                     (interval.start, interval.length, interval.minimum), (16, 16, 1)
                 )
-                raw = {"SampleAgeMs": 7, "Timestamp": 0x1234, "SampleIntervalTicks": 5}
-                packed = 0x1234 | (5 << 16) | (7 << message.get_signal_by_name("SampleAgeMs").start)
+                raw = {"Timestamp": 0x1234, "SampleIntervalTicks": 5}
+                packed = 0x1234 | (5 << 16)
                 samples = [
                     signal for signal in message.signals if signal.name not in raw
                 ]
@@ -743,13 +743,12 @@ class DatabaseTests(unittest.TestCase):
     def test_lv_power_message_groups_and_timing(self):
         car = self.databases["CarCAN"]
         definitions = (
-            (0x90, "LVCStatus", 100, 2), (0x91, "LVCCurrentData", 100, 12),
-            (0x92, "LVCVoltageData", 500, 7), (0x93, "LVCTemperatureData", 1000, 4),
-            (0x94, "LVCOverCurrentSnapshot", 1000, 12),
-            (0xA0, "PDUStatus", 100, 16), (0xA1, "PDUCurrentData", 100, 24),
-            (0xA2, "PDUVoltageData", 500, 20), (0xA3, "PDUTemperatureData", 1000, 24),
-            (0xA4, "PDUOverCurrentSnapshotA", 1000, 64),
-            (0xA5, "PDUOverCurrentSnapshotB", 1000, 64),
+            (0x90, "LVCStatus", 100, 2), (0x91, "LVCCurrentData", 100, 7),
+            (0x92, "LVCVoltageData", 500, 5), (0x93, "LVCTemperatureData", 1000, 2),
+            (0x94, "LVCOverCurrentSnapshot", 1000, 7),
+            (0xA0, "PDUStatus", 100, 16), (0xA1, "PDUCurrentData", 100, 20),
+            (0xA2, "PDUVoltageData", 500, 20), (0xA3, "PDUTemperatureData", 1000, 20),
+            (0xA4, "PDUOverCurrentSnapshot", 1000, 12),
         )
         for identifier, name, period, length in definitions:
             message = car.get_message_by_frame_id(identifier)
@@ -767,19 +766,34 @@ class DatabaseTests(unittest.TestCase):
             if message.senders in (["LVC"], ["PDU"]):
                 self.assertFalse(any("Valid" in signal.name for signal in message.signals))
 
+    def test_battery_cell_indexes_are_zero_based(self):
+        for bus in ("CarCAN", "ChargerCAN"):
+            for name, prefix, width in (("BPSVoltageData", "CellVoltage", 12),
+                                        ("BPSTemperatureData", "CellTemperature", 11)):
+                message = self.databases[bus].get_message_by_name(name)
+                for index in range(32):
+                    signal = message.get_signal_by_name(f"{prefix}{index:02d}")
+                    self.assertEqual((signal.start, signal.length), (index * width, width))
+        for name, prefix in (("BPSFaultVoltageSnapshot", "CellVoltage"),
+                             ("BPSFaultTemperatureSnapshot", "CellTemperature")):
+            message = self.databases["CarCAN"].get_message_by_name(name)
+            for index in range(32):
+                message.get_signal_by_name(f"{prefix}{index:02d}")
+            self.assertIn("cell 00", message.get_signal_by_name("SampleValidMask").comment)
+
     def test_lv_hss_faults_and_separate_fuse_monitors(self):
         car = self.databases["CarCAN"]
         status = car.get_message_by_name("PDUStatus")
-        for channel in range(1, 13):
+        for channel in range(12):
             for cause in ("OverCurrent", "I2T", "OverTemperature", "OpenLoad", "ShortToBattery"):
                 signal = status.get_signal_by_name(f"FaultChannel{cause}{channel}")
                 self.assertEqual(signal.dbc.attributes["ValueTable"].value, "FaultState")
-                self.assertIn(f"HSS chip {(channel + 1) // 2}", signal.comment)
+                self.assertIn(f"HSS chip {channel // 2}", signal.comment)
             fuse = status.get_signal_by_name(f"WarningChannelBlownFuse{channel}")
             self.assertEqual(fuse.dbc.attributes["ValueTable"].value, "WarningState")
             self.assertNotEqual(fuse.start, status.get_signal_by_name(f"FaultChannelOpenLoad{channel}").start)
             status.get_signal_by_name(f"ChannelEnabled{channel}")
-        for chip in range(1, 7):
+        for chip in range(6):
             for cause in ("VBBUndervoltage", "SPIError", "Watchdog"):
                 status.get_signal_by_name(f"FaultChip{cause}{chip}")
         names = {signal.name for signal in status.signals}
@@ -797,19 +811,19 @@ class DatabaseTests(unittest.TestCase):
         current = car.get_message_by_name("PDUCurrentData")
         values = {signal.name: 0 for signal in current.signals}
         expected = 0
-        for channel in range(1, 13):
-            count = channel * 123
+        for channel in range(12):
+            count = (channel + 1) * 123
             values[f"ChannelCurrent{channel}"] = count
-            expected |= count << (12 * (channel - 1))
+            expected |= count << (12 * channel)
         values["TotalCurrent"] = 2460
         expected |= 2460 << 144
-        self.assertEqual(current.encode(values, scaling=False), expected.to_bytes(24, "little"))
+        self.assertEqual(current.encode(values, scaling=False), expected.to_bytes(current.length, "little"))
         self.assertEqual(current.cycle_time, 100)
-        for channel in range(1, 13):
+        for channel in range(12):
             for message, field in (("PDUVoltageData", "ChannelVoltage"), ("PDUTemperatureData", "ChannelTemperature")):
                 car.get_message_by_name(message).get_signal_by_name(field + str(channel))
-        voltage = car.get_message_by_name("PDUVoltageData").get_signal_by_name("ChannelVoltage1")
-        temperature = car.get_message_by_name("PDUTemperatureData").get_signal_by_name("ChannelTemperature1")
+        voltage = car.get_message_by_name("PDUVoltageData").get_signal_by_name("ChannelVoltage0")
+        temperature = car.get_message_by_name("PDUTemperatureData").get_signal_by_name("ChannelTemperature0")
         self.assertEqual((voltage.scale, voltage.offset, voltage.minimum), (0.05, 0, 0))
         self.assertEqual((temperature.scale, temperature.offset, temperature.minimum, temperature.maximum), (0.05, -40, -40, 200))
         lvb = car.get_message_by_name("LVCCurrentData").get_signal_by_name("LVBCurrent")
@@ -817,24 +831,21 @@ class DatabaseTests(unittest.TestCase):
 
     def test_lv_trip_records_are_independent_per_output(self):
         car = self.databases["CarCAN"]
-        for name, channels in (("PDUOverCurrentSnapshotA", range(1, 7)), ("PDUOverCurrentSnapshotB", range(7, 13))):
-            message = car.get_message_by_name(name)
-            values = {signal.name: 0 for signal in message.signals}
-            expected = 0
-            for index, channel in enumerate(channels):
-                values[f"FaultOverCurrent{channel}"] = 1
-                values[f"CaptureTimeMs{channel}"] = channel * 1000
-                values[f"CurrentSampleAgeMs{channel}"] = channel
-                values[f"TripCurrent{channel}"] = channel * 300
-                expected |= 1 << index
-                expected |= (channel * 1000) << (18 + index * 64)
-                expected |= channel << (50 + index * 64)
-                expected |= (channel * 300) << (66 + index * 64)
+        message = car.get_message_by_name("PDUOverCurrentSnapshot")
+        self.assertEqual(message.get_signal_by_name("ChannelIndex").maximum, 11)
+        self.assertEqual(message.dbc.attributes["GenMsgSendCondition"].value,
+                         "AnyOverCurrentOrI2TTripLatched")
+        for channel_index in range(12):
+            values = {"FaultOverCurrent": 1, "FaultI2T": 0,
+                      "TripCurrentSaturated": 1, "ChannelIndex": channel_index,
+                      "CaptureTimeMs": 123456, "CurrentSampleAgeMs": 9,
+                      "TripCurrent": 1234}
+            expected = (1 | (1 << 2) | (channel_index << 3) | (123456 << 7)
+                        | (9 << 39) | (1234 << 55))
             frame = message.encode(values, scaling=False)
-            self.assertEqual(frame, expected.to_bytes(64, "little"))
-            decoded = message.decode(frame, decode_choices=False, scaling=False)
-            self.assertEqual(decoded, values)
-            self.assertNotIn("SnapshotId", decoded)
+            self.assertEqual(frame, expected.to_bytes(12, "little"))
+            self.assertEqual(message.decode(frame, decode_choices=False, scaling=False), values)
+        self.assertNotIn(0xA5, {message.frame_id for message in car.messages})
         lvc = car.get_message_by_name("LVCOverCurrentSnapshot")
         self.assertEqual(lvc.get_signal_by_name("TripCurrent").length, 16)
         self.assertIn("sampled current", lvc.comment)
@@ -852,7 +863,7 @@ class DatabaseTests(unittest.TestCase):
         car = self.databases["CarCAN"]
         for identifier, name, length in ((0x75, "BPSFaultSnapshot", 12),
                                          (0x76, "BPSFaultVoltageSnapshot", 64),
-                                         (0x77, "BPSFaultTemperatureSnapshot", 64)):
+                                         (0x77, "BPSFaultTemperatureSnapshot", 48)):
             message = car.get_message_by_frame_id(identifier)
             self.assertEqual((message.name, message.length, message.cycle_time), (name, length, 1000))
             self.assertEqual(message.senders, ["BPS"])
@@ -877,9 +888,8 @@ class DatabaseTests(unittest.TestCase):
         for name in ("BPSFaultVoltageSnapshot", "BPSFaultTemperatureSnapshot"):
             message = car.get_message_by_name(name)
             self.assertEqual(message.get_signal_by_name("SampleValidMask").length, 32)
-            self.assertEqual(message.get_signal_by_name("SampleAgeMs").length, 16)
 
-    def test_team_measurement_age_and_gapless_layouts(self):
+    def test_team_gapless_layouts(self):
         lengths = (0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 16, 20, 24, 32, 48, 64)
         for bus in ("CarCAN", "ChargerCAN", "DAqCAN", "LightingCAN"):
             for message in self.databases[bus].messages:
@@ -889,13 +899,7 @@ class DatabaseTests(unittest.TestCase):
                     self.assertEqual(signal.start, bit, (bus, message.name, signal.name))
                     bit += signal.length
                 self.assertEqual(message.length, next(size for size in lengths if size * 8 >= bit))
-                measurements = [signal for signal in signals if signal.unit and signal.unit != "ms"]
-                if not measurements:
-                    continue
-                age = message.get_signal_by_name("SampleAgeMs")
-                self.assertEqual((age.length, age.scale, age.offset, age.unit, age.minimum, age.maximum),
-                                 (16, 1, 0, "ms", 0, 65535))
-                self.assertEqual(signals[-1].name, "SampleAgeMs")
+                self.assertNotIn("SampleAgeMs", {signal.name for signal in signals})
                 if any(signal.name == "Status" for signal in signals):
                     self.assertEqual(signals[0].name, "Status")
         lvc = self.databases["CarCAN"].get_message_by_name("LVCStatus")

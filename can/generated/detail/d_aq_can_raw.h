@@ -72,21 +72,21 @@ extern "C" {
 
 /* Frame lengths in bytes. */
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_LENGTH (2u)
-#define D_AQ_CAN_RAW_TELEMETRY_STATUS_LENGTH (7u)
-#define D_AQ_CAN_RAW_GPS_DATA_LENGTH (20u)
+#define D_AQ_CAN_RAW_TELEMETRY_STATUS_LENGTH (5u)
+#define D_AQ_CAN_RAW_GPS_DATA_LENGTH (16u)
 #define D_AQ_CAN_RAW_ON_BOARD_WATCHDOG_LENGTH (1u)
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_LENGTH (48u)
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_LENGTH (48u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_LENGTH (48u)
-#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_LENGTH (16u)
+#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_LENGTH (12u)
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_LENGTH (48u)
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_LENGTH (48u)
-#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_LENGTH (16u)
+#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_LENGTH (12u)
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_LENGTH (48u)
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_LENGTH (48u)
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_LENGTH (16u)
+#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_LENGTH (12u)
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LENGTH (12u)
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LENGTH (12u)
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LENGTH (12u)
@@ -234,7 +234,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_RSRP_NAME "RSRP"
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_RSRQ_NAME "RSRQ"
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_SINR_NAME "SINR"
-#define D_AQ_CAN_RAW_TELEMETRY_STATUS_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_GPS_DATA_GPS_ANTENNA_STATE_NAME "GPSAntennaState"
 #define D_AQ_CAN_RAW_GPS_DATA_GPS_FIX_NAME "GPSFix"
 #define D_AQ_CAN_RAW_GPS_DATA_GPS_LONGITUDE_NAME "GPSLongitude"
@@ -243,7 +242,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_GPS_DATA_GPS_HEADING_NAME "GPSHeading"
 #define D_AQ_CAN_RAW_GPS_DATA_GPS_ALTITUDE_NAME "GPSAltitude"
 #define D_AQ_CAN_RAW_GPS_DATA_SATELLITES_IN_USE_NAME "SatellitesInUse"
-#define D_AQ_CAN_RAW_GPS_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_ON_BOARD_WATCHDOG_BPS_WATCHDOG_NAME "BPSWatchdog"
 #define D_AQ_CAN_RAW_ON_BOARD_WATCHDOG_VCU_WATCHDOG_NAME "VCUWatchdog"
 #define D_AQ_CAN_RAW_ON_BOARD_WATCHDOG_DEI_WATCHDOG_NAME "DEIWatchdog"
@@ -268,7 +266,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Z_AVERAGE_NAME "AccelerationZAverage"
-#define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_X1_NAME "GyroX1"
@@ -286,7 +283,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z_AVERAGE_NAME "GyroZAverage"
-#define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_X1_NAME "MagneticFieldX1"
@@ -304,7 +300,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z3_NAME "MagneticFieldZ3"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z4_NAME "MagneticFieldZ4"
 #define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z_AVERAGE_NAME "MagneticFieldZAverage"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
@@ -322,7 +317,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Z_AVERAGE_NAME "AccelerationZAverage"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_X1_NAME "GyroX1"
@@ -340,7 +334,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Z_AVERAGE_NAME "GyroZAverage"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM1_NAME "WheelRPM1"
@@ -348,7 +341,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM4_NAME "WheelRPM4"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM_AVERAGE_NAME "WheelRPMAverage"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
@@ -366,7 +358,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Z_AVERAGE_NAME "AccelerationZAverage"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_X1_NAME "GyroX1"
@@ -384,7 +375,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Z_AVERAGE_NAME "GyroZAverage"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM1_NAME "WheelRPM1"
@@ -392,7 +382,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM4_NAME "WheelRPM4"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM_AVERAGE_NAME "WheelRPMAverage"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
@@ -410,7 +399,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Z_AVERAGE_NAME "AccelerationZAverage"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_X1_NAME "GyroX1"
@@ -428,7 +416,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Z_AVERAGE_NAME "GyroZAverage"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM1_NAME "WheelRPM1"
@@ -436,28 +423,24 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM4_NAME "WheelRPM4"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM_AVERAGE_NAME "WheelRPMAverage"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION1_NAME "LinpotPosition1"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION2_NAME "LinpotPosition2"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION3_NAME "LinpotPosition3"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION4_NAME "LinpotPosition4"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION_AVERAGE_NAME "LinpotPositionAverage"
-#define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION1_NAME "LinpotPosition1"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION2_NAME "LinpotPosition2"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION3_NAME "LinpotPosition3"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION4_NAME "LinpotPosition4"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION_AVERAGE_NAME "LinpotPositionAverage"
-#define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION1_NAME "LinpotPosition1"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION2_NAME "LinpotPosition2"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION3_NAME "LinpotPosition3"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION4_NAME "LinpotPosition4"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION_AVERAGE_NAME "LinpotPositionAverage"
-#define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_SAMPLE_AGE_MS_NAME "SampleAgeMs"
 
 /**
  * Signals in message TimestampSync.
@@ -565,21 +548,12 @@ struct d_aq_can_raw_telemetry_status_t {
      * Offset: 0
      */
     int8_t sinr;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
  * Signals in message GPSData.
  *
- * GPS receiver state and measurements. SampleAgeMs is the age of the oldest included GPS measurement, saturated at 65535 ms.
+ * GPS receiver state and measurements.
  *
  * All signal values are as on the CAN bus.
  */
@@ -655,15 +629,6 @@ struct d_aq_can_raw_gps_data_t {
      * Offset: 0
      */
     uint8_t satellites_in_use;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -898,15 +863,6 @@ struct d_aq_can_raw_chassis_acceleration_data_t {
      * Offset: 0
      */
     int16_t acceleration_z_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -1069,15 +1025,6 @@ struct d_aq_can_raw_chassis_gyro_data_t {
      * Offset: 0
      */
     int16_t gyro_z_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -1240,15 +1187,6 @@ struct d_aq_can_raw_chassis_magnetometer_data_t {
      * Offset: 0
      */
     int16_t magnetic_field_z_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -1411,15 +1349,6 @@ struct d_aq_can_raw_upright_fr_acceleration_data_t {
      * Offset: 0
      */
     int16_t acceleration_z_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -1582,15 +1511,6 @@ struct d_aq_can_raw_upright_fr_gyro_data_t {
      * Offset: 0
      */
     int16_t gyro_z_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -1663,15 +1583,6 @@ struct d_aq_can_raw_upright_fr_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t wheel_rpm_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -1834,15 +1745,6 @@ struct d_aq_can_raw_upright_fl_acceleration_data_t {
      * Offset: 0
      */
     int16_t acceleration_z_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -2005,15 +1907,6 @@ struct d_aq_can_raw_upright_fl_gyro_data_t {
      * Offset: 0
      */
     int16_t gyro_z_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -2086,15 +1979,6 @@ struct d_aq_can_raw_upright_fl_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t wheel_rpm_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -2257,15 +2141,6 @@ struct d_aq_can_raw_upright_rear_acceleration_data_t {
      * Offset: 0
      */
     int16_t acceleration_z_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -2428,15 +2303,6 @@ struct d_aq_can_raw_upright_rear_gyro_data_t {
      * Offset: 0
      */
     int16_t gyro_z_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -2509,15 +2375,6 @@ struct d_aq_can_raw_upright_rear_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t wheel_rpm_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -2581,15 +2438,6 @@ struct d_aq_can_raw_suspension_fr_data_t {
      * Offset: 0
      */
     uint16_t linpot_position_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -2653,15 +2501,6 @@ struct d_aq_can_raw_suspension_fl_data_t {
      * Offset: 0
      */
     uint16_t linpot_position_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -2725,15 +2564,6 @@ struct d_aq_can_raw_suspension_rear_data_t {
      * Offset: 0
      */
     uint16_t linpot_position_average;
-
-    /**
-     * Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_age_ms;
 };
 
 /**
@@ -2971,15 +2801,6 @@ bool d_aq_can_raw_telemetry_status_rsrq_is_in_range(int8_t value);
 bool d_aq_can_raw_telemetry_status_sinr_is_in_range(int8_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_telemetry_status_sample_age_ms_is_in_range(uint16_t value);
-
-/**
  * Pack message GPSData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -3087,15 +2908,6 @@ bool d_aq_can_raw_gps_data_gps_altitude_is_in_range(int16_t value);
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_gps_data_satellites_in_use_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_gps_data_sample_age_ms_is_in_range(uint16_t value);
 
 /**
  * Pack message OnBoardWatchdog.
@@ -3388,15 +3200,6 @@ bool d_aq_can_raw_chassis_acceleration_data_acceleration_z4_is_in_range(int16_t 
 bool d_aq_can_raw_chassis_acceleration_data_acceleration_z_average_is_in_range(int16_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_acceleration_data_sample_age_ms_is_in_range(uint16_t value);
-
-/**
  * Pack message ChassisGyroData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -3585,15 +3388,6 @@ bool d_aq_can_raw_chassis_gyro_data_gyro_z4_is_in_range(int16_t value);
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_chassis_gyro_data_gyro_z_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_gyro_data_sample_age_ms_is_in_range(uint16_t value);
 
 /**
  * Pack message ChassisMagnetometerData.
@@ -3786,15 +3580,6 @@ bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_z4_is_in_range(int16_
 bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_z_average_is_in_range(int16_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_sample_age_ms_is_in_range(uint16_t value);
-
-/**
  * Pack message UprightFRAccelerationData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -3983,15 +3768,6 @@ bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_z4_is_in_range(int16
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_z_average_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fr_acceleration_data_sample_age_ms_is_in_range(uint16_t value);
 
 /**
  * Pack message UprightFRGyroData.
@@ -4184,15 +3960,6 @@ bool d_aq_can_raw_upright_fr_gyro_data_gyro_z4_is_in_range(int16_t value);
 bool d_aq_can_raw_upright_fr_gyro_data_gyro_z_average_is_in_range(int16_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fr_gyro_data_sample_age_ms_is_in_range(uint16_t value);
-
-/**
  * Pack message UprightFRWheelSpeedData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -4291,15 +4058,6 @@ bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t va
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm_average_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fr_wheel_speed_data_sample_age_ms_is_in_range(uint16_t value);
 
 /**
  * Pack message UprightFLAccelerationData.
@@ -4492,15 +4250,6 @@ bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_z4_is_in_range(int16
 bool d_aq_can_raw_upright_fl_acceleration_data_acceleration_z_average_is_in_range(int16_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fl_acceleration_data_sample_age_ms_is_in_range(uint16_t value);
-
-/**
  * Pack message UprightFLGyroData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -4691,15 +4440,6 @@ bool d_aq_can_raw_upright_fl_gyro_data_gyro_z4_is_in_range(int16_t value);
 bool d_aq_can_raw_upright_fl_gyro_data_gyro_z_average_is_in_range(int16_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fl_gyro_data_sample_age_ms_is_in_range(uint16_t value);
-
-/**
  * Pack message UprightFLWheelSpeedData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -4798,15 +4538,6 @@ bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t va
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm_average_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fl_wheel_speed_data_sample_age_ms_is_in_range(uint16_t value);
 
 /**
  * Pack message UprightRearAccelerationData.
@@ -4999,15 +4730,6 @@ bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_z4_is_in_range(int
 bool d_aq_can_raw_upright_rear_acceleration_data_acceleration_z_average_is_in_range(int16_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_rear_acceleration_data_sample_age_ms_is_in_range(uint16_t value);
-
-/**
  * Pack message UprightRearGyroData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -5198,15 +4920,6 @@ bool d_aq_can_raw_upright_rear_gyro_data_gyro_z4_is_in_range(int16_t value);
 bool d_aq_can_raw_upright_rear_gyro_data_gyro_z_average_is_in_range(int16_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_rear_gyro_data_sample_age_ms_is_in_range(uint16_t value);
-
-/**
  * Pack message UprightRearWheelSpeedData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -5307,15 +5020,6 @@ bool d_aq_can_raw_upright_rear_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t 
 bool d_aq_can_raw_upright_rear_wheel_speed_data_wheel_rpm_average_is_in_range(uint16_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_rear_wheel_speed_data_sample_age_ms_is_in_range(uint16_t value);
-
-/**
  * Pack message SuspensionFRData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -5405,15 +5109,6 @@ bool d_aq_can_raw_suspension_fr_data_linpot_position4_is_in_range(uint16_t value
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_suspension_fr_data_linpot_position_average_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_suspension_fr_data_sample_age_ms_is_in_range(uint16_t value);
 
 /**
  * Pack message SuspensionFLData.
@@ -5507,15 +5202,6 @@ bool d_aq_can_raw_suspension_fl_data_linpot_position4_is_in_range(uint16_t value
 bool d_aq_can_raw_suspension_fl_data_linpot_position_average_is_in_range(uint16_t value);
 
 /**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_suspension_fl_data_sample_age_ms_is_in_range(uint16_t value);
-
-/**
  * Pack message SuspensionRearData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -5605,15 +5291,6 @@ bool d_aq_can_raw_suspension_rear_data_linpot_position4_is_in_range(uint16_t val
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_suspension_rear_data_linpot_position_average_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_suspension_rear_data_sample_age_ms_is_in_range(uint16_t value);
 
 /**
  * Pack message Blackbody1Data.

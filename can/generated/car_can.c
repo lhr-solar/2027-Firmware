@@ -10,12 +10,12 @@ const car_can_metadata_t car_can = {
         .bps_status = { .id = UINT32_C(96), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
         .bps_pack_data = { .id = UINT32_C(112), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
         .bps_voltage_data = { .id = UINT32_C(113), .payload_bytes = 64, .wire_bytes = 64, .dlc = 15, .is_extended = false, .is_fd = true },
-        .bps_temperature_data = { .id = UINT32_C(114), .payload_bytes = 64, .wire_bytes = 64, .dlc = 15, .is_extended = false, .is_fd = true },
+        .bps_temperature_data = { .id = UINT32_C(114), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
         .smd_status = { .id = UINT32_C(115), .payload_bytes = 0, .wire_bytes = 0, .dlc = 0, .is_extended = false, .is_fd = true },
         .bps_command_echo = { .id = UINT32_C(116), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
         .bps_fault_snapshot = { .id = UINT32_C(117), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
         .bps_fault_voltage_snapshot = { .id = UINT32_C(118), .payload_bytes = 64, .wire_bytes = 64, .dlc = 15, .is_extended = false, .is_fd = true },
-        .bps_fault_temperature_snapshot = { .id = UINT32_C(119), .payload_bytes = 64, .wire_bytes = 64, .dlc = 15, .is_extended = false, .is_fd = true },
+        .bps_fault_temperature_snapshot = { .id = UINT32_C(119), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
     },
     .dei = {
         .dei_status = { .id = UINT32_C(98), .payload_bytes = 2, .wire_bytes = 2, .dlc = 2, .is_extended = false, .is_fd = true },
@@ -28,30 +28,29 @@ const car_can_metadata_t car_can = {
     },
     .lvc = {
         .lvc_status = { .id = UINT32_C(144), .payload_bytes = 2, .wire_bytes = 2, .dlc = 2, .is_extended = false, .is_fd = true },
-        .lvc_current_data = { .id = UINT32_C(145), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
-        .lvc_voltage_data = { .id = UINT32_C(146), .payload_bytes = 7, .wire_bytes = 7, .dlc = 7, .is_extended = false, .is_fd = true },
-        .lvc_temperature_data = { .id = UINT32_C(147), .payload_bytes = 4, .wire_bytes = 4, .dlc = 4, .is_extended = false, .is_fd = true },
-        .lvc_over_current_snapshot = { .id = UINT32_C(148), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
+        .lvc_current_data = { .id = UINT32_C(145), .payload_bytes = 7, .wire_bytes = 7, .dlc = 7, .is_extended = false, .is_fd = true },
+        .lvc_voltage_data = { .id = UINT32_C(146), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
+        .lvc_temperature_data = { .id = UINT32_C(147), .payload_bytes = 2, .wire_bytes = 2, .dlc = 2, .is_extended = false, .is_fd = true },
+        .lvc_over_current_snapshot = { .id = UINT32_C(148), .payload_bytes = 7, .wire_bytes = 7, .dlc = 7, .is_extended = false, .is_fd = true },
     },
     .mika = {
-        .mika_status = { .id = UINT32_C(130), .payload_bytes = 7, .wire_bytes = 7, .dlc = 7, .is_extended = false, .is_fd = true },
+        .mika_status = { .id = UINT32_C(130), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
     },
     .mppt_interface = {
-        .mppt_interface_status = { .id = UINT32_C(121), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
+        .mppt_interface_status = { .id = UINT32_C(121), .payload_bytes = 3, .wire_bytes = 3, .dlc = 3, .is_extended = false, .is_fd = true },
     },
     .pdu = {
         .pdu_status = { .id = UINT32_C(160), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
-        .pdu_current_data = { .id = UINT32_C(161), .payload_bytes = 24, .wire_bytes = 24, .dlc = 12, .is_extended = false, .is_fd = true },
+        .pdu_current_data = { .id = UINT32_C(161), .payload_bytes = 20, .wire_bytes = 20, .dlc = 11, .is_extended = false, .is_fd = true },
         .pdu_voltage_data = { .id = UINT32_C(162), .payload_bytes = 20, .wire_bytes = 20, .dlc = 11, .is_extended = false, .is_fd = true },
-        .pdu_temperature_data = { .id = UINT32_C(163), .payload_bytes = 24, .wire_bytes = 24, .dlc = 12, .is_extended = false, .is_fd = true },
-        .pdu_over_current_snapshot_a = { .id = UINT32_C(164), .payload_bytes = 64, .wire_bytes = 64, .dlc = 15, .is_extended = false, .is_fd = true },
-        .pdu_over_current_snapshot_b = { .id = UINT32_C(165), .payload_bytes = 64, .wire_bytes = 64, .dlc = 15, .is_extended = false, .is_fd = true },
+        .pdu_temperature_data = { .id = UINT32_C(163), .payload_bytes = 20, .wire_bytes = 20, .dlc = 11, .is_extended = false, .is_fd = true },
+        .pdu_over_current_snapshot = { .id = UINT32_C(164), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
     },
     .pedals = {
-        .pedals_status = { .id = UINT32_C(97), .payload_bytes = 8, .wire_bytes = 8, .dlc = 8, .is_extended = false, .is_fd = true },
+        .pedals_status = { .id = UINT32_C(97), .payload_bytes = 6, .wire_bytes = 6, .dlc = 6, .is_extended = false, .is_fd = true },
     },
     .vcu = {
-        .vcu_status = { .id = UINT32_C(99), .payload_bytes = 8, .wire_bytes = 8, .dlc = 8, .is_extended = false, .is_fd = true },
+        .vcu_status = { .id = UINT32_C(99), .payload_bytes = 6, .wire_bytes = 6, .dlc = 6, .is_extended = false, .is_fd = true },
     },
 };
 
@@ -544,10 +543,6 @@ can_status_t car_can_bps_status_pack(can_frame_t* dst, const car_can_bps_status_
         if (encoded > 4095.0) encoded = 4095.0;
         raw.bps_fan_tach = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(96),
         .len = 16, .is_extended = false,
         .is_fd = true };
@@ -655,7 +650,6 @@ can_status_t car_can_bps_status_unpack(car_can_bps_status_t* dst, const can_fram
     result.battery_fan_tach2 = (uint16_t)((double)raw.battery_fan_tach2 * 5.0 + 0.0);
     if (raw.bps_fan_tach > INT64_C(4095)) return CAN_RANGE;
     result.bps_fan_tach = (uint16_t)((double)raw.bps_fan_tach * 5.0 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -754,12 +748,8 @@ can_status_t car_can_pedals_status_pack(can_frame_t* dst, const car_can_pedals_s
         }
         raw.rear_pressure = (uint16_t)value;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(97),
-        .len = 8, .is_extended = false,
+        .len = 6, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_pedals_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -768,7 +758,7 @@ can_status_t car_can_pedals_status_pack(can_frame_t* dst, const car_can_pedals_s
 
 can_status_t car_can_pedals_status_unpack(car_can_pedals_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(97) || src->len != 8 ||
+    if (src->id != UINT32_C(97) || src->len != 6 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -797,7 +787,6 @@ can_status_t car_can_pedals_status_unpack(car_can_pedals_status_t* dst, const ca
     result.front_pressure = (uint16_t)raw.front_pressure;
     if (raw.rear_pressure > INT64_C(3000)) return CAN_RANGE;
     result.rear_pressure = (uint16_t)raw.rear_pressure;
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -1106,12 +1095,8 @@ can_status_t car_can_vcu_status_pack(can_frame_t* dst, const car_can_vcu_status_
         if (encoded > 4095.0) encoded = 4095.0;
         raw.motor_fan_tach = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(99),
-        .len = 8, .is_extended = false,
+        .len = 6, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_vcu_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -1120,7 +1105,7 @@ can_status_t car_can_vcu_status_pack(can_frame_t* dst, const car_can_vcu_status_
 
 can_status_t car_can_vcu_status_unpack(car_can_vcu_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(99) || src->len != 8 ||
+    if (src->id != UINT32_C(99) || src->len != 6 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -1173,7 +1158,6 @@ can_status_t car_can_vcu_status_unpack(car_can_vcu_status_t* dst, const can_fram
     result.motor_controller_fan_tach = (uint16_t)((double)raw.motor_controller_fan_tach * 5.0 + 0.0);
     if (raw.motor_fan_tach > INT64_C(4095)) return CAN_RANGE;
     result.motor_fan_tach = (uint16_t)((double)raw.motor_fan_tach * 5.0 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -1242,10 +1226,6 @@ can_status_t car_can_bps_pack_data_pack(can_frame_t* dst, const car_can_bps_pack
         if (encoded > 16383.0) encoded = 16383.0;
         raw.battery_current = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(112),
         .len = 12, .is_extended = false,
         .is_fd = true };
@@ -1275,7 +1255,6 @@ can_status_t car_can_bps_pack_data_unpack(car_can_bps_pack_data_t* dst, const ca
     result.motor_voltage = (double)((double)raw.motor_voltage * 0.05 + 0.0);
     if (raw.battery_current > INT64_C(16383)) return CAN_RANGE;
     result.battery_current = (double)((double)raw.battery_current * 0.01 + -50.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -1284,6 +1263,16 @@ can_status_t car_can_bps_voltage_data_pack(can_frame_t* dst, const car_can_bps_v
     if (dst == NULL || src == NULL) return CAN_INVALID;
     struct car_can_raw_bps_voltage_data_t raw = {0};
     can_status_t status = CAN_OK;
+    {
+        double value = (double)src->cell_voltage00;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < 2000.0) { value = 2000.0; status = CAN_CLAMPED; }
+        if (value > 6095.0) { value = 6095.0; status = CAN_CLAMPED; }
+        double encoded = round((value - 2000.0) / 1.0);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 4095.0) encoded = 4095.0;
+        raw.cell_voltage00 = (uint16_t)encoded;
+    }
     {
         double value = (double)src->cell_voltage01;
         if (!isfinite(value)) return CAN_INVALID;
@@ -1595,16 +1584,6 @@ can_status_t car_can_bps_voltage_data_pack(can_frame_t* dst, const car_can_bps_v
         raw.cell_voltage31 = (uint16_t)encoded;
     }
     {
-        double value = (double)src->cell_voltage32;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 2000.0) { value = 2000.0; status = CAN_CLAMPED; }
-        if (value > 6095.0) { value = 6095.0; status = CAN_CLAMPED; }
-        double encoded = round((value - 2000.0) / 1.0);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 4095.0) encoded = 4095.0;
-        raw.cell_voltage32 = (uint16_t)encoded;
-    }
-    {
         double value = (double)src->min_cell_voltage;
         if (!isfinite(value)) return CAN_INVALID;
         if (value < 2000.0) { value = 2000.0; status = CAN_CLAMPED; }
@@ -1624,10 +1603,6 @@ can_status_t car_can_bps_voltage_data_pack(can_frame_t* dst, const car_can_bps_v
         if (encoded > 4095.0) encoded = 4095.0;
         raw.max_cell_voltage = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(113),
         .len = 64, .is_extended = false,
         .is_fd = true };
@@ -1645,6 +1620,8 @@ can_status_t car_can_bps_voltage_data_unpack(car_can_bps_voltage_data_t* dst, co
     struct car_can_raw_bps_voltage_data_t raw = {0};
     if (car_can_raw_bps_voltage_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     car_can_bps_voltage_data_t result = {0};
+    if (raw.cell_voltage00 > INT64_C(4095)) return CAN_RANGE;
+    result.cell_voltage00 = (uint16_t)((double)raw.cell_voltage00 * 1.0 + 2000.0);
     if (raw.cell_voltage01 > INT64_C(4095)) return CAN_RANGE;
     result.cell_voltage01 = (uint16_t)((double)raw.cell_voltage01 * 1.0 + 2000.0);
     if (raw.cell_voltage02 > INT64_C(4095)) return CAN_RANGE;
@@ -1707,13 +1684,10 @@ can_status_t car_can_bps_voltage_data_unpack(car_can_bps_voltage_data_t* dst, co
     result.cell_voltage30 = (uint16_t)((double)raw.cell_voltage30 * 1.0 + 2000.0);
     if (raw.cell_voltage31 > INT64_C(4095)) return CAN_RANGE;
     result.cell_voltage31 = (uint16_t)((double)raw.cell_voltage31 * 1.0 + 2000.0);
-    if (raw.cell_voltage32 > INT64_C(4095)) return CAN_RANGE;
-    result.cell_voltage32 = (uint16_t)((double)raw.cell_voltage32 * 1.0 + 2000.0);
     if (raw.min_cell_voltage > INT64_C(4095)) return CAN_RANGE;
     result.min_cell_voltage = (uint16_t)((double)raw.min_cell_voltage * 1.0 + 2000.0);
     if (raw.max_cell_voltage > INT64_C(4095)) return CAN_RANGE;
     result.max_cell_voltage = (uint16_t)((double)raw.max_cell_voltage * 1.0 + 2000.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -1722,6 +1696,16 @@ can_status_t car_can_bps_temperature_data_pack(can_frame_t* dst, const car_can_b
     if (dst == NULL || src == NULL) return CAN_INVALID;
     struct car_can_raw_bps_temperature_data_t raw = {0};
     can_status_t status = CAN_OK;
+    {
+        double value = (double)src->cell_temperature00;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
+        if (value > 102.35) { value = 102.35; status = CAN_CLAMPED; }
+        double encoded = round((value - 0.0) / 0.05);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 2047.0) encoded = 2047.0;
+        raw.cell_temperature00 = (uint16_t)encoded;
+    }
     {
         double value = (double)src->cell_temperature01;
         if (!isfinite(value)) return CAN_INVALID;
@@ -2033,16 +2017,6 @@ can_status_t car_can_bps_temperature_data_pack(can_frame_t* dst, const car_can_b
         raw.cell_temperature31 = (uint16_t)encoded;
     }
     {
-        double value = (double)src->cell_temperature32;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 102.35) { value = 102.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.05);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 2047.0) encoded = 2047.0;
-        raw.cell_temperature32 = (uint16_t)encoded;
-    }
-    {
         double value = (double)src->max_battery_temperature;
         if (!isfinite(value)) return CAN_INVALID;
         if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
@@ -2062,12 +2036,8 @@ can_status_t car_can_bps_temperature_data_pack(can_frame_t* dst, const car_can_b
         if (encoded > 2047.0) encoded = 2047.0;
         raw.average_battery_temperature = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(114),
-        .len = 64, .is_extended = false,
+        .len = 48, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_bps_temperature_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -2076,13 +2046,15 @@ can_status_t car_can_bps_temperature_data_pack(can_frame_t* dst, const car_can_b
 
 can_status_t car_can_bps_temperature_data_unpack(car_can_bps_temperature_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(114) || src->len != 64 ||
+    if (src->id != UINT32_C(114) || src->len != 48 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
     struct car_can_raw_bps_temperature_data_t raw = {0};
     if (car_can_raw_bps_temperature_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     car_can_bps_temperature_data_t result = {0};
+    if (raw.cell_temperature00 > INT64_C(2047)) return CAN_RANGE;
+    result.cell_temperature00 = (double)((double)raw.cell_temperature00 * 0.05 + 0.0);
     if (raw.cell_temperature01 > INT64_C(2047)) return CAN_RANGE;
     result.cell_temperature01 = (double)((double)raw.cell_temperature01 * 0.05 + 0.0);
     if (raw.cell_temperature02 > INT64_C(2047)) return CAN_RANGE;
@@ -2145,13 +2117,10 @@ can_status_t car_can_bps_temperature_data_unpack(car_can_bps_temperature_data_t*
     result.cell_temperature30 = (double)((double)raw.cell_temperature30 * 0.05 + 0.0);
     if (raw.cell_temperature31 > INT64_C(2047)) return CAN_RANGE;
     result.cell_temperature31 = (double)((double)raw.cell_temperature31 * 0.05 + 0.0);
-    if (raw.cell_temperature32 > INT64_C(2047)) return CAN_RANGE;
-    result.cell_temperature32 = (double)((double)raw.cell_temperature32 * 0.05 + 0.0);
     if (raw.max_battery_temperature > INT64_C(2047)) return CAN_RANGE;
     result.max_battery_temperature = (double)((double)raw.max_battery_temperature * 0.05 + 0.0);
     if (raw.average_battery_temperature > INT64_C(2047)) return CAN_RANGE;
     result.average_battery_temperature = (double)((double)raw.average_battery_temperature * 0.05 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -2406,10 +2375,6 @@ can_status_t car_can_bps_fault_snapshot_pack(can_frame_t* dst, const car_can_bps
         if (encoded > 16383.0) encoded = 16383.0;
         raw.battery_current = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(117),
         .len = 12, .is_extended = false,
         .is_fd = true };
@@ -2474,7 +2439,6 @@ can_status_t car_can_bps_fault_snapshot_unpack(car_can_bps_fault_snapshot_t* dst
     result.capture_time_ms = (uint32_t)raw.capture_time_ms;
     if (raw.battery_current > INT64_C(16383)) return CAN_RANGE;
     result.battery_current = (double)((double)raw.battery_current * 0.01 + -50.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -2486,6 +2450,16 @@ can_status_t car_can_bps_fault_voltage_snapshot_pack(can_frame_t* dst, const car
     {
         uint32_t value = src->sample_valid_mask;
         raw.sample_valid_mask = (uint32_t)value;
+    }
+    {
+        double value = (double)src->cell_voltage00;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < 2000.0) { value = 2000.0; status = CAN_CLAMPED; }
+        if (value > 6095.0) { value = 6095.0; status = CAN_CLAMPED; }
+        double encoded = round((value - 2000.0) / 1.0);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 4095.0) encoded = 4095.0;
+        raw.cell_voltage00 = (uint16_t)encoded;
     }
     {
         double value = (double)src->cell_voltage01;
@@ -2797,20 +2771,6 @@ can_status_t car_can_bps_fault_voltage_snapshot_pack(can_frame_t* dst, const car
         if (encoded > 4095.0) encoded = 4095.0;
         raw.cell_voltage31 = (uint16_t)encoded;
     }
-    {
-        double value = (double)src->cell_voltage32;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 2000.0) { value = 2000.0; status = CAN_CLAMPED; }
-        if (value > 6095.0) { value = 6095.0; status = CAN_CLAMPED; }
-        double encoded = round((value - 2000.0) / 1.0);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 4095.0) encoded = 4095.0;
-        raw.cell_voltage32 = (uint16_t)encoded;
-    }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(118),
         .len = 64, .is_extended = false,
         .is_fd = true };
@@ -2829,6 +2789,8 @@ can_status_t car_can_bps_fault_voltage_snapshot_unpack(car_can_bps_fault_voltage
     if (car_can_raw_bps_fault_voltage_snapshot_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     car_can_bps_fault_voltage_snapshot_t result = {0};
     result.sample_valid_mask = (uint32_t)raw.sample_valid_mask;
+    if (raw.cell_voltage00 > INT64_C(4095)) return CAN_RANGE;
+    result.cell_voltage00 = (uint16_t)((double)raw.cell_voltage00 * 1.0 + 2000.0);
     if (raw.cell_voltage01 > INT64_C(4095)) return CAN_RANGE;
     result.cell_voltage01 = (uint16_t)((double)raw.cell_voltage01 * 1.0 + 2000.0);
     if (raw.cell_voltage02 > INT64_C(4095)) return CAN_RANGE;
@@ -2891,9 +2853,6 @@ can_status_t car_can_bps_fault_voltage_snapshot_unpack(car_can_bps_fault_voltage
     result.cell_voltage30 = (uint16_t)((double)raw.cell_voltage30 * 1.0 + 2000.0);
     if (raw.cell_voltage31 > INT64_C(4095)) return CAN_RANGE;
     result.cell_voltage31 = (uint16_t)((double)raw.cell_voltage31 * 1.0 + 2000.0);
-    if (raw.cell_voltage32 > INT64_C(4095)) return CAN_RANGE;
-    result.cell_voltage32 = (uint16_t)((double)raw.cell_voltage32 * 1.0 + 2000.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -2905,6 +2864,16 @@ can_status_t car_can_bps_fault_temperature_snapshot_pack(can_frame_t* dst, const
     {
         uint32_t value = src->sample_valid_mask;
         raw.sample_valid_mask = (uint32_t)value;
+    }
+    {
+        double value = (double)src->cell_temperature00;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
+        if (value > 102.35) { value = 102.35; status = CAN_CLAMPED; }
+        double encoded = round((value - 0.0) / 0.05);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 2047.0) encoded = 2047.0;
+        raw.cell_temperature00 = (uint16_t)encoded;
     }
     {
         double value = (double)src->cell_temperature01;
@@ -3216,22 +3185,8 @@ can_status_t car_can_bps_fault_temperature_snapshot_pack(can_frame_t* dst, const
         if (encoded > 2047.0) encoded = 2047.0;
         raw.cell_temperature31 = (uint16_t)encoded;
     }
-    {
-        double value = (double)src->cell_temperature32;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 102.35) { value = 102.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.05);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 2047.0) encoded = 2047.0;
-        raw.cell_temperature32 = (uint16_t)encoded;
-    }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(119),
-        .len = 64, .is_extended = false,
+        .len = 48, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_bps_fault_temperature_snapshot_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -3240,7 +3195,7 @@ can_status_t car_can_bps_fault_temperature_snapshot_pack(can_frame_t* dst, const
 
 can_status_t car_can_bps_fault_temperature_snapshot_unpack(car_can_bps_fault_temperature_snapshot_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(119) || src->len != 64 ||
+    if (src->id != UINT32_C(119) || src->len != 48 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -3248,6 +3203,8 @@ can_status_t car_can_bps_fault_temperature_snapshot_unpack(car_can_bps_fault_tem
     if (car_can_raw_bps_fault_temperature_snapshot_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     car_can_bps_fault_temperature_snapshot_t result = {0};
     result.sample_valid_mask = (uint32_t)raw.sample_valid_mask;
+    if (raw.cell_temperature00 > INT64_C(2047)) return CAN_RANGE;
+    result.cell_temperature00 = (double)((double)raw.cell_temperature00 * 0.05 + 0.0);
     if (raw.cell_temperature01 > INT64_C(2047)) return CAN_RANGE;
     result.cell_temperature01 = (double)((double)raw.cell_temperature01 * 0.05 + 0.0);
     if (raw.cell_temperature02 > INT64_C(2047)) return CAN_RANGE;
@@ -3310,9 +3267,6 @@ can_status_t car_can_bps_fault_temperature_snapshot_unpack(car_can_bps_fault_tem
     result.cell_temperature30 = (double)((double)raw.cell_temperature30 * 0.05 + 0.0);
     if (raw.cell_temperature31 > INT64_C(2047)) return CAN_RANGE;
     result.cell_temperature31 = (double)((double)raw.cell_temperature31 * 0.05 + 0.0);
-    if (raw.cell_temperature32 > INT64_C(2047)) return CAN_RANGE;
-    result.cell_temperature32 = (double)((double)raw.cell_temperature32 * 0.05 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -3380,12 +3334,8 @@ can_status_t car_can_mppt_interface_status_pack(can_frame_t* dst, const car_can_
         if (encoded > 4095.0) encoded = 4095.0;
         raw.fan_tach = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(121),
-        .len = 5, .is_extended = false,
+        .len = 3, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_mppt_interface_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -3394,7 +3344,7 @@ can_status_t car_can_mppt_interface_status_pack(can_frame_t* dst, const car_can_
 
 can_status_t car_can_mppt_interface_status_unpack(car_can_mppt_interface_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(121) || src->len != 5 ||
+    if (src->id != UINT32_C(121) || src->len != 3 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -3417,7 +3367,6 @@ can_status_t car_can_mppt_interface_status_unpack(car_can_mppt_interface_status_
     result.sweeping_active = (uint8_t)raw.sweeping_active;
     if (raw.fan_tach > INT64_C(4095)) return CAN_RANGE;
     result.fan_tach = (uint16_t)((double)raw.fan_tach * 5.0 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -3523,12 +3472,8 @@ can_status_t car_can_mika_status_pack(can_frame_t* dst, const car_can_mika_statu
         if (encoded > 4095.0) encoded = 4095.0;
         raw.cm5_fan_tach = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(130),
-        .len = 7, .is_extended = false,
+        .len = 5, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_mika_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -3537,7 +3482,7 @@ can_status_t car_can_mika_status_pack(can_frame_t* dst, const car_can_mika_statu
 
 can_status_t car_can_mika_status_unpack(car_can_mika_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(130) || src->len != 7 ||
+    if (src->id != UINT32_C(130) || src->len != 5 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -3570,7 +3515,6 @@ can_status_t car_can_mika_status_unpack(car_can_mika_status_t* dst, const can_fr
     result.so_c_temperature = (double)((double)raw.so_c_temperature * 0.5 + -20.0);
     if (raw.cm5_fan_tach > INT64_C(4095)) return CAN_RANGE;
     result.cm5_fan_tach = (uint16_t)((double)raw.cm5_fan_tach * 5.0 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -3752,12 +3696,8 @@ can_status_t car_can_lvc_current_data_pack(can_frame_t* dst, const car_can_lvc_c
         if (encoded > 4095.0) encoded = 4095.0;
         raw.bpslv_current = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(145),
-        .len = 12, .is_extended = false,
+        .len = 7, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_lvc_current_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -3766,7 +3706,7 @@ can_status_t car_can_lvc_current_data_pack(can_frame_t* dst, const car_can_lvc_c
 
 can_status_t car_can_lvc_current_data_unpack(car_can_lvc_current_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(145) || src->len != 12 ||
+    if (src->id != UINT32_C(145) || src->len != 7 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -3781,7 +3721,6 @@ can_status_t car_can_lvc_current_data_unpack(car_can_lvc_current_data_t* dst, co
     result.total_output_current = (double)((double)raw.total_output_current * 0.01 + 0.0);
     if (raw.bpslv_current > INT64_C(4095)) return CAN_RANGE;
     result.bpslv_current = (double)((double)raw.bpslv_current * 0.01 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -3830,12 +3769,8 @@ can_status_t car_can_lvc_voltage_data_pack(can_frame_t* dst, const car_can_lvc_v
         if (encoded > 1023.0) encoded = 1023.0;
         raw.bpslv_voltage = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(146),
-        .len = 7, .is_extended = false,
+        .len = 5, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_lvc_voltage_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -3844,7 +3779,7 @@ can_status_t car_can_lvc_voltage_data_pack(can_frame_t* dst, const car_can_lvc_v
 
 can_status_t car_can_lvc_voltage_data_unpack(car_can_lvc_voltage_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(146) || src->len != 7 ||
+    if (src->id != UINT32_C(146) || src->len != 5 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -3859,7 +3794,6 @@ can_status_t car_can_lvc_voltage_data_unpack(car_can_lvc_voltage_data_t* dst, co
     result.power_supply_voltage = (double)((double)raw.power_supply_voltage * 0.05 + 0.0);
     if (raw.bpslv_voltage > INT64_C(1023)) return CAN_RANGE;
     result.bpslv_voltage = (double)((double)raw.bpslv_voltage * 0.05 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -3878,12 +3812,8 @@ can_status_t car_can_lvc_temperature_data_pack(can_frame_t* dst, const car_can_l
         if (encoded > 4800.0) encoded = 4800.0;
         raw.bpsfet_temperature = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(147),
-        .len = 4, .is_extended = false,
+        .len = 2, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_lvc_temperature_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -3892,7 +3822,7 @@ can_status_t car_can_lvc_temperature_data_pack(can_frame_t* dst, const car_can_l
 
 can_status_t car_can_lvc_temperature_data_unpack(car_can_lvc_temperature_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(147) || src->len != 4 ||
+    if (src->id != UINT32_C(147) || src->len != 2 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -3901,7 +3831,6 @@ can_status_t car_can_lvc_temperature_data_unpack(car_can_lvc_temperature_data_t*
     car_can_lvc_temperature_data_t result = {0};
     if (raw.bpsfet_temperature > INT64_C(4800)) return CAN_RANGE;
     result.bpsfet_temperature = (double)((double)raw.bpsfet_temperature * 0.05 + -40.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -3945,12 +3874,8 @@ can_status_t car_can_lvc_over_current_snapshot_pack(can_frame_t* dst, const car_
         if (encoded > 65535.0) encoded = 65535.0;
         raw.trip_current = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(148),
-        .len = 12, .is_extended = false,
+        .len = 7, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_lvc_over_current_snapshot_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -3959,7 +3884,7 @@ can_status_t car_can_lvc_over_current_snapshot_pack(can_frame_t* dst, const car_
 
 can_status_t car_can_lvc_over_current_snapshot_unpack(car_can_lvc_over_current_snapshot_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(148) || src->len != 12 ||
+    if (src->id != UINT32_C(148) || src->len != 7 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -3974,7 +3899,6 @@ can_status_t car_can_lvc_over_current_snapshot_unpack(car_can_lvc_over_current_s
     result.trip_current_saturated = (uint8_t)raw.trip_current_saturated;
     result.capture_time_ms = (uint32_t)raw.capture_time_ms;
     result.trip_current = (double)((double)raw.trip_current * 0.01 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -3983,6 +3907,41 @@ can_status_t car_can_pdu_status_pack(can_frame_t* dst, const car_can_pdu_status_
     if (dst == NULL || src == NULL) return CAN_INVALID;
     struct car_can_raw_pdu_status_t raw = {0};
     can_status_t status = CAN_OK;
+    {
+        uint8_t value = src->fault_channel_over_current0;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.fault_channel_over_current0 = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->fault_channel_i2_t0;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.fault_channel_i2_t0 = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->fault_channel_over_temperature0;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.fault_channel_over_temperature0 = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->fault_channel_open_load0;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.fault_channel_open_load0 = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->fault_channel_short_to_battery0;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.fault_channel_short_to_battery0 = (uint8_t)value;
+    }
     {
         uint8_t value = src->fault_channel_over_current1;
         if (value > INT64_C(1)) {
@@ -4369,39 +4328,25 @@ can_status_t car_can_pdu_status_pack(can_frame_t* dst, const car_can_pdu_status_
         raw.fault_channel_short_to_battery11 = (uint8_t)value;
     }
     {
-        uint8_t value = src->fault_channel_over_current12;
+        uint8_t value = src->fault_chip_vbb_undervoltage0;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.fault_channel_over_current12 = (uint8_t)value;
+        raw.fault_chip_vbb_undervoltage0 = (uint8_t)value;
     }
     {
-        uint8_t value = src->fault_channel_i2_t12;
+        uint8_t value = src->fault_chip_spi_error0;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.fault_channel_i2_t12 = (uint8_t)value;
+        raw.fault_chip_spi_error0 = (uint8_t)value;
     }
     {
-        uint8_t value = src->fault_channel_over_temperature12;
+        uint8_t value = src->fault_chip_watchdog0;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.fault_channel_over_temperature12 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_channel_open_load12;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_channel_open_load12 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_channel_short_to_battery12;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_channel_short_to_battery12 = (uint8_t)value;
+        raw.fault_chip_watchdog0 = (uint8_t)value;
     }
     {
         uint8_t value = src->fault_chip_vbb_undervoltage1;
@@ -4509,32 +4454,18 @@ can_status_t car_can_pdu_status_pack(can_frame_t* dst, const car_can_pdu_status_
         raw.fault_chip_watchdog5 = (uint8_t)value;
     }
     {
-        uint8_t value = src->fault_chip_vbb_undervoltage6;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_chip_vbb_undervoltage6 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_chip_spi_error6;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_chip_spi_error6 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_chip_watchdog6;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_chip_watchdog6 = (uint8_t)value;
-    }
-    {
         uint8_t value = src->warning_blown_fuse;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
         raw.warning_blown_fuse = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->warning_channel_blown_fuse0;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.warning_channel_blown_fuse0 = (uint8_t)value;
     }
     {
         uint8_t value = src->warning_channel_blown_fuse1;
@@ -4614,11 +4545,11 @@ can_status_t car_can_pdu_status_pack(can_frame_t* dst, const car_can_pdu_status_
         raw.warning_channel_blown_fuse11 = (uint8_t)value;
     }
     {
-        uint8_t value = src->warning_channel_blown_fuse12;
+        uint8_t value = src->channel_enabled0;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.warning_channel_blown_fuse12 = (uint8_t)value;
+        raw.channel_enabled0 = (uint8_t)value;
     }
     {
         uint8_t value = src->channel_enabled1;
@@ -4697,13 +4628,6 @@ can_status_t car_can_pdu_status_pack(can_frame_t* dst, const car_can_pdu_status_
         }
         raw.channel_enabled11 = (uint8_t)value;
     }
-    {
-        uint8_t value = src->channel_enabled12;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.channel_enabled12 = (uint8_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(160),
         .len = 16, .is_extended = false,
         .is_fd = true };
@@ -4721,6 +4645,16 @@ can_status_t car_can_pdu_status_unpack(car_can_pdu_status_t* dst, const can_fram
     struct car_can_raw_pdu_status_t raw = {0};
     if (car_can_raw_pdu_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     car_can_pdu_status_t result = {0};
+    if (raw.fault_channel_over_current0 > INT64_C(1)) return CAN_RANGE;
+    result.fault_channel_over_current0 = (uint8_t)raw.fault_channel_over_current0;
+    if (raw.fault_channel_i2_t0 > INT64_C(1)) return CAN_RANGE;
+    result.fault_channel_i2_t0 = (uint8_t)raw.fault_channel_i2_t0;
+    if (raw.fault_channel_over_temperature0 > INT64_C(1)) return CAN_RANGE;
+    result.fault_channel_over_temperature0 = (uint8_t)raw.fault_channel_over_temperature0;
+    if (raw.fault_channel_open_load0 > INT64_C(1)) return CAN_RANGE;
+    result.fault_channel_open_load0 = (uint8_t)raw.fault_channel_open_load0;
+    if (raw.fault_channel_short_to_battery0 > INT64_C(1)) return CAN_RANGE;
+    result.fault_channel_short_to_battery0 = (uint8_t)raw.fault_channel_short_to_battery0;
     if (raw.fault_channel_over_current1 > INT64_C(1)) return CAN_RANGE;
     result.fault_channel_over_current1 = (uint8_t)raw.fault_channel_over_current1;
     if (raw.fault_channel_i2_t1 > INT64_C(1)) return CAN_RANGE;
@@ -4831,16 +4765,12 @@ can_status_t car_can_pdu_status_unpack(car_can_pdu_status_t* dst, const can_fram
     result.fault_channel_open_load11 = (uint8_t)raw.fault_channel_open_load11;
     if (raw.fault_channel_short_to_battery11 > INT64_C(1)) return CAN_RANGE;
     result.fault_channel_short_to_battery11 = (uint8_t)raw.fault_channel_short_to_battery11;
-    if (raw.fault_channel_over_current12 > INT64_C(1)) return CAN_RANGE;
-    result.fault_channel_over_current12 = (uint8_t)raw.fault_channel_over_current12;
-    if (raw.fault_channel_i2_t12 > INT64_C(1)) return CAN_RANGE;
-    result.fault_channel_i2_t12 = (uint8_t)raw.fault_channel_i2_t12;
-    if (raw.fault_channel_over_temperature12 > INT64_C(1)) return CAN_RANGE;
-    result.fault_channel_over_temperature12 = (uint8_t)raw.fault_channel_over_temperature12;
-    if (raw.fault_channel_open_load12 > INT64_C(1)) return CAN_RANGE;
-    result.fault_channel_open_load12 = (uint8_t)raw.fault_channel_open_load12;
-    if (raw.fault_channel_short_to_battery12 > INT64_C(1)) return CAN_RANGE;
-    result.fault_channel_short_to_battery12 = (uint8_t)raw.fault_channel_short_to_battery12;
+    if (raw.fault_chip_vbb_undervoltage0 > INT64_C(1)) return CAN_RANGE;
+    result.fault_chip_vbb_undervoltage0 = (uint8_t)raw.fault_chip_vbb_undervoltage0;
+    if (raw.fault_chip_spi_error0 > INT64_C(1)) return CAN_RANGE;
+    result.fault_chip_spi_error0 = (uint8_t)raw.fault_chip_spi_error0;
+    if (raw.fault_chip_watchdog0 > INT64_C(1)) return CAN_RANGE;
+    result.fault_chip_watchdog0 = (uint8_t)raw.fault_chip_watchdog0;
     if (raw.fault_chip_vbb_undervoltage1 > INT64_C(1)) return CAN_RANGE;
     result.fault_chip_vbb_undervoltage1 = (uint8_t)raw.fault_chip_vbb_undervoltage1;
     if (raw.fault_chip_spi_error1 > INT64_C(1)) return CAN_RANGE;
@@ -4871,14 +4801,10 @@ can_status_t car_can_pdu_status_unpack(car_can_pdu_status_t* dst, const can_fram
     result.fault_chip_spi_error5 = (uint8_t)raw.fault_chip_spi_error5;
     if (raw.fault_chip_watchdog5 > INT64_C(1)) return CAN_RANGE;
     result.fault_chip_watchdog5 = (uint8_t)raw.fault_chip_watchdog5;
-    if (raw.fault_chip_vbb_undervoltage6 > INT64_C(1)) return CAN_RANGE;
-    result.fault_chip_vbb_undervoltage6 = (uint8_t)raw.fault_chip_vbb_undervoltage6;
-    if (raw.fault_chip_spi_error6 > INT64_C(1)) return CAN_RANGE;
-    result.fault_chip_spi_error6 = (uint8_t)raw.fault_chip_spi_error6;
-    if (raw.fault_chip_watchdog6 > INT64_C(1)) return CAN_RANGE;
-    result.fault_chip_watchdog6 = (uint8_t)raw.fault_chip_watchdog6;
     if (raw.warning_blown_fuse > INT64_C(1)) return CAN_RANGE;
     result.warning_blown_fuse = (uint8_t)raw.warning_blown_fuse;
+    if (raw.warning_channel_blown_fuse0 > INT64_C(1)) return CAN_RANGE;
+    result.warning_channel_blown_fuse0 = (uint8_t)raw.warning_channel_blown_fuse0;
     if (raw.warning_channel_blown_fuse1 > INT64_C(1)) return CAN_RANGE;
     result.warning_channel_blown_fuse1 = (uint8_t)raw.warning_channel_blown_fuse1;
     if (raw.warning_channel_blown_fuse2 > INT64_C(1)) return CAN_RANGE;
@@ -4901,8 +4827,8 @@ can_status_t car_can_pdu_status_unpack(car_can_pdu_status_t* dst, const can_fram
     result.warning_channel_blown_fuse10 = (uint8_t)raw.warning_channel_blown_fuse10;
     if (raw.warning_channel_blown_fuse11 > INT64_C(1)) return CAN_RANGE;
     result.warning_channel_blown_fuse11 = (uint8_t)raw.warning_channel_blown_fuse11;
-    if (raw.warning_channel_blown_fuse12 > INT64_C(1)) return CAN_RANGE;
-    result.warning_channel_blown_fuse12 = (uint8_t)raw.warning_channel_blown_fuse12;
+    if (raw.channel_enabled0 > INT64_C(1)) return CAN_RANGE;
+    result.channel_enabled0 = (uint8_t)raw.channel_enabled0;
     if (raw.channel_enabled1 > INT64_C(1)) return CAN_RANGE;
     result.channel_enabled1 = (uint8_t)raw.channel_enabled1;
     if (raw.channel_enabled2 > INT64_C(1)) return CAN_RANGE;
@@ -4925,8 +4851,6 @@ can_status_t car_can_pdu_status_unpack(car_can_pdu_status_t* dst, const can_fram
     result.channel_enabled10 = (uint8_t)raw.channel_enabled10;
     if (raw.channel_enabled11 > INT64_C(1)) return CAN_RANGE;
     result.channel_enabled11 = (uint8_t)raw.channel_enabled11;
-    if (raw.channel_enabled12 > INT64_C(1)) return CAN_RANGE;
-    result.channel_enabled12 = (uint8_t)raw.channel_enabled12;
     *dst = result;
     return CAN_OK;
 }
@@ -4935,6 +4859,16 @@ can_status_t car_can_pdu_current_data_pack(can_frame_t* dst, const car_can_pdu_c
     if (dst == NULL || src == NULL) return CAN_INVALID;
     struct car_can_raw_pdu_current_data_t raw = {0};
     can_status_t status = CAN_OK;
+    {
+        double value = (double)src->channel_current0;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
+        if (value > 40.95) { value = 40.95; status = CAN_CLAMPED; }
+        double encoded = round((value - 0.0) / 0.01);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 4095.0) encoded = 4095.0;
+        raw.channel_current0 = (uint16_t)encoded;
+    }
     {
         double value = (double)src->channel_current1;
         if (!isfinite(value)) return CAN_INVALID;
@@ -5046,16 +4980,6 @@ can_status_t car_can_pdu_current_data_pack(can_frame_t* dst, const car_can_pdu_c
         raw.channel_current11 = (uint16_t)encoded;
     }
     {
-        double value = (double)src->channel_current12;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 40.95) { value = 40.95; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 4095.0) encoded = 4095.0;
-        raw.channel_current12 = (uint16_t)encoded;
-    }
-    {
         double value = (double)src->total_current;
         if (!isfinite(value)) return CAN_INVALID;
         if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
@@ -5065,12 +4989,8 @@ can_status_t car_can_pdu_current_data_pack(can_frame_t* dst, const car_can_pdu_c
         if (encoded > 16383.0) encoded = 16383.0;
         raw.total_current = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(161),
-        .len = 24, .is_extended = false,
+        .len = 20, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_pdu_current_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -5079,13 +4999,15 @@ can_status_t car_can_pdu_current_data_pack(can_frame_t* dst, const car_can_pdu_c
 
 can_status_t car_can_pdu_current_data_unpack(car_can_pdu_current_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(161) || src->len != 24 ||
+    if (src->id != UINT32_C(161) || src->len != 20 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
     struct car_can_raw_pdu_current_data_t raw = {0};
     if (car_can_raw_pdu_current_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     car_can_pdu_current_data_t result = {0};
+    if (raw.channel_current0 > INT64_C(4095)) return CAN_RANGE;
+    result.channel_current0 = (double)((double)raw.channel_current0 * 0.01 + 0.0);
     if (raw.channel_current1 > INT64_C(4095)) return CAN_RANGE;
     result.channel_current1 = (double)((double)raw.channel_current1 * 0.01 + 0.0);
     if (raw.channel_current2 > INT64_C(4095)) return CAN_RANGE;
@@ -5108,11 +5030,8 @@ can_status_t car_can_pdu_current_data_unpack(car_can_pdu_current_data_t* dst, co
     result.channel_current10 = (double)((double)raw.channel_current10 * 0.01 + 0.0);
     if (raw.channel_current11 > INT64_C(4095)) return CAN_RANGE;
     result.channel_current11 = (double)((double)raw.channel_current11 * 0.01 + 0.0);
-    if (raw.channel_current12 > INT64_C(4095)) return CAN_RANGE;
-    result.channel_current12 = (double)((double)raw.channel_current12 * 0.01 + 0.0);
     if (raw.total_current > INT64_C(16383)) return CAN_RANGE;
     result.total_current = (double)((double)raw.total_current * 0.01 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -5130,6 +5049,16 @@ can_status_t car_can_pdu_voltage_data_pack(can_frame_t* dst, const car_can_pdu_v
         if (encoded < 0.0) encoded = 0.0;
         if (encoded > 1023.0) encoded = 1023.0;
         raw.input_voltage = (uint16_t)encoded;
+    }
+    {
+        double value = (double)src->channel_voltage0;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
+        if (value > 51.15) { value = 51.15; status = CAN_CLAMPED; }
+        double encoded = round((value - 0.0) / 0.05);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 1023.0) encoded = 1023.0;
+        raw.channel_voltage0 = (uint16_t)encoded;
     }
     {
         double value = (double)src->channel_voltage1;
@@ -5241,20 +5170,6 @@ can_status_t car_can_pdu_voltage_data_pack(can_frame_t* dst, const car_can_pdu_v
         if (encoded > 1023.0) encoded = 1023.0;
         raw.channel_voltage11 = (uint16_t)encoded;
     }
-    {
-        double value = (double)src->channel_voltage12;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 51.15) { value = 51.15; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.05);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 1023.0) encoded = 1023.0;
-        raw.channel_voltage12 = (uint16_t)encoded;
-    }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(162),
         .len = 20, .is_extended = false,
         .is_fd = true };
@@ -5274,6 +5189,8 @@ can_status_t car_can_pdu_voltage_data_unpack(car_can_pdu_voltage_data_t* dst, co
     car_can_pdu_voltage_data_t result = {0};
     if (raw.input_voltage > INT64_C(1023)) return CAN_RANGE;
     result.input_voltage = (double)((double)raw.input_voltage * 0.05 + 0.0);
+    if (raw.channel_voltage0 > INT64_C(1023)) return CAN_RANGE;
+    result.channel_voltage0 = (double)((double)raw.channel_voltage0 * 0.05 + 0.0);
     if (raw.channel_voltage1 > INT64_C(1023)) return CAN_RANGE;
     result.channel_voltage1 = (double)((double)raw.channel_voltage1 * 0.05 + 0.0);
     if (raw.channel_voltage2 > INT64_C(1023)) return CAN_RANGE;
@@ -5296,9 +5213,6 @@ can_status_t car_can_pdu_voltage_data_unpack(car_can_pdu_voltage_data_t* dst, co
     result.channel_voltage10 = (double)((double)raw.channel_voltage10 * 0.05 + 0.0);
     if (raw.channel_voltage11 > INT64_C(1023)) return CAN_RANGE;
     result.channel_voltage11 = (double)((double)raw.channel_voltage11 * 0.05 + 0.0);
-    if (raw.channel_voltage12 > INT64_C(1023)) return CAN_RANGE;
-    result.channel_voltage12 = (double)((double)raw.channel_voltage12 * 0.05 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -5307,6 +5221,16 @@ can_status_t car_can_pdu_temperature_data_pack(can_frame_t* dst, const car_can_p
     if (dst == NULL || src == NULL) return CAN_INVALID;
     struct car_can_raw_pdu_temperature_data_t raw = {0};
     can_status_t status = CAN_OK;
+    {
+        double value = (double)src->channel_temperature0;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < -40.0) { value = -40.0; status = CAN_CLAMPED; }
+        if (value > 200.0) { value = 200.0; status = CAN_CLAMPED; }
+        double encoded = round((value - -40.0) / 0.05);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 4800.0) encoded = 4800.0;
+        raw.channel_temperature0 = (uint16_t)encoded;
+    }
     {
         double value = (double)src->channel_temperature1;
         if (!isfinite(value)) return CAN_INVALID;
@@ -5417,22 +5341,8 @@ can_status_t car_can_pdu_temperature_data_pack(can_frame_t* dst, const car_can_p
         if (encoded > 4800.0) encoded = 4800.0;
         raw.channel_temperature11 = (uint16_t)encoded;
     }
-    {
-        double value = (double)src->channel_temperature12;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < -40.0) { value = -40.0; status = CAN_CLAMPED; }
-        if (value > 200.0) { value = 200.0; status = CAN_CLAMPED; }
-        double encoded = round((value - -40.0) / 0.05);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 4800.0) encoded = 4800.0;
-        raw.channel_temperature12 = (uint16_t)encoded;
-    }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(163),
-        .len = 24, .is_extended = false,
+        .len = 20, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_pdu_temperature_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -5441,13 +5351,15 @@ can_status_t car_can_pdu_temperature_data_pack(can_frame_t* dst, const car_can_p
 
 can_status_t car_can_pdu_temperature_data_unpack(car_can_pdu_temperature_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(163) || src->len != 24 ||
+    if (src->id != UINT32_C(163) || src->len != 20 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
     struct car_can_raw_pdu_temperature_data_t raw = {0};
     if (car_can_raw_pdu_temperature_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     car_can_pdu_temperature_data_t result = {0};
+    if (raw.channel_temperature0 > INT64_C(4800)) return CAN_RANGE;
+    result.channel_temperature0 = (double)((double)raw.channel_temperature0 * 0.05 + -40.0);
     if (raw.channel_temperature1 > INT64_C(4800)) return CAN_RANGE;
     result.channel_temperature1 = (double)((double)raw.channel_temperature1 * 0.05 + -40.0);
     if (raw.channel_temperature2 > INT64_C(4800)) return CAN_RANGE;
@@ -5470,645 +5382,88 @@ can_status_t car_can_pdu_temperature_data_unpack(car_can_pdu_temperature_data_t*
     result.channel_temperature10 = (double)((double)raw.channel_temperature10 * 0.05 + -40.0);
     if (raw.channel_temperature11 > INT64_C(4800)) return CAN_RANGE;
     result.channel_temperature11 = (double)((double)raw.channel_temperature11 * 0.05 + -40.0);
-    if (raw.channel_temperature12 > INT64_C(4800)) return CAN_RANGE;
-    result.channel_temperature12 = (double)((double)raw.channel_temperature12 * 0.05 + -40.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
 
-can_status_t car_can_pdu_over_current_snapshot_a_pack(can_frame_t* dst, const car_can_pdu_over_current_snapshot_a_t* src) {
+can_status_t car_can_pdu_over_current_snapshot_pack(can_frame_t* dst, const car_can_pdu_over_current_snapshot_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct car_can_raw_pdu_over_current_snapshot_a_t raw = {0};
+    struct car_can_raw_pdu_over_current_snapshot_t raw = {0};
     can_status_t status = CAN_OK;
     {
-        uint8_t value = src->fault_over_current1;
+        uint8_t value = src->fault_over_current;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.fault_over_current1 = (uint8_t)value;
+        raw.fault_over_current = (uint8_t)value;
     }
     {
-        uint8_t value = src->fault_over_current2;
+        uint8_t value = src->fault_i2_t;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.fault_over_current2 = (uint8_t)value;
+        raw.fault_i2_t = (uint8_t)value;
     }
     {
-        uint8_t value = src->fault_over_current3;
+        uint8_t value = src->trip_current_saturated;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.fault_over_current3 = (uint8_t)value;
+        raw.trip_current_saturated = (uint8_t)value;
     }
     {
-        uint8_t value = src->fault_over_current4;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        uint8_t value = src->channel_index;
+        if (value > INT64_C(11)) {
+            value = (uint8_t)INT64_C(11); status = CAN_CLAMPED;
         }
-        raw.fault_over_current4 = (uint8_t)value;
+        raw.channel_index = (uint8_t)value;
     }
     {
-        uint8_t value = src->fault_over_current5;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_over_current5 = (uint8_t)value;
+        uint32_t value = src->capture_time_ms;
+        raw.capture_time_ms = (uint32_t)value;
     }
     {
-        uint8_t value = src->fault_over_current6;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_over_current6 = (uint8_t)value;
+        uint16_t value = src->current_sample_age_ms;
+        raw.current_sample_age_ms = (uint16_t)value;
     }
     {
-        uint8_t value = src->fault_i2_t1;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t1 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_i2_t2;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t2 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_i2_t3;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t3 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_i2_t4;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t4 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_i2_t5;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t5 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_i2_t6;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t6 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated1;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated1 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated2;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated2 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated3;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated3 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated4;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated4 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated5;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated5 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated6;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated6 = (uint8_t)value;
-    }
-    {
-        uint32_t value = src->capture_time_ms1;
-        raw.capture_time_ms1 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms1;
-        raw.current_sample_age_ms1 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current1;
+        double value = (double)src->trip_current;
         if (!isfinite(value)) return CAN_INVALID;
         if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
         if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
         double encoded = round((value - 0.0) / 0.01);
         if (encoded < 0.0) encoded = 0.0;
         if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current1 = (uint16_t)encoded;
-    }
-    {
-        uint32_t value = src->capture_time_ms2;
-        raw.capture_time_ms2 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms2;
-        raw.current_sample_age_ms2 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current2;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current2 = (uint16_t)encoded;
-    }
-    {
-        uint32_t value = src->capture_time_ms3;
-        raw.capture_time_ms3 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms3;
-        raw.current_sample_age_ms3 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current3;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current3 = (uint16_t)encoded;
-    }
-    {
-        uint32_t value = src->capture_time_ms4;
-        raw.capture_time_ms4 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms4;
-        raw.current_sample_age_ms4 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current4;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current4 = (uint16_t)encoded;
-    }
-    {
-        uint32_t value = src->capture_time_ms5;
-        raw.capture_time_ms5 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms5;
-        raw.current_sample_age_ms5 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current5;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current5 = (uint16_t)encoded;
-    }
-    {
-        uint32_t value = src->capture_time_ms6;
-        raw.capture_time_ms6 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms6;
-        raw.current_sample_age_ms6 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current6;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current6 = (uint16_t)encoded;
-    }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
+        raw.trip_current = (uint16_t)encoded;
     }
     can_frame_t result = { .id = UINT32_C(164),
-        .len = 64, .is_extended = false,
+        .len = 12, .is_extended = false,
         .is_fd = true };
-    if (car_can_raw_pdu_over_current_snapshot_a_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (car_can_raw_pdu_over_current_snapshot_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t car_can_pdu_over_current_snapshot_a_unpack(car_can_pdu_over_current_snapshot_a_t* dst, const can_frame_t* src) {
+can_status_t car_can_pdu_over_current_snapshot_unpack(car_can_pdu_over_current_snapshot_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(164) || src->len != 64 ||
+    if (src->id != UINT32_C(164) || src->len != 12 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct car_can_raw_pdu_over_current_snapshot_a_t raw = {0};
-    if (car_can_raw_pdu_over_current_snapshot_a_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    car_can_pdu_over_current_snapshot_a_t result = {0};
-    if (raw.fault_over_current1 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current1 = (uint8_t)raw.fault_over_current1;
-    if (raw.fault_over_current2 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current2 = (uint8_t)raw.fault_over_current2;
-    if (raw.fault_over_current3 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current3 = (uint8_t)raw.fault_over_current3;
-    if (raw.fault_over_current4 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current4 = (uint8_t)raw.fault_over_current4;
-    if (raw.fault_over_current5 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current5 = (uint8_t)raw.fault_over_current5;
-    if (raw.fault_over_current6 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current6 = (uint8_t)raw.fault_over_current6;
-    if (raw.fault_i2_t1 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t1 = (uint8_t)raw.fault_i2_t1;
-    if (raw.fault_i2_t2 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t2 = (uint8_t)raw.fault_i2_t2;
-    if (raw.fault_i2_t3 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t3 = (uint8_t)raw.fault_i2_t3;
-    if (raw.fault_i2_t4 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t4 = (uint8_t)raw.fault_i2_t4;
-    if (raw.fault_i2_t5 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t5 = (uint8_t)raw.fault_i2_t5;
-    if (raw.fault_i2_t6 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t6 = (uint8_t)raw.fault_i2_t6;
-    if (raw.trip_current_saturated1 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated1 = (uint8_t)raw.trip_current_saturated1;
-    if (raw.trip_current_saturated2 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated2 = (uint8_t)raw.trip_current_saturated2;
-    if (raw.trip_current_saturated3 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated3 = (uint8_t)raw.trip_current_saturated3;
-    if (raw.trip_current_saturated4 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated4 = (uint8_t)raw.trip_current_saturated4;
-    if (raw.trip_current_saturated5 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated5 = (uint8_t)raw.trip_current_saturated5;
-    if (raw.trip_current_saturated6 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated6 = (uint8_t)raw.trip_current_saturated6;
-    result.capture_time_ms1 = (uint32_t)raw.capture_time_ms1;
-    result.current_sample_age_ms1 = (uint16_t)raw.current_sample_age_ms1;
-    result.trip_current1 = (double)((double)raw.trip_current1 * 0.01 + 0.0);
-    result.capture_time_ms2 = (uint32_t)raw.capture_time_ms2;
-    result.current_sample_age_ms2 = (uint16_t)raw.current_sample_age_ms2;
-    result.trip_current2 = (double)((double)raw.trip_current2 * 0.01 + 0.0);
-    result.capture_time_ms3 = (uint32_t)raw.capture_time_ms3;
-    result.current_sample_age_ms3 = (uint16_t)raw.current_sample_age_ms3;
-    result.trip_current3 = (double)((double)raw.trip_current3 * 0.01 + 0.0);
-    result.capture_time_ms4 = (uint32_t)raw.capture_time_ms4;
-    result.current_sample_age_ms4 = (uint16_t)raw.current_sample_age_ms4;
-    result.trip_current4 = (double)((double)raw.trip_current4 * 0.01 + 0.0);
-    result.capture_time_ms5 = (uint32_t)raw.capture_time_ms5;
-    result.current_sample_age_ms5 = (uint16_t)raw.current_sample_age_ms5;
-    result.trip_current5 = (double)((double)raw.trip_current5 * 0.01 + 0.0);
-    result.capture_time_ms6 = (uint32_t)raw.capture_time_ms6;
-    result.current_sample_age_ms6 = (uint16_t)raw.current_sample_age_ms6;
-    result.trip_current6 = (double)((double)raw.trip_current6 * 0.01 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
-    *dst = result;
-    return CAN_OK;
-}
-
-can_status_t car_can_pdu_over_current_snapshot_b_pack(can_frame_t* dst, const car_can_pdu_over_current_snapshot_b_t* src) {
-    if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct car_can_raw_pdu_over_current_snapshot_b_t raw = {0};
-    can_status_t status = CAN_OK;
-    {
-        uint8_t value = src->fault_over_current7;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_over_current7 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_over_current8;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_over_current8 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_over_current9;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_over_current9 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_over_current10;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_over_current10 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_over_current11;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_over_current11 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_over_current12;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_over_current12 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_i2_t7;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t7 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_i2_t8;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t8 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_i2_t9;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t9 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_i2_t10;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t10 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_i2_t11;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t11 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_i2_t12;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_i2_t12 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated7;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated7 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated8;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated8 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated9;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated9 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated10;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated10 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated11;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated11 = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->trip_current_saturated12;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.trip_current_saturated12 = (uint8_t)value;
-    }
-    {
-        uint32_t value = src->capture_time_ms7;
-        raw.capture_time_ms7 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms7;
-        raw.current_sample_age_ms7 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current7;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current7 = (uint16_t)encoded;
-    }
-    {
-        uint32_t value = src->capture_time_ms8;
-        raw.capture_time_ms8 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms8;
-        raw.current_sample_age_ms8 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current8;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current8 = (uint16_t)encoded;
-    }
-    {
-        uint32_t value = src->capture_time_ms9;
-        raw.capture_time_ms9 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms9;
-        raw.current_sample_age_ms9 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current9;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current9 = (uint16_t)encoded;
-    }
-    {
-        uint32_t value = src->capture_time_ms10;
-        raw.capture_time_ms10 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms10;
-        raw.current_sample_age_ms10 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current10;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current10 = (uint16_t)encoded;
-    }
-    {
-        uint32_t value = src->capture_time_ms11;
-        raw.capture_time_ms11 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms11;
-        raw.current_sample_age_ms11 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current11;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current11 = (uint16_t)encoded;
-    }
-    {
-        uint32_t value = src->capture_time_ms12;
-        raw.capture_time_ms12 = (uint32_t)value;
-    }
-    {
-        uint16_t value = src->current_sample_age_ms12;
-        raw.current_sample_age_ms12 = (uint16_t)value;
-    }
-    {
-        double value = (double)src->trip_current12;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 655.35) { value = 655.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.01);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 65535.0) encoded = 65535.0;
-        raw.trip_current12 = (uint16_t)encoded;
-    }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
-    can_frame_t result = { .id = UINT32_C(165),
-        .len = 64, .is_extended = false,
-        .is_fd = true };
-    if (car_can_raw_pdu_over_current_snapshot_b_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
-    *dst = result;
-    return status;
-}
-
-can_status_t car_can_pdu_over_current_snapshot_b_unpack(car_can_pdu_over_current_snapshot_b_t* dst, const can_frame_t* src) {
-    if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(165) || src->len != 64 ||
-        src->is_extended != false ||
-        src->is_fd != true ||
-        (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct car_can_raw_pdu_over_current_snapshot_b_t raw = {0};
-    if (car_can_raw_pdu_over_current_snapshot_b_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    car_can_pdu_over_current_snapshot_b_t result = {0};
-    if (raw.fault_over_current7 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current7 = (uint8_t)raw.fault_over_current7;
-    if (raw.fault_over_current8 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current8 = (uint8_t)raw.fault_over_current8;
-    if (raw.fault_over_current9 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current9 = (uint8_t)raw.fault_over_current9;
-    if (raw.fault_over_current10 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current10 = (uint8_t)raw.fault_over_current10;
-    if (raw.fault_over_current11 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current11 = (uint8_t)raw.fault_over_current11;
-    if (raw.fault_over_current12 > INT64_C(1)) return CAN_RANGE;
-    result.fault_over_current12 = (uint8_t)raw.fault_over_current12;
-    if (raw.fault_i2_t7 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t7 = (uint8_t)raw.fault_i2_t7;
-    if (raw.fault_i2_t8 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t8 = (uint8_t)raw.fault_i2_t8;
-    if (raw.fault_i2_t9 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t9 = (uint8_t)raw.fault_i2_t9;
-    if (raw.fault_i2_t10 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t10 = (uint8_t)raw.fault_i2_t10;
-    if (raw.fault_i2_t11 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t11 = (uint8_t)raw.fault_i2_t11;
-    if (raw.fault_i2_t12 > INT64_C(1)) return CAN_RANGE;
-    result.fault_i2_t12 = (uint8_t)raw.fault_i2_t12;
-    if (raw.trip_current_saturated7 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated7 = (uint8_t)raw.trip_current_saturated7;
-    if (raw.trip_current_saturated8 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated8 = (uint8_t)raw.trip_current_saturated8;
-    if (raw.trip_current_saturated9 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated9 = (uint8_t)raw.trip_current_saturated9;
-    if (raw.trip_current_saturated10 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated10 = (uint8_t)raw.trip_current_saturated10;
-    if (raw.trip_current_saturated11 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated11 = (uint8_t)raw.trip_current_saturated11;
-    if (raw.trip_current_saturated12 > INT64_C(1)) return CAN_RANGE;
-    result.trip_current_saturated12 = (uint8_t)raw.trip_current_saturated12;
-    result.capture_time_ms7 = (uint32_t)raw.capture_time_ms7;
-    result.current_sample_age_ms7 = (uint16_t)raw.current_sample_age_ms7;
-    result.trip_current7 = (double)((double)raw.trip_current7 * 0.01 + 0.0);
-    result.capture_time_ms8 = (uint32_t)raw.capture_time_ms8;
-    result.current_sample_age_ms8 = (uint16_t)raw.current_sample_age_ms8;
-    result.trip_current8 = (double)((double)raw.trip_current8 * 0.01 + 0.0);
-    result.capture_time_ms9 = (uint32_t)raw.capture_time_ms9;
-    result.current_sample_age_ms9 = (uint16_t)raw.current_sample_age_ms9;
-    result.trip_current9 = (double)((double)raw.trip_current9 * 0.01 + 0.0);
-    result.capture_time_ms10 = (uint32_t)raw.capture_time_ms10;
-    result.current_sample_age_ms10 = (uint16_t)raw.current_sample_age_ms10;
-    result.trip_current10 = (double)((double)raw.trip_current10 * 0.01 + 0.0);
-    result.capture_time_ms11 = (uint32_t)raw.capture_time_ms11;
-    result.current_sample_age_ms11 = (uint16_t)raw.current_sample_age_ms11;
-    result.trip_current11 = (double)((double)raw.trip_current11 * 0.01 + 0.0);
-    result.capture_time_ms12 = (uint32_t)raw.capture_time_ms12;
-    result.current_sample_age_ms12 = (uint16_t)raw.current_sample_age_ms12;
-    result.trip_current12 = (double)((double)raw.trip_current12 * 0.01 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
+    struct car_can_raw_pdu_over_current_snapshot_t raw = {0};
+    if (car_can_raw_pdu_over_current_snapshot_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    car_can_pdu_over_current_snapshot_t result = {0};
+    if (raw.fault_over_current > INT64_C(1)) return CAN_RANGE;
+    result.fault_over_current = (uint8_t)raw.fault_over_current;
+    if (raw.fault_i2_t > INT64_C(1)) return CAN_RANGE;
+    result.fault_i2_t = (uint8_t)raw.fault_i2_t;
+    if (raw.trip_current_saturated > INT64_C(1)) return CAN_RANGE;
+    result.trip_current_saturated = (uint8_t)raw.trip_current_saturated;
+    if (raw.channel_index > INT64_C(11)) return CAN_RANGE;
+    result.channel_index = (uint8_t)raw.channel_index;
+    result.capture_time_ms = (uint32_t)raw.capture_time_ms;
+    result.current_sample_age_ms = (uint16_t)raw.current_sample_age_ms;
+    result.trip_current = (double)((double)raw.trip_current * 0.01 + 0.0);
     *dst = result;
     return CAN_OK;
 }

@@ -43,7 +43,7 @@ typedef enum {
 } car_can_pdu_command_enable_choice_t;
 /** 2027 team-defined layout; physical values use the shared scaling conventions. */
 typedef struct {
-    /** ChannelIndex; unit=none; physical=raw*1+0; raw=[0,11]. Zero-based output index 0..11 selects Channel1..Channel12. Chip n controls Channel(2n-1) and Channel(2n). Indices 12..15 are invalid. */
+    /** ChannelIndex; unit=none; physical=raw*1+0; raw=[0,11]. Zero-based channel index: 0 selects Channel0; 11 selects Channel11. */
     uint8_t channel_index;
     /** Enable; unit=none; physical=raw*1+0; raw=[0,1]. Enable */
     uint8_t enable;
@@ -384,8 +384,6 @@ typedef struct {
     uint16_t battery_fan_tach2;
     /** BPSFanTach; unit=rpm; physical=raw*5+0; raw=[0,4095]. BPSFanTach */
     uint16_t bps_fan_tach;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_bps_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -461,8 +459,6 @@ typedef struct {
     uint16_t front_pressure;
     /** RearPressure; unit=PSI; physical=raw*1+0; raw=[0,3000]. RearPressure */
     uint16_t rear_pressure;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_pedals_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -730,8 +726,6 @@ typedef struct {
     uint16_t motor_controller_fan_tach;
     /** MotorFanTach; unit=rpm; physical=raw*5+0; raw=[0,4095]. MotorFanTach */
     uint16_t motor_fan_tach;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_vcu_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -755,8 +749,6 @@ typedef struct {
     double motor_voltage;
     /** BatteryCurrent; unit=A; physical=raw*0.01+-50; raw=[0,16383]. BatteryCurrent */
     double battery_current;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_bps_pack_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -768,76 +760,74 @@ can_status_t car_can_bps_pack_data_unpack(car_can_bps_pack_data_t* dst, const ca
 
 /** BPS individual cell voltages followed by minimum/maximum cell voltage; unchanged physical encodings. */
 typedef struct {
-    /** CellVoltage01; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage01 */
+    /** CellVoltage00; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage01 */
+    uint16_t cell_voltage00;
+    /** CellVoltage01; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage02 */
     uint16_t cell_voltage01;
-    /** CellVoltage02; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage02 */
+    /** CellVoltage02; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage03 */
     uint16_t cell_voltage02;
-    /** CellVoltage03; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage03 */
+    /** CellVoltage03; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage04 */
     uint16_t cell_voltage03;
-    /** CellVoltage04; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage04 */
+    /** CellVoltage04; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage05 */
     uint16_t cell_voltage04;
-    /** CellVoltage05; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage05 */
+    /** CellVoltage05; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage06 */
     uint16_t cell_voltage05;
-    /** CellVoltage06; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage06 */
+    /** CellVoltage06; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage07 */
     uint16_t cell_voltage06;
-    /** CellVoltage07; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage07 */
+    /** CellVoltage07; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage08 */
     uint16_t cell_voltage07;
-    /** CellVoltage08; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage08 */
+    /** CellVoltage08; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage09 */
     uint16_t cell_voltage08;
-    /** CellVoltage09; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage09 */
+    /** CellVoltage09; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage10 */
     uint16_t cell_voltage09;
-    /** CellVoltage10; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage10 */
+    /** CellVoltage10; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage11 */
     uint16_t cell_voltage10;
-    /** CellVoltage11; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage11 */
+    /** CellVoltage11; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage12 */
     uint16_t cell_voltage11;
-    /** CellVoltage12; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage12 */
+    /** CellVoltage12; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage13 */
     uint16_t cell_voltage12;
-    /** CellVoltage13; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage13 */
+    /** CellVoltage13; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage14 */
     uint16_t cell_voltage13;
-    /** CellVoltage14; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage14 */
+    /** CellVoltage14; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage15 */
     uint16_t cell_voltage14;
-    /** CellVoltage15; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage15 */
+    /** CellVoltage15; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage16 */
     uint16_t cell_voltage15;
-    /** CellVoltage16; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage16 */
+    /** CellVoltage16; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage17 */
     uint16_t cell_voltage16;
-    /** CellVoltage17; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage17 */
+    /** CellVoltage17; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage18 */
     uint16_t cell_voltage17;
-    /** CellVoltage18; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage18 */
+    /** CellVoltage18; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage19 */
     uint16_t cell_voltage18;
-    /** CellVoltage19; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage19 */
+    /** CellVoltage19; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage20 */
     uint16_t cell_voltage19;
-    /** CellVoltage20; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage20 */
+    /** CellVoltage20; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage21 */
     uint16_t cell_voltage20;
-    /** CellVoltage21; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage21 */
+    /** CellVoltage21; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage22 */
     uint16_t cell_voltage21;
-    /** CellVoltage22; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage22 */
+    /** CellVoltage22; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage23 */
     uint16_t cell_voltage22;
-    /** CellVoltage23; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage23 */
+    /** CellVoltage23; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage24 */
     uint16_t cell_voltage23;
-    /** CellVoltage24; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage24 */
+    /** CellVoltage24; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage25 */
     uint16_t cell_voltage24;
-    /** CellVoltage25; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage25 */
+    /** CellVoltage25; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage26 */
     uint16_t cell_voltage25;
-    /** CellVoltage26; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage26 */
+    /** CellVoltage26; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage27 */
     uint16_t cell_voltage26;
-    /** CellVoltage27; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage27 */
+    /** CellVoltage27; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage28 */
     uint16_t cell_voltage27;
-    /** CellVoltage28; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage28 */
+    /** CellVoltage28; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage29 */
     uint16_t cell_voltage28;
-    /** CellVoltage29; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage29 */
+    /** CellVoltage29; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage30 */
     uint16_t cell_voltage29;
-    /** CellVoltage30; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage30 */
+    /** CellVoltage30; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage31 */
     uint16_t cell_voltage30;
-    /** CellVoltage31; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage31 */
+    /** CellVoltage31; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage32 */
     uint16_t cell_voltage31;
-    /** CellVoltage32; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage32 */
-    uint16_t cell_voltage32;
     /** MinCellVoltage; unit=mV; physical=raw*1+2000; raw=[0,4095]. MinCellVoltage */
     uint16_t min_cell_voltage;
     /** MaxCellVoltage; unit=mV; physical=raw*1+2000; raw=[0,4095]. MaxCellVoltage */
     uint16_t max_cell_voltage;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_bps_voltage_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -849,76 +839,74 @@ can_status_t car_can_bps_voltage_data_unpack(car_can_bps_voltage_data_t* dst, co
 
 /** BPS individual cell temperatures followed by maximum/average battery temperature; unchanged physical encodings. */
 typedef struct {
-    /** CellTemperature01; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature01 */
+    /** CellTemperature00; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature01 */
+    double cell_temperature00;
+    /** CellTemperature01; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature02 */
     double cell_temperature01;
-    /** CellTemperature02; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature02 */
+    /** CellTemperature02; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature03 */
     double cell_temperature02;
-    /** CellTemperature03; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature03 */
+    /** CellTemperature03; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature04 */
     double cell_temperature03;
-    /** CellTemperature04; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature04 */
+    /** CellTemperature04; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature05 */
     double cell_temperature04;
-    /** CellTemperature05; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature05 */
+    /** CellTemperature05; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature06 */
     double cell_temperature05;
-    /** CellTemperature06; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature06 */
+    /** CellTemperature06; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature07 */
     double cell_temperature06;
-    /** CellTemperature07; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature07 */
+    /** CellTemperature07; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature08 */
     double cell_temperature07;
-    /** CellTemperature08; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature08 */
+    /** CellTemperature08; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature09 */
     double cell_temperature08;
-    /** CellTemperature09; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature09 */
+    /** CellTemperature09; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature10 */
     double cell_temperature09;
-    /** CellTemperature10; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature10 */
+    /** CellTemperature10; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature11 */
     double cell_temperature10;
-    /** CellTemperature11; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature11 */
+    /** CellTemperature11; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature12 */
     double cell_temperature11;
-    /** CellTemperature12; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature12 */
+    /** CellTemperature12; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature13 */
     double cell_temperature12;
-    /** CellTemperature13; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature13 */
+    /** CellTemperature13; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature14 */
     double cell_temperature13;
-    /** CellTemperature14; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature14 */
+    /** CellTemperature14; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature15 */
     double cell_temperature14;
-    /** CellTemperature15; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature15 */
+    /** CellTemperature15; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature16 */
     double cell_temperature15;
-    /** CellTemperature16; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature16 */
+    /** CellTemperature16; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature17 */
     double cell_temperature16;
-    /** CellTemperature17; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature17 */
+    /** CellTemperature17; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature18 */
     double cell_temperature17;
-    /** CellTemperature18; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature18 */
+    /** CellTemperature18; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature19 */
     double cell_temperature18;
-    /** CellTemperature19; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature19 */
+    /** CellTemperature19; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature20 */
     double cell_temperature19;
-    /** CellTemperature20; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature20 */
+    /** CellTemperature20; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature21 */
     double cell_temperature20;
-    /** CellTemperature21; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature21 */
+    /** CellTemperature21; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature22 */
     double cell_temperature21;
-    /** CellTemperature22; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature22 */
+    /** CellTemperature22; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature23 */
     double cell_temperature22;
-    /** CellTemperature23; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature23 */
+    /** CellTemperature23; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature24 */
     double cell_temperature23;
-    /** CellTemperature24; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature24 */
+    /** CellTemperature24; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature25 */
     double cell_temperature24;
-    /** CellTemperature25; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature25 */
+    /** CellTemperature25; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature26 */
     double cell_temperature25;
-    /** CellTemperature26; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature26 */
+    /** CellTemperature26; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature27 */
     double cell_temperature26;
-    /** CellTemperature27; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature27 */
+    /** CellTemperature27; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature28 */
     double cell_temperature27;
-    /** CellTemperature28; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature28 */
+    /** CellTemperature28; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature29 */
     double cell_temperature28;
-    /** CellTemperature29; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature29 */
+    /** CellTemperature29; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature30 */
     double cell_temperature29;
-    /** CellTemperature30; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature30 */
+    /** CellTemperature30; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature31 */
     double cell_temperature30;
-    /** CellTemperature31; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature31 */
+    /** CellTemperature31; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature32 */
     double cell_temperature31;
-    /** CellTemperature32; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature32 */
-    double cell_temperature32;
     /** MaxBatteryTemperature; unit=degC; physical=raw*0.05+0; raw=[0,2047]. MaxBatteryTemperature */
     double max_battery_temperature;
     /** AverageBatteryTemperature; unit=degC; physical=raw*0.05+0; raw=[0,2047]. AverageBatteryTemperature */
     double average_battery_temperature;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_bps_temperature_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -1133,8 +1121,6 @@ typedef struct {
     uint32_t capture_time_ms;
     /** BatteryCurrent; unit=A; physical=raw*0.01+-50; raw=[0,16383]. BatteryCurrent */
     double battery_current;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_bps_fault_snapshot_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -1146,74 +1132,72 @@ can_status_t car_can_bps_fault_snapshot_unpack(car_can_bps_fault_snapshot_t* dst
 
 /** Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. Keep captured samples frozen; never replace them with post-trip zeros. Rearm after all faults clear. Triggered transmission with a 1000 ms active-fault repeat interval; no transmission outside the send condition. The last completed scan available at fault detection is frozen, not acquired after shutdown. Scaling and offsets match BPSVoltageData. */
 typedef struct {
-    /** SampleValidMask; unit=none; physical=raw*1+0; raw=[0,4294967295]. Bit 0 corresponds to cell 01; bit 31 to cell 32. Clear bits mean unavailable readings and their encoded values must be ignored. */
+    /** SampleValidMask; unit=none; physical=raw*1+0; raw=[0,4294967295]. Bit 0 corresponds to cell 00; bit 31 to cell 31. Clear bits mean unavailable readings and their encoded values must be ignored. */
     uint32_t sample_valid_mask;
-    /** CellVoltage01; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage01 */
+    /** CellVoltage00; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage01 */
+    uint16_t cell_voltage00;
+    /** CellVoltage01; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage02 */
     uint16_t cell_voltage01;
-    /** CellVoltage02; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage02 */
+    /** CellVoltage02; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage03 */
     uint16_t cell_voltage02;
-    /** CellVoltage03; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage03 */
+    /** CellVoltage03; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage04 */
     uint16_t cell_voltage03;
-    /** CellVoltage04; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage04 */
+    /** CellVoltage04; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage05 */
     uint16_t cell_voltage04;
-    /** CellVoltage05; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage05 */
+    /** CellVoltage05; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage06 */
     uint16_t cell_voltage05;
-    /** CellVoltage06; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage06 */
+    /** CellVoltage06; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage07 */
     uint16_t cell_voltage06;
-    /** CellVoltage07; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage07 */
+    /** CellVoltage07; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage08 */
     uint16_t cell_voltage07;
-    /** CellVoltage08; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage08 */
+    /** CellVoltage08; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage09 */
     uint16_t cell_voltage08;
-    /** CellVoltage09; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage09 */
+    /** CellVoltage09; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage10 */
     uint16_t cell_voltage09;
-    /** CellVoltage10; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage10 */
+    /** CellVoltage10; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage11 */
     uint16_t cell_voltage10;
-    /** CellVoltage11; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage11 */
+    /** CellVoltage11; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage12 */
     uint16_t cell_voltage11;
-    /** CellVoltage12; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage12 */
+    /** CellVoltage12; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage13 */
     uint16_t cell_voltage12;
-    /** CellVoltage13; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage13 */
+    /** CellVoltage13; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage14 */
     uint16_t cell_voltage13;
-    /** CellVoltage14; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage14 */
+    /** CellVoltage14; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage15 */
     uint16_t cell_voltage14;
-    /** CellVoltage15; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage15 */
+    /** CellVoltage15; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage16 */
     uint16_t cell_voltage15;
-    /** CellVoltage16; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage16 */
+    /** CellVoltage16; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage17 */
     uint16_t cell_voltage16;
-    /** CellVoltage17; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage17 */
+    /** CellVoltage17; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage18 */
     uint16_t cell_voltage17;
-    /** CellVoltage18; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage18 */
+    /** CellVoltage18; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage19 */
     uint16_t cell_voltage18;
-    /** CellVoltage19; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage19 */
+    /** CellVoltage19; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage20 */
     uint16_t cell_voltage19;
-    /** CellVoltage20; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage20 */
+    /** CellVoltage20; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage21 */
     uint16_t cell_voltage20;
-    /** CellVoltage21; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage21 */
+    /** CellVoltage21; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage22 */
     uint16_t cell_voltage21;
-    /** CellVoltage22; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage22 */
+    /** CellVoltage22; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage23 */
     uint16_t cell_voltage22;
-    /** CellVoltage23; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage23 */
+    /** CellVoltage23; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage24 */
     uint16_t cell_voltage23;
-    /** CellVoltage24; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage24 */
+    /** CellVoltage24; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage25 */
     uint16_t cell_voltage24;
-    /** CellVoltage25; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage25 */
+    /** CellVoltage25; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage26 */
     uint16_t cell_voltage25;
-    /** CellVoltage26; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage26 */
+    /** CellVoltage26; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage27 */
     uint16_t cell_voltage26;
-    /** CellVoltage27; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage27 */
+    /** CellVoltage27; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage28 */
     uint16_t cell_voltage27;
-    /** CellVoltage28; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage28 */
+    /** CellVoltage28; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage29 */
     uint16_t cell_voltage28;
-    /** CellVoltage29; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage29 */
+    /** CellVoltage29; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage30 */
     uint16_t cell_voltage29;
-    /** CellVoltage30; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage30 */
+    /** CellVoltage30; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage31 */
     uint16_t cell_voltage30;
-    /** CellVoltage31; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage31 */
+    /** CellVoltage31; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage32 */
     uint16_t cell_voltage31;
-    /** CellVoltage32; unit=mV; physical=raw*1+2000; raw=[0,4095]. CellVoltage32 */
-    uint16_t cell_voltage32;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_bps_fault_voltage_snapshot_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -1225,74 +1209,72 @@ can_status_t car_can_bps_fault_voltage_snapshot_unpack(car_can_bps_fault_voltage
 
 /** Latch once when BPS transitions from no active faults to any active fault, before opening contactors where possible. Send immediately, then every 1000 ms only while any BPS fault remains active. Keep captured samples frozen; never replace them with post-trip zeros. Rearm after all faults clear. Triggered transmission with a 1000 ms active-fault repeat interval; no transmission outside the send condition. The last completed scan available at fault detection is frozen, not acquired after shutdown. Scaling and offsets match BPSTemperatureData. */
 typedef struct {
-    /** SampleValidMask; unit=none; physical=raw*1+0; raw=[0,4294967295]. Bit 0 corresponds to cell 01; bit 31 to cell 32. Clear bits mean unavailable readings and their encoded values must be ignored. */
+    /** SampleValidMask; unit=none; physical=raw*1+0; raw=[0,4294967295]. Bit 0 corresponds to cell 00; bit 31 to cell 31. Clear bits mean unavailable readings and their encoded values must be ignored. */
     uint32_t sample_valid_mask;
-    /** CellTemperature01; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature01 */
+    /** CellTemperature00; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature01 */
+    double cell_temperature00;
+    /** CellTemperature01; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature02 */
     double cell_temperature01;
-    /** CellTemperature02; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature02 */
+    /** CellTemperature02; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature03 */
     double cell_temperature02;
-    /** CellTemperature03; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature03 */
+    /** CellTemperature03; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature04 */
     double cell_temperature03;
-    /** CellTemperature04; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature04 */
+    /** CellTemperature04; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature05 */
     double cell_temperature04;
-    /** CellTemperature05; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature05 */
+    /** CellTemperature05; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature06 */
     double cell_temperature05;
-    /** CellTemperature06; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature06 */
+    /** CellTemperature06; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature07 */
     double cell_temperature06;
-    /** CellTemperature07; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature07 */
+    /** CellTemperature07; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature08 */
     double cell_temperature07;
-    /** CellTemperature08; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature08 */
+    /** CellTemperature08; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature09 */
     double cell_temperature08;
-    /** CellTemperature09; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature09 */
+    /** CellTemperature09; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature10 */
     double cell_temperature09;
-    /** CellTemperature10; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature10 */
+    /** CellTemperature10; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature11 */
     double cell_temperature10;
-    /** CellTemperature11; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature11 */
+    /** CellTemperature11; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature12 */
     double cell_temperature11;
-    /** CellTemperature12; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature12 */
+    /** CellTemperature12; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature13 */
     double cell_temperature12;
-    /** CellTemperature13; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature13 */
+    /** CellTemperature13; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature14 */
     double cell_temperature13;
-    /** CellTemperature14; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature14 */
+    /** CellTemperature14; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature15 */
     double cell_temperature14;
-    /** CellTemperature15; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature15 */
+    /** CellTemperature15; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature16 */
     double cell_temperature15;
-    /** CellTemperature16; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature16 */
+    /** CellTemperature16; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature17 */
     double cell_temperature16;
-    /** CellTemperature17; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature17 */
+    /** CellTemperature17; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature18 */
     double cell_temperature17;
-    /** CellTemperature18; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature18 */
+    /** CellTemperature18; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature19 */
     double cell_temperature18;
-    /** CellTemperature19; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature19 */
+    /** CellTemperature19; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature20 */
     double cell_temperature19;
-    /** CellTemperature20; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature20 */
+    /** CellTemperature20; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature21 */
     double cell_temperature20;
-    /** CellTemperature21; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature21 */
+    /** CellTemperature21; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature22 */
     double cell_temperature21;
-    /** CellTemperature22; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature22 */
+    /** CellTemperature22; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature23 */
     double cell_temperature22;
-    /** CellTemperature23; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature23 */
+    /** CellTemperature23; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature24 */
     double cell_temperature23;
-    /** CellTemperature24; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature24 */
+    /** CellTemperature24; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature25 */
     double cell_temperature24;
-    /** CellTemperature25; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature25 */
+    /** CellTemperature25; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature26 */
     double cell_temperature25;
-    /** CellTemperature26; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature26 */
+    /** CellTemperature26; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature27 */
     double cell_temperature26;
-    /** CellTemperature27; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature27 */
+    /** CellTemperature27; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature28 */
     double cell_temperature27;
-    /** CellTemperature28; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature28 */
+    /** CellTemperature28; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature29 */
     double cell_temperature28;
-    /** CellTemperature29; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature29 */
+    /** CellTemperature29; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature30 */
     double cell_temperature29;
-    /** CellTemperature30; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature30 */
+    /** CellTemperature30; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature31 */
     double cell_temperature30;
-    /** CellTemperature31; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature31 */
+    /** CellTemperature31; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature32 */
     double cell_temperature31;
-    /** CellTemperature32; unit=degC; physical=raw*0.05+0; raw=[0,2047]. CellTemperature32 */
-    double cell_temperature32;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_bps_fault_temperature_snapshot_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -1356,8 +1338,6 @@ typedef struct {
     uint8_t sweeping_active;
     /** FanTach; unit=rpm; physical=raw*5+0; raw=[0,4095]. FanTach */
     uint16_t fan_tach;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_mppt_interface_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -1445,8 +1425,6 @@ typedef struct {
     double so_c_temperature;
     /** CM5FanTach; unit=rpm; physical=raw*5+0; raw=[0,4095]. CM5 cooling fan tachometer: unsigned 12 bits, 5 rpm/bit, offset 0 rpm. */
     uint16_t cm5_fan_tach;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_mika_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -1561,8 +1539,6 @@ typedef struct {
     double total_output_current;
     /** BPSLVCurrent; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured BPSLVCurrent. */
     double bpslv_current;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_lvc_current_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -1582,8 +1558,6 @@ typedef struct {
     double power_supply_voltage;
     /** BPSLVVoltage; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured BPSLVVoltage; zero is representable to expose a powered-off output. */
     double bpslv_voltage;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_lvc_voltage_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -1597,8 +1571,6 @@ can_status_t car_can_lvc_voltage_data_unpack(car_can_lvc_voltage_data_t* dst, co
 typedef struct {
     /** BPSFETTemperature; unit=degC; physical=raw*0.05+-40; raw=[0,4800]. Internal temperature of the BPS channel power FET, not load/ambient temperature. */
     double bpsfet_temperature;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_lvc_temperature_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -1635,8 +1607,6 @@ typedef struct {
     uint32_t capture_time_ms;
     /** TripCurrent; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
     double trip_current;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_lvc_over_current_snapshot_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -1646,6 +1616,31 @@ can_status_t car_can_lvc_over_current_snapshot_pack(can_frame_t* dst, const car_
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t car_can_lvc_over_current_snapshot_unpack(car_can_lvc_over_current_snapshot_t* dst, const can_frame_t* src);
 
+/** Named raw values for FaultChannelOverCurrent0; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OVER_CURRENT0_OK = 0,
+    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OVER_CURRENT0_FAULT = 1,
+} car_can_pdu_status_fault_channel_over_current0_choice_t;
+/** Named raw values for FaultChannelI2T0; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_I2_T0_OK = 0,
+    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_I2_T0_FAULT = 1,
+} car_can_pdu_status_fault_channel_i2_t0_choice_t;
+/** Named raw values for FaultChannelOverTemperature0; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OVER_TEMPERATURE0_OK = 0,
+    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OVER_TEMPERATURE0_FAULT = 1,
+} car_can_pdu_status_fault_channel_over_temperature0_choice_t;
+/** Named raw values for FaultChannelOpenLoad0; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OPEN_LOAD0_OK = 0,
+    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OPEN_LOAD0_FAULT = 1,
+} car_can_pdu_status_fault_channel_open_load0_choice_t;
+/** Named raw values for FaultChannelShortToBattery0; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_SHORT_TO_BATTERY0_OK = 0,
+    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_SHORT_TO_BATTERY0_FAULT = 1,
+} car_can_pdu_status_fault_channel_short_to_battery0_choice_t;
 /** Named raw values for FaultChannelOverCurrent1; unknown values remain integers. */
 typedef enum {
     CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OVER_CURRENT1_OK = 0,
@@ -1921,31 +1916,21 @@ typedef enum {
     CAR_CAN_PDU_STATUS_FAULT_CHANNEL_SHORT_TO_BATTERY11_OK = 0,
     CAR_CAN_PDU_STATUS_FAULT_CHANNEL_SHORT_TO_BATTERY11_FAULT = 1,
 } car_can_pdu_status_fault_channel_short_to_battery11_choice_t;
-/** Named raw values for FaultChannelOverCurrent12; unknown values remain integers. */
+/** Named raw values for FaultChipVBBUndervoltage0; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OVER_CURRENT12_OK = 0,
-    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OVER_CURRENT12_FAULT = 1,
-} car_can_pdu_status_fault_channel_over_current12_choice_t;
-/** Named raw values for FaultChannelI2T12; unknown values remain integers. */
+    CAR_CAN_PDU_STATUS_FAULT_CHIP_VBB_UNDERVOLTAGE0_OK = 0,
+    CAR_CAN_PDU_STATUS_FAULT_CHIP_VBB_UNDERVOLTAGE0_FAULT = 1,
+} car_can_pdu_status_fault_chip_vbb_undervoltage0_choice_t;
+/** Named raw values for FaultChipSPIError0; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_I2_T12_OK = 0,
-    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_I2_T12_FAULT = 1,
-} car_can_pdu_status_fault_channel_i2_t12_choice_t;
-/** Named raw values for FaultChannelOverTemperature12; unknown values remain integers. */
+    CAR_CAN_PDU_STATUS_FAULT_CHIP_SPI_ERROR0_OK = 0,
+    CAR_CAN_PDU_STATUS_FAULT_CHIP_SPI_ERROR0_FAULT = 1,
+} car_can_pdu_status_fault_chip_spi_error0_choice_t;
+/** Named raw values for FaultChipWatchdog0; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OVER_TEMPERATURE12_OK = 0,
-    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OVER_TEMPERATURE12_FAULT = 1,
-} car_can_pdu_status_fault_channel_over_temperature12_choice_t;
-/** Named raw values for FaultChannelOpenLoad12; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OPEN_LOAD12_OK = 0,
-    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_OPEN_LOAD12_FAULT = 1,
-} car_can_pdu_status_fault_channel_open_load12_choice_t;
-/** Named raw values for FaultChannelShortToBattery12; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_SHORT_TO_BATTERY12_OK = 0,
-    CAR_CAN_PDU_STATUS_FAULT_CHANNEL_SHORT_TO_BATTERY12_FAULT = 1,
-} car_can_pdu_status_fault_channel_short_to_battery12_choice_t;
+    CAR_CAN_PDU_STATUS_FAULT_CHIP_WATCHDOG0_OK = 0,
+    CAR_CAN_PDU_STATUS_FAULT_CHIP_WATCHDOG0_FAULT = 1,
+} car_can_pdu_status_fault_chip_watchdog0_choice_t;
 /** Named raw values for FaultChipVBBUndervoltage1; unknown values remain integers. */
 typedef enum {
     CAR_CAN_PDU_STATUS_FAULT_CHIP_VBB_UNDERVOLTAGE1_OK = 0,
@@ -2021,26 +2006,16 @@ typedef enum {
     CAR_CAN_PDU_STATUS_FAULT_CHIP_WATCHDOG5_OK = 0,
     CAR_CAN_PDU_STATUS_FAULT_CHIP_WATCHDOG5_FAULT = 1,
 } car_can_pdu_status_fault_chip_watchdog5_choice_t;
-/** Named raw values for FaultChipVBBUndervoltage6; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_STATUS_FAULT_CHIP_VBB_UNDERVOLTAGE6_OK = 0,
-    CAR_CAN_PDU_STATUS_FAULT_CHIP_VBB_UNDERVOLTAGE6_FAULT = 1,
-} car_can_pdu_status_fault_chip_vbb_undervoltage6_choice_t;
-/** Named raw values for FaultChipSPIError6; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_STATUS_FAULT_CHIP_SPI_ERROR6_OK = 0,
-    CAR_CAN_PDU_STATUS_FAULT_CHIP_SPI_ERROR6_FAULT = 1,
-} car_can_pdu_status_fault_chip_spi_error6_choice_t;
-/** Named raw values for FaultChipWatchdog6; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_STATUS_FAULT_CHIP_WATCHDOG6_OK = 0,
-    CAR_CAN_PDU_STATUS_FAULT_CHIP_WATCHDOG6_FAULT = 1,
-} car_can_pdu_status_fault_chip_watchdog6_choice_t;
 /** Named raw values for WarningBlownFuse; unknown values remain integers. */
 typedef enum {
     CAR_CAN_PDU_STATUS_WARNING_BLOWN_FUSE_NO_WARNING = 0,
     CAR_CAN_PDU_STATUS_WARNING_BLOWN_FUSE_WARNING = 1,
 } car_can_pdu_status_warning_blown_fuse_choice_t;
+/** Named raw values for WarningChannelBlownFuse0; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_PDU_STATUS_WARNING_CHANNEL_BLOWN_FUSE0_NO_WARNING = 0,
+    CAR_CAN_PDU_STATUS_WARNING_CHANNEL_BLOWN_FUSE0_WARNING = 1,
+} car_can_pdu_status_warning_channel_blown_fuse0_choice_t;
 /** Named raw values for WarningChannelBlownFuse1; unknown values remain integers. */
 typedef enum {
     CAR_CAN_PDU_STATUS_WARNING_CHANNEL_BLOWN_FUSE1_NO_WARNING = 0,
@@ -2096,11 +2071,11 @@ typedef enum {
     CAR_CAN_PDU_STATUS_WARNING_CHANNEL_BLOWN_FUSE11_NO_WARNING = 0,
     CAR_CAN_PDU_STATUS_WARNING_CHANNEL_BLOWN_FUSE11_WARNING = 1,
 } car_can_pdu_status_warning_channel_blown_fuse11_choice_t;
-/** Named raw values for WarningChannelBlownFuse12; unknown values remain integers. */
+/** Named raw values for ChannelEnabled0; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PDU_STATUS_WARNING_CHANNEL_BLOWN_FUSE12_NO_WARNING = 0,
-    CAR_CAN_PDU_STATUS_WARNING_CHANNEL_BLOWN_FUSE12_WARNING = 1,
-} car_can_pdu_status_warning_channel_blown_fuse12_choice_t;
+    CAR_CAN_PDU_STATUS_CHANNEL_ENABLED0_DISABLED = 0,
+    CAR_CAN_PDU_STATUS_CHANNEL_ENABLED0_ENABLED = 1,
+} car_can_pdu_status_channel_enabled0_choice_t;
 /** Named raw values for ChannelEnabled1; unknown values remain integers. */
 typedef enum {
     CAR_CAN_PDU_STATUS_CHANNEL_ENABLED1_DISABLED = 0,
@@ -2156,171 +2131,168 @@ typedef enum {
     CAR_CAN_PDU_STATUS_CHANNEL_ENABLED11_DISABLED = 0,
     CAR_CAN_PDU_STATUS_CHANNEL_ENABLED11_ENABLED = 1,
 } car_can_pdu_status_channel_enabled11_choice_t;
-/** Named raw values for ChannelEnabled12; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_STATUS_CHANNEL_ENABLED12_DISABLED = 0,
-    CAR_CAN_PDU_STATUS_CHANNEL_ENABLED12_ENABLED = 1,
-} car_can_pdu_status_channel_enabled12_choice_t;
 /** 12 outputs, 6 TPS2HCS08A dual-channel chips. Faults -> warnings -> discrete states. Chip n owns channels 2n-1/2n. Per-channel fuse warnings come from separate hardware. No continuous measurements. */
 typedef struct {
-    /** FaultChannelOverCurrent1; unit=none; physical=raw*1+0; raw=[0,1]. Channel 1, HSS chip 1, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverCurrent0; unit=none; physical=raw*1+0; raw=[0,1]. Channel 0, HSS chip 0, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    uint8_t fault_channel_over_current0;
+    /** FaultChannelI2T0; unit=none; physical=raw*1+0; raw=[0,1]. Channel 0, HSS chip 0, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    uint8_t fault_channel_i2_t0;
+    /** FaultChannelOverTemperature0; unit=none; physical=raw*1+0; raw=[0,1]. Channel 0, HSS chip 0, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    uint8_t fault_channel_over_temperature0;
+    /** FaultChannelOpenLoad0; unit=none; physical=raw*1+0; raw=[0,1]. Channel 0, HSS chip 0, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    uint8_t fault_channel_open_load0;
+    /** FaultChannelShortToBattery0; unit=none; physical=raw*1+0; raw=[0,1]. Channel 0, HSS chip 0, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    uint8_t fault_channel_short_to_battery0;
+    /** FaultChannelOverCurrent1; unit=none; physical=raw*1+0; raw=[0,1]. Channel 1, HSS chip 0, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_current1;
-    /** FaultChannelI2T1; unit=none; physical=raw*1+0; raw=[0,1]. Channel 1, HSS chip 1, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelI2T1; unit=none; physical=raw*1+0; raw=[0,1]. Channel 1, HSS chip 0, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_i2_t1;
-    /** FaultChannelOverTemperature1; unit=none; physical=raw*1+0; raw=[0,1]. Channel 1, HSS chip 1, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverTemperature1; unit=none; physical=raw*1+0; raw=[0,1]. Channel 1, HSS chip 0, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_temperature1;
-    /** FaultChannelOpenLoad1; unit=none; physical=raw*1+0; raw=[0,1]. Channel 1, HSS chip 1, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOpenLoad1; unit=none; physical=raw*1+0; raw=[0,1]. Channel 1, HSS chip 0, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_open_load1;
-    /** FaultChannelShortToBattery1; unit=none; physical=raw*1+0; raw=[0,1]. Channel 1, HSS chip 1, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelShortToBattery1; unit=none; physical=raw*1+0; raw=[0,1]. Channel 1, HSS chip 0, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_short_to_battery1;
-    /** FaultChannelOverCurrent2; unit=none; physical=raw*1+0; raw=[0,1]. Channel 2, HSS chip 1, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverCurrent2; unit=none; physical=raw*1+0; raw=[0,1]. Channel 2, HSS chip 1, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_current2;
-    /** FaultChannelI2T2; unit=none; physical=raw*1+0; raw=[0,1]. Channel 2, HSS chip 1, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelI2T2; unit=none; physical=raw*1+0; raw=[0,1]. Channel 2, HSS chip 1, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_i2_t2;
-    /** FaultChannelOverTemperature2; unit=none; physical=raw*1+0; raw=[0,1]. Channel 2, HSS chip 1, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverTemperature2; unit=none; physical=raw*1+0; raw=[0,1]. Channel 2, HSS chip 1, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_temperature2;
-    /** FaultChannelOpenLoad2; unit=none; physical=raw*1+0; raw=[0,1]. Channel 2, HSS chip 1, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOpenLoad2; unit=none; physical=raw*1+0; raw=[0,1]. Channel 2, HSS chip 1, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_open_load2;
-    /** FaultChannelShortToBattery2; unit=none; physical=raw*1+0; raw=[0,1]. Channel 2, HSS chip 1, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelShortToBattery2; unit=none; physical=raw*1+0; raw=[0,1]. Channel 2, HSS chip 1, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_short_to_battery2;
-    /** FaultChannelOverCurrent3; unit=none; physical=raw*1+0; raw=[0,1]. Channel 3, HSS chip 2, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverCurrent3; unit=none; physical=raw*1+0; raw=[0,1]. Channel 3, HSS chip 1, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_current3;
-    /** FaultChannelI2T3; unit=none; physical=raw*1+0; raw=[0,1]. Channel 3, HSS chip 2, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelI2T3; unit=none; physical=raw*1+0; raw=[0,1]. Channel 3, HSS chip 1, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_i2_t3;
-    /** FaultChannelOverTemperature3; unit=none; physical=raw*1+0; raw=[0,1]. Channel 3, HSS chip 2, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverTemperature3; unit=none; physical=raw*1+0; raw=[0,1]. Channel 3, HSS chip 1, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_temperature3;
-    /** FaultChannelOpenLoad3; unit=none; physical=raw*1+0; raw=[0,1]. Channel 3, HSS chip 2, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOpenLoad3; unit=none; physical=raw*1+0; raw=[0,1]. Channel 3, HSS chip 1, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_open_load3;
-    /** FaultChannelShortToBattery3; unit=none; physical=raw*1+0; raw=[0,1]. Channel 3, HSS chip 2, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelShortToBattery3; unit=none; physical=raw*1+0; raw=[0,1]. Channel 3, HSS chip 1, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_short_to_battery3;
-    /** FaultChannelOverCurrent4; unit=none; physical=raw*1+0; raw=[0,1]. Channel 4, HSS chip 2, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverCurrent4; unit=none; physical=raw*1+0; raw=[0,1]. Channel 4, HSS chip 2, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_current4;
-    /** FaultChannelI2T4; unit=none; physical=raw*1+0; raw=[0,1]. Channel 4, HSS chip 2, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelI2T4; unit=none; physical=raw*1+0; raw=[0,1]. Channel 4, HSS chip 2, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_i2_t4;
-    /** FaultChannelOverTemperature4; unit=none; physical=raw*1+0; raw=[0,1]. Channel 4, HSS chip 2, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverTemperature4; unit=none; physical=raw*1+0; raw=[0,1]. Channel 4, HSS chip 2, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_temperature4;
-    /** FaultChannelOpenLoad4; unit=none; physical=raw*1+0; raw=[0,1]. Channel 4, HSS chip 2, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOpenLoad4; unit=none; physical=raw*1+0; raw=[0,1]. Channel 4, HSS chip 2, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_open_load4;
-    /** FaultChannelShortToBattery4; unit=none; physical=raw*1+0; raw=[0,1]. Channel 4, HSS chip 2, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelShortToBattery4; unit=none; physical=raw*1+0; raw=[0,1]. Channel 4, HSS chip 2, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_short_to_battery4;
-    /** FaultChannelOverCurrent5; unit=none; physical=raw*1+0; raw=[0,1]. Channel 5, HSS chip 3, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverCurrent5; unit=none; physical=raw*1+0; raw=[0,1]. Channel 5, HSS chip 2, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_current5;
-    /** FaultChannelI2T5; unit=none; physical=raw*1+0; raw=[0,1]. Channel 5, HSS chip 3, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelI2T5; unit=none; physical=raw*1+0; raw=[0,1]. Channel 5, HSS chip 2, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_i2_t5;
-    /** FaultChannelOverTemperature5; unit=none; physical=raw*1+0; raw=[0,1]. Channel 5, HSS chip 3, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverTemperature5; unit=none; physical=raw*1+0; raw=[0,1]. Channel 5, HSS chip 2, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_temperature5;
-    /** FaultChannelOpenLoad5; unit=none; physical=raw*1+0; raw=[0,1]. Channel 5, HSS chip 3, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOpenLoad5; unit=none; physical=raw*1+0; raw=[0,1]. Channel 5, HSS chip 2, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_open_load5;
-    /** FaultChannelShortToBattery5; unit=none; physical=raw*1+0; raw=[0,1]. Channel 5, HSS chip 3, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelShortToBattery5; unit=none; physical=raw*1+0; raw=[0,1]. Channel 5, HSS chip 2, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_short_to_battery5;
-    /** FaultChannelOverCurrent6; unit=none; physical=raw*1+0; raw=[0,1]. Channel 6, HSS chip 3, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverCurrent6; unit=none; physical=raw*1+0; raw=[0,1]. Channel 6, HSS chip 3, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_current6;
-    /** FaultChannelI2T6; unit=none; physical=raw*1+0; raw=[0,1]. Channel 6, HSS chip 3, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelI2T6; unit=none; physical=raw*1+0; raw=[0,1]. Channel 6, HSS chip 3, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_i2_t6;
-    /** FaultChannelOverTemperature6; unit=none; physical=raw*1+0; raw=[0,1]. Channel 6, HSS chip 3, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverTemperature6; unit=none; physical=raw*1+0; raw=[0,1]. Channel 6, HSS chip 3, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_temperature6;
-    /** FaultChannelOpenLoad6; unit=none; physical=raw*1+0; raw=[0,1]. Channel 6, HSS chip 3, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOpenLoad6; unit=none; physical=raw*1+0; raw=[0,1]. Channel 6, HSS chip 3, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_open_load6;
-    /** FaultChannelShortToBattery6; unit=none; physical=raw*1+0; raw=[0,1]. Channel 6, HSS chip 3, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelShortToBattery6; unit=none; physical=raw*1+0; raw=[0,1]. Channel 6, HSS chip 3, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_short_to_battery6;
-    /** FaultChannelOverCurrent7; unit=none; physical=raw*1+0; raw=[0,1]. Channel 7, HSS chip 4, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverCurrent7; unit=none; physical=raw*1+0; raw=[0,1]. Channel 7, HSS chip 3, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_current7;
-    /** FaultChannelI2T7; unit=none; physical=raw*1+0; raw=[0,1]. Channel 7, HSS chip 4, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelI2T7; unit=none; physical=raw*1+0; raw=[0,1]. Channel 7, HSS chip 3, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_i2_t7;
-    /** FaultChannelOverTemperature7; unit=none; physical=raw*1+0; raw=[0,1]. Channel 7, HSS chip 4, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverTemperature7; unit=none; physical=raw*1+0; raw=[0,1]. Channel 7, HSS chip 3, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_temperature7;
-    /** FaultChannelOpenLoad7; unit=none; physical=raw*1+0; raw=[0,1]. Channel 7, HSS chip 4, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOpenLoad7; unit=none; physical=raw*1+0; raw=[0,1]. Channel 7, HSS chip 3, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_open_load7;
-    /** FaultChannelShortToBattery7; unit=none; physical=raw*1+0; raw=[0,1]. Channel 7, HSS chip 4, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelShortToBattery7; unit=none; physical=raw*1+0; raw=[0,1]. Channel 7, HSS chip 3, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_short_to_battery7;
-    /** FaultChannelOverCurrent8; unit=none; physical=raw*1+0; raw=[0,1]. Channel 8, HSS chip 4, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverCurrent8; unit=none; physical=raw*1+0; raw=[0,1]. Channel 8, HSS chip 4, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_current8;
-    /** FaultChannelI2T8; unit=none; physical=raw*1+0; raw=[0,1]. Channel 8, HSS chip 4, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelI2T8; unit=none; physical=raw*1+0; raw=[0,1]. Channel 8, HSS chip 4, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_i2_t8;
-    /** FaultChannelOverTemperature8; unit=none; physical=raw*1+0; raw=[0,1]. Channel 8, HSS chip 4, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverTemperature8; unit=none; physical=raw*1+0; raw=[0,1]. Channel 8, HSS chip 4, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_temperature8;
-    /** FaultChannelOpenLoad8; unit=none; physical=raw*1+0; raw=[0,1]. Channel 8, HSS chip 4, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOpenLoad8; unit=none; physical=raw*1+0; raw=[0,1]. Channel 8, HSS chip 4, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_open_load8;
-    /** FaultChannelShortToBattery8; unit=none; physical=raw*1+0; raw=[0,1]. Channel 8, HSS chip 4, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelShortToBattery8; unit=none; physical=raw*1+0; raw=[0,1]. Channel 8, HSS chip 4, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_short_to_battery8;
-    /** FaultChannelOverCurrent9; unit=none; physical=raw*1+0; raw=[0,1]. Channel 9, HSS chip 5, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverCurrent9; unit=none; physical=raw*1+0; raw=[0,1]. Channel 9, HSS chip 4, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_current9;
-    /** FaultChannelI2T9; unit=none; physical=raw*1+0; raw=[0,1]. Channel 9, HSS chip 5, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelI2T9; unit=none; physical=raw*1+0; raw=[0,1]. Channel 9, HSS chip 4, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_i2_t9;
-    /** FaultChannelOverTemperature9; unit=none; physical=raw*1+0; raw=[0,1]. Channel 9, HSS chip 5, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverTemperature9; unit=none; physical=raw*1+0; raw=[0,1]. Channel 9, HSS chip 4, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_temperature9;
-    /** FaultChannelOpenLoad9; unit=none; physical=raw*1+0; raw=[0,1]. Channel 9, HSS chip 5, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOpenLoad9; unit=none; physical=raw*1+0; raw=[0,1]. Channel 9, HSS chip 4, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_open_load9;
-    /** FaultChannelShortToBattery9; unit=none; physical=raw*1+0; raw=[0,1]. Channel 9, HSS chip 5, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelShortToBattery9; unit=none; physical=raw*1+0; raw=[0,1]. Channel 9, HSS chip 4, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_short_to_battery9;
-    /** FaultChannelOverCurrent10; unit=none; physical=raw*1+0; raw=[0,1]. Channel 10, HSS chip 5, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverCurrent10; unit=none; physical=raw*1+0; raw=[0,1]. Channel 10, HSS chip 5, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_current10;
-    /** FaultChannelI2T10; unit=none; physical=raw*1+0; raw=[0,1]. Channel 10, HSS chip 5, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelI2T10; unit=none; physical=raw*1+0; raw=[0,1]. Channel 10, HSS chip 5, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_i2_t10;
-    /** FaultChannelOverTemperature10; unit=none; physical=raw*1+0; raw=[0,1]. Channel 10, HSS chip 5, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverTemperature10; unit=none; physical=raw*1+0; raw=[0,1]. Channel 10, HSS chip 5, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_temperature10;
-    /** FaultChannelOpenLoad10; unit=none; physical=raw*1+0; raw=[0,1]. Channel 10, HSS chip 5, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOpenLoad10; unit=none; physical=raw*1+0; raw=[0,1]. Channel 10, HSS chip 5, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_open_load10;
-    /** FaultChannelShortToBattery10; unit=none; physical=raw*1+0; raw=[0,1]. Channel 10, HSS chip 5, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelShortToBattery10; unit=none; physical=raw*1+0; raw=[0,1]. Channel 10, HSS chip 5, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_short_to_battery10;
-    /** FaultChannelOverCurrent11; unit=none; physical=raw*1+0; raw=[0,1]. Channel 11, HSS chip 6, output 1: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverCurrent11; unit=none; physical=raw*1+0; raw=[0,1]. Channel 11, HSS chip 5, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_current11;
-    /** FaultChannelI2T11; unit=none; physical=raw*1+0; raw=[0,1]. Channel 11, HSS chip 6, output 1: I2T. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelI2T11; unit=none; physical=raw*1+0; raw=[0,1]. Channel 11, HSS chip 5, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_i2_t11;
-    /** FaultChannelOverTemperature11; unit=none; physical=raw*1+0; raw=[0,1]. Channel 11, HSS chip 6, output 1: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOverTemperature11; unit=none; physical=raw*1+0; raw=[0,1]. Channel 11, HSS chip 5, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_over_temperature11;
-    /** FaultChannelOpenLoad11; unit=none; physical=raw*1+0; raw=[0,1]. Channel 11, HSS chip 6, output 1: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelOpenLoad11; unit=none; physical=raw*1+0; raw=[0,1]. Channel 11, HSS chip 5, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_open_load11;
-    /** FaultChannelShortToBattery11; unit=none; physical=raw*1+0; raw=[0,1]. Channel 11, HSS chip 6, output 1: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
+    /** FaultChannelShortToBattery11; unit=none; physical=raw*1+0; raw=[0,1]. Channel 11, HSS chip 5, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
     uint8_t fault_channel_short_to_battery11;
-    /** FaultChannelOverCurrent12; unit=none; physical=raw*1+0; raw=[0,1]. Channel 12, HSS chip 6, output 2: OverCurrent. OverTemperature combines absolute and relative thermal shutdown. */
-    uint8_t fault_channel_over_current12;
-    /** FaultChannelI2T12; unit=none; physical=raw*1+0; raw=[0,1]. Channel 12, HSS chip 6, output 2: I2T. OverTemperature combines absolute and relative thermal shutdown. */
-    uint8_t fault_channel_i2_t12;
-    /** FaultChannelOverTemperature12; unit=none; physical=raw*1+0; raw=[0,1]. Channel 12, HSS chip 6, output 2: OverTemperature. OverTemperature combines absolute and relative thermal shutdown. */
-    uint8_t fault_channel_over_temperature12;
-    /** FaultChannelOpenLoad12; unit=none; physical=raw*1+0; raw=[0,1]. Channel 12, HSS chip 6, output 2: OpenLoad. OverTemperature combines absolute and relative thermal shutdown. */
-    uint8_t fault_channel_open_load12;
-    /** FaultChannelShortToBattery12; unit=none; physical=raw*1+0; raw=[0,1]. Channel 12, HSS chip 6, output 2: ShortToBattery. OverTemperature combines absolute and relative thermal shutdown. */
-    uint8_t fault_channel_short_to_battery12;
-    /** FaultChipVBBUndervoltage1; unit=none; physical=raw*1+0; raw=[0,1]. Chip 1, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipVBBUndervoltage0; unit=none; physical=raw*1+0; raw=[0,1]. Chip 0, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    uint8_t fault_chip_vbb_undervoltage0;
+    /** FaultChipSPIError0; unit=none; physical=raw*1+0; raw=[0,1]. Chip 0, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    uint8_t fault_chip_spi_error0;
+    /** FaultChipWatchdog0; unit=none; physical=raw*1+0; raw=[0,1]. Chip 0, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    uint8_t fault_chip_watchdog0;
+    /** FaultChipVBBUndervoltage1; unit=none; physical=raw*1+0; raw=[0,1]. Chip 1, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_vbb_undervoltage1;
-    /** FaultChipSPIError1; unit=none; physical=raw*1+0; raw=[0,1]. Chip 1, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipSPIError1; unit=none; physical=raw*1+0; raw=[0,1]. Chip 1, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_spi_error1;
-    /** FaultChipWatchdog1; unit=none; physical=raw*1+0; raw=[0,1]. Chip 1, shared by channels 1/2. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipWatchdog1; unit=none; physical=raw*1+0; raw=[0,1]. Chip 1, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_watchdog1;
-    /** FaultChipVBBUndervoltage2; unit=none; physical=raw*1+0; raw=[0,1]. Chip 2, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipVBBUndervoltage2; unit=none; physical=raw*1+0; raw=[0,1]. Chip 2, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_vbb_undervoltage2;
-    /** FaultChipSPIError2; unit=none; physical=raw*1+0; raw=[0,1]. Chip 2, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipSPIError2; unit=none; physical=raw*1+0; raw=[0,1]. Chip 2, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_spi_error2;
-    /** FaultChipWatchdog2; unit=none; physical=raw*1+0; raw=[0,1]. Chip 2, shared by channels 3/4. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipWatchdog2; unit=none; physical=raw*1+0; raw=[0,1]. Chip 2, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_watchdog2;
-    /** FaultChipVBBUndervoltage3; unit=none; physical=raw*1+0; raw=[0,1]. Chip 3, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipVBBUndervoltage3; unit=none; physical=raw*1+0; raw=[0,1]. Chip 3, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_vbb_undervoltage3;
-    /** FaultChipSPIError3; unit=none; physical=raw*1+0; raw=[0,1]. Chip 3, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipSPIError3; unit=none; physical=raw*1+0; raw=[0,1]. Chip 3, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_spi_error3;
-    /** FaultChipWatchdog3; unit=none; physical=raw*1+0; raw=[0,1]. Chip 3, shared by channels 5/6. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipWatchdog3; unit=none; physical=raw*1+0; raw=[0,1]. Chip 3, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_watchdog3;
-    /** FaultChipVBBUndervoltage4; unit=none; physical=raw*1+0; raw=[0,1]. Chip 4, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipVBBUndervoltage4; unit=none; physical=raw*1+0; raw=[0,1]. Chip 4, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_vbb_undervoltage4;
-    /** FaultChipSPIError4; unit=none; physical=raw*1+0; raw=[0,1]. Chip 4, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipSPIError4; unit=none; physical=raw*1+0; raw=[0,1]. Chip 4, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_spi_error4;
-    /** FaultChipWatchdog4; unit=none; physical=raw*1+0; raw=[0,1]. Chip 4, shared by channels 7/8. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipWatchdog4; unit=none; physical=raw*1+0; raw=[0,1]. Chip 4, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_watchdog4;
-    /** FaultChipVBBUndervoltage5; unit=none; physical=raw*1+0; raw=[0,1]. Chip 5, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipVBBUndervoltage5; unit=none; physical=raw*1+0; raw=[0,1]. Chip 5, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_vbb_undervoltage5;
-    /** FaultChipSPIError5; unit=none; physical=raw*1+0; raw=[0,1]. Chip 5, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipSPIError5; unit=none; physical=raw*1+0; raw=[0,1]. Chip 5, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_spi_error5;
-    /** FaultChipWatchdog5; unit=none; physical=raw*1+0; raw=[0,1]. Chip 5, shared by channels 9/10. SPIError includes MCU-detected SPI/frame/CRC errors. */
+    /** FaultChipWatchdog5; unit=none; physical=raw*1+0; raw=[0,1]. Chip 5, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors. */
     uint8_t fault_chip_watchdog5;
-    /** FaultChipVBBUndervoltage6; unit=none; physical=raw*1+0; raw=[0,1]. Chip 6, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors. */
-    uint8_t fault_chip_vbb_undervoltage6;
-    /** FaultChipSPIError6; unit=none; physical=raw*1+0; raw=[0,1]. Chip 6, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors. */
-    uint8_t fault_chip_spi_error6;
-    /** FaultChipWatchdog6; unit=none; physical=raw*1+0; raw=[0,1]. Chip 6, shared by channels 11/12. SPIError includes MCU-detected SPI/frame/CRC errors. */
-    uint8_t fault_chip_watchdog6;
     /** WarningBlownFuse; unit=none; physical=raw*1+0; raw=[0,1]. Aggregate OR of WarningChannelBlownFuse1..12 from the separate hardware channel monitors. */
     uint8_t warning_blown_fuse;
+    /** WarningChannelBlownFuse0; unit=none; physical=raw*1+0; raw=[0,1]. Separate hardware blown-fuse monitor for channel 0; not inferred from HSS open-load fault. */
+    uint8_t warning_channel_blown_fuse0;
     /** WarningChannelBlownFuse1; unit=none; physical=raw*1+0; raw=[0,1]. Separate hardware blown-fuse monitor for channel 1; not inferred from HSS open-load fault. */
     uint8_t warning_channel_blown_fuse1;
     /** WarningChannelBlownFuse2; unit=none; physical=raw*1+0; raw=[0,1]. Separate hardware blown-fuse monitor for channel 2; not inferred from HSS open-load fault. */
@@ -2343,8 +2315,8 @@ typedef struct {
     uint8_t warning_channel_blown_fuse10;
     /** WarningChannelBlownFuse11; unit=none; physical=raw*1+0; raw=[0,1]. Separate hardware blown-fuse monitor for channel 11; not inferred from HSS open-load fault. */
     uint8_t warning_channel_blown_fuse11;
-    /** WarningChannelBlownFuse12; unit=none; physical=raw*1+0; raw=[0,1]. Separate hardware blown-fuse monitor for channel 12; not inferred from HSS open-load fault. */
-    uint8_t warning_channel_blown_fuse12;
+    /** ChannelEnabled0; unit=none; physical=raw*1+0; raw=[0,1]. Requested channel 0 enable state; not proof of output voltage. */
+    uint8_t channel_enabled0;
     /** ChannelEnabled1; unit=none; physical=raw*1+0; raw=[0,1]. Requested channel 1 enable state; not proof of output voltage. */
     uint8_t channel_enabled1;
     /** ChannelEnabled2; unit=none; physical=raw*1+0; raw=[0,1]. Requested channel 2 enable state; not proof of output voltage. */
@@ -2367,8 +2339,6 @@ typedef struct {
     uint8_t channel_enabled10;
     /** ChannelEnabled11; unit=none; physical=raw*1+0; raw=[0,1]. Requested channel 11 enable state; not proof of output voltage. */
     uint8_t channel_enabled11;
-    /** ChannelEnabled12; unit=none; physical=raw*1+0; raw=[0,1]. Requested channel 12 enable state; not proof of output voltage. */
-    uint8_t channel_enabled12;
 } car_can_pdu_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -2380,34 +2350,32 @@ can_status_t car_can_pdu_status_unpack(car_can_pdu_status_t* dst, const can_fram
 
 /** 10 Hz channel and total current measurements. Independent input measurement can include board consumption; do not label a computed channel sum as TotalCurrent. */
 typedef struct {
-    /** ChannelCurrent1; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 1; See chip SPI/watchdog faults and sample age when interpreting this reading. */
+    /** ChannelCurrent0; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 0; See chip SPI/watchdog faults when interpreting this reading. */
+    double channel_current0;
+    /** ChannelCurrent1; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 1; See chip SPI/watchdog faults when interpreting this reading. */
     double channel_current1;
-    /** ChannelCurrent2; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 2; See chip SPI/watchdog faults and sample age when interpreting this reading. */
+    /** ChannelCurrent2; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 2; See chip SPI/watchdog faults when interpreting this reading. */
     double channel_current2;
-    /** ChannelCurrent3; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 3; See chip SPI/watchdog faults and sample age when interpreting this reading. */
+    /** ChannelCurrent3; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 3; See chip SPI/watchdog faults when interpreting this reading. */
     double channel_current3;
-    /** ChannelCurrent4; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 4; See chip SPI/watchdog faults and sample age when interpreting this reading. */
+    /** ChannelCurrent4; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 4; See chip SPI/watchdog faults when interpreting this reading. */
     double channel_current4;
-    /** ChannelCurrent5; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 5; See chip SPI/watchdog faults and sample age when interpreting this reading. */
+    /** ChannelCurrent5; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 5; See chip SPI/watchdog faults when interpreting this reading. */
     double channel_current5;
-    /** ChannelCurrent6; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 6; See chip SPI/watchdog faults and sample age when interpreting this reading. */
+    /** ChannelCurrent6; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 6; See chip SPI/watchdog faults when interpreting this reading. */
     double channel_current6;
-    /** ChannelCurrent7; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 7; See chip SPI/watchdog faults and sample age when interpreting this reading. */
+    /** ChannelCurrent7; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 7; See chip SPI/watchdog faults when interpreting this reading. */
     double channel_current7;
-    /** ChannelCurrent8; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 8; See chip SPI/watchdog faults and sample age when interpreting this reading. */
+    /** ChannelCurrent8; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 8; See chip SPI/watchdog faults when interpreting this reading. */
     double channel_current8;
-    /** ChannelCurrent9; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 9; See chip SPI/watchdog faults and sample age when interpreting this reading. */
+    /** ChannelCurrent9; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 9; See chip SPI/watchdog faults when interpreting this reading. */
     double channel_current9;
-    /** ChannelCurrent10; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 10; See chip SPI/watchdog faults and sample age when interpreting this reading. */
+    /** ChannelCurrent10; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 10; See chip SPI/watchdog faults when interpreting this reading. */
     double channel_current10;
-    /** ChannelCurrent11; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 11; See chip SPI/watchdog faults and sample age when interpreting this reading. */
+    /** ChannelCurrent11; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 11; See chip SPI/watchdog faults when interpreting this reading. */
     double channel_current11;
-    /** ChannelCurrent12; unit=A; physical=raw*0.01+0; raw=[0,4095]. Measured HSS output current for channel 12; See chip SPI/watchdog faults and sample age when interpreting this reading. */
-    double channel_current12;
     /** TotalCurrent; unit=A; physical=raw*0.01+0; raw=[0,16383]. Independently measured PDU input/total current, not a calculated channel sum. */
     double total_current;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_pdu_current_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -2421,32 +2389,30 @@ can_status_t car_can_pdu_current_data_unpack(car_can_pdu_current_data_t* dst, co
 typedef struct {
     /** InputVoltage; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured InputVoltage. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double input_voltage;
-    /** ChannelVoltage1; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage1. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    /** ChannelVoltage0; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage1. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    double channel_voltage0;
+    /** ChannelVoltage1; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage2. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double channel_voltage1;
-    /** ChannelVoltage2; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage2. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    /** ChannelVoltage2; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage3. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double channel_voltage2;
-    /** ChannelVoltage3; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage3. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    /** ChannelVoltage3; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage4. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double channel_voltage3;
-    /** ChannelVoltage4; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage4. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    /** ChannelVoltage4; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage5. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double channel_voltage4;
-    /** ChannelVoltage5; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage5. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    /** ChannelVoltage5; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage6. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double channel_voltage5;
-    /** ChannelVoltage6; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage6. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    /** ChannelVoltage6; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage7. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double channel_voltage6;
-    /** ChannelVoltage7; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage7. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    /** ChannelVoltage7; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage8. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double channel_voltage7;
-    /** ChannelVoltage8; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage8. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    /** ChannelVoltage8; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage9. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double channel_voltage8;
-    /** ChannelVoltage9; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage9. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    /** ChannelVoltage9; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage10. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double channel_voltage9;
-    /** ChannelVoltage10; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage10. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    /** ChannelVoltage10; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage11. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double channel_voltage10;
-    /** ChannelVoltage11; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage11. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
+    /** ChannelVoltage11; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage12. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
     double channel_voltage11;
-    /** ChannelVoltage12; unit=V; physical=raw*0.05+0; raw=[0,1023]. Measured ChannelVoltage12. HSS-derived readings can stop updating when ADC conversion is suspended; consult sample age and chip diagnostics. */
-    double channel_voltage12;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_pdu_voltage_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -2458,6 +2424,8 @@ can_status_t car_can_pdu_voltage_data_unpack(car_can_pdu_voltage_data_t* dst, co
 
 /** 1 Hz per-channel FET temperatures; conversions may pause in some I2T modes; consult sample age and chip diagnostics. */
 typedef struct {
+    /** ChannelTemperature0; unit=degC; physical=raw*0.05+-40; raw=[0,4800]. Channel 0 internal power-FET temperature, not load temperature. */
+    double channel_temperature0;
     /** ChannelTemperature1; unit=degC; physical=raw*0.05+-40; raw=[0,4800]. Channel 1 internal power-FET temperature, not load temperature. */
     double channel_temperature1;
     /** ChannelTemperature2; unit=degC; physical=raw*0.05+-40; raw=[0,4800]. Channel 2 internal power-FET temperature, not load temperature. */
@@ -2480,10 +2448,6 @@ typedef struct {
     double channel_temperature10;
     /** ChannelTemperature11; unit=degC; physical=raw*0.05+-40; raw=[0,4800]. Channel 11 internal power-FET temperature, not load temperature. */
     double channel_temperature11;
-    /** ChannelTemperature12; unit=degC; physical=raw*0.05+-40; raw=[0,4800]. Channel 12 internal power-FET temperature, not load temperature. */
-    double channel_temperature12;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } car_can_pdu_temperature_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -2493,355 +2457,45 @@ can_status_t car_can_pdu_temperature_data_pack(can_frame_t* dst, const car_can_p
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t car_can_pdu_temperature_data_unpack(car_can_pdu_temperature_data_t* dst, const can_frame_t* src);
 
-/** Named raw values for FaultOverCurrent1; unknown values remain integers. */
+/** Named raw values for FaultOverCurrent; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT1_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT1_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_over_current1_choice_t;
-/** Named raw values for FaultOverCurrent2; unknown values remain integers. */
+    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_FAULT_OVER_CURRENT_OK = 0,
+    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_FAULT_OVER_CURRENT_FAULT = 1,
+} car_can_pdu_over_current_snapshot_fault_over_current_choice_t;
+/** Named raw values for FaultI2T; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT2_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT2_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_over_current2_choice_t;
-/** Named raw values for FaultOverCurrent3; unknown values remain integers. */
+    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_FAULT_I2_T_OK = 0,
+    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_FAULT_I2_T_FAULT = 1,
+} car_can_pdu_over_current_snapshot_fault_i2_t_choice_t;
+/** Named raw values for TripCurrentSaturated; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT3_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT3_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_over_current3_choice_t;
-/** Named raw values for FaultOverCurrent4; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT4_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT4_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_over_current4_choice_t;
-/** Named raw values for FaultOverCurrent5; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT5_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT5_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_over_current5_choice_t;
-/** Named raw values for FaultOverCurrent6; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT6_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_OVER_CURRENT6_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_over_current6_choice_t;
-/** Named raw values for FaultI2T1; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T1_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T1_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_i2_t1_choice_t;
-/** Named raw values for FaultI2T2; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T2_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T2_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_i2_t2_choice_t;
-/** Named raw values for FaultI2T3; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T3_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T3_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_i2_t3_choice_t;
-/** Named raw values for FaultI2T4; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T4_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T4_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_i2_t4_choice_t;
-/** Named raw values for FaultI2T5; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T5_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T5_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_i2_t5_choice_t;
-/** Named raw values for FaultI2T6; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T6_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_FAULT_I2_T6_FAULT = 1,
-} car_can_pdu_over_current_snapshot_a_fault_i2_t6_choice_t;
-/** Named raw values for TripCurrentSaturated1; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED1_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED1_ON = 1,
-} car_can_pdu_over_current_snapshot_a_trip_current_saturated1_choice_t;
-/** Named raw values for TripCurrentSaturated2; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED2_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED2_ON = 1,
-} car_can_pdu_over_current_snapshot_a_trip_current_saturated2_choice_t;
-/** Named raw values for TripCurrentSaturated3; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED3_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED3_ON = 1,
-} car_can_pdu_over_current_snapshot_a_trip_current_saturated3_choice_t;
-/** Named raw values for TripCurrentSaturated4; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED4_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED4_ON = 1,
-} car_can_pdu_over_current_snapshot_a_trip_current_saturated4_choice_t;
-/** Named raw values for TripCurrentSaturated5; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED5_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED5_ON = 1,
-} car_can_pdu_over_current_snapshot_a_trip_current_saturated5_choice_t;
-/** Named raw values for TripCurrentSaturated6; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED6_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_A_TRIP_CURRENT_SATURATED6_ON = 1,
-} car_can_pdu_over_current_snapshot_a_trip_current_saturated6_choice_t;
-/** Latch the first overcurrent or I2T trip per output until an explicit firmware fault-reset action. Freeze the last pre-trip current, its age at detection and the sending board monotonic uptime at detection. Reading diagnostic registers does not clear the telemetry latch. Send immediately on a new trip, then every 1000 ms while a trip remains latched. Never overwrite a captured current with post-shutdown zero. No snapshot/event identifier is sent. Capture time resets on board reboot. This records a sampled current, not a guaranteed instantaneous analog peak. Each output retains its own first trip; a later trip on another channel never replaces existing channel records. */
+    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_TRIP_CURRENT_SATURATED_OFF = 0,
+    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_TRIP_CURRENT_SATURATED_ON = 1,
+} car_can_pdu_over_current_snapshot_trip_current_saturated_choice_t;
+/** First latched overcurrent or I2T trip for the selected output. Retain each channel record until explicit reset. Send a newly captured trip promptly, then cycle through latched channels, sending one record at each 1000 ms interval while any trip remains latched. CaptureTimeMs is board uptime at detection; CurrentSampleAgeMs is age of the sampled current at detection. A saturated trip current is a lower bound, not an instantaneous peak. */
 typedef struct {
-    /** FaultOverCurrent1; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 1. */
-    uint8_t fault_over_current1;
-    /** FaultOverCurrent2; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 2. */
-    uint8_t fault_over_current2;
-    /** FaultOverCurrent3; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 3. */
-    uint8_t fault_over_current3;
-    /** FaultOverCurrent4; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 4. */
-    uint8_t fault_over_current4;
-    /** FaultOverCurrent5; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 5. */
-    uint8_t fault_over_current5;
-    /** FaultOverCurrent6; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 6. */
-    uint8_t fault_over_current6;
-    /** FaultI2T1; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 1. */
-    uint8_t fault_i2_t1;
-    /** FaultI2T2; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 2. */
-    uint8_t fault_i2_t2;
-    /** FaultI2T3; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 3. */
-    uint8_t fault_i2_t3;
-    /** FaultI2T4; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 4. */
-    uint8_t fault_i2_t4;
-    /** FaultI2T5; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 5. */
-    uint8_t fault_i2_t5;
-    /** FaultI2T6; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 6. */
-    uint8_t fault_i2_t6;
-    /** TripCurrentSaturated1; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated1;
-    /** TripCurrentSaturated2; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated2;
-    /** TripCurrentSaturated3; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated3;
-    /** TripCurrentSaturated4; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated4;
-    /** TripCurrentSaturated5; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated5;
-    /** TripCurrentSaturated6; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated6;
-    /** CaptureTimeMs1; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms1;
-    /** CurrentSampleAgeMs1; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms1;
-    /** TripCurrent1; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current1;
-    /** CaptureTimeMs2; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms2;
-    /** CurrentSampleAgeMs2; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms2;
-    /** TripCurrent2; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current2;
-    /** CaptureTimeMs3; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms3;
-    /** CurrentSampleAgeMs3; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms3;
-    /** TripCurrent3; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current3;
-    /** CaptureTimeMs4; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms4;
-    /** CurrentSampleAgeMs4; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms4;
-    /** TripCurrent4; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current4;
-    /** CaptureTimeMs5; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms5;
-    /** CurrentSampleAgeMs5; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms5;
-    /** TripCurrent5; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current5;
-    /** CaptureTimeMs6; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms6;
-    /** CurrentSampleAgeMs6; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms6;
-    /** TripCurrent6; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current6;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
-} car_can_pdu_over_current_snapshot_a_t;
+    /** FaultOverCurrent; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for selected channel. */
+    uint8_t fault_over_current;
+    /** FaultI2T; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for selected channel. */
+    uint8_t fault_i2_t;
+    /** TripCurrentSaturated; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
+    uint8_t trip_current_saturated;
+    /** ChannelIndex; unit=none; physical=raw*1+0; raw=[0,11]. Zero-based channel index: 0 selects Channel0; 11 selects Channel11. */
+    uint8_t channel_index;
+    /** CaptureTimeMs; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
+    uint32_t capture_time_ms;
+    /** CurrentSampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
+    uint16_t current_sample_age_ms;
+    /** TripCurrent; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
+    double trip_current;
+} car_can_pdu_over_current_snapshot_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t car_can_pdu_over_current_snapshot_a_pack(can_frame_t* dst, const car_can_pdu_over_current_snapshot_a_t* src);
+can_status_t car_can_pdu_over_current_snapshot_pack(can_frame_t* dst, const car_can_pdu_over_current_snapshot_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t car_can_pdu_over_current_snapshot_a_unpack(car_can_pdu_over_current_snapshot_a_t* dst, const can_frame_t* src);
-
-/** Named raw values for FaultOverCurrent7; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT7_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT7_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_over_current7_choice_t;
-/** Named raw values for FaultOverCurrent8; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT8_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT8_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_over_current8_choice_t;
-/** Named raw values for FaultOverCurrent9; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT9_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT9_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_over_current9_choice_t;
-/** Named raw values for FaultOverCurrent10; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT10_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT10_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_over_current10_choice_t;
-/** Named raw values for FaultOverCurrent11; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT11_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT11_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_over_current11_choice_t;
-/** Named raw values for FaultOverCurrent12; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT12_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_OVER_CURRENT12_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_over_current12_choice_t;
-/** Named raw values for FaultI2T7; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T7_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T7_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_i2_t7_choice_t;
-/** Named raw values for FaultI2T8; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T8_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T8_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_i2_t8_choice_t;
-/** Named raw values for FaultI2T9; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T9_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T9_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_i2_t9_choice_t;
-/** Named raw values for FaultI2T10; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T10_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T10_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_i2_t10_choice_t;
-/** Named raw values for FaultI2T11; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T11_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T11_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_i2_t11_choice_t;
-/** Named raw values for FaultI2T12; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T12_OK = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_FAULT_I2_T12_FAULT = 1,
-} car_can_pdu_over_current_snapshot_b_fault_i2_t12_choice_t;
-/** Named raw values for TripCurrentSaturated7; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED7_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED7_ON = 1,
-} car_can_pdu_over_current_snapshot_b_trip_current_saturated7_choice_t;
-/** Named raw values for TripCurrentSaturated8; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED8_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED8_ON = 1,
-} car_can_pdu_over_current_snapshot_b_trip_current_saturated8_choice_t;
-/** Named raw values for TripCurrentSaturated9; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED9_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED9_ON = 1,
-} car_can_pdu_over_current_snapshot_b_trip_current_saturated9_choice_t;
-/** Named raw values for TripCurrentSaturated10; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED10_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED10_ON = 1,
-} car_can_pdu_over_current_snapshot_b_trip_current_saturated10_choice_t;
-/** Named raw values for TripCurrentSaturated11; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED11_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED11_ON = 1,
-} car_can_pdu_over_current_snapshot_b_trip_current_saturated11_choice_t;
-/** Named raw values for TripCurrentSaturated12; unknown values remain integers. */
-typedef enum {
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED12_OFF = 0,
-    CAR_CAN_PDU_OVER_CURRENT_SNAPSHOT_B_TRIP_CURRENT_SATURATED12_ON = 1,
-} car_can_pdu_over_current_snapshot_b_trip_current_saturated12_choice_t;
-/** Latch the first overcurrent or I2T trip per output until an explicit firmware fault-reset action. Freeze the last pre-trip current, its age at detection and the sending board monotonic uptime at detection. Reading diagnostic registers does not clear the telemetry latch. Send immediately on a new trip, then every 1000 ms while a trip remains latched. Never overwrite a captured current with post-shutdown zero. No snapshot/event identifier is sent. Capture time resets on board reboot. This records a sampled current, not a guaranteed instantaneous analog peak. Each output retains its own first trip; a later trip on another channel never replaces existing channel records. */
-typedef struct {
-    /** FaultOverCurrent7; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 7. */
-    uint8_t fault_over_current7;
-    /** FaultOverCurrent8; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 8. */
-    uint8_t fault_over_current8;
-    /** FaultOverCurrent9; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 9. */
-    uint8_t fault_over_current9;
-    /** FaultOverCurrent10; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 10. */
-    uint8_t fault_over_current10;
-    /** FaultOverCurrent11; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 11. */
-    uint8_t fault_over_current11;
-    /** FaultOverCurrent12; unit=none; physical=raw*1+0; raw=[0,1]. Latched OverCurrent trip for channel 12. */
-    uint8_t fault_over_current12;
-    /** FaultI2T7; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 7. */
-    uint8_t fault_i2_t7;
-    /** FaultI2T8; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 8. */
-    uint8_t fault_i2_t8;
-    /** FaultI2T9; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 9. */
-    uint8_t fault_i2_t9;
-    /** FaultI2T10; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 10. */
-    uint8_t fault_i2_t10;
-    /** FaultI2T11; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 11. */
-    uint8_t fault_i2_t11;
-    /** FaultI2T12; unit=none; physical=raw*1+0; raw=[0,1]. Latched I2T trip for channel 12. */
-    uint8_t fault_i2_t12;
-    /** TripCurrentSaturated7; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated7;
-    /** TripCurrentSaturated8; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated8;
-    /** TripCurrentSaturated9; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated9;
-    /** TripCurrentSaturated10; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated10;
-    /** TripCurrentSaturated11; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated11;
-    /** TripCurrentSaturated12; unit=none; physical=raw*1+0; raw=[0,1]. 1 if the captured current is clipped or the sensing path was saturated; the current is then a lower bound, not an exact peak. */
-    uint8_t trip_current_saturated12;
-    /** CaptureTimeMs7; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms7;
-    /** CurrentSampleAgeMs7; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms7;
-    /** TripCurrent7; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current7;
-    /** CaptureTimeMs8; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms8;
-    /** CurrentSampleAgeMs8; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms8;
-    /** TripCurrent8; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current8;
-    /** CaptureTimeMs9; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms9;
-    /** CurrentSampleAgeMs9; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms9;
-    /** TripCurrent9; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current9;
-    /** CaptureTimeMs10; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms10;
-    /** CurrentSampleAgeMs10; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms10;
-    /** TripCurrent10; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current10;
-    /** CaptureTimeMs11; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms11;
-    /** CurrentSampleAgeMs11; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms11;
-    /** TripCurrent11; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current11;
-    /** CaptureTimeMs12; unit=ms; physical=raw*1+0; raw=[0,4294967295]. Board uptime at the first latched trip; wraps at 2^32 ms. Interpret only while a trip flag is set. */
-    uint32_t capture_time_ms12;
-    /** CurrentSampleAgeMs12; unit=ms; physical=raw*1+0; raw=[0,65535]. Age of the saved current sample when this channel tripped; frozen, saturates at 65535 ms. */
-    uint16_t current_sample_age_ms12;
-    /** TripCurrent12; unit=A; physical=raw*0.01+0; raw=[0,65535]. Captured current; independent record per output; saturation marks a lower bound. */
-    double trip_current12;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
-} car_can_pdu_over_current_snapshot_b_t;
-
-/** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
- * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t car_can_pdu_over_current_snapshot_b_pack(can_frame_t* dst, const car_can_pdu_over_current_snapshot_b_t* src);
-/** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
- * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t car_can_pdu_over_current_snapshot_b_unpack(car_can_pdu_over_current_snapshot_b_t* dst, const can_frame_t* src);
+can_status_t car_can_pdu_over_current_snapshot_unpack(car_can_pdu_over_current_snapshot_t* dst, const can_frame_t* src);
 
 typedef struct {
     car_can_bps_status_t bps_status;
@@ -2887,8 +2541,7 @@ typedef struct {
     car_can_pdu_current_data_t pdu_current_data;
     car_can_pdu_voltage_data_t pdu_voltage_data;
     car_can_pdu_temperature_data_t pdu_temperature_data;
-    car_can_pdu_over_current_snapshot_a_t pdu_over_current_snapshot_a;
-    car_can_pdu_over_current_snapshot_b_t pdu_over_current_snapshot_b;
+    car_can_pdu_over_current_snapshot_t pdu_over_current_snapshot;
 } car_can_pdu_t;
 
 typedef struct {
@@ -2939,8 +2592,7 @@ typedef struct {
         can_message_info_t pdu_current_data;
         can_message_info_t pdu_voltage_data;
         can_message_info_t pdu_temperature_data;
-        can_message_info_t pdu_over_current_snapshot_a;
-        can_message_info_t pdu_over_current_snapshot_b;
+        can_message_info_t pdu_over_current_snapshot;
     } pdu;
     struct {
         can_message_info_t pedals_status;

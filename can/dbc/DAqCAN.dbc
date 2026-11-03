@@ -68,7 +68,7 @@ VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 BO_ 1568 TimestampSync: 2 MIKA
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
 
-BO_ 1569 TelemetryStatus: 7 MIKA
+BO_ 1569 TelemetryStatus: 5 MIKA
  SG_ CellularConnected : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ CellularTechnology : 1|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
  SG_ Roaming : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -78,9 +78,8 @@ BO_ 1569 TelemetryStatus: 7 MIKA
  SG_ RSRP : 15|8@1- (1,0) [-128.0|127.0] "dBm" Vector__XXX
  SG_ RSRQ : 23|8@1- (0.5,0) [-64.0|63.5] "dB" Vector__XXX
  SG_ SINR : 31|8@1- (0.5,0) [-64.0|63.5] "dB" Vector__XXX
- SG_ SampleAgeMs : 39|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 1570 GPSData: 20 MIKA
+BO_ 1570 GPSData: 16 MIKA
  SG_ GPSAntennaState : 0|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ GPSFix : 2|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ GPSLongitude : 4|32@1- (1e-06,0) [-180|180] "deg" Vector__XXX
@@ -89,7 +88,6 @@ BO_ 1570 GPSData: 20 MIKA
  SG_ GPSHeading : 84|16@1+ (0.01,0) [0|359.99] "deg" Vector__XXX
  SG_ GPSAltitude : 100|16@1- (0.1,0) [-3276.8|3276.7] "m" Vector__XXX
  SG_ SatellitesInUse : 116|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
- SG_ SampleAgeMs : 124|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1571 OnBoardWatchdog: 1 MIKA
  SG_ BPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -118,7 +116,6 @@ BO_ 1584 ChassisAccelerationData: 32 ChassisIMU
  SG_ AccelerationZ3 : 188|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
  SG_ AccelerationZ4 : 201|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
  SG_ AccelerationZAverage : 214|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
- SG_ SampleAgeMs : 227|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1585 ChassisGyroData: 48 ChassisIMU
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -138,7 +135,6 @@ BO_ 1585 ChassisGyroData: 48 ChassisIMU
  SG_ GyroZ3 : 224|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroZ4 : 240|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroZAverage : 256|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ SampleAgeMs : 272|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1586 ChassisMagnetometerData: 32 ChassisIMU
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -158,7 +154,6 @@ BO_ 1586 ChassisMagnetometerData: 32 ChassisIMU
  SG_ MagneticFieldZ3 : 176|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
  SG_ MagneticFieldZ4 : 188|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
  SG_ MagneticFieldZAverage : 200|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ SampleAgeMs : 212|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1600 UprightFRAccelerationData: 48 UprightFR
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -178,7 +173,6 @@ BO_ 1600 UprightFRAccelerationData: 48 UprightFR
  SG_ AccelerationZ3 : 212|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationZ4 : 227|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationZAverage : 242|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ SampleAgeMs : 257|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1601 UprightFRGyroData: 48 UprightFR
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -198,9 +192,8 @@ BO_ 1601 UprightFRGyroData: 48 UprightFR
  SG_ GyroZ3 : 224|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroZ4 : 240|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroZAverage : 256|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ SampleAgeMs : 272|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 1602 UprightFRWheelSpeedData: 16 UprightFR
+BO_ 1602 UprightFRWheelSpeedData: 12 UprightFR
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ WheelRPM1 : 32|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
@@ -208,7 +201,6 @@ BO_ 1602 UprightFRWheelSpeedData: 16 UprightFR
  SG_ WheelRPM3 : 56|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPM4 : 68|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPMAverage : 80|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
- SG_ SampleAgeMs : 92|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1616 UprightFLAccelerationData: 48 UprightFL
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -228,7 +220,6 @@ BO_ 1616 UprightFLAccelerationData: 48 UprightFL
  SG_ AccelerationZ3 : 212|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationZ4 : 227|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationZAverage : 242|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ SampleAgeMs : 257|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1617 UprightFLGyroData: 48 UprightFL
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -248,9 +239,8 @@ BO_ 1617 UprightFLGyroData: 48 UprightFL
  SG_ GyroZ3 : 224|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroZ4 : 240|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroZAverage : 256|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ SampleAgeMs : 272|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 1618 UprightFLWheelSpeedData: 16 UprightFL
+BO_ 1618 UprightFLWheelSpeedData: 12 UprightFL
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ WheelRPM1 : 32|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
@@ -258,7 +248,6 @@ BO_ 1618 UprightFLWheelSpeedData: 16 UprightFL
  SG_ WheelRPM3 : 56|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPM4 : 68|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPMAverage : 80|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
- SG_ SampleAgeMs : 92|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1632 UprightRearAccelerationData: 48 UprightRear
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -278,7 +267,6 @@ BO_ 1632 UprightRearAccelerationData: 48 UprightRear
  SG_ AccelerationZ3 : 212|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationZ4 : 227|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
  SG_ AccelerationZAverage : 242|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
- SG_ SampleAgeMs : 257|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1633 UprightRearGyroData: 48 UprightRear
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -298,9 +286,8 @@ BO_ 1633 UprightRearGyroData: 48 UprightRear
  SG_ GyroZ3 : 224|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroZ4 : 240|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroZAverage : 256|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
- SG_ SampleAgeMs : 272|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
-BO_ 1634 UprightRearWheelSpeedData: 16 UprightRear
+BO_ 1634 UprightRearWheelSpeedData: 12 UprightRear
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
  SG_ WheelRPM1 : 32|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
@@ -308,7 +295,6 @@ BO_ 1634 UprightRearWheelSpeedData: 16 UprightRear
  SG_ WheelRPM3 : 56|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPM4 : 68|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
  SG_ WheelRPMAverage : 80|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
- SG_ SampleAgeMs : 92|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1648 SuspensionFRData: 12 SuspensionFR
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -317,7 +303,6 @@ BO_ 1648 SuspensionFRData: 12 SuspensionFR
  SG_ LinpotPosition3 : 40|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition4 : 52|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPositionAverage : 64|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
- SG_ SampleAgeMs : 76|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1649 SuspensionFLData: 12 SuspensionFL
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -326,7 +311,6 @@ BO_ 1649 SuspensionFLData: 12 SuspensionFL
  SG_ LinpotPosition3 : 40|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition4 : 52|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPositionAverage : 64|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
- SG_ SampleAgeMs : 76|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1650 SuspensionRearData: 12 SuspensionRear
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -335,7 +319,6 @@ BO_ 1650 SuspensionRearData: 12 SuspensionRear
  SG_ LinpotPosition3 : 40|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPosition4 : 52|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
  SG_ LinpotPositionAverage : 64|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
- SG_ SampleAgeMs : 76|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 1664 Blackbody1Data: 0 Blackbody1
 
@@ -353,7 +336,6 @@ BO_ 1681 StrainGaugeRearData: 0 StrainGaugeRear
 CM_ BO_ 1568 "MIKA timestamp synchronization: legacy two-byte unsigned little-endian raw count. New allocation ID 0x620 and CAN-FD retained; time unit/epoch/period are not specified.";
 CM_ SG_ 1568 Timestamp "Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks.";
 CM_ BO_ 1569 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 1569 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1569 SINR "SINR";
 CM_ SG_ 1569 RSRQ "RSRQ";
 CM_ SG_ 1569 RSRP "RSRP";
@@ -363,8 +345,7 @@ CM_ SG_ 1569 InternetConnected "InternetConnected";
 CM_ SG_ 1569 Roaming "Roaming";
 CM_ SG_ 1569 CellularTechnology "CellularTechnology";
 CM_ SG_ 1569 CellularConnected "CellularConnected";
-CM_ BO_ 1570 "GPS receiver state and measurements. SampleAgeMs is the age of the oldest included GPS measurement, saturated at 65535 ms.";
-CM_ SG_ 1570 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
+CM_ BO_ 1570 "GPS receiver state and measurements.";
 CM_ SG_ 1570 SatellitesInUse "SatellitesInUse";
 CM_ SG_ 1570 GPSAltitude "GPSAltitude";
 CM_ SG_ 1570 GPSHeading "GPSHeading";
@@ -382,7 +363,6 @@ CM_ SG_ 1571 DEIWatchdog "DEIWatchdog";
 CM_ SG_ 1571 VCUWatchdog "VCUWatchdog";
 CM_ SG_ 1571 BPSWatchdog "BPSWatchdog";
 CM_ BO_ 1584 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1584 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1584 AccelerationZAverage "Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1584 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
@@ -401,7 +381,6 @@ CM_ SG_ 1584 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1.
 CM_ SG_ 1584 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1584 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1585 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1585 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1585 GyroZAverage "Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1585 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
@@ -420,7 +399,6 @@ CM_ SG_ 1585 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across 
 CM_ SG_ 1585 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1585 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1586 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1586 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1586 MagneticFieldZAverage "Sender-populated arithmetic mean of MagneticFieldZ1..MagneticFieldZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1586 MagneticFieldZ4 "Chronological sample 4 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.";
 CM_ SG_ 1586 MagneticFieldZ3 "Chronological sample 3 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.";
@@ -439,7 +417,6 @@ CM_ SG_ 1586 MagneticFieldX1 "Chronological sample 1 of MagneticFieldX; indices 
 CM_ SG_ 1586 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1586 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1600 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1600 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1600 AccelerationZAverage "Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1600 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
@@ -458,7 +435,6 @@ CM_ SG_ 1600 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1.
 CM_ SG_ 1600 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1600 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1601 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1601 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1601 GyroZAverage "Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1601 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
@@ -477,7 +453,6 @@ CM_ SG_ 1601 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across 
 CM_ SG_ 1601 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1601 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1602 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1602 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1602 WheelRPMAverage "Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1602 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1602 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
@@ -486,7 +461,6 @@ CM_ SG_ 1602 WheelRPM1 "Chronological sample 1 of WheelRPM; indices 1..4 align a
 CM_ SG_ 1602 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1602 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1616 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1616 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1616 AccelerationZAverage "Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1616 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
@@ -505,7 +479,6 @@ CM_ SG_ 1616 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1.
 CM_ SG_ 1616 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1616 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1617 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1617 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1617 GyroZAverage "Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1617 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
@@ -524,7 +497,6 @@ CM_ SG_ 1617 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across 
 CM_ SG_ 1617 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1617 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1618 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1618 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1618 WheelRPMAverage "Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1618 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1618 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
@@ -533,7 +505,6 @@ CM_ SG_ 1618 WheelRPM1 "Chronological sample 1 of WheelRPM; indices 1..4 align a
 CM_ SG_ 1618 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1618 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1632 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1632 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1632 AccelerationZAverage "Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1632 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
@@ -552,7 +523,6 @@ CM_ SG_ 1632 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1.
 CM_ SG_ 1632 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1632 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1633 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1633 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1633 GyroZAverage "Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1633 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
@@ -571,7 +541,6 @@ CM_ SG_ 1633 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across 
 CM_ SG_ 1633 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1633 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1634 "Four chronological samples per axis/value and their sender-computed averages. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1634 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1634 WheelRPMAverage "Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field.";
 CM_ SG_ 1634 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1634 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
@@ -580,7 +549,6 @@ CM_ SG_ 1634 WheelRPM1 "Chronological sample 1 of WheelRPM; indices 1..4 align a
 CM_ SG_ 1634 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1634 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
 CM_ BO_ 1648 "Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples.";
-CM_ SG_ 1648 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1648 LinpotPositionAverage "Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field.";
 CM_ SG_ 1648 LinpotPosition4 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1648 LinpotPosition3 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
@@ -588,7 +556,6 @@ CM_ SG_ 1648 LinpotPosition2 "Legacy linpot calibration: wire raw is 12-bit ADC 
 CM_ SG_ 1648 LinpotPosition1 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1648 Timestamp "Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks.";
 CM_ BO_ 1649 "Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples.";
-CM_ SG_ 1649 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1649 LinpotPositionAverage "Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field.";
 CM_ SG_ 1649 LinpotPosition4 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1649 LinpotPosition3 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
@@ -596,7 +563,6 @@ CM_ SG_ 1649 LinpotPosition2 "Legacy linpot calibration: wire raw is 12-bit ADC 
 CM_ SG_ 1649 LinpotPosition1 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1649 Timestamp "Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks.";
 CM_ BO_ 1650 "Four simultaneous physical linpot channels, plus their sender-computed arithmetic mean. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The average extends the payload from 8 to 12 bytes. The four channels are not chronological samples.";
-CM_ SG_ 1650 SampleAgeMs "Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records.";
 CM_ SG_ 1650 LinpotPositionAverage "Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field.";
 CM_ SG_ 1650 LinpotPosition4 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";
 CM_ SG_ 1650 LinpotPosition3 "Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.";

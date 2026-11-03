@@ -22,8 +22,8 @@ const d_aq_can_metadata_t d_aq_can = {
     },
     .mika = {
         .timestamp_sync = { .id = UINT32_C(1568), .payload_bytes = 2, .wire_bytes = 2, .dlc = 2, .is_extended = false, .is_fd = true },
-        .telemetry_status = { .id = UINT32_C(1569), .payload_bytes = 7, .wire_bytes = 7, .dlc = 7, .is_extended = false, .is_fd = true },
-        .gps_data = { .id = UINT32_C(1570), .payload_bytes = 20, .wire_bytes = 20, .dlc = 11, .is_extended = false, .is_fd = true },
+        .telemetry_status = { .id = UINT32_C(1569), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
+        .gps_data = { .id = UINT32_C(1570), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
         .on_board_watchdog = { .id = UINT32_C(1571), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
     },
     .strain_gauge_front = {
@@ -44,17 +44,17 @@ const d_aq_can_metadata_t d_aq_can = {
     .upright_fl = {
         .upright_fl_acceleration_data = { .id = UINT32_C(1616), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
         .upright_fl_gyro_data = { .id = UINT32_C(1617), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
-        .upright_fl_wheel_speed_data = { .id = UINT32_C(1618), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
+        .upright_fl_wheel_speed_data = { .id = UINT32_C(1618), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
     },
     .upright_fr = {
         .upright_fr_acceleration_data = { .id = UINT32_C(1600), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
         .upright_fr_gyro_data = { .id = UINT32_C(1601), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
-        .upright_fr_wheel_speed_data = { .id = UINT32_C(1602), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
+        .upright_fr_wheel_speed_data = { .id = UINT32_C(1602), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
     },
     .upright_rear = {
         .upright_rear_acceleration_data = { .id = UINT32_C(1632), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
         .upright_rear_gyro_data = { .id = UINT32_C(1633), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
-        .upright_rear_wheel_speed_data = { .id = UINT32_C(1634), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
+        .upright_rear_wheel_speed_data = { .id = UINT32_C(1634), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
     },
 };
 
@@ -155,12 +155,8 @@ can_status_t d_aq_can_telemetry_status_pack(can_frame_t* dst, const d_aq_can_tel
         if (encoded > 127.0) encoded = 127.0;
         raw.sinr = (int8_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1569),
-        .len = 7, .is_extended = false,
+        .len = 5, .is_extended = false,
         .is_fd = true };
     if (d_aq_can_raw_telemetry_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -169,7 +165,7 @@ can_status_t d_aq_can_telemetry_status_pack(can_frame_t* dst, const d_aq_can_tel
 
 can_status_t d_aq_can_telemetry_status_unpack(d_aq_can_telemetry_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1569) || src->len != 7 ||
+    if (src->id != UINT32_C(1569) || src->len != 5 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -190,7 +186,6 @@ can_status_t d_aq_can_telemetry_status_unpack(d_aq_can_telemetry_status_t* dst, 
     result.rsrp = (int8_t)raw.rsrp;
     result.rsrq = (double)((double)raw.rsrq * 0.5 + 0.0);
     result.sinr = (double)((double)raw.sinr * 0.5 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -267,12 +262,8 @@ can_status_t d_aq_can_gps_data_pack(can_frame_t* dst, const d_aq_can_gps_data_t*
         uint8_t value = src->satellites_in_use;
         raw.satellites_in_use = (uint8_t)value;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1570),
-        .len = 20, .is_extended = false,
+        .len = 16, .is_extended = false,
         .is_fd = true };
     if (d_aq_can_raw_gps_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -281,7 +272,7 @@ can_status_t d_aq_can_gps_data_pack(can_frame_t* dst, const d_aq_can_gps_data_t*
 
 can_status_t d_aq_can_gps_data_unpack(d_aq_can_gps_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1570) || src->len != 20 ||
+    if (src->id != UINT32_C(1570) || src->len != 16 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -303,7 +294,6 @@ can_status_t d_aq_can_gps_data_unpack(d_aq_can_gps_data_t* dst, const can_frame_
     result.gps_heading = (double)((double)raw.gps_heading * 0.01 + 0.0);
     result.gps_altitude = (double)((double)raw.gps_altitude * 0.1 + 0.0);
     result.satellites_in_use = (uint8_t)raw.satellites_in_use;
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -561,10 +551,6 @@ can_status_t d_aq_can_chassis_acceleration_data_pack(can_frame_t* dst, const d_a
         if (encoded > 4095.0) encoded = 4095.0;
         raw.acceleration_z_average = (int16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1584),
         .len = 32, .is_extended = false,
         .is_fd = true };
@@ -630,7 +616,6 @@ can_status_t d_aq_can_chassis_acceleration_data_unpack(d_aq_can_chassis_accelera
     if (raw.acceleration_z_average < (-INT64_C(4096))) return CAN_RANGE;
     if (raw.acceleration_z_average > INT64_C(4095)) return CAN_RANGE;
     result.acceleration_z_average = (double)((double)raw.acceleration_z_average * 0.001 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -800,10 +785,6 @@ can_status_t d_aq_can_chassis_gyro_data_pack(can_frame_t* dst, const d_aq_can_ch
         if (encoded > 32767.0) encoded = 32767.0;
         raw.gyro_z_average = (int16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1585),
         .len = 48, .is_extended = false,
         .is_fd = true };
@@ -839,7 +820,6 @@ can_status_t d_aq_can_chassis_gyro_data_unpack(d_aq_can_chassis_gyro_data_t* dst
     result.gyro_z3 = (double)((double)raw.gyro_z3 * 0.02 + 0.0);
     result.gyro_z4 = (double)((double)raw.gyro_z4 * 0.02 + 0.0);
     result.gyro_z_average = (double)((double)raw.gyro_z_average * 0.02 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -1009,10 +989,6 @@ can_status_t d_aq_can_chassis_magnetometer_data_pack(can_frame_t* dst, const d_a
         if (encoded > 2047.0) encoded = 2047.0;
         raw.magnetic_field_z_average = (int16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1586),
         .len = 32, .is_extended = false,
         .is_fd = true };
@@ -1078,7 +1054,6 @@ can_status_t d_aq_can_chassis_magnetometer_data_unpack(d_aq_can_chassis_magnetom
     if (raw.magnetic_field_z_average < (-INT64_C(2048))) return CAN_RANGE;
     if (raw.magnetic_field_z_average > INT64_C(2047)) return CAN_RANGE;
     result.magnetic_field_z_average = (double)((double)raw.magnetic_field_z_average * 0.15 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -1248,10 +1223,6 @@ can_status_t d_aq_can_upright_fr_acceleration_data_pack(can_frame_t* dst, const 
         if (encoded > 16383.0) encoded = 16383.0;
         raw.acceleration_z_average = (int16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1600),
         .len = 48, .is_extended = false,
         .is_fd = true };
@@ -1317,7 +1288,6 @@ can_status_t d_aq_can_upright_fr_acceleration_data_unpack(d_aq_can_upright_fr_ac
     if (raw.acceleration_z_average < (-INT64_C(16384))) return CAN_RANGE;
     if (raw.acceleration_z_average > INT64_C(16383)) return CAN_RANGE;
     result.acceleration_z_average = (double)((double)raw.acceleration_z_average * 0.001 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -1487,10 +1457,6 @@ can_status_t d_aq_can_upright_fr_gyro_data_pack(can_frame_t* dst, const d_aq_can
         if (encoded > 32767.0) encoded = 32767.0;
         raw.gyro_z_average = (int16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1601),
         .len = 48, .is_extended = false,
         .is_fd = true };
@@ -1526,7 +1492,6 @@ can_status_t d_aq_can_upright_fr_gyro_data_unpack(d_aq_can_upright_fr_gyro_data_
     result.gyro_z3 = (double)((double)raw.gyro_z3 * 0.02 + 0.0);
     result.gyro_z4 = (double)((double)raw.gyro_z4 * 0.02 + 0.0);
     result.gyro_z_average = (double)((double)raw.gyro_z_average * 0.02 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -1596,12 +1561,8 @@ can_status_t d_aq_can_upright_fr_wheel_speed_data_pack(can_frame_t* dst, const d
         if (encoded > 4095.0) encoded = 4095.0;
         raw.wheel_rpm_average = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1602),
-        .len = 16, .is_extended = false,
+        .len = 12, .is_extended = false,
         .is_fd = true };
     if (d_aq_can_raw_upright_fr_wheel_speed_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -1610,7 +1571,7 @@ can_status_t d_aq_can_upright_fr_wheel_speed_data_pack(can_frame_t* dst, const d
 
 can_status_t d_aq_can_upright_fr_wheel_speed_data_unpack(d_aq_can_upright_fr_wheel_speed_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1602) || src->len != 16 ||
+    if (src->id != UINT32_C(1602) || src->len != 12 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -1630,7 +1591,6 @@ can_status_t d_aq_can_upright_fr_wheel_speed_data_unpack(d_aq_can_upright_fr_whe
     result.wheel_rpm4 = (double)((double)raw.wheel_rpm4 * 0.5 + 0.0);
     if (raw.wheel_rpm_average > INT64_C(4095)) return CAN_RANGE;
     result.wheel_rpm_average = (double)((double)raw.wheel_rpm_average * 0.5 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -1800,10 +1760,6 @@ can_status_t d_aq_can_upright_fl_acceleration_data_pack(can_frame_t* dst, const 
         if (encoded > 16383.0) encoded = 16383.0;
         raw.acceleration_z_average = (int16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1616),
         .len = 48, .is_extended = false,
         .is_fd = true };
@@ -1869,7 +1825,6 @@ can_status_t d_aq_can_upright_fl_acceleration_data_unpack(d_aq_can_upright_fl_ac
     if (raw.acceleration_z_average < (-INT64_C(16384))) return CAN_RANGE;
     if (raw.acceleration_z_average > INT64_C(16383)) return CAN_RANGE;
     result.acceleration_z_average = (double)((double)raw.acceleration_z_average * 0.001 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -2039,10 +1994,6 @@ can_status_t d_aq_can_upright_fl_gyro_data_pack(can_frame_t* dst, const d_aq_can
         if (encoded > 32767.0) encoded = 32767.0;
         raw.gyro_z_average = (int16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1617),
         .len = 48, .is_extended = false,
         .is_fd = true };
@@ -2078,7 +2029,6 @@ can_status_t d_aq_can_upright_fl_gyro_data_unpack(d_aq_can_upright_fl_gyro_data_
     result.gyro_z3 = (double)((double)raw.gyro_z3 * 0.02 + 0.0);
     result.gyro_z4 = (double)((double)raw.gyro_z4 * 0.02 + 0.0);
     result.gyro_z_average = (double)((double)raw.gyro_z_average * 0.02 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -2148,12 +2098,8 @@ can_status_t d_aq_can_upright_fl_wheel_speed_data_pack(can_frame_t* dst, const d
         if (encoded > 4095.0) encoded = 4095.0;
         raw.wheel_rpm_average = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1618),
-        .len = 16, .is_extended = false,
+        .len = 12, .is_extended = false,
         .is_fd = true };
     if (d_aq_can_raw_upright_fl_wheel_speed_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -2162,7 +2108,7 @@ can_status_t d_aq_can_upright_fl_wheel_speed_data_pack(can_frame_t* dst, const d
 
 can_status_t d_aq_can_upright_fl_wheel_speed_data_unpack(d_aq_can_upright_fl_wheel_speed_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1618) || src->len != 16 ||
+    if (src->id != UINT32_C(1618) || src->len != 12 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -2182,7 +2128,6 @@ can_status_t d_aq_can_upright_fl_wheel_speed_data_unpack(d_aq_can_upright_fl_whe
     result.wheel_rpm4 = (double)((double)raw.wheel_rpm4 * 0.5 + 0.0);
     if (raw.wheel_rpm_average > INT64_C(4095)) return CAN_RANGE;
     result.wheel_rpm_average = (double)((double)raw.wheel_rpm_average * 0.5 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -2352,10 +2297,6 @@ can_status_t d_aq_can_upright_rear_acceleration_data_pack(can_frame_t* dst, cons
         if (encoded > 16383.0) encoded = 16383.0;
         raw.acceleration_z_average = (int16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1632),
         .len = 48, .is_extended = false,
         .is_fd = true };
@@ -2421,7 +2362,6 @@ can_status_t d_aq_can_upright_rear_acceleration_data_unpack(d_aq_can_upright_rea
     if (raw.acceleration_z_average < (-INT64_C(16384))) return CAN_RANGE;
     if (raw.acceleration_z_average > INT64_C(16383)) return CAN_RANGE;
     result.acceleration_z_average = (double)((double)raw.acceleration_z_average * 0.001 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -2591,10 +2531,6 @@ can_status_t d_aq_can_upright_rear_gyro_data_pack(can_frame_t* dst, const d_aq_c
         if (encoded > 32767.0) encoded = 32767.0;
         raw.gyro_z_average = (int16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1633),
         .len = 48, .is_extended = false,
         .is_fd = true };
@@ -2630,7 +2566,6 @@ can_status_t d_aq_can_upright_rear_gyro_data_unpack(d_aq_can_upright_rear_gyro_d
     result.gyro_z3 = (double)((double)raw.gyro_z3 * 0.02 + 0.0);
     result.gyro_z4 = (double)((double)raw.gyro_z4 * 0.02 + 0.0);
     result.gyro_z_average = (double)((double)raw.gyro_z_average * 0.02 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -2700,12 +2635,8 @@ can_status_t d_aq_can_upright_rear_wheel_speed_data_pack(can_frame_t* dst, const
         if (encoded > 4095.0) encoded = 4095.0;
         raw.wheel_rpm_average = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1634),
-        .len = 16, .is_extended = false,
+        .len = 12, .is_extended = false,
         .is_fd = true };
     if (d_aq_can_raw_upright_rear_wheel_speed_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -2714,7 +2645,7 @@ can_status_t d_aq_can_upright_rear_wheel_speed_data_pack(can_frame_t* dst, const
 
 can_status_t d_aq_can_upright_rear_wheel_speed_data_unpack(d_aq_can_upright_rear_wheel_speed_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1634) || src->len != 16 ||
+    if (src->id != UINT32_C(1634) || src->len != 12 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -2734,7 +2665,6 @@ can_status_t d_aq_can_upright_rear_wheel_speed_data_unpack(d_aq_can_upright_rear
     result.wheel_rpm4 = (double)((double)raw.wheel_rpm4 * 0.5 + 0.0);
     if (raw.wheel_rpm_average > INT64_C(4095)) return CAN_RANGE;
     result.wheel_rpm_average = (double)((double)raw.wheel_rpm_average * 0.5 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -2797,10 +2727,6 @@ can_status_t d_aq_can_suspension_fr_data_pack(can_frame_t* dst, const d_aq_can_s
         if (encoded > 4095.0) encoded = 4095.0;
         raw.linpot_position_average = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1648),
         .len = 12, .is_extended = false,
         .is_fd = true };
@@ -2829,7 +2755,6 @@ can_status_t d_aq_can_suspension_fr_data_unpack(d_aq_can_suspension_fr_data_t* d
     result.linpot_position4 = (double)((double)raw.linpot_position4 * 0.0188885 + 1.0);
     if (raw.linpot_position_average > INT64_C(4095)) return CAN_RANGE;
     result.linpot_position_average = (double)((double)raw.linpot_position_average * 0.0188885 + 1.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -2892,10 +2817,6 @@ can_status_t d_aq_can_suspension_fl_data_pack(can_frame_t* dst, const d_aq_can_s
         if (encoded > 4095.0) encoded = 4095.0;
         raw.linpot_position_average = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1649),
         .len = 12, .is_extended = false,
         .is_fd = true };
@@ -2924,7 +2845,6 @@ can_status_t d_aq_can_suspension_fl_data_unpack(d_aq_can_suspension_fl_data_t* d
     result.linpot_position4 = (double)((double)raw.linpot_position4 * 0.0188885 + 1.0);
     if (raw.linpot_position_average > INT64_C(4095)) return CAN_RANGE;
     result.linpot_position_average = (double)((double)raw.linpot_position_average * 0.0188885 + 1.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -2987,10 +2907,6 @@ can_status_t d_aq_can_suspension_rear_data_pack(can_frame_t* dst, const d_aq_can
         if (encoded > 4095.0) encoded = 4095.0;
         raw.linpot_position_average = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1650),
         .len = 12, .is_extended = false,
         .is_fd = true };
@@ -3019,7 +2935,6 @@ can_status_t d_aq_can_suspension_rear_data_unpack(d_aq_can_suspension_rear_data_
     result.linpot_position4 = (double)((double)raw.linpot_position4 * 0.0188885 + 1.0);
     if (raw.linpot_position_average > INT64_C(4095)) return CAN_RANGE;
     result.linpot_position_average = (double)((double)raw.linpot_position_average * 0.0188885 + 1.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }

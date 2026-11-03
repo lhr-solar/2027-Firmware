@@ -10,10 +10,10 @@ const charger_can_metadata_t charger_can = {
         .bps_status = { .id = UINT32_C(96), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
         .bps_pack_data = { .id = UINT32_C(112), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
         .bps_voltage_data = { .id = UINT32_C(113), .payload_bytes = 64, .wire_bytes = 64, .dlc = 15, .is_extended = false, .is_fd = true },
-        .bps_temperature_data = { .id = UINT32_C(114), .payload_bytes = 64, .wire_bytes = 64, .dlc = 15, .is_extended = false, .is_fd = true },
+        .bps_temperature_data = { .id = UINT32_C(114), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
     },
     .elcon_interface = {
-        .elcon_interface_status = { .id = UINT32_C(1536), .payload_bytes = 6, .wire_bytes = 6, .dlc = 6, .is_extended = false, .is_fd = true },
+        .elcon_interface_status = { .id = UINT32_C(1536), .payload_bytes = 4, .wire_bytes = 4, .dlc = 4, .is_extended = false, .is_fd = true },
     },
 };
 
@@ -351,10 +351,6 @@ can_status_t charger_can_bps_status_pack(can_frame_t* dst, const charger_can_bps
         if (encoded > 4095.0) encoded = 4095.0;
         raw.bps_fan_tach = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(96),
         .len = 16, .is_extended = false,
         .is_fd = true };
@@ -462,7 +458,6 @@ can_status_t charger_can_bps_status_unpack(charger_can_bps_status_t* dst, const 
     result.battery_fan_tach2 = (uint16_t)((double)raw.battery_fan_tach2 * 5.0 + 0.0);
     if (raw.bps_fan_tach > INT64_C(4095)) return CAN_RANGE;
     result.bps_fan_tach = (uint16_t)((double)raw.bps_fan_tach * 5.0 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -531,10 +526,6 @@ can_status_t charger_can_bps_pack_data_pack(can_frame_t* dst, const charger_can_
         if (encoded > 16383.0) encoded = 16383.0;
         raw.battery_current = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(112),
         .len = 12, .is_extended = false,
         .is_fd = true };
@@ -564,7 +555,6 @@ can_status_t charger_can_bps_pack_data_unpack(charger_can_bps_pack_data_t* dst, 
     result.motor_voltage = (double)((double)raw.motor_voltage * 0.05 + 0.0);
     if (raw.battery_current > INT64_C(16383)) return CAN_RANGE;
     result.battery_current = (double)((double)raw.battery_current * 0.01 + -50.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -573,6 +563,16 @@ can_status_t charger_can_bps_voltage_data_pack(can_frame_t* dst, const charger_c
     if (dst == NULL || src == NULL) return CAN_INVALID;
     struct charger_can_raw_bps_voltage_data_t raw = {0};
     can_status_t status = CAN_OK;
+    {
+        double value = (double)src->cell_voltage00;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < 2000.0) { value = 2000.0; status = CAN_CLAMPED; }
+        if (value > 6095.0) { value = 6095.0; status = CAN_CLAMPED; }
+        double encoded = round((value - 2000.0) / 1.0);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 4095.0) encoded = 4095.0;
+        raw.cell_voltage00 = (uint16_t)encoded;
+    }
     {
         double value = (double)src->cell_voltage01;
         if (!isfinite(value)) return CAN_INVALID;
@@ -884,16 +884,6 @@ can_status_t charger_can_bps_voltage_data_pack(can_frame_t* dst, const charger_c
         raw.cell_voltage31 = (uint16_t)encoded;
     }
     {
-        double value = (double)src->cell_voltage32;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 2000.0) { value = 2000.0; status = CAN_CLAMPED; }
-        if (value > 6095.0) { value = 6095.0; status = CAN_CLAMPED; }
-        double encoded = round((value - 2000.0) / 1.0);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 4095.0) encoded = 4095.0;
-        raw.cell_voltage32 = (uint16_t)encoded;
-    }
-    {
         double value = (double)src->min_cell_voltage;
         if (!isfinite(value)) return CAN_INVALID;
         if (value < 2000.0) { value = 2000.0; status = CAN_CLAMPED; }
@@ -913,10 +903,6 @@ can_status_t charger_can_bps_voltage_data_pack(can_frame_t* dst, const charger_c
         if (encoded > 4095.0) encoded = 4095.0;
         raw.max_cell_voltage = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(113),
         .len = 64, .is_extended = false,
         .is_fd = true };
@@ -934,6 +920,8 @@ can_status_t charger_can_bps_voltage_data_unpack(charger_can_bps_voltage_data_t*
     struct charger_can_raw_bps_voltage_data_t raw = {0};
     if (charger_can_raw_bps_voltage_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     charger_can_bps_voltage_data_t result = {0};
+    if (raw.cell_voltage00 > INT64_C(4095)) return CAN_RANGE;
+    result.cell_voltage00 = (uint16_t)((double)raw.cell_voltage00 * 1.0 + 2000.0);
     if (raw.cell_voltage01 > INT64_C(4095)) return CAN_RANGE;
     result.cell_voltage01 = (uint16_t)((double)raw.cell_voltage01 * 1.0 + 2000.0);
     if (raw.cell_voltage02 > INT64_C(4095)) return CAN_RANGE;
@@ -996,13 +984,10 @@ can_status_t charger_can_bps_voltage_data_unpack(charger_can_bps_voltage_data_t*
     result.cell_voltage30 = (uint16_t)((double)raw.cell_voltage30 * 1.0 + 2000.0);
     if (raw.cell_voltage31 > INT64_C(4095)) return CAN_RANGE;
     result.cell_voltage31 = (uint16_t)((double)raw.cell_voltage31 * 1.0 + 2000.0);
-    if (raw.cell_voltage32 > INT64_C(4095)) return CAN_RANGE;
-    result.cell_voltage32 = (uint16_t)((double)raw.cell_voltage32 * 1.0 + 2000.0);
     if (raw.min_cell_voltage > INT64_C(4095)) return CAN_RANGE;
     result.min_cell_voltage = (uint16_t)((double)raw.min_cell_voltage * 1.0 + 2000.0);
     if (raw.max_cell_voltage > INT64_C(4095)) return CAN_RANGE;
     result.max_cell_voltage = (uint16_t)((double)raw.max_cell_voltage * 1.0 + 2000.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -1011,6 +996,16 @@ can_status_t charger_can_bps_temperature_data_pack(can_frame_t* dst, const charg
     if (dst == NULL || src == NULL) return CAN_INVALID;
     struct charger_can_raw_bps_temperature_data_t raw = {0};
     can_status_t status = CAN_OK;
+    {
+        double value = (double)src->cell_temperature00;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
+        if (value > 102.35) { value = 102.35; status = CAN_CLAMPED; }
+        double encoded = round((value - 0.0) / 0.05);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 2047.0) encoded = 2047.0;
+        raw.cell_temperature00 = (uint16_t)encoded;
+    }
     {
         double value = (double)src->cell_temperature01;
         if (!isfinite(value)) return CAN_INVALID;
@@ -1322,16 +1317,6 @@ can_status_t charger_can_bps_temperature_data_pack(can_frame_t* dst, const charg
         raw.cell_temperature31 = (uint16_t)encoded;
     }
     {
-        double value = (double)src->cell_temperature32;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 102.35) { value = 102.35; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.05);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 2047.0) encoded = 2047.0;
-        raw.cell_temperature32 = (uint16_t)encoded;
-    }
-    {
         double value = (double)src->max_battery_temperature;
         if (!isfinite(value)) return CAN_INVALID;
         if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
@@ -1351,12 +1336,8 @@ can_status_t charger_can_bps_temperature_data_pack(can_frame_t* dst, const charg
         if (encoded > 2047.0) encoded = 2047.0;
         raw.average_battery_temperature = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(114),
-        .len = 64, .is_extended = false,
+        .len = 48, .is_extended = false,
         .is_fd = true };
     if (charger_can_raw_bps_temperature_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -1365,13 +1346,15 @@ can_status_t charger_can_bps_temperature_data_pack(can_frame_t* dst, const charg
 
 can_status_t charger_can_bps_temperature_data_unpack(charger_can_bps_temperature_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(114) || src->len != 64 ||
+    if (src->id != UINT32_C(114) || src->len != 48 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
     struct charger_can_raw_bps_temperature_data_t raw = {0};
     if (charger_can_raw_bps_temperature_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     charger_can_bps_temperature_data_t result = {0};
+    if (raw.cell_temperature00 > INT64_C(2047)) return CAN_RANGE;
+    result.cell_temperature00 = (double)((double)raw.cell_temperature00 * 0.05 + 0.0);
     if (raw.cell_temperature01 > INT64_C(2047)) return CAN_RANGE;
     result.cell_temperature01 = (double)((double)raw.cell_temperature01 * 0.05 + 0.0);
     if (raw.cell_temperature02 > INT64_C(2047)) return CAN_RANGE;
@@ -1434,13 +1417,10 @@ can_status_t charger_can_bps_temperature_data_unpack(charger_can_bps_temperature
     result.cell_temperature30 = (double)((double)raw.cell_temperature30 * 0.05 + 0.0);
     if (raw.cell_temperature31 > INT64_C(2047)) return CAN_RANGE;
     result.cell_temperature31 = (double)((double)raw.cell_temperature31 * 0.05 + 0.0);
-    if (raw.cell_temperature32 > INT64_C(2047)) return CAN_RANGE;
-    result.cell_temperature32 = (double)((double)raw.cell_temperature32 * 0.05 + 0.0);
     if (raw.max_battery_temperature > INT64_C(2047)) return CAN_RANGE;
     result.max_battery_temperature = (double)((double)raw.max_battery_temperature * 0.05 + 0.0);
     if (raw.average_battery_temperature > INT64_C(2047)) return CAN_RANGE;
     result.average_battery_temperature = (double)((double)raw.average_battery_temperature * 0.05 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }
@@ -1543,12 +1523,8 @@ can_status_t charger_can_elcon_interface_status_pack(can_frame_t* dst, const cha
         if (encoded > 2550.0) encoded = 2550.0;
         raw.evse_available_current = (uint16_t)encoded;
     }
-    {
-        uint16_t value = src->sample_age_ms;
-        raw.sample_age_ms = (uint16_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1536),
-        .len = 6, .is_extended = false,
+        .len = 4, .is_extended = false,
         .is_fd = true };
     if (charger_can_raw_elcon_interface_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -1557,7 +1533,7 @@ can_status_t charger_can_elcon_interface_status_pack(can_frame_t* dst, const cha
 
 can_status_t charger_can_elcon_interface_status_unpack(charger_can_elcon_interface_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1536) || src->len != 6 ||
+    if (src->id != UINT32_C(1536) || src->len != 4 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -1590,7 +1566,6 @@ can_status_t charger_can_elcon_interface_status_unpack(charger_can_elcon_interfa
     result.evsecp_valid = (uint8_t)raw.evsecp_valid;
     if (raw.evse_available_current > INT64_C(2550)) return CAN_RANGE;
     result.evse_available_current = (double)((double)raw.evse_available_current * 0.01 + 0.0);
-    result.sample_age_ms = (uint16_t)raw.sample_age_ms;
     *dst = result;
     return CAN_OK;
 }

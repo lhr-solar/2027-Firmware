@@ -380,8 +380,6 @@ int car_can_raw_bps_status_pack(
     dst_p[12] |= pack_right_shift_u16(src_p->battery_fan_tach2, 8u, 0x0fu);
     dst_p[12] |= pack_left_shift_u16(src_p->bps_fan_tach, 4u, 0xf0u);
     dst_p[13] |= pack_right_shift_u16(src_p->bps_fan_tach, 4u, 0xffu);
-    dst_p[14] |= pack_left_shift_u16(src_p->sample_age_ms, 0u, 0xffu);
-    dst_p[15] |= pack_right_shift_u16(src_p->sample_age_ms, 8u, 0xffu);
 
     return (16);
 }
@@ -447,8 +445,6 @@ int car_can_raw_bps_status_unpack(
     dst_p->battery_fan_tach2 |= unpack_left_shift_u16(src_p[12], 8u, 0x0fu);
     dst_p->bps_fan_tach = unpack_right_shift_u16(src_p[12], 4u, 0xf0u);
     dst_p->bps_fan_tach |= unpack_left_shift_u16(src_p[13], 4u, 0xffu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[14], 0u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[15], 8u, 0xffu);
 
     return (0);
 }
@@ -691,23 +687,16 @@ bool car_can_raw_bps_status_bps_fan_tach_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
-bool car_can_raw_bps_status_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_pedals_status_pack(
     uint8_t *dst_p,
     const struct car_can_raw_pedals_status_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 6u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 8);
+    memset(&dst_p[0], 0, 6);
 
     dst_p[0] |= pack_left_shift_u8(src_p->status, 0u, 0x01u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_no_accelerator, 1u, 0x02u);
@@ -723,10 +712,8 @@ int car_can_raw_pedals_status_pack(
     dst_p[4] |= pack_right_shift_u16(src_p->front_pressure, 8u, 0x0fu);
     dst_p[4] |= pack_left_shift_u16(src_p->rear_pressure, 4u, 0xf0u);
     dst_p[5] |= pack_right_shift_u16(src_p->rear_pressure, 4u, 0xffu);
-    dst_p[6] |= pack_left_shift_u16(src_p->sample_age_ms, 0u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(src_p->sample_age_ms, 8u, 0xffu);
 
-    return (8);
+    return (6);
 }
 
 int car_can_raw_pedals_status_unpack(
@@ -734,7 +721,7 @@ int car_can_raw_pedals_status_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 6u) {
         return (-EINVAL);
     }
 
@@ -752,8 +739,6 @@ int car_can_raw_pedals_status_unpack(
     dst_p->front_pressure |= unpack_left_shift_u16(src_p[4], 8u, 0x0fu);
     dst_p->rear_pressure = unpack_right_shift_u16(src_p[4], 4u, 0xf0u);
     dst_p->rear_pressure |= unpack_left_shift_u16(src_p[5], 4u, 0xffu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[7], 8u, 0xffu);
 
     return (0);
 }
@@ -829,13 +814,6 @@ bool car_can_raw_pedals_status_front_pressure_is_in_range(uint16_t value)
 bool car_can_raw_pedals_status_rear_pressure_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
-}
-
-bool car_can_raw_pedals_status_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
 }
 
 int car_can_raw_dei_status_pack(
@@ -964,11 +942,11 @@ int car_can_raw_vcu_status_pack(
     const struct car_can_raw_vcu_status_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 6u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 8);
+    memset(&dst_p[0], 0, 6);
 
     dst_p[0] |= pack_left_shift_u8(src_p->status, 0u, 0x01u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_motor, 1u, 0x02u);
@@ -995,10 +973,8 @@ int car_can_raw_vcu_status_pack(
     dst_p[4] |= pack_right_shift_u16(src_p->motor_controller_fan_tach, 8u, 0x0fu);
     dst_p[4] |= pack_left_shift_u16(src_p->motor_fan_tach, 4u, 0xf0u);
     dst_p[5] |= pack_right_shift_u16(src_p->motor_fan_tach, 4u, 0xffu);
-    dst_p[6] |= pack_left_shift_u16(src_p->sample_age_ms, 0u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(src_p->sample_age_ms, 8u, 0xffu);
 
-    return (8);
+    return (6);
 }
 
 int car_can_raw_vcu_status_unpack(
@@ -1006,7 +982,7 @@ int car_can_raw_vcu_status_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 6u) {
         return (-EINVAL);
     }
 
@@ -1035,8 +1011,6 @@ int car_can_raw_vcu_status_unpack(
     dst_p->motor_controller_fan_tach |= unpack_left_shift_u16(src_p[4], 8u, 0x0fu);
     dst_p->motor_fan_tach = unpack_right_shift_u16(src_p[4], 4u, 0xf0u);
     dst_p->motor_fan_tach |= unpack_left_shift_u16(src_p[5], 4u, 0xffu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[7], 8u, 0xffu);
 
     return (0);
 }
@@ -1165,13 +1139,6 @@ bool car_can_raw_vcu_status_motor_fan_tach_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
-bool car_can_raw_vcu_status_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_bps_pack_data_pack(
     uint8_t *dst_p,
     const struct car_can_raw_bps_pack_data_t *src_p,
@@ -1196,9 +1163,6 @@ int car_can_raw_bps_pack_data_pack(
     dst_p[7] |= pack_left_shift_u16(src_p->battery_current, 4u, 0xf0u);
     dst_p[8] |= pack_right_shift_u16(src_p->battery_current, 4u, 0xffu);
     dst_p[9] |= pack_right_shift_u16(src_p->battery_current, 12u, 0x03u);
-    dst_p[9] |= pack_left_shift_u16(src_p->sample_age_ms, 2u, 0xfcu);
-    dst_p[10] |= pack_right_shift_u16(src_p->sample_age_ms, 6u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(src_p->sample_age_ms, 14u, 0x03u);
 
     return (12);
 }
@@ -1225,9 +1189,6 @@ int car_can_raw_bps_pack_data_unpack(
     dst_p->battery_current = unpack_right_shift_u16(src_p[7], 4u, 0xf0u);
     dst_p->battery_current |= unpack_left_shift_u16(src_p[8], 4u, 0xffu);
     dst_p->battery_current |= unpack_left_shift_u16(src_p[9], 12u, 0x03u);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[9], 2u, 0xfcu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[10], 6u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[11], 14u, 0x03u);
 
     return (0);
 }
@@ -1271,13 +1232,6 @@ bool car_can_raw_bps_pack_data_battery_current_is_in_range(uint16_t value)
     return (value <= 16383u);
 }
 
-bool car_can_raw_bps_pack_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_bps_voltage_data_pack(
     uint8_t *dst_p,
     const struct car_can_raw_bps_voltage_data_t *src_p,
@@ -1289,76 +1243,74 @@ int car_can_raw_bps_voltage_data_pack(
 
     memset(&dst_p[0], 0, 64);
 
-    dst_p[0] |= pack_left_shift_u16(src_p->cell_voltage01, 0u, 0xffu);
-    dst_p[1] |= pack_right_shift_u16(src_p->cell_voltage01, 8u, 0x0fu);
-    dst_p[1] |= pack_left_shift_u16(src_p->cell_voltage02, 4u, 0xf0u);
-    dst_p[2] |= pack_right_shift_u16(src_p->cell_voltage02, 4u, 0xffu);
-    dst_p[3] |= pack_left_shift_u16(src_p->cell_voltage03, 0u, 0xffu);
-    dst_p[4] |= pack_right_shift_u16(src_p->cell_voltage03, 8u, 0x0fu);
-    dst_p[4] |= pack_left_shift_u16(src_p->cell_voltage04, 4u, 0xf0u);
-    dst_p[5] |= pack_right_shift_u16(src_p->cell_voltage04, 4u, 0xffu);
-    dst_p[6] |= pack_left_shift_u16(src_p->cell_voltage05, 0u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(src_p->cell_voltage05, 8u, 0x0fu);
-    dst_p[7] |= pack_left_shift_u16(src_p->cell_voltage06, 4u, 0xf0u);
-    dst_p[8] |= pack_right_shift_u16(src_p->cell_voltage06, 4u, 0xffu);
-    dst_p[9] |= pack_left_shift_u16(src_p->cell_voltage07, 0u, 0xffu);
-    dst_p[10] |= pack_right_shift_u16(src_p->cell_voltage07, 8u, 0x0fu);
-    dst_p[10] |= pack_left_shift_u16(src_p->cell_voltage08, 4u, 0xf0u);
-    dst_p[11] |= pack_right_shift_u16(src_p->cell_voltage08, 4u, 0xffu);
-    dst_p[12] |= pack_left_shift_u16(src_p->cell_voltage09, 0u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(src_p->cell_voltage09, 8u, 0x0fu);
-    dst_p[13] |= pack_left_shift_u16(src_p->cell_voltage10, 4u, 0xf0u);
-    dst_p[14] |= pack_right_shift_u16(src_p->cell_voltage10, 4u, 0xffu);
-    dst_p[15] |= pack_left_shift_u16(src_p->cell_voltage11, 0u, 0xffu);
-    dst_p[16] |= pack_right_shift_u16(src_p->cell_voltage11, 8u, 0x0fu);
-    dst_p[16] |= pack_left_shift_u16(src_p->cell_voltage12, 4u, 0xf0u);
-    dst_p[17] |= pack_right_shift_u16(src_p->cell_voltage12, 4u, 0xffu);
-    dst_p[18] |= pack_left_shift_u16(src_p->cell_voltage13, 0u, 0xffu);
-    dst_p[19] |= pack_right_shift_u16(src_p->cell_voltage13, 8u, 0x0fu);
-    dst_p[19] |= pack_left_shift_u16(src_p->cell_voltage14, 4u, 0xf0u);
-    dst_p[20] |= pack_right_shift_u16(src_p->cell_voltage14, 4u, 0xffu);
-    dst_p[21] |= pack_left_shift_u16(src_p->cell_voltage15, 0u, 0xffu);
-    dst_p[22] |= pack_right_shift_u16(src_p->cell_voltage15, 8u, 0x0fu);
-    dst_p[22] |= pack_left_shift_u16(src_p->cell_voltage16, 4u, 0xf0u);
-    dst_p[23] |= pack_right_shift_u16(src_p->cell_voltage16, 4u, 0xffu);
-    dst_p[24] |= pack_left_shift_u16(src_p->cell_voltage17, 0u, 0xffu);
-    dst_p[25] |= pack_right_shift_u16(src_p->cell_voltage17, 8u, 0x0fu);
-    dst_p[25] |= pack_left_shift_u16(src_p->cell_voltage18, 4u, 0xf0u);
-    dst_p[26] |= pack_right_shift_u16(src_p->cell_voltage18, 4u, 0xffu);
-    dst_p[27] |= pack_left_shift_u16(src_p->cell_voltage19, 0u, 0xffu);
-    dst_p[28] |= pack_right_shift_u16(src_p->cell_voltage19, 8u, 0x0fu);
-    dst_p[28] |= pack_left_shift_u16(src_p->cell_voltage20, 4u, 0xf0u);
-    dst_p[29] |= pack_right_shift_u16(src_p->cell_voltage20, 4u, 0xffu);
-    dst_p[30] |= pack_left_shift_u16(src_p->cell_voltage21, 0u, 0xffu);
-    dst_p[31] |= pack_right_shift_u16(src_p->cell_voltage21, 8u, 0x0fu);
-    dst_p[31] |= pack_left_shift_u16(src_p->cell_voltage22, 4u, 0xf0u);
-    dst_p[32] |= pack_right_shift_u16(src_p->cell_voltage22, 4u, 0xffu);
-    dst_p[33] |= pack_left_shift_u16(src_p->cell_voltage23, 0u, 0xffu);
-    dst_p[34] |= pack_right_shift_u16(src_p->cell_voltage23, 8u, 0x0fu);
-    dst_p[34] |= pack_left_shift_u16(src_p->cell_voltage24, 4u, 0xf0u);
-    dst_p[35] |= pack_right_shift_u16(src_p->cell_voltage24, 4u, 0xffu);
-    dst_p[36] |= pack_left_shift_u16(src_p->cell_voltage25, 0u, 0xffu);
-    dst_p[37] |= pack_right_shift_u16(src_p->cell_voltage25, 8u, 0x0fu);
-    dst_p[37] |= pack_left_shift_u16(src_p->cell_voltage26, 4u, 0xf0u);
-    dst_p[38] |= pack_right_shift_u16(src_p->cell_voltage26, 4u, 0xffu);
-    dst_p[39] |= pack_left_shift_u16(src_p->cell_voltage27, 0u, 0xffu);
-    dst_p[40] |= pack_right_shift_u16(src_p->cell_voltage27, 8u, 0x0fu);
-    dst_p[40] |= pack_left_shift_u16(src_p->cell_voltage28, 4u, 0xf0u);
-    dst_p[41] |= pack_right_shift_u16(src_p->cell_voltage28, 4u, 0xffu);
-    dst_p[42] |= pack_left_shift_u16(src_p->cell_voltage29, 0u, 0xffu);
-    dst_p[43] |= pack_right_shift_u16(src_p->cell_voltage29, 8u, 0x0fu);
-    dst_p[43] |= pack_left_shift_u16(src_p->cell_voltage30, 4u, 0xf0u);
-    dst_p[44] |= pack_right_shift_u16(src_p->cell_voltage30, 4u, 0xffu);
-    dst_p[45] |= pack_left_shift_u16(src_p->cell_voltage31, 0u, 0xffu);
-    dst_p[46] |= pack_right_shift_u16(src_p->cell_voltage31, 8u, 0x0fu);
-    dst_p[46] |= pack_left_shift_u16(src_p->cell_voltage32, 4u, 0xf0u);
-    dst_p[47] |= pack_right_shift_u16(src_p->cell_voltage32, 4u, 0xffu);
+    dst_p[0] |= pack_left_shift_u16(src_p->cell_voltage00, 0u, 0xffu);
+    dst_p[1] |= pack_right_shift_u16(src_p->cell_voltage00, 8u, 0x0fu);
+    dst_p[1] |= pack_left_shift_u16(src_p->cell_voltage01, 4u, 0xf0u);
+    dst_p[2] |= pack_right_shift_u16(src_p->cell_voltage01, 4u, 0xffu);
+    dst_p[3] |= pack_left_shift_u16(src_p->cell_voltage02, 0u, 0xffu);
+    dst_p[4] |= pack_right_shift_u16(src_p->cell_voltage02, 8u, 0x0fu);
+    dst_p[4] |= pack_left_shift_u16(src_p->cell_voltage03, 4u, 0xf0u);
+    dst_p[5] |= pack_right_shift_u16(src_p->cell_voltage03, 4u, 0xffu);
+    dst_p[6] |= pack_left_shift_u16(src_p->cell_voltage04, 0u, 0xffu);
+    dst_p[7] |= pack_right_shift_u16(src_p->cell_voltage04, 8u, 0x0fu);
+    dst_p[7] |= pack_left_shift_u16(src_p->cell_voltage05, 4u, 0xf0u);
+    dst_p[8] |= pack_right_shift_u16(src_p->cell_voltage05, 4u, 0xffu);
+    dst_p[9] |= pack_left_shift_u16(src_p->cell_voltage06, 0u, 0xffu);
+    dst_p[10] |= pack_right_shift_u16(src_p->cell_voltage06, 8u, 0x0fu);
+    dst_p[10] |= pack_left_shift_u16(src_p->cell_voltage07, 4u, 0xf0u);
+    dst_p[11] |= pack_right_shift_u16(src_p->cell_voltage07, 4u, 0xffu);
+    dst_p[12] |= pack_left_shift_u16(src_p->cell_voltage08, 0u, 0xffu);
+    dst_p[13] |= pack_right_shift_u16(src_p->cell_voltage08, 8u, 0x0fu);
+    dst_p[13] |= pack_left_shift_u16(src_p->cell_voltage09, 4u, 0xf0u);
+    dst_p[14] |= pack_right_shift_u16(src_p->cell_voltage09, 4u, 0xffu);
+    dst_p[15] |= pack_left_shift_u16(src_p->cell_voltage10, 0u, 0xffu);
+    dst_p[16] |= pack_right_shift_u16(src_p->cell_voltage10, 8u, 0x0fu);
+    dst_p[16] |= pack_left_shift_u16(src_p->cell_voltage11, 4u, 0xf0u);
+    dst_p[17] |= pack_right_shift_u16(src_p->cell_voltage11, 4u, 0xffu);
+    dst_p[18] |= pack_left_shift_u16(src_p->cell_voltage12, 0u, 0xffu);
+    dst_p[19] |= pack_right_shift_u16(src_p->cell_voltage12, 8u, 0x0fu);
+    dst_p[19] |= pack_left_shift_u16(src_p->cell_voltage13, 4u, 0xf0u);
+    dst_p[20] |= pack_right_shift_u16(src_p->cell_voltage13, 4u, 0xffu);
+    dst_p[21] |= pack_left_shift_u16(src_p->cell_voltage14, 0u, 0xffu);
+    dst_p[22] |= pack_right_shift_u16(src_p->cell_voltage14, 8u, 0x0fu);
+    dst_p[22] |= pack_left_shift_u16(src_p->cell_voltage15, 4u, 0xf0u);
+    dst_p[23] |= pack_right_shift_u16(src_p->cell_voltage15, 4u, 0xffu);
+    dst_p[24] |= pack_left_shift_u16(src_p->cell_voltage16, 0u, 0xffu);
+    dst_p[25] |= pack_right_shift_u16(src_p->cell_voltage16, 8u, 0x0fu);
+    dst_p[25] |= pack_left_shift_u16(src_p->cell_voltage17, 4u, 0xf0u);
+    dst_p[26] |= pack_right_shift_u16(src_p->cell_voltage17, 4u, 0xffu);
+    dst_p[27] |= pack_left_shift_u16(src_p->cell_voltage18, 0u, 0xffu);
+    dst_p[28] |= pack_right_shift_u16(src_p->cell_voltage18, 8u, 0x0fu);
+    dst_p[28] |= pack_left_shift_u16(src_p->cell_voltage19, 4u, 0xf0u);
+    dst_p[29] |= pack_right_shift_u16(src_p->cell_voltage19, 4u, 0xffu);
+    dst_p[30] |= pack_left_shift_u16(src_p->cell_voltage20, 0u, 0xffu);
+    dst_p[31] |= pack_right_shift_u16(src_p->cell_voltage20, 8u, 0x0fu);
+    dst_p[31] |= pack_left_shift_u16(src_p->cell_voltage21, 4u, 0xf0u);
+    dst_p[32] |= pack_right_shift_u16(src_p->cell_voltage21, 4u, 0xffu);
+    dst_p[33] |= pack_left_shift_u16(src_p->cell_voltage22, 0u, 0xffu);
+    dst_p[34] |= pack_right_shift_u16(src_p->cell_voltage22, 8u, 0x0fu);
+    dst_p[34] |= pack_left_shift_u16(src_p->cell_voltage23, 4u, 0xf0u);
+    dst_p[35] |= pack_right_shift_u16(src_p->cell_voltage23, 4u, 0xffu);
+    dst_p[36] |= pack_left_shift_u16(src_p->cell_voltage24, 0u, 0xffu);
+    dst_p[37] |= pack_right_shift_u16(src_p->cell_voltage24, 8u, 0x0fu);
+    dst_p[37] |= pack_left_shift_u16(src_p->cell_voltage25, 4u, 0xf0u);
+    dst_p[38] |= pack_right_shift_u16(src_p->cell_voltage25, 4u, 0xffu);
+    dst_p[39] |= pack_left_shift_u16(src_p->cell_voltage26, 0u, 0xffu);
+    dst_p[40] |= pack_right_shift_u16(src_p->cell_voltage26, 8u, 0x0fu);
+    dst_p[40] |= pack_left_shift_u16(src_p->cell_voltage27, 4u, 0xf0u);
+    dst_p[41] |= pack_right_shift_u16(src_p->cell_voltage27, 4u, 0xffu);
+    dst_p[42] |= pack_left_shift_u16(src_p->cell_voltage28, 0u, 0xffu);
+    dst_p[43] |= pack_right_shift_u16(src_p->cell_voltage28, 8u, 0x0fu);
+    dst_p[43] |= pack_left_shift_u16(src_p->cell_voltage29, 4u, 0xf0u);
+    dst_p[44] |= pack_right_shift_u16(src_p->cell_voltage29, 4u, 0xffu);
+    dst_p[45] |= pack_left_shift_u16(src_p->cell_voltage30, 0u, 0xffu);
+    dst_p[46] |= pack_right_shift_u16(src_p->cell_voltage30, 8u, 0x0fu);
+    dst_p[46] |= pack_left_shift_u16(src_p->cell_voltage31, 4u, 0xf0u);
+    dst_p[47] |= pack_right_shift_u16(src_p->cell_voltage31, 4u, 0xffu);
     dst_p[48] |= pack_left_shift_u16(src_p->min_cell_voltage, 0u, 0xffu);
     dst_p[49] |= pack_right_shift_u16(src_p->min_cell_voltage, 8u, 0x0fu);
     dst_p[49] |= pack_left_shift_u16(src_p->max_cell_voltage, 4u, 0xf0u);
     dst_p[50] |= pack_right_shift_u16(src_p->max_cell_voltage, 4u, 0xffu);
-    dst_p[51] |= pack_left_shift_u16(src_p->sample_age_ms, 0u, 0xffu);
-    dst_p[52] |= pack_right_shift_u16(src_p->sample_age_ms, 8u, 0xffu);
 
     return (64);
 }
@@ -1372,76 +1324,74 @@ int car_can_raw_bps_voltage_data_unpack(
         return (-EINVAL);
     }
 
-    dst_p->cell_voltage01 = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
-    dst_p->cell_voltage01 |= unpack_left_shift_u16(src_p[1], 8u, 0x0fu);
-    dst_p->cell_voltage02 = unpack_right_shift_u16(src_p[1], 4u, 0xf0u);
-    dst_p->cell_voltage02 |= unpack_left_shift_u16(src_p[2], 4u, 0xffu);
-    dst_p->cell_voltage03 = unpack_right_shift_u16(src_p[3], 0u, 0xffu);
-    dst_p->cell_voltage03 |= unpack_left_shift_u16(src_p[4], 8u, 0x0fu);
-    dst_p->cell_voltage04 = unpack_right_shift_u16(src_p[4], 4u, 0xf0u);
-    dst_p->cell_voltage04 |= unpack_left_shift_u16(src_p[5], 4u, 0xffu);
-    dst_p->cell_voltage05 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
-    dst_p->cell_voltage05 |= unpack_left_shift_u16(src_p[7], 8u, 0x0fu);
-    dst_p->cell_voltage06 = unpack_right_shift_u16(src_p[7], 4u, 0xf0u);
-    dst_p->cell_voltage06 |= unpack_left_shift_u16(src_p[8], 4u, 0xffu);
-    dst_p->cell_voltage07 = unpack_right_shift_u16(src_p[9], 0u, 0xffu);
-    dst_p->cell_voltage07 |= unpack_left_shift_u16(src_p[10], 8u, 0x0fu);
-    dst_p->cell_voltage08 = unpack_right_shift_u16(src_p[10], 4u, 0xf0u);
-    dst_p->cell_voltage08 |= unpack_left_shift_u16(src_p[11], 4u, 0xffu);
-    dst_p->cell_voltage09 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
-    dst_p->cell_voltage09 |= unpack_left_shift_u16(src_p[13], 8u, 0x0fu);
-    dst_p->cell_voltage10 = unpack_right_shift_u16(src_p[13], 4u, 0xf0u);
-    dst_p->cell_voltage10 |= unpack_left_shift_u16(src_p[14], 4u, 0xffu);
-    dst_p->cell_voltage11 = unpack_right_shift_u16(src_p[15], 0u, 0xffu);
-    dst_p->cell_voltage11 |= unpack_left_shift_u16(src_p[16], 8u, 0x0fu);
-    dst_p->cell_voltage12 = unpack_right_shift_u16(src_p[16], 4u, 0xf0u);
-    dst_p->cell_voltage12 |= unpack_left_shift_u16(src_p[17], 4u, 0xffu);
-    dst_p->cell_voltage13 = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
-    dst_p->cell_voltage13 |= unpack_left_shift_u16(src_p[19], 8u, 0x0fu);
-    dst_p->cell_voltage14 = unpack_right_shift_u16(src_p[19], 4u, 0xf0u);
-    dst_p->cell_voltage14 |= unpack_left_shift_u16(src_p[20], 4u, 0xffu);
-    dst_p->cell_voltage15 = unpack_right_shift_u16(src_p[21], 0u, 0xffu);
-    dst_p->cell_voltage15 |= unpack_left_shift_u16(src_p[22], 8u, 0x0fu);
-    dst_p->cell_voltage16 = unpack_right_shift_u16(src_p[22], 4u, 0xf0u);
-    dst_p->cell_voltage16 |= unpack_left_shift_u16(src_p[23], 4u, 0xffu);
-    dst_p->cell_voltage17 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
-    dst_p->cell_voltage17 |= unpack_left_shift_u16(src_p[25], 8u, 0x0fu);
-    dst_p->cell_voltage18 = unpack_right_shift_u16(src_p[25], 4u, 0xf0u);
-    dst_p->cell_voltage18 |= unpack_left_shift_u16(src_p[26], 4u, 0xffu);
-    dst_p->cell_voltage19 = unpack_right_shift_u16(src_p[27], 0u, 0xffu);
-    dst_p->cell_voltage19 |= unpack_left_shift_u16(src_p[28], 8u, 0x0fu);
-    dst_p->cell_voltage20 = unpack_right_shift_u16(src_p[28], 4u, 0xf0u);
-    dst_p->cell_voltage20 |= unpack_left_shift_u16(src_p[29], 4u, 0xffu);
-    dst_p->cell_voltage21 = unpack_right_shift_u16(src_p[30], 0u, 0xffu);
-    dst_p->cell_voltage21 |= unpack_left_shift_u16(src_p[31], 8u, 0x0fu);
-    dst_p->cell_voltage22 = unpack_right_shift_u16(src_p[31], 4u, 0xf0u);
-    dst_p->cell_voltage22 |= unpack_left_shift_u16(src_p[32], 4u, 0xffu);
-    dst_p->cell_voltage23 = unpack_right_shift_u16(src_p[33], 0u, 0xffu);
-    dst_p->cell_voltage23 |= unpack_left_shift_u16(src_p[34], 8u, 0x0fu);
-    dst_p->cell_voltage24 = unpack_right_shift_u16(src_p[34], 4u, 0xf0u);
-    dst_p->cell_voltage24 |= unpack_left_shift_u16(src_p[35], 4u, 0xffu);
-    dst_p->cell_voltage25 = unpack_right_shift_u16(src_p[36], 0u, 0xffu);
-    dst_p->cell_voltage25 |= unpack_left_shift_u16(src_p[37], 8u, 0x0fu);
-    dst_p->cell_voltage26 = unpack_right_shift_u16(src_p[37], 4u, 0xf0u);
-    dst_p->cell_voltage26 |= unpack_left_shift_u16(src_p[38], 4u, 0xffu);
-    dst_p->cell_voltage27 = unpack_right_shift_u16(src_p[39], 0u, 0xffu);
-    dst_p->cell_voltage27 |= unpack_left_shift_u16(src_p[40], 8u, 0x0fu);
-    dst_p->cell_voltage28 = unpack_right_shift_u16(src_p[40], 4u, 0xf0u);
-    dst_p->cell_voltage28 |= unpack_left_shift_u16(src_p[41], 4u, 0xffu);
-    dst_p->cell_voltage29 = unpack_right_shift_u16(src_p[42], 0u, 0xffu);
-    dst_p->cell_voltage29 |= unpack_left_shift_u16(src_p[43], 8u, 0x0fu);
-    dst_p->cell_voltage30 = unpack_right_shift_u16(src_p[43], 4u, 0xf0u);
-    dst_p->cell_voltage30 |= unpack_left_shift_u16(src_p[44], 4u, 0xffu);
-    dst_p->cell_voltage31 = unpack_right_shift_u16(src_p[45], 0u, 0xffu);
-    dst_p->cell_voltage31 |= unpack_left_shift_u16(src_p[46], 8u, 0x0fu);
-    dst_p->cell_voltage32 = unpack_right_shift_u16(src_p[46], 4u, 0xf0u);
-    dst_p->cell_voltage32 |= unpack_left_shift_u16(src_p[47], 4u, 0xffu);
+    dst_p->cell_voltage00 = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
+    dst_p->cell_voltage00 |= unpack_left_shift_u16(src_p[1], 8u, 0x0fu);
+    dst_p->cell_voltage01 = unpack_right_shift_u16(src_p[1], 4u, 0xf0u);
+    dst_p->cell_voltage01 |= unpack_left_shift_u16(src_p[2], 4u, 0xffu);
+    dst_p->cell_voltage02 = unpack_right_shift_u16(src_p[3], 0u, 0xffu);
+    dst_p->cell_voltage02 |= unpack_left_shift_u16(src_p[4], 8u, 0x0fu);
+    dst_p->cell_voltage03 = unpack_right_shift_u16(src_p[4], 4u, 0xf0u);
+    dst_p->cell_voltage03 |= unpack_left_shift_u16(src_p[5], 4u, 0xffu);
+    dst_p->cell_voltage04 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
+    dst_p->cell_voltage04 |= unpack_left_shift_u16(src_p[7], 8u, 0x0fu);
+    dst_p->cell_voltage05 = unpack_right_shift_u16(src_p[7], 4u, 0xf0u);
+    dst_p->cell_voltage05 |= unpack_left_shift_u16(src_p[8], 4u, 0xffu);
+    dst_p->cell_voltage06 = unpack_right_shift_u16(src_p[9], 0u, 0xffu);
+    dst_p->cell_voltage06 |= unpack_left_shift_u16(src_p[10], 8u, 0x0fu);
+    dst_p->cell_voltage07 = unpack_right_shift_u16(src_p[10], 4u, 0xf0u);
+    dst_p->cell_voltage07 |= unpack_left_shift_u16(src_p[11], 4u, 0xffu);
+    dst_p->cell_voltage08 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
+    dst_p->cell_voltage08 |= unpack_left_shift_u16(src_p[13], 8u, 0x0fu);
+    dst_p->cell_voltage09 = unpack_right_shift_u16(src_p[13], 4u, 0xf0u);
+    dst_p->cell_voltage09 |= unpack_left_shift_u16(src_p[14], 4u, 0xffu);
+    dst_p->cell_voltage10 = unpack_right_shift_u16(src_p[15], 0u, 0xffu);
+    dst_p->cell_voltage10 |= unpack_left_shift_u16(src_p[16], 8u, 0x0fu);
+    dst_p->cell_voltage11 = unpack_right_shift_u16(src_p[16], 4u, 0xf0u);
+    dst_p->cell_voltage11 |= unpack_left_shift_u16(src_p[17], 4u, 0xffu);
+    dst_p->cell_voltage12 = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
+    dst_p->cell_voltage12 |= unpack_left_shift_u16(src_p[19], 8u, 0x0fu);
+    dst_p->cell_voltage13 = unpack_right_shift_u16(src_p[19], 4u, 0xf0u);
+    dst_p->cell_voltage13 |= unpack_left_shift_u16(src_p[20], 4u, 0xffu);
+    dst_p->cell_voltage14 = unpack_right_shift_u16(src_p[21], 0u, 0xffu);
+    dst_p->cell_voltage14 |= unpack_left_shift_u16(src_p[22], 8u, 0x0fu);
+    dst_p->cell_voltage15 = unpack_right_shift_u16(src_p[22], 4u, 0xf0u);
+    dst_p->cell_voltage15 |= unpack_left_shift_u16(src_p[23], 4u, 0xffu);
+    dst_p->cell_voltage16 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
+    dst_p->cell_voltage16 |= unpack_left_shift_u16(src_p[25], 8u, 0x0fu);
+    dst_p->cell_voltage17 = unpack_right_shift_u16(src_p[25], 4u, 0xf0u);
+    dst_p->cell_voltage17 |= unpack_left_shift_u16(src_p[26], 4u, 0xffu);
+    dst_p->cell_voltage18 = unpack_right_shift_u16(src_p[27], 0u, 0xffu);
+    dst_p->cell_voltage18 |= unpack_left_shift_u16(src_p[28], 8u, 0x0fu);
+    dst_p->cell_voltage19 = unpack_right_shift_u16(src_p[28], 4u, 0xf0u);
+    dst_p->cell_voltage19 |= unpack_left_shift_u16(src_p[29], 4u, 0xffu);
+    dst_p->cell_voltage20 = unpack_right_shift_u16(src_p[30], 0u, 0xffu);
+    dst_p->cell_voltage20 |= unpack_left_shift_u16(src_p[31], 8u, 0x0fu);
+    dst_p->cell_voltage21 = unpack_right_shift_u16(src_p[31], 4u, 0xf0u);
+    dst_p->cell_voltage21 |= unpack_left_shift_u16(src_p[32], 4u, 0xffu);
+    dst_p->cell_voltage22 = unpack_right_shift_u16(src_p[33], 0u, 0xffu);
+    dst_p->cell_voltage22 |= unpack_left_shift_u16(src_p[34], 8u, 0x0fu);
+    dst_p->cell_voltage23 = unpack_right_shift_u16(src_p[34], 4u, 0xf0u);
+    dst_p->cell_voltage23 |= unpack_left_shift_u16(src_p[35], 4u, 0xffu);
+    dst_p->cell_voltage24 = unpack_right_shift_u16(src_p[36], 0u, 0xffu);
+    dst_p->cell_voltage24 |= unpack_left_shift_u16(src_p[37], 8u, 0x0fu);
+    dst_p->cell_voltage25 = unpack_right_shift_u16(src_p[37], 4u, 0xf0u);
+    dst_p->cell_voltage25 |= unpack_left_shift_u16(src_p[38], 4u, 0xffu);
+    dst_p->cell_voltage26 = unpack_right_shift_u16(src_p[39], 0u, 0xffu);
+    dst_p->cell_voltage26 |= unpack_left_shift_u16(src_p[40], 8u, 0x0fu);
+    dst_p->cell_voltage27 = unpack_right_shift_u16(src_p[40], 4u, 0xf0u);
+    dst_p->cell_voltage27 |= unpack_left_shift_u16(src_p[41], 4u, 0xffu);
+    dst_p->cell_voltage28 = unpack_right_shift_u16(src_p[42], 0u, 0xffu);
+    dst_p->cell_voltage28 |= unpack_left_shift_u16(src_p[43], 8u, 0x0fu);
+    dst_p->cell_voltage29 = unpack_right_shift_u16(src_p[43], 4u, 0xf0u);
+    dst_p->cell_voltage29 |= unpack_left_shift_u16(src_p[44], 4u, 0xffu);
+    dst_p->cell_voltage30 = unpack_right_shift_u16(src_p[45], 0u, 0xffu);
+    dst_p->cell_voltage30 |= unpack_left_shift_u16(src_p[46], 8u, 0x0fu);
+    dst_p->cell_voltage31 = unpack_right_shift_u16(src_p[46], 4u, 0xf0u);
+    dst_p->cell_voltage31 |= unpack_left_shift_u16(src_p[47], 4u, 0xffu);
     dst_p->min_cell_voltage = unpack_right_shift_u16(src_p[48], 0u, 0xffu);
     dst_p->min_cell_voltage |= unpack_left_shift_u16(src_p[49], 8u, 0x0fu);
     dst_p->max_cell_voltage = unpack_right_shift_u16(src_p[49], 4u, 0xf0u);
     dst_p->max_cell_voltage |= unpack_left_shift_u16(src_p[50], 4u, 0xffu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[51], 0u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[52], 8u, 0xffu);
 
     return (0);
 }
@@ -1453,6 +1403,11 @@ int car_can_raw_bps_voltage_data_init(struct car_can_raw_bps_voltage_data_t *msg
     memset(msg_p, 0, sizeof(struct car_can_raw_bps_voltage_data_t));
 
     return 0;
+}
+
+bool car_can_raw_bps_voltage_data_cell_voltage00_is_in_range(uint16_t value)
+{
+    return (value <= 4095u);
 }
 
 bool car_can_raw_bps_voltage_data_cell_voltage01_is_in_range(uint16_t value)
@@ -1610,11 +1565,6 @@ bool car_can_raw_bps_voltage_data_cell_voltage31_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
-bool car_can_raw_bps_voltage_data_cell_voltage32_is_in_range(uint16_t value)
-{
-    return (value <= 4095u);
-}
-
 bool car_can_raw_bps_voltage_data_min_cell_voltage_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
@@ -1625,105 +1575,95 @@ bool car_can_raw_bps_voltage_data_max_cell_voltage_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
-bool car_can_raw_bps_voltage_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_bps_temperature_data_pack(
     uint8_t *dst_p,
     const struct car_can_raw_bps_temperature_data_t *src_p,
     size_t size)
 {
-    if (size < 64u) {
+    if (size < 48u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 64);
+    memset(&dst_p[0], 0, 48);
 
-    dst_p[0] |= pack_left_shift_u16(src_p->cell_temperature01, 0u, 0xffu);
-    dst_p[1] |= pack_right_shift_u16(src_p->cell_temperature01, 8u, 0x07u);
-    dst_p[1] |= pack_left_shift_u16(src_p->cell_temperature02, 3u, 0xf8u);
-    dst_p[2] |= pack_right_shift_u16(src_p->cell_temperature02, 5u, 0x3fu);
-    dst_p[2] |= pack_left_shift_u16(src_p->cell_temperature03, 6u, 0xc0u);
-    dst_p[3] |= pack_right_shift_u16(src_p->cell_temperature03, 2u, 0xffu);
-    dst_p[4] |= pack_right_shift_u16(src_p->cell_temperature03, 10u, 0x01u);
-    dst_p[4] |= pack_left_shift_u16(src_p->cell_temperature04, 1u, 0xfeu);
-    dst_p[5] |= pack_right_shift_u16(src_p->cell_temperature04, 7u, 0x0fu);
-    dst_p[5] |= pack_left_shift_u16(src_p->cell_temperature05, 4u, 0xf0u);
-    dst_p[6] |= pack_right_shift_u16(src_p->cell_temperature05, 4u, 0x7fu);
-    dst_p[6] |= pack_left_shift_u16(src_p->cell_temperature06, 7u, 0x80u);
-    dst_p[7] |= pack_right_shift_u16(src_p->cell_temperature06, 1u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->cell_temperature06, 9u, 0x03u);
-    dst_p[8] |= pack_left_shift_u16(src_p->cell_temperature07, 2u, 0xfcu);
-    dst_p[9] |= pack_right_shift_u16(src_p->cell_temperature07, 6u, 0x1fu);
-    dst_p[9] |= pack_left_shift_u16(src_p->cell_temperature08, 5u, 0xe0u);
-    dst_p[10] |= pack_right_shift_u16(src_p->cell_temperature08, 3u, 0xffu);
-    dst_p[11] |= pack_left_shift_u16(src_p->cell_temperature09, 0u, 0xffu);
-    dst_p[12] |= pack_right_shift_u16(src_p->cell_temperature09, 8u, 0x07u);
-    dst_p[12] |= pack_left_shift_u16(src_p->cell_temperature10, 3u, 0xf8u);
-    dst_p[13] |= pack_right_shift_u16(src_p->cell_temperature10, 5u, 0x3fu);
-    dst_p[13] |= pack_left_shift_u16(src_p->cell_temperature11, 6u, 0xc0u);
-    dst_p[14] |= pack_right_shift_u16(src_p->cell_temperature11, 2u, 0xffu);
-    dst_p[15] |= pack_right_shift_u16(src_p->cell_temperature11, 10u, 0x01u);
-    dst_p[15] |= pack_left_shift_u16(src_p->cell_temperature12, 1u, 0xfeu);
-    dst_p[16] |= pack_right_shift_u16(src_p->cell_temperature12, 7u, 0x0fu);
-    dst_p[16] |= pack_left_shift_u16(src_p->cell_temperature13, 4u, 0xf0u);
-    dst_p[17] |= pack_right_shift_u16(src_p->cell_temperature13, 4u, 0x7fu);
-    dst_p[17] |= pack_left_shift_u16(src_p->cell_temperature14, 7u, 0x80u);
-    dst_p[18] |= pack_right_shift_u16(src_p->cell_temperature14, 1u, 0xffu);
-    dst_p[19] |= pack_right_shift_u16(src_p->cell_temperature14, 9u, 0x03u);
-    dst_p[19] |= pack_left_shift_u16(src_p->cell_temperature15, 2u, 0xfcu);
-    dst_p[20] |= pack_right_shift_u16(src_p->cell_temperature15, 6u, 0x1fu);
-    dst_p[20] |= pack_left_shift_u16(src_p->cell_temperature16, 5u, 0xe0u);
-    dst_p[21] |= pack_right_shift_u16(src_p->cell_temperature16, 3u, 0xffu);
-    dst_p[22] |= pack_left_shift_u16(src_p->cell_temperature17, 0u, 0xffu);
-    dst_p[23] |= pack_right_shift_u16(src_p->cell_temperature17, 8u, 0x07u);
-    dst_p[23] |= pack_left_shift_u16(src_p->cell_temperature18, 3u, 0xf8u);
-    dst_p[24] |= pack_right_shift_u16(src_p->cell_temperature18, 5u, 0x3fu);
-    dst_p[24] |= pack_left_shift_u16(src_p->cell_temperature19, 6u, 0xc0u);
-    dst_p[25] |= pack_right_shift_u16(src_p->cell_temperature19, 2u, 0xffu);
-    dst_p[26] |= pack_right_shift_u16(src_p->cell_temperature19, 10u, 0x01u);
-    dst_p[26] |= pack_left_shift_u16(src_p->cell_temperature20, 1u, 0xfeu);
-    dst_p[27] |= pack_right_shift_u16(src_p->cell_temperature20, 7u, 0x0fu);
-    dst_p[27] |= pack_left_shift_u16(src_p->cell_temperature21, 4u, 0xf0u);
-    dst_p[28] |= pack_right_shift_u16(src_p->cell_temperature21, 4u, 0x7fu);
-    dst_p[28] |= pack_left_shift_u16(src_p->cell_temperature22, 7u, 0x80u);
-    dst_p[29] |= pack_right_shift_u16(src_p->cell_temperature22, 1u, 0xffu);
-    dst_p[30] |= pack_right_shift_u16(src_p->cell_temperature22, 9u, 0x03u);
-    dst_p[30] |= pack_left_shift_u16(src_p->cell_temperature23, 2u, 0xfcu);
-    dst_p[31] |= pack_right_shift_u16(src_p->cell_temperature23, 6u, 0x1fu);
-    dst_p[31] |= pack_left_shift_u16(src_p->cell_temperature24, 5u, 0xe0u);
-    dst_p[32] |= pack_right_shift_u16(src_p->cell_temperature24, 3u, 0xffu);
-    dst_p[33] |= pack_left_shift_u16(src_p->cell_temperature25, 0u, 0xffu);
-    dst_p[34] |= pack_right_shift_u16(src_p->cell_temperature25, 8u, 0x07u);
-    dst_p[34] |= pack_left_shift_u16(src_p->cell_temperature26, 3u, 0xf8u);
-    dst_p[35] |= pack_right_shift_u16(src_p->cell_temperature26, 5u, 0x3fu);
-    dst_p[35] |= pack_left_shift_u16(src_p->cell_temperature27, 6u, 0xc0u);
-    dst_p[36] |= pack_right_shift_u16(src_p->cell_temperature27, 2u, 0xffu);
-    dst_p[37] |= pack_right_shift_u16(src_p->cell_temperature27, 10u, 0x01u);
-    dst_p[37] |= pack_left_shift_u16(src_p->cell_temperature28, 1u, 0xfeu);
-    dst_p[38] |= pack_right_shift_u16(src_p->cell_temperature28, 7u, 0x0fu);
-    dst_p[38] |= pack_left_shift_u16(src_p->cell_temperature29, 4u, 0xf0u);
-    dst_p[39] |= pack_right_shift_u16(src_p->cell_temperature29, 4u, 0x7fu);
-    dst_p[39] |= pack_left_shift_u16(src_p->cell_temperature30, 7u, 0x80u);
-    dst_p[40] |= pack_right_shift_u16(src_p->cell_temperature30, 1u, 0xffu);
-    dst_p[41] |= pack_right_shift_u16(src_p->cell_temperature30, 9u, 0x03u);
-    dst_p[41] |= pack_left_shift_u16(src_p->cell_temperature31, 2u, 0xfcu);
-    dst_p[42] |= pack_right_shift_u16(src_p->cell_temperature31, 6u, 0x1fu);
-    dst_p[42] |= pack_left_shift_u16(src_p->cell_temperature32, 5u, 0xe0u);
-    dst_p[43] |= pack_right_shift_u16(src_p->cell_temperature32, 3u, 0xffu);
+    dst_p[0] |= pack_left_shift_u16(src_p->cell_temperature00, 0u, 0xffu);
+    dst_p[1] |= pack_right_shift_u16(src_p->cell_temperature00, 8u, 0x07u);
+    dst_p[1] |= pack_left_shift_u16(src_p->cell_temperature01, 3u, 0xf8u);
+    dst_p[2] |= pack_right_shift_u16(src_p->cell_temperature01, 5u, 0x3fu);
+    dst_p[2] |= pack_left_shift_u16(src_p->cell_temperature02, 6u, 0xc0u);
+    dst_p[3] |= pack_right_shift_u16(src_p->cell_temperature02, 2u, 0xffu);
+    dst_p[4] |= pack_right_shift_u16(src_p->cell_temperature02, 10u, 0x01u);
+    dst_p[4] |= pack_left_shift_u16(src_p->cell_temperature03, 1u, 0xfeu);
+    dst_p[5] |= pack_right_shift_u16(src_p->cell_temperature03, 7u, 0x0fu);
+    dst_p[5] |= pack_left_shift_u16(src_p->cell_temperature04, 4u, 0xf0u);
+    dst_p[6] |= pack_right_shift_u16(src_p->cell_temperature04, 4u, 0x7fu);
+    dst_p[6] |= pack_left_shift_u16(src_p->cell_temperature05, 7u, 0x80u);
+    dst_p[7] |= pack_right_shift_u16(src_p->cell_temperature05, 1u, 0xffu);
+    dst_p[8] |= pack_right_shift_u16(src_p->cell_temperature05, 9u, 0x03u);
+    dst_p[8] |= pack_left_shift_u16(src_p->cell_temperature06, 2u, 0xfcu);
+    dst_p[9] |= pack_right_shift_u16(src_p->cell_temperature06, 6u, 0x1fu);
+    dst_p[9] |= pack_left_shift_u16(src_p->cell_temperature07, 5u, 0xe0u);
+    dst_p[10] |= pack_right_shift_u16(src_p->cell_temperature07, 3u, 0xffu);
+    dst_p[11] |= pack_left_shift_u16(src_p->cell_temperature08, 0u, 0xffu);
+    dst_p[12] |= pack_right_shift_u16(src_p->cell_temperature08, 8u, 0x07u);
+    dst_p[12] |= pack_left_shift_u16(src_p->cell_temperature09, 3u, 0xf8u);
+    dst_p[13] |= pack_right_shift_u16(src_p->cell_temperature09, 5u, 0x3fu);
+    dst_p[13] |= pack_left_shift_u16(src_p->cell_temperature10, 6u, 0xc0u);
+    dst_p[14] |= pack_right_shift_u16(src_p->cell_temperature10, 2u, 0xffu);
+    dst_p[15] |= pack_right_shift_u16(src_p->cell_temperature10, 10u, 0x01u);
+    dst_p[15] |= pack_left_shift_u16(src_p->cell_temperature11, 1u, 0xfeu);
+    dst_p[16] |= pack_right_shift_u16(src_p->cell_temperature11, 7u, 0x0fu);
+    dst_p[16] |= pack_left_shift_u16(src_p->cell_temperature12, 4u, 0xf0u);
+    dst_p[17] |= pack_right_shift_u16(src_p->cell_temperature12, 4u, 0x7fu);
+    dst_p[17] |= pack_left_shift_u16(src_p->cell_temperature13, 7u, 0x80u);
+    dst_p[18] |= pack_right_shift_u16(src_p->cell_temperature13, 1u, 0xffu);
+    dst_p[19] |= pack_right_shift_u16(src_p->cell_temperature13, 9u, 0x03u);
+    dst_p[19] |= pack_left_shift_u16(src_p->cell_temperature14, 2u, 0xfcu);
+    dst_p[20] |= pack_right_shift_u16(src_p->cell_temperature14, 6u, 0x1fu);
+    dst_p[20] |= pack_left_shift_u16(src_p->cell_temperature15, 5u, 0xe0u);
+    dst_p[21] |= pack_right_shift_u16(src_p->cell_temperature15, 3u, 0xffu);
+    dst_p[22] |= pack_left_shift_u16(src_p->cell_temperature16, 0u, 0xffu);
+    dst_p[23] |= pack_right_shift_u16(src_p->cell_temperature16, 8u, 0x07u);
+    dst_p[23] |= pack_left_shift_u16(src_p->cell_temperature17, 3u, 0xf8u);
+    dst_p[24] |= pack_right_shift_u16(src_p->cell_temperature17, 5u, 0x3fu);
+    dst_p[24] |= pack_left_shift_u16(src_p->cell_temperature18, 6u, 0xc0u);
+    dst_p[25] |= pack_right_shift_u16(src_p->cell_temperature18, 2u, 0xffu);
+    dst_p[26] |= pack_right_shift_u16(src_p->cell_temperature18, 10u, 0x01u);
+    dst_p[26] |= pack_left_shift_u16(src_p->cell_temperature19, 1u, 0xfeu);
+    dst_p[27] |= pack_right_shift_u16(src_p->cell_temperature19, 7u, 0x0fu);
+    dst_p[27] |= pack_left_shift_u16(src_p->cell_temperature20, 4u, 0xf0u);
+    dst_p[28] |= pack_right_shift_u16(src_p->cell_temperature20, 4u, 0x7fu);
+    dst_p[28] |= pack_left_shift_u16(src_p->cell_temperature21, 7u, 0x80u);
+    dst_p[29] |= pack_right_shift_u16(src_p->cell_temperature21, 1u, 0xffu);
+    dst_p[30] |= pack_right_shift_u16(src_p->cell_temperature21, 9u, 0x03u);
+    dst_p[30] |= pack_left_shift_u16(src_p->cell_temperature22, 2u, 0xfcu);
+    dst_p[31] |= pack_right_shift_u16(src_p->cell_temperature22, 6u, 0x1fu);
+    dst_p[31] |= pack_left_shift_u16(src_p->cell_temperature23, 5u, 0xe0u);
+    dst_p[32] |= pack_right_shift_u16(src_p->cell_temperature23, 3u, 0xffu);
+    dst_p[33] |= pack_left_shift_u16(src_p->cell_temperature24, 0u, 0xffu);
+    dst_p[34] |= pack_right_shift_u16(src_p->cell_temperature24, 8u, 0x07u);
+    dst_p[34] |= pack_left_shift_u16(src_p->cell_temperature25, 3u, 0xf8u);
+    dst_p[35] |= pack_right_shift_u16(src_p->cell_temperature25, 5u, 0x3fu);
+    dst_p[35] |= pack_left_shift_u16(src_p->cell_temperature26, 6u, 0xc0u);
+    dst_p[36] |= pack_right_shift_u16(src_p->cell_temperature26, 2u, 0xffu);
+    dst_p[37] |= pack_right_shift_u16(src_p->cell_temperature26, 10u, 0x01u);
+    dst_p[37] |= pack_left_shift_u16(src_p->cell_temperature27, 1u, 0xfeu);
+    dst_p[38] |= pack_right_shift_u16(src_p->cell_temperature27, 7u, 0x0fu);
+    dst_p[38] |= pack_left_shift_u16(src_p->cell_temperature28, 4u, 0xf0u);
+    dst_p[39] |= pack_right_shift_u16(src_p->cell_temperature28, 4u, 0x7fu);
+    dst_p[39] |= pack_left_shift_u16(src_p->cell_temperature29, 7u, 0x80u);
+    dst_p[40] |= pack_right_shift_u16(src_p->cell_temperature29, 1u, 0xffu);
+    dst_p[41] |= pack_right_shift_u16(src_p->cell_temperature29, 9u, 0x03u);
+    dst_p[41] |= pack_left_shift_u16(src_p->cell_temperature30, 2u, 0xfcu);
+    dst_p[42] |= pack_right_shift_u16(src_p->cell_temperature30, 6u, 0x1fu);
+    dst_p[42] |= pack_left_shift_u16(src_p->cell_temperature31, 5u, 0xe0u);
+    dst_p[43] |= pack_right_shift_u16(src_p->cell_temperature31, 3u, 0xffu);
     dst_p[44] |= pack_left_shift_u16(src_p->max_battery_temperature, 0u, 0xffu);
     dst_p[45] |= pack_right_shift_u16(src_p->max_battery_temperature, 8u, 0x07u);
     dst_p[45] |= pack_left_shift_u16(src_p->average_battery_temperature, 3u, 0xf8u);
     dst_p[46] |= pack_right_shift_u16(src_p->average_battery_temperature, 5u, 0x3fu);
-    dst_p[46] |= pack_left_shift_u16(src_p->sample_age_ms, 6u, 0xc0u);
-    dst_p[47] |= pack_right_shift_u16(src_p->sample_age_ms, 2u, 0xffu);
-    dst_p[48] |= pack_right_shift_u16(src_p->sample_age_ms, 10u, 0x3fu);
 
-    return (64);
+    return (48);
 }
 
 int car_can_raw_bps_temperature_data_unpack(
@@ -1731,89 +1671,86 @@ int car_can_raw_bps_temperature_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 64u) {
+    if (size < 48u) {
         return (-EINVAL);
     }
 
-    dst_p->cell_temperature01 = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
-    dst_p->cell_temperature01 |= unpack_left_shift_u16(src_p[1], 8u, 0x07u);
-    dst_p->cell_temperature02 = unpack_right_shift_u16(src_p[1], 3u, 0xf8u);
-    dst_p->cell_temperature02 |= unpack_left_shift_u16(src_p[2], 5u, 0x3fu);
-    dst_p->cell_temperature03 = unpack_right_shift_u16(src_p[2], 6u, 0xc0u);
-    dst_p->cell_temperature03 |= unpack_left_shift_u16(src_p[3], 2u, 0xffu);
-    dst_p->cell_temperature03 |= unpack_left_shift_u16(src_p[4], 10u, 0x01u);
-    dst_p->cell_temperature04 = unpack_right_shift_u16(src_p[4], 1u, 0xfeu);
-    dst_p->cell_temperature04 |= unpack_left_shift_u16(src_p[5], 7u, 0x0fu);
-    dst_p->cell_temperature05 = unpack_right_shift_u16(src_p[5], 4u, 0xf0u);
-    dst_p->cell_temperature05 |= unpack_left_shift_u16(src_p[6], 4u, 0x7fu);
-    dst_p->cell_temperature06 = unpack_right_shift_u16(src_p[6], 7u, 0x80u);
-    dst_p->cell_temperature06 |= unpack_left_shift_u16(src_p[7], 1u, 0xffu);
-    dst_p->cell_temperature06 |= unpack_left_shift_u16(src_p[8], 9u, 0x03u);
-    dst_p->cell_temperature07 = unpack_right_shift_u16(src_p[8], 2u, 0xfcu);
-    dst_p->cell_temperature07 |= unpack_left_shift_u16(src_p[9], 6u, 0x1fu);
-    dst_p->cell_temperature08 = unpack_right_shift_u16(src_p[9], 5u, 0xe0u);
-    dst_p->cell_temperature08 |= unpack_left_shift_u16(src_p[10], 3u, 0xffu);
-    dst_p->cell_temperature09 = unpack_right_shift_u16(src_p[11], 0u, 0xffu);
-    dst_p->cell_temperature09 |= unpack_left_shift_u16(src_p[12], 8u, 0x07u);
-    dst_p->cell_temperature10 = unpack_right_shift_u16(src_p[12], 3u, 0xf8u);
-    dst_p->cell_temperature10 |= unpack_left_shift_u16(src_p[13], 5u, 0x3fu);
-    dst_p->cell_temperature11 = unpack_right_shift_u16(src_p[13], 6u, 0xc0u);
-    dst_p->cell_temperature11 |= unpack_left_shift_u16(src_p[14], 2u, 0xffu);
-    dst_p->cell_temperature11 |= unpack_left_shift_u16(src_p[15], 10u, 0x01u);
-    dst_p->cell_temperature12 = unpack_right_shift_u16(src_p[15], 1u, 0xfeu);
-    dst_p->cell_temperature12 |= unpack_left_shift_u16(src_p[16], 7u, 0x0fu);
-    dst_p->cell_temperature13 = unpack_right_shift_u16(src_p[16], 4u, 0xf0u);
-    dst_p->cell_temperature13 |= unpack_left_shift_u16(src_p[17], 4u, 0x7fu);
-    dst_p->cell_temperature14 = unpack_right_shift_u16(src_p[17], 7u, 0x80u);
-    dst_p->cell_temperature14 |= unpack_left_shift_u16(src_p[18], 1u, 0xffu);
-    dst_p->cell_temperature14 |= unpack_left_shift_u16(src_p[19], 9u, 0x03u);
-    dst_p->cell_temperature15 = unpack_right_shift_u16(src_p[19], 2u, 0xfcu);
-    dst_p->cell_temperature15 |= unpack_left_shift_u16(src_p[20], 6u, 0x1fu);
-    dst_p->cell_temperature16 = unpack_right_shift_u16(src_p[20], 5u, 0xe0u);
-    dst_p->cell_temperature16 |= unpack_left_shift_u16(src_p[21], 3u, 0xffu);
-    dst_p->cell_temperature17 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
-    dst_p->cell_temperature17 |= unpack_left_shift_u16(src_p[23], 8u, 0x07u);
-    dst_p->cell_temperature18 = unpack_right_shift_u16(src_p[23], 3u, 0xf8u);
-    dst_p->cell_temperature18 |= unpack_left_shift_u16(src_p[24], 5u, 0x3fu);
-    dst_p->cell_temperature19 = unpack_right_shift_u16(src_p[24], 6u, 0xc0u);
-    dst_p->cell_temperature19 |= unpack_left_shift_u16(src_p[25], 2u, 0xffu);
-    dst_p->cell_temperature19 |= unpack_left_shift_u16(src_p[26], 10u, 0x01u);
-    dst_p->cell_temperature20 = unpack_right_shift_u16(src_p[26], 1u, 0xfeu);
-    dst_p->cell_temperature20 |= unpack_left_shift_u16(src_p[27], 7u, 0x0fu);
-    dst_p->cell_temperature21 = unpack_right_shift_u16(src_p[27], 4u, 0xf0u);
-    dst_p->cell_temperature21 |= unpack_left_shift_u16(src_p[28], 4u, 0x7fu);
-    dst_p->cell_temperature22 = unpack_right_shift_u16(src_p[28], 7u, 0x80u);
-    dst_p->cell_temperature22 |= unpack_left_shift_u16(src_p[29], 1u, 0xffu);
-    dst_p->cell_temperature22 |= unpack_left_shift_u16(src_p[30], 9u, 0x03u);
-    dst_p->cell_temperature23 = unpack_right_shift_u16(src_p[30], 2u, 0xfcu);
-    dst_p->cell_temperature23 |= unpack_left_shift_u16(src_p[31], 6u, 0x1fu);
-    dst_p->cell_temperature24 = unpack_right_shift_u16(src_p[31], 5u, 0xe0u);
-    dst_p->cell_temperature24 |= unpack_left_shift_u16(src_p[32], 3u, 0xffu);
-    dst_p->cell_temperature25 = unpack_right_shift_u16(src_p[33], 0u, 0xffu);
-    dst_p->cell_temperature25 |= unpack_left_shift_u16(src_p[34], 8u, 0x07u);
-    dst_p->cell_temperature26 = unpack_right_shift_u16(src_p[34], 3u, 0xf8u);
-    dst_p->cell_temperature26 |= unpack_left_shift_u16(src_p[35], 5u, 0x3fu);
-    dst_p->cell_temperature27 = unpack_right_shift_u16(src_p[35], 6u, 0xc0u);
-    dst_p->cell_temperature27 |= unpack_left_shift_u16(src_p[36], 2u, 0xffu);
-    dst_p->cell_temperature27 |= unpack_left_shift_u16(src_p[37], 10u, 0x01u);
-    dst_p->cell_temperature28 = unpack_right_shift_u16(src_p[37], 1u, 0xfeu);
-    dst_p->cell_temperature28 |= unpack_left_shift_u16(src_p[38], 7u, 0x0fu);
-    dst_p->cell_temperature29 = unpack_right_shift_u16(src_p[38], 4u, 0xf0u);
-    dst_p->cell_temperature29 |= unpack_left_shift_u16(src_p[39], 4u, 0x7fu);
-    dst_p->cell_temperature30 = unpack_right_shift_u16(src_p[39], 7u, 0x80u);
-    dst_p->cell_temperature30 |= unpack_left_shift_u16(src_p[40], 1u, 0xffu);
-    dst_p->cell_temperature30 |= unpack_left_shift_u16(src_p[41], 9u, 0x03u);
-    dst_p->cell_temperature31 = unpack_right_shift_u16(src_p[41], 2u, 0xfcu);
-    dst_p->cell_temperature31 |= unpack_left_shift_u16(src_p[42], 6u, 0x1fu);
-    dst_p->cell_temperature32 = unpack_right_shift_u16(src_p[42], 5u, 0xe0u);
-    dst_p->cell_temperature32 |= unpack_left_shift_u16(src_p[43], 3u, 0xffu);
+    dst_p->cell_temperature00 = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
+    dst_p->cell_temperature00 |= unpack_left_shift_u16(src_p[1], 8u, 0x07u);
+    dst_p->cell_temperature01 = unpack_right_shift_u16(src_p[1], 3u, 0xf8u);
+    dst_p->cell_temperature01 |= unpack_left_shift_u16(src_p[2], 5u, 0x3fu);
+    dst_p->cell_temperature02 = unpack_right_shift_u16(src_p[2], 6u, 0xc0u);
+    dst_p->cell_temperature02 |= unpack_left_shift_u16(src_p[3], 2u, 0xffu);
+    dst_p->cell_temperature02 |= unpack_left_shift_u16(src_p[4], 10u, 0x01u);
+    dst_p->cell_temperature03 = unpack_right_shift_u16(src_p[4], 1u, 0xfeu);
+    dst_p->cell_temperature03 |= unpack_left_shift_u16(src_p[5], 7u, 0x0fu);
+    dst_p->cell_temperature04 = unpack_right_shift_u16(src_p[5], 4u, 0xf0u);
+    dst_p->cell_temperature04 |= unpack_left_shift_u16(src_p[6], 4u, 0x7fu);
+    dst_p->cell_temperature05 = unpack_right_shift_u16(src_p[6], 7u, 0x80u);
+    dst_p->cell_temperature05 |= unpack_left_shift_u16(src_p[7], 1u, 0xffu);
+    dst_p->cell_temperature05 |= unpack_left_shift_u16(src_p[8], 9u, 0x03u);
+    dst_p->cell_temperature06 = unpack_right_shift_u16(src_p[8], 2u, 0xfcu);
+    dst_p->cell_temperature06 |= unpack_left_shift_u16(src_p[9], 6u, 0x1fu);
+    dst_p->cell_temperature07 = unpack_right_shift_u16(src_p[9], 5u, 0xe0u);
+    dst_p->cell_temperature07 |= unpack_left_shift_u16(src_p[10], 3u, 0xffu);
+    dst_p->cell_temperature08 = unpack_right_shift_u16(src_p[11], 0u, 0xffu);
+    dst_p->cell_temperature08 |= unpack_left_shift_u16(src_p[12], 8u, 0x07u);
+    dst_p->cell_temperature09 = unpack_right_shift_u16(src_p[12], 3u, 0xf8u);
+    dst_p->cell_temperature09 |= unpack_left_shift_u16(src_p[13], 5u, 0x3fu);
+    dst_p->cell_temperature10 = unpack_right_shift_u16(src_p[13], 6u, 0xc0u);
+    dst_p->cell_temperature10 |= unpack_left_shift_u16(src_p[14], 2u, 0xffu);
+    dst_p->cell_temperature10 |= unpack_left_shift_u16(src_p[15], 10u, 0x01u);
+    dst_p->cell_temperature11 = unpack_right_shift_u16(src_p[15], 1u, 0xfeu);
+    dst_p->cell_temperature11 |= unpack_left_shift_u16(src_p[16], 7u, 0x0fu);
+    dst_p->cell_temperature12 = unpack_right_shift_u16(src_p[16], 4u, 0xf0u);
+    dst_p->cell_temperature12 |= unpack_left_shift_u16(src_p[17], 4u, 0x7fu);
+    dst_p->cell_temperature13 = unpack_right_shift_u16(src_p[17], 7u, 0x80u);
+    dst_p->cell_temperature13 |= unpack_left_shift_u16(src_p[18], 1u, 0xffu);
+    dst_p->cell_temperature13 |= unpack_left_shift_u16(src_p[19], 9u, 0x03u);
+    dst_p->cell_temperature14 = unpack_right_shift_u16(src_p[19], 2u, 0xfcu);
+    dst_p->cell_temperature14 |= unpack_left_shift_u16(src_p[20], 6u, 0x1fu);
+    dst_p->cell_temperature15 = unpack_right_shift_u16(src_p[20], 5u, 0xe0u);
+    dst_p->cell_temperature15 |= unpack_left_shift_u16(src_p[21], 3u, 0xffu);
+    dst_p->cell_temperature16 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
+    dst_p->cell_temperature16 |= unpack_left_shift_u16(src_p[23], 8u, 0x07u);
+    dst_p->cell_temperature17 = unpack_right_shift_u16(src_p[23], 3u, 0xf8u);
+    dst_p->cell_temperature17 |= unpack_left_shift_u16(src_p[24], 5u, 0x3fu);
+    dst_p->cell_temperature18 = unpack_right_shift_u16(src_p[24], 6u, 0xc0u);
+    dst_p->cell_temperature18 |= unpack_left_shift_u16(src_p[25], 2u, 0xffu);
+    dst_p->cell_temperature18 |= unpack_left_shift_u16(src_p[26], 10u, 0x01u);
+    dst_p->cell_temperature19 = unpack_right_shift_u16(src_p[26], 1u, 0xfeu);
+    dst_p->cell_temperature19 |= unpack_left_shift_u16(src_p[27], 7u, 0x0fu);
+    dst_p->cell_temperature20 = unpack_right_shift_u16(src_p[27], 4u, 0xf0u);
+    dst_p->cell_temperature20 |= unpack_left_shift_u16(src_p[28], 4u, 0x7fu);
+    dst_p->cell_temperature21 = unpack_right_shift_u16(src_p[28], 7u, 0x80u);
+    dst_p->cell_temperature21 |= unpack_left_shift_u16(src_p[29], 1u, 0xffu);
+    dst_p->cell_temperature21 |= unpack_left_shift_u16(src_p[30], 9u, 0x03u);
+    dst_p->cell_temperature22 = unpack_right_shift_u16(src_p[30], 2u, 0xfcu);
+    dst_p->cell_temperature22 |= unpack_left_shift_u16(src_p[31], 6u, 0x1fu);
+    dst_p->cell_temperature23 = unpack_right_shift_u16(src_p[31], 5u, 0xe0u);
+    dst_p->cell_temperature23 |= unpack_left_shift_u16(src_p[32], 3u, 0xffu);
+    dst_p->cell_temperature24 = unpack_right_shift_u16(src_p[33], 0u, 0xffu);
+    dst_p->cell_temperature24 |= unpack_left_shift_u16(src_p[34], 8u, 0x07u);
+    dst_p->cell_temperature25 = unpack_right_shift_u16(src_p[34], 3u, 0xf8u);
+    dst_p->cell_temperature25 |= unpack_left_shift_u16(src_p[35], 5u, 0x3fu);
+    dst_p->cell_temperature26 = unpack_right_shift_u16(src_p[35], 6u, 0xc0u);
+    dst_p->cell_temperature26 |= unpack_left_shift_u16(src_p[36], 2u, 0xffu);
+    dst_p->cell_temperature26 |= unpack_left_shift_u16(src_p[37], 10u, 0x01u);
+    dst_p->cell_temperature27 = unpack_right_shift_u16(src_p[37], 1u, 0xfeu);
+    dst_p->cell_temperature27 |= unpack_left_shift_u16(src_p[38], 7u, 0x0fu);
+    dst_p->cell_temperature28 = unpack_right_shift_u16(src_p[38], 4u, 0xf0u);
+    dst_p->cell_temperature28 |= unpack_left_shift_u16(src_p[39], 4u, 0x7fu);
+    dst_p->cell_temperature29 = unpack_right_shift_u16(src_p[39], 7u, 0x80u);
+    dst_p->cell_temperature29 |= unpack_left_shift_u16(src_p[40], 1u, 0xffu);
+    dst_p->cell_temperature29 |= unpack_left_shift_u16(src_p[41], 9u, 0x03u);
+    dst_p->cell_temperature30 = unpack_right_shift_u16(src_p[41], 2u, 0xfcu);
+    dst_p->cell_temperature30 |= unpack_left_shift_u16(src_p[42], 6u, 0x1fu);
+    dst_p->cell_temperature31 = unpack_right_shift_u16(src_p[42], 5u, 0xe0u);
+    dst_p->cell_temperature31 |= unpack_left_shift_u16(src_p[43], 3u, 0xffu);
     dst_p->max_battery_temperature = unpack_right_shift_u16(src_p[44], 0u, 0xffu);
     dst_p->max_battery_temperature |= unpack_left_shift_u16(src_p[45], 8u, 0x07u);
     dst_p->average_battery_temperature = unpack_right_shift_u16(src_p[45], 3u, 0xf8u);
     dst_p->average_battery_temperature |= unpack_left_shift_u16(src_p[46], 5u, 0x3fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[46], 6u, 0xc0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[47], 2u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[48], 10u, 0x3fu);
 
     return (0);
 }
@@ -1825,6 +1762,11 @@ int car_can_raw_bps_temperature_data_init(struct car_can_raw_bps_temperature_dat
     memset(msg_p, 0, sizeof(struct car_can_raw_bps_temperature_data_t));
 
     return 0;
+}
+
+bool car_can_raw_bps_temperature_data_cell_temperature00_is_in_range(uint16_t value)
+{
+    return (value <= 2047u);
 }
 
 bool car_can_raw_bps_temperature_data_cell_temperature01_is_in_range(uint16_t value)
@@ -1982,11 +1924,6 @@ bool car_can_raw_bps_temperature_data_cell_temperature31_is_in_range(uint16_t va
     return (value <= 2047u);
 }
 
-bool car_can_raw_bps_temperature_data_cell_temperature32_is_in_range(uint16_t value)
-{
-    return (value <= 2047u);
-}
-
 bool car_can_raw_bps_temperature_data_max_battery_temperature_is_in_range(uint16_t value)
 {
     return (value <= 2047u);
@@ -1995,13 +1932,6 @@ bool car_can_raw_bps_temperature_data_max_battery_temperature_is_in_range(uint16
 bool car_can_raw_bps_temperature_data_average_battery_temperature_is_in_range(uint16_t value)
 {
     return (value <= 2047u);
-}
-
-bool car_can_raw_bps_temperature_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
 }
 
 int car_can_raw_smd_status_pack(
@@ -2152,9 +2082,6 @@ int car_can_raw_bps_fault_snapshot_pack(
     dst_p[6] |= pack_right_shift_u32(src_p->capture_time_ms, 24u, 0xffu);
     dst_p[7] |= pack_left_shift_u16(src_p->battery_current, 0u, 0xffu);
     dst_p[8] |= pack_right_shift_u16(src_p->battery_current, 8u, 0x3fu);
-    dst_p[8] |= pack_left_shift_u16(src_p->sample_age_ms, 6u, 0xc0u);
-    dst_p[9] |= pack_right_shift_u16(src_p->sample_age_ms, 2u, 0xffu);
-    dst_p[10] |= pack_right_shift_u16(src_p->sample_age_ms, 10u, 0x3fu);
 
     return (12);
 }
@@ -2196,9 +2123,6 @@ int car_can_raw_bps_fault_snapshot_unpack(
     dst_p->capture_time_ms |= unpack_left_shift_u32(src_p[6], 24u, 0xffu);
     dst_p->battery_current = unpack_right_shift_u16(src_p[7], 0u, 0xffu);
     dst_p->battery_current |= unpack_left_shift_u16(src_p[8], 8u, 0x3fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[8], 6u, 0xc0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[9], 2u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[10], 10u, 0x3fu);
 
     return (0);
 }
@@ -2334,13 +2258,6 @@ bool car_can_raw_bps_fault_snapshot_battery_current_is_in_range(uint16_t value)
     return (value <= 16383u);
 }
 
-bool car_can_raw_bps_fault_snapshot_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_bps_fault_voltage_snapshot_pack(
     uint8_t *dst_p,
     const struct car_can_raw_bps_fault_voltage_snapshot_t *src_p,
@@ -2356,72 +2273,70 @@ int car_can_raw_bps_fault_voltage_snapshot_pack(
     dst_p[1] |= pack_right_shift_u32(src_p->sample_valid_mask, 8u, 0xffu);
     dst_p[2] |= pack_right_shift_u32(src_p->sample_valid_mask, 16u, 0xffu);
     dst_p[3] |= pack_right_shift_u32(src_p->sample_valid_mask, 24u, 0xffu);
-    dst_p[4] |= pack_left_shift_u16(src_p->cell_voltage01, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(src_p->cell_voltage01, 8u, 0x0fu);
-    dst_p[5] |= pack_left_shift_u16(src_p->cell_voltage02, 4u, 0xf0u);
-    dst_p[6] |= pack_right_shift_u16(src_p->cell_voltage02, 4u, 0xffu);
-    dst_p[7] |= pack_left_shift_u16(src_p->cell_voltage03, 0u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->cell_voltage03, 8u, 0x0fu);
-    dst_p[8] |= pack_left_shift_u16(src_p->cell_voltage04, 4u, 0xf0u);
-    dst_p[9] |= pack_right_shift_u16(src_p->cell_voltage04, 4u, 0xffu);
-    dst_p[10] |= pack_left_shift_u16(src_p->cell_voltage05, 0u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(src_p->cell_voltage05, 8u, 0x0fu);
-    dst_p[11] |= pack_left_shift_u16(src_p->cell_voltage06, 4u, 0xf0u);
-    dst_p[12] |= pack_right_shift_u16(src_p->cell_voltage06, 4u, 0xffu);
-    dst_p[13] |= pack_left_shift_u16(src_p->cell_voltage07, 0u, 0xffu);
-    dst_p[14] |= pack_right_shift_u16(src_p->cell_voltage07, 8u, 0x0fu);
-    dst_p[14] |= pack_left_shift_u16(src_p->cell_voltage08, 4u, 0xf0u);
-    dst_p[15] |= pack_right_shift_u16(src_p->cell_voltage08, 4u, 0xffu);
-    dst_p[16] |= pack_left_shift_u16(src_p->cell_voltage09, 0u, 0xffu);
-    dst_p[17] |= pack_right_shift_u16(src_p->cell_voltage09, 8u, 0x0fu);
-    dst_p[17] |= pack_left_shift_u16(src_p->cell_voltage10, 4u, 0xf0u);
-    dst_p[18] |= pack_right_shift_u16(src_p->cell_voltage10, 4u, 0xffu);
-    dst_p[19] |= pack_left_shift_u16(src_p->cell_voltage11, 0u, 0xffu);
-    dst_p[20] |= pack_right_shift_u16(src_p->cell_voltage11, 8u, 0x0fu);
-    dst_p[20] |= pack_left_shift_u16(src_p->cell_voltage12, 4u, 0xf0u);
-    dst_p[21] |= pack_right_shift_u16(src_p->cell_voltage12, 4u, 0xffu);
-    dst_p[22] |= pack_left_shift_u16(src_p->cell_voltage13, 0u, 0xffu);
-    dst_p[23] |= pack_right_shift_u16(src_p->cell_voltage13, 8u, 0x0fu);
-    dst_p[23] |= pack_left_shift_u16(src_p->cell_voltage14, 4u, 0xf0u);
-    dst_p[24] |= pack_right_shift_u16(src_p->cell_voltage14, 4u, 0xffu);
-    dst_p[25] |= pack_left_shift_u16(src_p->cell_voltage15, 0u, 0xffu);
-    dst_p[26] |= pack_right_shift_u16(src_p->cell_voltage15, 8u, 0x0fu);
-    dst_p[26] |= pack_left_shift_u16(src_p->cell_voltage16, 4u, 0xf0u);
-    dst_p[27] |= pack_right_shift_u16(src_p->cell_voltage16, 4u, 0xffu);
-    dst_p[28] |= pack_left_shift_u16(src_p->cell_voltage17, 0u, 0xffu);
-    dst_p[29] |= pack_right_shift_u16(src_p->cell_voltage17, 8u, 0x0fu);
-    dst_p[29] |= pack_left_shift_u16(src_p->cell_voltage18, 4u, 0xf0u);
-    dst_p[30] |= pack_right_shift_u16(src_p->cell_voltage18, 4u, 0xffu);
-    dst_p[31] |= pack_left_shift_u16(src_p->cell_voltage19, 0u, 0xffu);
-    dst_p[32] |= pack_right_shift_u16(src_p->cell_voltage19, 8u, 0x0fu);
-    dst_p[32] |= pack_left_shift_u16(src_p->cell_voltage20, 4u, 0xf0u);
-    dst_p[33] |= pack_right_shift_u16(src_p->cell_voltage20, 4u, 0xffu);
-    dst_p[34] |= pack_left_shift_u16(src_p->cell_voltage21, 0u, 0xffu);
-    dst_p[35] |= pack_right_shift_u16(src_p->cell_voltage21, 8u, 0x0fu);
-    dst_p[35] |= pack_left_shift_u16(src_p->cell_voltage22, 4u, 0xf0u);
-    dst_p[36] |= pack_right_shift_u16(src_p->cell_voltage22, 4u, 0xffu);
-    dst_p[37] |= pack_left_shift_u16(src_p->cell_voltage23, 0u, 0xffu);
-    dst_p[38] |= pack_right_shift_u16(src_p->cell_voltage23, 8u, 0x0fu);
-    dst_p[38] |= pack_left_shift_u16(src_p->cell_voltage24, 4u, 0xf0u);
-    dst_p[39] |= pack_right_shift_u16(src_p->cell_voltage24, 4u, 0xffu);
-    dst_p[40] |= pack_left_shift_u16(src_p->cell_voltage25, 0u, 0xffu);
-    dst_p[41] |= pack_right_shift_u16(src_p->cell_voltage25, 8u, 0x0fu);
-    dst_p[41] |= pack_left_shift_u16(src_p->cell_voltage26, 4u, 0xf0u);
-    dst_p[42] |= pack_right_shift_u16(src_p->cell_voltage26, 4u, 0xffu);
-    dst_p[43] |= pack_left_shift_u16(src_p->cell_voltage27, 0u, 0xffu);
-    dst_p[44] |= pack_right_shift_u16(src_p->cell_voltage27, 8u, 0x0fu);
-    dst_p[44] |= pack_left_shift_u16(src_p->cell_voltage28, 4u, 0xf0u);
-    dst_p[45] |= pack_right_shift_u16(src_p->cell_voltage28, 4u, 0xffu);
-    dst_p[46] |= pack_left_shift_u16(src_p->cell_voltage29, 0u, 0xffu);
-    dst_p[47] |= pack_right_shift_u16(src_p->cell_voltage29, 8u, 0x0fu);
-    dst_p[47] |= pack_left_shift_u16(src_p->cell_voltage30, 4u, 0xf0u);
-    dst_p[48] |= pack_right_shift_u16(src_p->cell_voltage30, 4u, 0xffu);
-    dst_p[49] |= pack_left_shift_u16(src_p->cell_voltage31, 0u, 0xffu);
-    dst_p[50] |= pack_right_shift_u16(src_p->cell_voltage31, 8u, 0x0fu);
-    dst_p[50] |= pack_left_shift_u16(src_p->cell_voltage32, 4u, 0xf0u);
-    dst_p[51] |= pack_right_shift_u16(src_p->cell_voltage32, 4u, 0xffu);
-    dst_p[52] |= pack_left_shift_u16(src_p->sample_age_ms, 0u, 0xffu);
-    dst_p[53] |= pack_right_shift_u16(src_p->sample_age_ms, 8u, 0xffu);
+    dst_p[4] |= pack_left_shift_u16(src_p->cell_voltage00, 0u, 0xffu);
+    dst_p[5] |= pack_right_shift_u16(src_p->cell_voltage00, 8u, 0x0fu);
+    dst_p[5] |= pack_left_shift_u16(src_p->cell_voltage01, 4u, 0xf0u);
+    dst_p[6] |= pack_right_shift_u16(src_p->cell_voltage01, 4u, 0xffu);
+    dst_p[7] |= pack_left_shift_u16(src_p->cell_voltage02, 0u, 0xffu);
+    dst_p[8] |= pack_right_shift_u16(src_p->cell_voltage02, 8u, 0x0fu);
+    dst_p[8] |= pack_left_shift_u16(src_p->cell_voltage03, 4u, 0xf0u);
+    dst_p[9] |= pack_right_shift_u16(src_p->cell_voltage03, 4u, 0xffu);
+    dst_p[10] |= pack_left_shift_u16(src_p->cell_voltage04, 0u, 0xffu);
+    dst_p[11] |= pack_right_shift_u16(src_p->cell_voltage04, 8u, 0x0fu);
+    dst_p[11] |= pack_left_shift_u16(src_p->cell_voltage05, 4u, 0xf0u);
+    dst_p[12] |= pack_right_shift_u16(src_p->cell_voltage05, 4u, 0xffu);
+    dst_p[13] |= pack_left_shift_u16(src_p->cell_voltage06, 0u, 0xffu);
+    dst_p[14] |= pack_right_shift_u16(src_p->cell_voltage06, 8u, 0x0fu);
+    dst_p[14] |= pack_left_shift_u16(src_p->cell_voltage07, 4u, 0xf0u);
+    dst_p[15] |= pack_right_shift_u16(src_p->cell_voltage07, 4u, 0xffu);
+    dst_p[16] |= pack_left_shift_u16(src_p->cell_voltage08, 0u, 0xffu);
+    dst_p[17] |= pack_right_shift_u16(src_p->cell_voltage08, 8u, 0x0fu);
+    dst_p[17] |= pack_left_shift_u16(src_p->cell_voltage09, 4u, 0xf0u);
+    dst_p[18] |= pack_right_shift_u16(src_p->cell_voltage09, 4u, 0xffu);
+    dst_p[19] |= pack_left_shift_u16(src_p->cell_voltage10, 0u, 0xffu);
+    dst_p[20] |= pack_right_shift_u16(src_p->cell_voltage10, 8u, 0x0fu);
+    dst_p[20] |= pack_left_shift_u16(src_p->cell_voltage11, 4u, 0xf0u);
+    dst_p[21] |= pack_right_shift_u16(src_p->cell_voltage11, 4u, 0xffu);
+    dst_p[22] |= pack_left_shift_u16(src_p->cell_voltage12, 0u, 0xffu);
+    dst_p[23] |= pack_right_shift_u16(src_p->cell_voltage12, 8u, 0x0fu);
+    dst_p[23] |= pack_left_shift_u16(src_p->cell_voltage13, 4u, 0xf0u);
+    dst_p[24] |= pack_right_shift_u16(src_p->cell_voltage13, 4u, 0xffu);
+    dst_p[25] |= pack_left_shift_u16(src_p->cell_voltage14, 0u, 0xffu);
+    dst_p[26] |= pack_right_shift_u16(src_p->cell_voltage14, 8u, 0x0fu);
+    dst_p[26] |= pack_left_shift_u16(src_p->cell_voltage15, 4u, 0xf0u);
+    dst_p[27] |= pack_right_shift_u16(src_p->cell_voltage15, 4u, 0xffu);
+    dst_p[28] |= pack_left_shift_u16(src_p->cell_voltage16, 0u, 0xffu);
+    dst_p[29] |= pack_right_shift_u16(src_p->cell_voltage16, 8u, 0x0fu);
+    dst_p[29] |= pack_left_shift_u16(src_p->cell_voltage17, 4u, 0xf0u);
+    dst_p[30] |= pack_right_shift_u16(src_p->cell_voltage17, 4u, 0xffu);
+    dst_p[31] |= pack_left_shift_u16(src_p->cell_voltage18, 0u, 0xffu);
+    dst_p[32] |= pack_right_shift_u16(src_p->cell_voltage18, 8u, 0x0fu);
+    dst_p[32] |= pack_left_shift_u16(src_p->cell_voltage19, 4u, 0xf0u);
+    dst_p[33] |= pack_right_shift_u16(src_p->cell_voltage19, 4u, 0xffu);
+    dst_p[34] |= pack_left_shift_u16(src_p->cell_voltage20, 0u, 0xffu);
+    dst_p[35] |= pack_right_shift_u16(src_p->cell_voltage20, 8u, 0x0fu);
+    dst_p[35] |= pack_left_shift_u16(src_p->cell_voltage21, 4u, 0xf0u);
+    dst_p[36] |= pack_right_shift_u16(src_p->cell_voltage21, 4u, 0xffu);
+    dst_p[37] |= pack_left_shift_u16(src_p->cell_voltage22, 0u, 0xffu);
+    dst_p[38] |= pack_right_shift_u16(src_p->cell_voltage22, 8u, 0x0fu);
+    dst_p[38] |= pack_left_shift_u16(src_p->cell_voltage23, 4u, 0xf0u);
+    dst_p[39] |= pack_right_shift_u16(src_p->cell_voltage23, 4u, 0xffu);
+    dst_p[40] |= pack_left_shift_u16(src_p->cell_voltage24, 0u, 0xffu);
+    dst_p[41] |= pack_right_shift_u16(src_p->cell_voltage24, 8u, 0x0fu);
+    dst_p[41] |= pack_left_shift_u16(src_p->cell_voltage25, 4u, 0xf0u);
+    dst_p[42] |= pack_right_shift_u16(src_p->cell_voltage25, 4u, 0xffu);
+    dst_p[43] |= pack_left_shift_u16(src_p->cell_voltage26, 0u, 0xffu);
+    dst_p[44] |= pack_right_shift_u16(src_p->cell_voltage26, 8u, 0x0fu);
+    dst_p[44] |= pack_left_shift_u16(src_p->cell_voltage27, 4u, 0xf0u);
+    dst_p[45] |= pack_right_shift_u16(src_p->cell_voltage27, 4u, 0xffu);
+    dst_p[46] |= pack_left_shift_u16(src_p->cell_voltage28, 0u, 0xffu);
+    dst_p[47] |= pack_right_shift_u16(src_p->cell_voltage28, 8u, 0x0fu);
+    dst_p[47] |= pack_left_shift_u16(src_p->cell_voltage29, 4u, 0xf0u);
+    dst_p[48] |= pack_right_shift_u16(src_p->cell_voltage29, 4u, 0xffu);
+    dst_p[49] |= pack_left_shift_u16(src_p->cell_voltage30, 0u, 0xffu);
+    dst_p[50] |= pack_right_shift_u16(src_p->cell_voltage30, 8u, 0x0fu);
+    dst_p[50] |= pack_left_shift_u16(src_p->cell_voltage31, 4u, 0xf0u);
+    dst_p[51] |= pack_right_shift_u16(src_p->cell_voltage31, 4u, 0xffu);
 
     return (64);
 }
@@ -2439,72 +2354,70 @@ int car_can_raw_bps_fault_voltage_snapshot_unpack(
     dst_p->sample_valid_mask |= unpack_left_shift_u32(src_p[1], 8u, 0xffu);
     dst_p->sample_valid_mask |= unpack_left_shift_u32(src_p[2], 16u, 0xffu);
     dst_p->sample_valid_mask |= unpack_left_shift_u32(src_p[3], 24u, 0xffu);
-    dst_p->cell_voltage01 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    dst_p->cell_voltage01 |= unpack_left_shift_u16(src_p[5], 8u, 0x0fu);
-    dst_p->cell_voltage02 = unpack_right_shift_u16(src_p[5], 4u, 0xf0u);
-    dst_p->cell_voltage02 |= unpack_left_shift_u16(src_p[6], 4u, 0xffu);
-    dst_p->cell_voltage03 = unpack_right_shift_u16(src_p[7], 0u, 0xffu);
-    dst_p->cell_voltage03 |= unpack_left_shift_u16(src_p[8], 8u, 0x0fu);
-    dst_p->cell_voltage04 = unpack_right_shift_u16(src_p[8], 4u, 0xf0u);
-    dst_p->cell_voltage04 |= unpack_left_shift_u16(src_p[9], 4u, 0xffu);
-    dst_p->cell_voltage05 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
-    dst_p->cell_voltage05 |= unpack_left_shift_u16(src_p[11], 8u, 0x0fu);
-    dst_p->cell_voltage06 = unpack_right_shift_u16(src_p[11], 4u, 0xf0u);
-    dst_p->cell_voltage06 |= unpack_left_shift_u16(src_p[12], 4u, 0xffu);
-    dst_p->cell_voltage07 = unpack_right_shift_u16(src_p[13], 0u, 0xffu);
-    dst_p->cell_voltage07 |= unpack_left_shift_u16(src_p[14], 8u, 0x0fu);
-    dst_p->cell_voltage08 = unpack_right_shift_u16(src_p[14], 4u, 0xf0u);
-    dst_p->cell_voltage08 |= unpack_left_shift_u16(src_p[15], 4u, 0xffu);
-    dst_p->cell_voltage09 = unpack_right_shift_u16(src_p[16], 0u, 0xffu);
-    dst_p->cell_voltage09 |= unpack_left_shift_u16(src_p[17], 8u, 0x0fu);
-    dst_p->cell_voltage10 = unpack_right_shift_u16(src_p[17], 4u, 0xf0u);
-    dst_p->cell_voltage10 |= unpack_left_shift_u16(src_p[18], 4u, 0xffu);
-    dst_p->cell_voltage11 = unpack_right_shift_u16(src_p[19], 0u, 0xffu);
-    dst_p->cell_voltage11 |= unpack_left_shift_u16(src_p[20], 8u, 0x0fu);
-    dst_p->cell_voltage12 = unpack_right_shift_u16(src_p[20], 4u, 0xf0u);
-    dst_p->cell_voltage12 |= unpack_left_shift_u16(src_p[21], 4u, 0xffu);
-    dst_p->cell_voltage13 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
-    dst_p->cell_voltage13 |= unpack_left_shift_u16(src_p[23], 8u, 0x0fu);
-    dst_p->cell_voltage14 = unpack_right_shift_u16(src_p[23], 4u, 0xf0u);
-    dst_p->cell_voltage14 |= unpack_left_shift_u16(src_p[24], 4u, 0xffu);
-    dst_p->cell_voltage15 = unpack_right_shift_u16(src_p[25], 0u, 0xffu);
-    dst_p->cell_voltage15 |= unpack_left_shift_u16(src_p[26], 8u, 0x0fu);
-    dst_p->cell_voltage16 = unpack_right_shift_u16(src_p[26], 4u, 0xf0u);
-    dst_p->cell_voltage16 |= unpack_left_shift_u16(src_p[27], 4u, 0xffu);
-    dst_p->cell_voltage17 = unpack_right_shift_u16(src_p[28], 0u, 0xffu);
-    dst_p->cell_voltage17 |= unpack_left_shift_u16(src_p[29], 8u, 0x0fu);
-    dst_p->cell_voltage18 = unpack_right_shift_u16(src_p[29], 4u, 0xf0u);
-    dst_p->cell_voltage18 |= unpack_left_shift_u16(src_p[30], 4u, 0xffu);
-    dst_p->cell_voltage19 = unpack_right_shift_u16(src_p[31], 0u, 0xffu);
-    dst_p->cell_voltage19 |= unpack_left_shift_u16(src_p[32], 8u, 0x0fu);
-    dst_p->cell_voltage20 = unpack_right_shift_u16(src_p[32], 4u, 0xf0u);
-    dst_p->cell_voltage20 |= unpack_left_shift_u16(src_p[33], 4u, 0xffu);
-    dst_p->cell_voltage21 = unpack_right_shift_u16(src_p[34], 0u, 0xffu);
-    dst_p->cell_voltage21 |= unpack_left_shift_u16(src_p[35], 8u, 0x0fu);
-    dst_p->cell_voltage22 = unpack_right_shift_u16(src_p[35], 4u, 0xf0u);
-    dst_p->cell_voltage22 |= unpack_left_shift_u16(src_p[36], 4u, 0xffu);
-    dst_p->cell_voltage23 = unpack_right_shift_u16(src_p[37], 0u, 0xffu);
-    dst_p->cell_voltage23 |= unpack_left_shift_u16(src_p[38], 8u, 0x0fu);
-    dst_p->cell_voltage24 = unpack_right_shift_u16(src_p[38], 4u, 0xf0u);
-    dst_p->cell_voltage24 |= unpack_left_shift_u16(src_p[39], 4u, 0xffu);
-    dst_p->cell_voltage25 = unpack_right_shift_u16(src_p[40], 0u, 0xffu);
-    dst_p->cell_voltage25 |= unpack_left_shift_u16(src_p[41], 8u, 0x0fu);
-    dst_p->cell_voltage26 = unpack_right_shift_u16(src_p[41], 4u, 0xf0u);
-    dst_p->cell_voltage26 |= unpack_left_shift_u16(src_p[42], 4u, 0xffu);
-    dst_p->cell_voltage27 = unpack_right_shift_u16(src_p[43], 0u, 0xffu);
-    dst_p->cell_voltage27 |= unpack_left_shift_u16(src_p[44], 8u, 0x0fu);
-    dst_p->cell_voltage28 = unpack_right_shift_u16(src_p[44], 4u, 0xf0u);
-    dst_p->cell_voltage28 |= unpack_left_shift_u16(src_p[45], 4u, 0xffu);
-    dst_p->cell_voltage29 = unpack_right_shift_u16(src_p[46], 0u, 0xffu);
-    dst_p->cell_voltage29 |= unpack_left_shift_u16(src_p[47], 8u, 0x0fu);
-    dst_p->cell_voltage30 = unpack_right_shift_u16(src_p[47], 4u, 0xf0u);
-    dst_p->cell_voltage30 |= unpack_left_shift_u16(src_p[48], 4u, 0xffu);
-    dst_p->cell_voltage31 = unpack_right_shift_u16(src_p[49], 0u, 0xffu);
-    dst_p->cell_voltage31 |= unpack_left_shift_u16(src_p[50], 8u, 0x0fu);
-    dst_p->cell_voltage32 = unpack_right_shift_u16(src_p[50], 4u, 0xf0u);
-    dst_p->cell_voltage32 |= unpack_left_shift_u16(src_p[51], 4u, 0xffu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[52], 0u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[53], 8u, 0xffu);
+    dst_p->cell_voltage00 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
+    dst_p->cell_voltage00 |= unpack_left_shift_u16(src_p[5], 8u, 0x0fu);
+    dst_p->cell_voltage01 = unpack_right_shift_u16(src_p[5], 4u, 0xf0u);
+    dst_p->cell_voltage01 |= unpack_left_shift_u16(src_p[6], 4u, 0xffu);
+    dst_p->cell_voltage02 = unpack_right_shift_u16(src_p[7], 0u, 0xffu);
+    dst_p->cell_voltage02 |= unpack_left_shift_u16(src_p[8], 8u, 0x0fu);
+    dst_p->cell_voltage03 = unpack_right_shift_u16(src_p[8], 4u, 0xf0u);
+    dst_p->cell_voltage03 |= unpack_left_shift_u16(src_p[9], 4u, 0xffu);
+    dst_p->cell_voltage04 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
+    dst_p->cell_voltage04 |= unpack_left_shift_u16(src_p[11], 8u, 0x0fu);
+    dst_p->cell_voltage05 = unpack_right_shift_u16(src_p[11], 4u, 0xf0u);
+    dst_p->cell_voltage05 |= unpack_left_shift_u16(src_p[12], 4u, 0xffu);
+    dst_p->cell_voltage06 = unpack_right_shift_u16(src_p[13], 0u, 0xffu);
+    dst_p->cell_voltage06 |= unpack_left_shift_u16(src_p[14], 8u, 0x0fu);
+    dst_p->cell_voltage07 = unpack_right_shift_u16(src_p[14], 4u, 0xf0u);
+    dst_p->cell_voltage07 |= unpack_left_shift_u16(src_p[15], 4u, 0xffu);
+    dst_p->cell_voltage08 = unpack_right_shift_u16(src_p[16], 0u, 0xffu);
+    dst_p->cell_voltage08 |= unpack_left_shift_u16(src_p[17], 8u, 0x0fu);
+    dst_p->cell_voltage09 = unpack_right_shift_u16(src_p[17], 4u, 0xf0u);
+    dst_p->cell_voltage09 |= unpack_left_shift_u16(src_p[18], 4u, 0xffu);
+    dst_p->cell_voltage10 = unpack_right_shift_u16(src_p[19], 0u, 0xffu);
+    dst_p->cell_voltage10 |= unpack_left_shift_u16(src_p[20], 8u, 0x0fu);
+    dst_p->cell_voltage11 = unpack_right_shift_u16(src_p[20], 4u, 0xf0u);
+    dst_p->cell_voltage11 |= unpack_left_shift_u16(src_p[21], 4u, 0xffu);
+    dst_p->cell_voltage12 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
+    dst_p->cell_voltage12 |= unpack_left_shift_u16(src_p[23], 8u, 0x0fu);
+    dst_p->cell_voltage13 = unpack_right_shift_u16(src_p[23], 4u, 0xf0u);
+    dst_p->cell_voltage13 |= unpack_left_shift_u16(src_p[24], 4u, 0xffu);
+    dst_p->cell_voltage14 = unpack_right_shift_u16(src_p[25], 0u, 0xffu);
+    dst_p->cell_voltage14 |= unpack_left_shift_u16(src_p[26], 8u, 0x0fu);
+    dst_p->cell_voltage15 = unpack_right_shift_u16(src_p[26], 4u, 0xf0u);
+    dst_p->cell_voltage15 |= unpack_left_shift_u16(src_p[27], 4u, 0xffu);
+    dst_p->cell_voltage16 = unpack_right_shift_u16(src_p[28], 0u, 0xffu);
+    dst_p->cell_voltage16 |= unpack_left_shift_u16(src_p[29], 8u, 0x0fu);
+    dst_p->cell_voltage17 = unpack_right_shift_u16(src_p[29], 4u, 0xf0u);
+    dst_p->cell_voltage17 |= unpack_left_shift_u16(src_p[30], 4u, 0xffu);
+    dst_p->cell_voltage18 = unpack_right_shift_u16(src_p[31], 0u, 0xffu);
+    dst_p->cell_voltage18 |= unpack_left_shift_u16(src_p[32], 8u, 0x0fu);
+    dst_p->cell_voltage19 = unpack_right_shift_u16(src_p[32], 4u, 0xf0u);
+    dst_p->cell_voltage19 |= unpack_left_shift_u16(src_p[33], 4u, 0xffu);
+    dst_p->cell_voltage20 = unpack_right_shift_u16(src_p[34], 0u, 0xffu);
+    dst_p->cell_voltage20 |= unpack_left_shift_u16(src_p[35], 8u, 0x0fu);
+    dst_p->cell_voltage21 = unpack_right_shift_u16(src_p[35], 4u, 0xf0u);
+    dst_p->cell_voltage21 |= unpack_left_shift_u16(src_p[36], 4u, 0xffu);
+    dst_p->cell_voltage22 = unpack_right_shift_u16(src_p[37], 0u, 0xffu);
+    dst_p->cell_voltage22 |= unpack_left_shift_u16(src_p[38], 8u, 0x0fu);
+    dst_p->cell_voltage23 = unpack_right_shift_u16(src_p[38], 4u, 0xf0u);
+    dst_p->cell_voltage23 |= unpack_left_shift_u16(src_p[39], 4u, 0xffu);
+    dst_p->cell_voltage24 = unpack_right_shift_u16(src_p[40], 0u, 0xffu);
+    dst_p->cell_voltage24 |= unpack_left_shift_u16(src_p[41], 8u, 0x0fu);
+    dst_p->cell_voltage25 = unpack_right_shift_u16(src_p[41], 4u, 0xf0u);
+    dst_p->cell_voltage25 |= unpack_left_shift_u16(src_p[42], 4u, 0xffu);
+    dst_p->cell_voltage26 = unpack_right_shift_u16(src_p[43], 0u, 0xffu);
+    dst_p->cell_voltage26 |= unpack_left_shift_u16(src_p[44], 8u, 0x0fu);
+    dst_p->cell_voltage27 = unpack_right_shift_u16(src_p[44], 4u, 0xf0u);
+    dst_p->cell_voltage27 |= unpack_left_shift_u16(src_p[45], 4u, 0xffu);
+    dst_p->cell_voltage28 = unpack_right_shift_u16(src_p[46], 0u, 0xffu);
+    dst_p->cell_voltage28 |= unpack_left_shift_u16(src_p[47], 8u, 0x0fu);
+    dst_p->cell_voltage29 = unpack_right_shift_u16(src_p[47], 4u, 0xf0u);
+    dst_p->cell_voltage29 |= unpack_left_shift_u16(src_p[48], 4u, 0xffu);
+    dst_p->cell_voltage30 = unpack_right_shift_u16(src_p[49], 0u, 0xffu);
+    dst_p->cell_voltage30 |= unpack_left_shift_u16(src_p[50], 8u, 0x0fu);
+    dst_p->cell_voltage31 = unpack_right_shift_u16(src_p[50], 4u, 0xf0u);
+    dst_p->cell_voltage31 |= unpack_left_shift_u16(src_p[51], 4u, 0xffu);
 
     return (0);
 }
@@ -2523,6 +2436,11 @@ bool car_can_raw_bps_fault_voltage_snapshot_sample_valid_mask_is_in_range(uint32
     (void)value;
 
     return (true);
+}
+
+bool car_can_raw_bps_fault_voltage_snapshot_cell_voltage00_is_in_range(uint16_t value)
+{
+    return (value <= 4095u);
 }
 
 bool car_can_raw_bps_fault_voltage_snapshot_cell_voltage01_is_in_range(uint16_t value)
@@ -2680,109 +2598,95 @@ bool car_can_raw_bps_fault_voltage_snapshot_cell_voltage31_is_in_range(uint16_t 
     return (value <= 4095u);
 }
 
-bool car_can_raw_bps_fault_voltage_snapshot_cell_voltage32_is_in_range(uint16_t value)
-{
-    return (value <= 4095u);
-}
-
-bool car_can_raw_bps_fault_voltage_snapshot_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_bps_fault_temperature_snapshot_pack(
     uint8_t *dst_p,
     const struct car_can_raw_bps_fault_temperature_snapshot_t *src_p,
     size_t size)
 {
-    if (size < 64u) {
+    if (size < 48u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 64);
+    memset(&dst_p[0], 0, 48);
 
     dst_p[0] |= pack_left_shift_u32(src_p->sample_valid_mask, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u32(src_p->sample_valid_mask, 8u, 0xffu);
     dst_p[2] |= pack_right_shift_u32(src_p->sample_valid_mask, 16u, 0xffu);
     dst_p[3] |= pack_right_shift_u32(src_p->sample_valid_mask, 24u, 0xffu);
-    dst_p[4] |= pack_left_shift_u16(src_p->cell_temperature01, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(src_p->cell_temperature01, 8u, 0x07u);
-    dst_p[5] |= pack_left_shift_u16(src_p->cell_temperature02, 3u, 0xf8u);
-    dst_p[6] |= pack_right_shift_u16(src_p->cell_temperature02, 5u, 0x3fu);
-    dst_p[6] |= pack_left_shift_u16(src_p->cell_temperature03, 6u, 0xc0u);
-    dst_p[7] |= pack_right_shift_u16(src_p->cell_temperature03, 2u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->cell_temperature03, 10u, 0x01u);
-    dst_p[8] |= pack_left_shift_u16(src_p->cell_temperature04, 1u, 0xfeu);
-    dst_p[9] |= pack_right_shift_u16(src_p->cell_temperature04, 7u, 0x0fu);
-    dst_p[9] |= pack_left_shift_u16(src_p->cell_temperature05, 4u, 0xf0u);
-    dst_p[10] |= pack_right_shift_u16(src_p->cell_temperature05, 4u, 0x7fu);
-    dst_p[10] |= pack_left_shift_u16(src_p->cell_temperature06, 7u, 0x80u);
-    dst_p[11] |= pack_right_shift_u16(src_p->cell_temperature06, 1u, 0xffu);
-    dst_p[12] |= pack_right_shift_u16(src_p->cell_temperature06, 9u, 0x03u);
-    dst_p[12] |= pack_left_shift_u16(src_p->cell_temperature07, 2u, 0xfcu);
-    dst_p[13] |= pack_right_shift_u16(src_p->cell_temperature07, 6u, 0x1fu);
-    dst_p[13] |= pack_left_shift_u16(src_p->cell_temperature08, 5u, 0xe0u);
-    dst_p[14] |= pack_right_shift_u16(src_p->cell_temperature08, 3u, 0xffu);
-    dst_p[15] |= pack_left_shift_u16(src_p->cell_temperature09, 0u, 0xffu);
-    dst_p[16] |= pack_right_shift_u16(src_p->cell_temperature09, 8u, 0x07u);
-    dst_p[16] |= pack_left_shift_u16(src_p->cell_temperature10, 3u, 0xf8u);
-    dst_p[17] |= pack_right_shift_u16(src_p->cell_temperature10, 5u, 0x3fu);
-    dst_p[17] |= pack_left_shift_u16(src_p->cell_temperature11, 6u, 0xc0u);
-    dst_p[18] |= pack_right_shift_u16(src_p->cell_temperature11, 2u, 0xffu);
-    dst_p[19] |= pack_right_shift_u16(src_p->cell_temperature11, 10u, 0x01u);
-    dst_p[19] |= pack_left_shift_u16(src_p->cell_temperature12, 1u, 0xfeu);
-    dst_p[20] |= pack_right_shift_u16(src_p->cell_temperature12, 7u, 0x0fu);
-    dst_p[20] |= pack_left_shift_u16(src_p->cell_temperature13, 4u, 0xf0u);
-    dst_p[21] |= pack_right_shift_u16(src_p->cell_temperature13, 4u, 0x7fu);
-    dst_p[21] |= pack_left_shift_u16(src_p->cell_temperature14, 7u, 0x80u);
-    dst_p[22] |= pack_right_shift_u16(src_p->cell_temperature14, 1u, 0xffu);
-    dst_p[23] |= pack_right_shift_u16(src_p->cell_temperature14, 9u, 0x03u);
-    dst_p[23] |= pack_left_shift_u16(src_p->cell_temperature15, 2u, 0xfcu);
-    dst_p[24] |= pack_right_shift_u16(src_p->cell_temperature15, 6u, 0x1fu);
-    dst_p[24] |= pack_left_shift_u16(src_p->cell_temperature16, 5u, 0xe0u);
-    dst_p[25] |= pack_right_shift_u16(src_p->cell_temperature16, 3u, 0xffu);
-    dst_p[26] |= pack_left_shift_u16(src_p->cell_temperature17, 0u, 0xffu);
-    dst_p[27] |= pack_right_shift_u16(src_p->cell_temperature17, 8u, 0x07u);
-    dst_p[27] |= pack_left_shift_u16(src_p->cell_temperature18, 3u, 0xf8u);
-    dst_p[28] |= pack_right_shift_u16(src_p->cell_temperature18, 5u, 0x3fu);
-    dst_p[28] |= pack_left_shift_u16(src_p->cell_temperature19, 6u, 0xc0u);
-    dst_p[29] |= pack_right_shift_u16(src_p->cell_temperature19, 2u, 0xffu);
-    dst_p[30] |= pack_right_shift_u16(src_p->cell_temperature19, 10u, 0x01u);
-    dst_p[30] |= pack_left_shift_u16(src_p->cell_temperature20, 1u, 0xfeu);
-    dst_p[31] |= pack_right_shift_u16(src_p->cell_temperature20, 7u, 0x0fu);
-    dst_p[31] |= pack_left_shift_u16(src_p->cell_temperature21, 4u, 0xf0u);
-    dst_p[32] |= pack_right_shift_u16(src_p->cell_temperature21, 4u, 0x7fu);
-    dst_p[32] |= pack_left_shift_u16(src_p->cell_temperature22, 7u, 0x80u);
-    dst_p[33] |= pack_right_shift_u16(src_p->cell_temperature22, 1u, 0xffu);
-    dst_p[34] |= pack_right_shift_u16(src_p->cell_temperature22, 9u, 0x03u);
-    dst_p[34] |= pack_left_shift_u16(src_p->cell_temperature23, 2u, 0xfcu);
-    dst_p[35] |= pack_right_shift_u16(src_p->cell_temperature23, 6u, 0x1fu);
-    dst_p[35] |= pack_left_shift_u16(src_p->cell_temperature24, 5u, 0xe0u);
-    dst_p[36] |= pack_right_shift_u16(src_p->cell_temperature24, 3u, 0xffu);
-    dst_p[37] |= pack_left_shift_u16(src_p->cell_temperature25, 0u, 0xffu);
-    dst_p[38] |= pack_right_shift_u16(src_p->cell_temperature25, 8u, 0x07u);
-    dst_p[38] |= pack_left_shift_u16(src_p->cell_temperature26, 3u, 0xf8u);
-    dst_p[39] |= pack_right_shift_u16(src_p->cell_temperature26, 5u, 0x3fu);
-    dst_p[39] |= pack_left_shift_u16(src_p->cell_temperature27, 6u, 0xc0u);
-    dst_p[40] |= pack_right_shift_u16(src_p->cell_temperature27, 2u, 0xffu);
-    dst_p[41] |= pack_right_shift_u16(src_p->cell_temperature27, 10u, 0x01u);
-    dst_p[41] |= pack_left_shift_u16(src_p->cell_temperature28, 1u, 0xfeu);
-    dst_p[42] |= pack_right_shift_u16(src_p->cell_temperature28, 7u, 0x0fu);
-    dst_p[42] |= pack_left_shift_u16(src_p->cell_temperature29, 4u, 0xf0u);
-    dst_p[43] |= pack_right_shift_u16(src_p->cell_temperature29, 4u, 0x7fu);
-    dst_p[43] |= pack_left_shift_u16(src_p->cell_temperature30, 7u, 0x80u);
-    dst_p[44] |= pack_right_shift_u16(src_p->cell_temperature30, 1u, 0xffu);
-    dst_p[45] |= pack_right_shift_u16(src_p->cell_temperature30, 9u, 0x03u);
-    dst_p[45] |= pack_left_shift_u16(src_p->cell_temperature31, 2u, 0xfcu);
-    dst_p[46] |= pack_right_shift_u16(src_p->cell_temperature31, 6u, 0x1fu);
-    dst_p[46] |= pack_left_shift_u16(src_p->cell_temperature32, 5u, 0xe0u);
-    dst_p[47] |= pack_right_shift_u16(src_p->cell_temperature32, 3u, 0xffu);
-    dst_p[48] |= pack_left_shift_u16(src_p->sample_age_ms, 0u, 0xffu);
-    dst_p[49] |= pack_right_shift_u16(src_p->sample_age_ms, 8u, 0xffu);
+    dst_p[4] |= pack_left_shift_u16(src_p->cell_temperature00, 0u, 0xffu);
+    dst_p[5] |= pack_right_shift_u16(src_p->cell_temperature00, 8u, 0x07u);
+    dst_p[5] |= pack_left_shift_u16(src_p->cell_temperature01, 3u, 0xf8u);
+    dst_p[6] |= pack_right_shift_u16(src_p->cell_temperature01, 5u, 0x3fu);
+    dst_p[6] |= pack_left_shift_u16(src_p->cell_temperature02, 6u, 0xc0u);
+    dst_p[7] |= pack_right_shift_u16(src_p->cell_temperature02, 2u, 0xffu);
+    dst_p[8] |= pack_right_shift_u16(src_p->cell_temperature02, 10u, 0x01u);
+    dst_p[8] |= pack_left_shift_u16(src_p->cell_temperature03, 1u, 0xfeu);
+    dst_p[9] |= pack_right_shift_u16(src_p->cell_temperature03, 7u, 0x0fu);
+    dst_p[9] |= pack_left_shift_u16(src_p->cell_temperature04, 4u, 0xf0u);
+    dst_p[10] |= pack_right_shift_u16(src_p->cell_temperature04, 4u, 0x7fu);
+    dst_p[10] |= pack_left_shift_u16(src_p->cell_temperature05, 7u, 0x80u);
+    dst_p[11] |= pack_right_shift_u16(src_p->cell_temperature05, 1u, 0xffu);
+    dst_p[12] |= pack_right_shift_u16(src_p->cell_temperature05, 9u, 0x03u);
+    dst_p[12] |= pack_left_shift_u16(src_p->cell_temperature06, 2u, 0xfcu);
+    dst_p[13] |= pack_right_shift_u16(src_p->cell_temperature06, 6u, 0x1fu);
+    dst_p[13] |= pack_left_shift_u16(src_p->cell_temperature07, 5u, 0xe0u);
+    dst_p[14] |= pack_right_shift_u16(src_p->cell_temperature07, 3u, 0xffu);
+    dst_p[15] |= pack_left_shift_u16(src_p->cell_temperature08, 0u, 0xffu);
+    dst_p[16] |= pack_right_shift_u16(src_p->cell_temperature08, 8u, 0x07u);
+    dst_p[16] |= pack_left_shift_u16(src_p->cell_temperature09, 3u, 0xf8u);
+    dst_p[17] |= pack_right_shift_u16(src_p->cell_temperature09, 5u, 0x3fu);
+    dst_p[17] |= pack_left_shift_u16(src_p->cell_temperature10, 6u, 0xc0u);
+    dst_p[18] |= pack_right_shift_u16(src_p->cell_temperature10, 2u, 0xffu);
+    dst_p[19] |= pack_right_shift_u16(src_p->cell_temperature10, 10u, 0x01u);
+    dst_p[19] |= pack_left_shift_u16(src_p->cell_temperature11, 1u, 0xfeu);
+    dst_p[20] |= pack_right_shift_u16(src_p->cell_temperature11, 7u, 0x0fu);
+    dst_p[20] |= pack_left_shift_u16(src_p->cell_temperature12, 4u, 0xf0u);
+    dst_p[21] |= pack_right_shift_u16(src_p->cell_temperature12, 4u, 0x7fu);
+    dst_p[21] |= pack_left_shift_u16(src_p->cell_temperature13, 7u, 0x80u);
+    dst_p[22] |= pack_right_shift_u16(src_p->cell_temperature13, 1u, 0xffu);
+    dst_p[23] |= pack_right_shift_u16(src_p->cell_temperature13, 9u, 0x03u);
+    dst_p[23] |= pack_left_shift_u16(src_p->cell_temperature14, 2u, 0xfcu);
+    dst_p[24] |= pack_right_shift_u16(src_p->cell_temperature14, 6u, 0x1fu);
+    dst_p[24] |= pack_left_shift_u16(src_p->cell_temperature15, 5u, 0xe0u);
+    dst_p[25] |= pack_right_shift_u16(src_p->cell_temperature15, 3u, 0xffu);
+    dst_p[26] |= pack_left_shift_u16(src_p->cell_temperature16, 0u, 0xffu);
+    dst_p[27] |= pack_right_shift_u16(src_p->cell_temperature16, 8u, 0x07u);
+    dst_p[27] |= pack_left_shift_u16(src_p->cell_temperature17, 3u, 0xf8u);
+    dst_p[28] |= pack_right_shift_u16(src_p->cell_temperature17, 5u, 0x3fu);
+    dst_p[28] |= pack_left_shift_u16(src_p->cell_temperature18, 6u, 0xc0u);
+    dst_p[29] |= pack_right_shift_u16(src_p->cell_temperature18, 2u, 0xffu);
+    dst_p[30] |= pack_right_shift_u16(src_p->cell_temperature18, 10u, 0x01u);
+    dst_p[30] |= pack_left_shift_u16(src_p->cell_temperature19, 1u, 0xfeu);
+    dst_p[31] |= pack_right_shift_u16(src_p->cell_temperature19, 7u, 0x0fu);
+    dst_p[31] |= pack_left_shift_u16(src_p->cell_temperature20, 4u, 0xf0u);
+    dst_p[32] |= pack_right_shift_u16(src_p->cell_temperature20, 4u, 0x7fu);
+    dst_p[32] |= pack_left_shift_u16(src_p->cell_temperature21, 7u, 0x80u);
+    dst_p[33] |= pack_right_shift_u16(src_p->cell_temperature21, 1u, 0xffu);
+    dst_p[34] |= pack_right_shift_u16(src_p->cell_temperature21, 9u, 0x03u);
+    dst_p[34] |= pack_left_shift_u16(src_p->cell_temperature22, 2u, 0xfcu);
+    dst_p[35] |= pack_right_shift_u16(src_p->cell_temperature22, 6u, 0x1fu);
+    dst_p[35] |= pack_left_shift_u16(src_p->cell_temperature23, 5u, 0xe0u);
+    dst_p[36] |= pack_right_shift_u16(src_p->cell_temperature23, 3u, 0xffu);
+    dst_p[37] |= pack_left_shift_u16(src_p->cell_temperature24, 0u, 0xffu);
+    dst_p[38] |= pack_right_shift_u16(src_p->cell_temperature24, 8u, 0x07u);
+    dst_p[38] |= pack_left_shift_u16(src_p->cell_temperature25, 3u, 0xf8u);
+    dst_p[39] |= pack_right_shift_u16(src_p->cell_temperature25, 5u, 0x3fu);
+    dst_p[39] |= pack_left_shift_u16(src_p->cell_temperature26, 6u, 0xc0u);
+    dst_p[40] |= pack_right_shift_u16(src_p->cell_temperature26, 2u, 0xffu);
+    dst_p[41] |= pack_right_shift_u16(src_p->cell_temperature26, 10u, 0x01u);
+    dst_p[41] |= pack_left_shift_u16(src_p->cell_temperature27, 1u, 0xfeu);
+    dst_p[42] |= pack_right_shift_u16(src_p->cell_temperature27, 7u, 0x0fu);
+    dst_p[42] |= pack_left_shift_u16(src_p->cell_temperature28, 4u, 0xf0u);
+    dst_p[43] |= pack_right_shift_u16(src_p->cell_temperature28, 4u, 0x7fu);
+    dst_p[43] |= pack_left_shift_u16(src_p->cell_temperature29, 7u, 0x80u);
+    dst_p[44] |= pack_right_shift_u16(src_p->cell_temperature29, 1u, 0xffu);
+    dst_p[45] |= pack_right_shift_u16(src_p->cell_temperature29, 9u, 0x03u);
+    dst_p[45] |= pack_left_shift_u16(src_p->cell_temperature30, 2u, 0xfcu);
+    dst_p[46] |= pack_right_shift_u16(src_p->cell_temperature30, 6u, 0x1fu);
+    dst_p[46] |= pack_left_shift_u16(src_p->cell_temperature31, 5u, 0xe0u);
+    dst_p[47] |= pack_right_shift_u16(src_p->cell_temperature31, 3u, 0xffu);
 
-    return (64);
+    return (48);
 }
 
 int car_can_raw_bps_fault_temperature_snapshot_unpack(
@@ -2790,7 +2694,7 @@ int car_can_raw_bps_fault_temperature_snapshot_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 64u) {
+    if (size < 48u) {
         return (-EINVAL);
     }
 
@@ -2798,80 +2702,78 @@ int car_can_raw_bps_fault_temperature_snapshot_unpack(
     dst_p->sample_valid_mask |= unpack_left_shift_u32(src_p[1], 8u, 0xffu);
     dst_p->sample_valid_mask |= unpack_left_shift_u32(src_p[2], 16u, 0xffu);
     dst_p->sample_valid_mask |= unpack_left_shift_u32(src_p[3], 24u, 0xffu);
-    dst_p->cell_temperature01 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    dst_p->cell_temperature01 |= unpack_left_shift_u16(src_p[5], 8u, 0x07u);
-    dst_p->cell_temperature02 = unpack_right_shift_u16(src_p[5], 3u, 0xf8u);
-    dst_p->cell_temperature02 |= unpack_left_shift_u16(src_p[6], 5u, 0x3fu);
-    dst_p->cell_temperature03 = unpack_right_shift_u16(src_p[6], 6u, 0xc0u);
-    dst_p->cell_temperature03 |= unpack_left_shift_u16(src_p[7], 2u, 0xffu);
-    dst_p->cell_temperature03 |= unpack_left_shift_u16(src_p[8], 10u, 0x01u);
-    dst_p->cell_temperature04 = unpack_right_shift_u16(src_p[8], 1u, 0xfeu);
-    dst_p->cell_temperature04 |= unpack_left_shift_u16(src_p[9], 7u, 0x0fu);
-    dst_p->cell_temperature05 = unpack_right_shift_u16(src_p[9], 4u, 0xf0u);
-    dst_p->cell_temperature05 |= unpack_left_shift_u16(src_p[10], 4u, 0x7fu);
-    dst_p->cell_temperature06 = unpack_right_shift_u16(src_p[10], 7u, 0x80u);
-    dst_p->cell_temperature06 |= unpack_left_shift_u16(src_p[11], 1u, 0xffu);
-    dst_p->cell_temperature06 |= unpack_left_shift_u16(src_p[12], 9u, 0x03u);
-    dst_p->cell_temperature07 = unpack_right_shift_u16(src_p[12], 2u, 0xfcu);
-    dst_p->cell_temperature07 |= unpack_left_shift_u16(src_p[13], 6u, 0x1fu);
-    dst_p->cell_temperature08 = unpack_right_shift_u16(src_p[13], 5u, 0xe0u);
-    dst_p->cell_temperature08 |= unpack_left_shift_u16(src_p[14], 3u, 0xffu);
-    dst_p->cell_temperature09 = unpack_right_shift_u16(src_p[15], 0u, 0xffu);
-    dst_p->cell_temperature09 |= unpack_left_shift_u16(src_p[16], 8u, 0x07u);
-    dst_p->cell_temperature10 = unpack_right_shift_u16(src_p[16], 3u, 0xf8u);
-    dst_p->cell_temperature10 |= unpack_left_shift_u16(src_p[17], 5u, 0x3fu);
-    dst_p->cell_temperature11 = unpack_right_shift_u16(src_p[17], 6u, 0xc0u);
-    dst_p->cell_temperature11 |= unpack_left_shift_u16(src_p[18], 2u, 0xffu);
-    dst_p->cell_temperature11 |= unpack_left_shift_u16(src_p[19], 10u, 0x01u);
-    dst_p->cell_temperature12 = unpack_right_shift_u16(src_p[19], 1u, 0xfeu);
-    dst_p->cell_temperature12 |= unpack_left_shift_u16(src_p[20], 7u, 0x0fu);
-    dst_p->cell_temperature13 = unpack_right_shift_u16(src_p[20], 4u, 0xf0u);
-    dst_p->cell_temperature13 |= unpack_left_shift_u16(src_p[21], 4u, 0x7fu);
-    dst_p->cell_temperature14 = unpack_right_shift_u16(src_p[21], 7u, 0x80u);
-    dst_p->cell_temperature14 |= unpack_left_shift_u16(src_p[22], 1u, 0xffu);
-    dst_p->cell_temperature14 |= unpack_left_shift_u16(src_p[23], 9u, 0x03u);
-    dst_p->cell_temperature15 = unpack_right_shift_u16(src_p[23], 2u, 0xfcu);
-    dst_p->cell_temperature15 |= unpack_left_shift_u16(src_p[24], 6u, 0x1fu);
-    dst_p->cell_temperature16 = unpack_right_shift_u16(src_p[24], 5u, 0xe0u);
-    dst_p->cell_temperature16 |= unpack_left_shift_u16(src_p[25], 3u, 0xffu);
-    dst_p->cell_temperature17 = unpack_right_shift_u16(src_p[26], 0u, 0xffu);
-    dst_p->cell_temperature17 |= unpack_left_shift_u16(src_p[27], 8u, 0x07u);
-    dst_p->cell_temperature18 = unpack_right_shift_u16(src_p[27], 3u, 0xf8u);
-    dst_p->cell_temperature18 |= unpack_left_shift_u16(src_p[28], 5u, 0x3fu);
-    dst_p->cell_temperature19 = unpack_right_shift_u16(src_p[28], 6u, 0xc0u);
-    dst_p->cell_temperature19 |= unpack_left_shift_u16(src_p[29], 2u, 0xffu);
-    dst_p->cell_temperature19 |= unpack_left_shift_u16(src_p[30], 10u, 0x01u);
-    dst_p->cell_temperature20 = unpack_right_shift_u16(src_p[30], 1u, 0xfeu);
-    dst_p->cell_temperature20 |= unpack_left_shift_u16(src_p[31], 7u, 0x0fu);
-    dst_p->cell_temperature21 = unpack_right_shift_u16(src_p[31], 4u, 0xf0u);
-    dst_p->cell_temperature21 |= unpack_left_shift_u16(src_p[32], 4u, 0x7fu);
-    dst_p->cell_temperature22 = unpack_right_shift_u16(src_p[32], 7u, 0x80u);
-    dst_p->cell_temperature22 |= unpack_left_shift_u16(src_p[33], 1u, 0xffu);
-    dst_p->cell_temperature22 |= unpack_left_shift_u16(src_p[34], 9u, 0x03u);
-    dst_p->cell_temperature23 = unpack_right_shift_u16(src_p[34], 2u, 0xfcu);
-    dst_p->cell_temperature23 |= unpack_left_shift_u16(src_p[35], 6u, 0x1fu);
-    dst_p->cell_temperature24 = unpack_right_shift_u16(src_p[35], 5u, 0xe0u);
-    dst_p->cell_temperature24 |= unpack_left_shift_u16(src_p[36], 3u, 0xffu);
-    dst_p->cell_temperature25 = unpack_right_shift_u16(src_p[37], 0u, 0xffu);
-    dst_p->cell_temperature25 |= unpack_left_shift_u16(src_p[38], 8u, 0x07u);
-    dst_p->cell_temperature26 = unpack_right_shift_u16(src_p[38], 3u, 0xf8u);
-    dst_p->cell_temperature26 |= unpack_left_shift_u16(src_p[39], 5u, 0x3fu);
-    dst_p->cell_temperature27 = unpack_right_shift_u16(src_p[39], 6u, 0xc0u);
-    dst_p->cell_temperature27 |= unpack_left_shift_u16(src_p[40], 2u, 0xffu);
-    dst_p->cell_temperature27 |= unpack_left_shift_u16(src_p[41], 10u, 0x01u);
-    dst_p->cell_temperature28 = unpack_right_shift_u16(src_p[41], 1u, 0xfeu);
-    dst_p->cell_temperature28 |= unpack_left_shift_u16(src_p[42], 7u, 0x0fu);
-    dst_p->cell_temperature29 = unpack_right_shift_u16(src_p[42], 4u, 0xf0u);
-    dst_p->cell_temperature29 |= unpack_left_shift_u16(src_p[43], 4u, 0x7fu);
-    dst_p->cell_temperature30 = unpack_right_shift_u16(src_p[43], 7u, 0x80u);
-    dst_p->cell_temperature30 |= unpack_left_shift_u16(src_p[44], 1u, 0xffu);
-    dst_p->cell_temperature30 |= unpack_left_shift_u16(src_p[45], 9u, 0x03u);
-    dst_p->cell_temperature31 = unpack_right_shift_u16(src_p[45], 2u, 0xfcu);
-    dst_p->cell_temperature31 |= unpack_left_shift_u16(src_p[46], 6u, 0x1fu);
-    dst_p->cell_temperature32 = unpack_right_shift_u16(src_p[46], 5u, 0xe0u);
-    dst_p->cell_temperature32 |= unpack_left_shift_u16(src_p[47], 3u, 0xffu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[48], 0u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[49], 8u, 0xffu);
+    dst_p->cell_temperature00 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
+    dst_p->cell_temperature00 |= unpack_left_shift_u16(src_p[5], 8u, 0x07u);
+    dst_p->cell_temperature01 = unpack_right_shift_u16(src_p[5], 3u, 0xf8u);
+    dst_p->cell_temperature01 |= unpack_left_shift_u16(src_p[6], 5u, 0x3fu);
+    dst_p->cell_temperature02 = unpack_right_shift_u16(src_p[6], 6u, 0xc0u);
+    dst_p->cell_temperature02 |= unpack_left_shift_u16(src_p[7], 2u, 0xffu);
+    dst_p->cell_temperature02 |= unpack_left_shift_u16(src_p[8], 10u, 0x01u);
+    dst_p->cell_temperature03 = unpack_right_shift_u16(src_p[8], 1u, 0xfeu);
+    dst_p->cell_temperature03 |= unpack_left_shift_u16(src_p[9], 7u, 0x0fu);
+    dst_p->cell_temperature04 = unpack_right_shift_u16(src_p[9], 4u, 0xf0u);
+    dst_p->cell_temperature04 |= unpack_left_shift_u16(src_p[10], 4u, 0x7fu);
+    dst_p->cell_temperature05 = unpack_right_shift_u16(src_p[10], 7u, 0x80u);
+    dst_p->cell_temperature05 |= unpack_left_shift_u16(src_p[11], 1u, 0xffu);
+    dst_p->cell_temperature05 |= unpack_left_shift_u16(src_p[12], 9u, 0x03u);
+    dst_p->cell_temperature06 = unpack_right_shift_u16(src_p[12], 2u, 0xfcu);
+    dst_p->cell_temperature06 |= unpack_left_shift_u16(src_p[13], 6u, 0x1fu);
+    dst_p->cell_temperature07 = unpack_right_shift_u16(src_p[13], 5u, 0xe0u);
+    dst_p->cell_temperature07 |= unpack_left_shift_u16(src_p[14], 3u, 0xffu);
+    dst_p->cell_temperature08 = unpack_right_shift_u16(src_p[15], 0u, 0xffu);
+    dst_p->cell_temperature08 |= unpack_left_shift_u16(src_p[16], 8u, 0x07u);
+    dst_p->cell_temperature09 = unpack_right_shift_u16(src_p[16], 3u, 0xf8u);
+    dst_p->cell_temperature09 |= unpack_left_shift_u16(src_p[17], 5u, 0x3fu);
+    dst_p->cell_temperature10 = unpack_right_shift_u16(src_p[17], 6u, 0xc0u);
+    dst_p->cell_temperature10 |= unpack_left_shift_u16(src_p[18], 2u, 0xffu);
+    dst_p->cell_temperature10 |= unpack_left_shift_u16(src_p[19], 10u, 0x01u);
+    dst_p->cell_temperature11 = unpack_right_shift_u16(src_p[19], 1u, 0xfeu);
+    dst_p->cell_temperature11 |= unpack_left_shift_u16(src_p[20], 7u, 0x0fu);
+    dst_p->cell_temperature12 = unpack_right_shift_u16(src_p[20], 4u, 0xf0u);
+    dst_p->cell_temperature12 |= unpack_left_shift_u16(src_p[21], 4u, 0x7fu);
+    dst_p->cell_temperature13 = unpack_right_shift_u16(src_p[21], 7u, 0x80u);
+    dst_p->cell_temperature13 |= unpack_left_shift_u16(src_p[22], 1u, 0xffu);
+    dst_p->cell_temperature13 |= unpack_left_shift_u16(src_p[23], 9u, 0x03u);
+    dst_p->cell_temperature14 = unpack_right_shift_u16(src_p[23], 2u, 0xfcu);
+    dst_p->cell_temperature14 |= unpack_left_shift_u16(src_p[24], 6u, 0x1fu);
+    dst_p->cell_temperature15 = unpack_right_shift_u16(src_p[24], 5u, 0xe0u);
+    dst_p->cell_temperature15 |= unpack_left_shift_u16(src_p[25], 3u, 0xffu);
+    dst_p->cell_temperature16 = unpack_right_shift_u16(src_p[26], 0u, 0xffu);
+    dst_p->cell_temperature16 |= unpack_left_shift_u16(src_p[27], 8u, 0x07u);
+    dst_p->cell_temperature17 = unpack_right_shift_u16(src_p[27], 3u, 0xf8u);
+    dst_p->cell_temperature17 |= unpack_left_shift_u16(src_p[28], 5u, 0x3fu);
+    dst_p->cell_temperature18 = unpack_right_shift_u16(src_p[28], 6u, 0xc0u);
+    dst_p->cell_temperature18 |= unpack_left_shift_u16(src_p[29], 2u, 0xffu);
+    dst_p->cell_temperature18 |= unpack_left_shift_u16(src_p[30], 10u, 0x01u);
+    dst_p->cell_temperature19 = unpack_right_shift_u16(src_p[30], 1u, 0xfeu);
+    dst_p->cell_temperature19 |= unpack_left_shift_u16(src_p[31], 7u, 0x0fu);
+    dst_p->cell_temperature20 = unpack_right_shift_u16(src_p[31], 4u, 0xf0u);
+    dst_p->cell_temperature20 |= unpack_left_shift_u16(src_p[32], 4u, 0x7fu);
+    dst_p->cell_temperature21 = unpack_right_shift_u16(src_p[32], 7u, 0x80u);
+    dst_p->cell_temperature21 |= unpack_left_shift_u16(src_p[33], 1u, 0xffu);
+    dst_p->cell_temperature21 |= unpack_left_shift_u16(src_p[34], 9u, 0x03u);
+    dst_p->cell_temperature22 = unpack_right_shift_u16(src_p[34], 2u, 0xfcu);
+    dst_p->cell_temperature22 |= unpack_left_shift_u16(src_p[35], 6u, 0x1fu);
+    dst_p->cell_temperature23 = unpack_right_shift_u16(src_p[35], 5u, 0xe0u);
+    dst_p->cell_temperature23 |= unpack_left_shift_u16(src_p[36], 3u, 0xffu);
+    dst_p->cell_temperature24 = unpack_right_shift_u16(src_p[37], 0u, 0xffu);
+    dst_p->cell_temperature24 |= unpack_left_shift_u16(src_p[38], 8u, 0x07u);
+    dst_p->cell_temperature25 = unpack_right_shift_u16(src_p[38], 3u, 0xf8u);
+    dst_p->cell_temperature25 |= unpack_left_shift_u16(src_p[39], 5u, 0x3fu);
+    dst_p->cell_temperature26 = unpack_right_shift_u16(src_p[39], 6u, 0xc0u);
+    dst_p->cell_temperature26 |= unpack_left_shift_u16(src_p[40], 2u, 0xffu);
+    dst_p->cell_temperature26 |= unpack_left_shift_u16(src_p[41], 10u, 0x01u);
+    dst_p->cell_temperature27 = unpack_right_shift_u16(src_p[41], 1u, 0xfeu);
+    dst_p->cell_temperature27 |= unpack_left_shift_u16(src_p[42], 7u, 0x0fu);
+    dst_p->cell_temperature28 = unpack_right_shift_u16(src_p[42], 4u, 0xf0u);
+    dst_p->cell_temperature28 |= unpack_left_shift_u16(src_p[43], 4u, 0x7fu);
+    dst_p->cell_temperature29 = unpack_right_shift_u16(src_p[43], 7u, 0x80u);
+    dst_p->cell_temperature29 |= unpack_left_shift_u16(src_p[44], 1u, 0xffu);
+    dst_p->cell_temperature29 |= unpack_left_shift_u16(src_p[45], 9u, 0x03u);
+    dst_p->cell_temperature30 = unpack_right_shift_u16(src_p[45], 2u, 0xfcu);
+    dst_p->cell_temperature30 |= unpack_left_shift_u16(src_p[46], 6u, 0x1fu);
+    dst_p->cell_temperature31 = unpack_right_shift_u16(src_p[46], 5u, 0xe0u);
+    dst_p->cell_temperature31 |= unpack_left_shift_u16(src_p[47], 3u, 0xffu);
 
     return (0);
 }
@@ -2890,6 +2792,11 @@ bool car_can_raw_bps_fault_temperature_snapshot_sample_valid_mask_is_in_range(ui
     (void)value;
 
     return (true);
+}
+
+bool car_can_raw_bps_fault_temperature_snapshot_cell_temperature00_is_in_range(uint16_t value)
+{
+    return (value <= 2047u);
 }
 
 bool car_can_raw_bps_fault_temperature_snapshot_cell_temperature01_is_in_range(uint16_t value)
@@ -3047,28 +2954,16 @@ bool car_can_raw_bps_fault_temperature_snapshot_cell_temperature31_is_in_range(u
     return (value <= 2047u);
 }
 
-bool car_can_raw_bps_fault_temperature_snapshot_cell_temperature32_is_in_range(uint16_t value)
-{
-    return (value <= 2047u);
-}
-
-bool car_can_raw_bps_fault_temperature_snapshot_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_mppt_interface_status_pack(
     uint8_t *dst_p,
     const struct car_can_raw_mppt_interface_status_t *src_p,
     size_t size)
 {
-    if (size < 5u) {
+    if (size < 3u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 5);
+    memset(&dst_p[0], 0, 3);
 
     dst_p[0] |= pack_left_shift_u8(src_p->warning_bps_watchdog, 0u, 0x01u);
     dst_p[0] |= pack_left_shift_u8(src_p->warning_mppta_watchdog, 1u, 0x02u);
@@ -3079,11 +2974,8 @@ int car_can_raw_mppt_interface_status_pack(
     dst_p[0] |= pack_left_shift_u8(src_p->sweeping_active, 7u, 0x80u);
     dst_p[1] |= pack_left_shift_u16(src_p->fan_tach, 0u, 0xffu);
     dst_p[2] |= pack_right_shift_u16(src_p->fan_tach, 8u, 0x0fu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
-    dst_p[4] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
 
-    return (5);
+    return (3);
 }
 
 int car_can_raw_mppt_interface_status_unpack(
@@ -3091,7 +2983,7 @@ int car_can_raw_mppt_interface_status_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 5u) {
+    if (size < 3u) {
         return (-EINVAL);
     }
 
@@ -3104,9 +2996,6 @@ int car_can_raw_mppt_interface_status_unpack(
     dst_p->sweeping_active = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
     dst_p->fan_tach = unpack_right_shift_u16(src_p[1], 0u, 0xffu);
     dst_p->fan_tach |= unpack_left_shift_u16(src_p[2], 8u, 0x0fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[2], 4u, 0xf0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[3], 4u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[4], 12u, 0x0fu);
 
     return (0);
 }
@@ -3160,23 +3049,16 @@ bool car_can_raw_mppt_interface_status_fan_tach_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
-bool car_can_raw_mppt_interface_status_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_mika_status_pack(
     uint8_t *dst_p,
     const struct car_can_raw_mika_status_t *src_p,
     size_t size)
 {
-    if (size < 7u) {
+    if (size < 5u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 7);
+    memset(&dst_p[0], 0, 5);
 
     dst_p[0] |= pack_left_shift_u8(src_p->warning_temperature, 0u, 0x01u);
     dst_p[0] |= pack_left_shift_u8(src_p->warning_over_temperature, 1u, 0x02u);
@@ -3192,11 +3074,8 @@ int car_can_raw_mika_status_pack(
     dst_p[2] |= pack_left_shift_u8(src_p->so_c_temperature, 0u, 0xffu);
     dst_p[3] |= pack_left_shift_u16(src_p->cm5_fan_tach, 0u, 0xffu);
     dst_p[4] |= pack_right_shift_u16(src_p->cm5_fan_tach, 8u, 0x0fu);
-    dst_p[4] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
-    dst_p[5] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
-    dst_p[6] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
 
-    return (7);
+    return (5);
 }
 
 int car_can_raw_mika_status_unpack(
@@ -3204,7 +3083,7 @@ int car_can_raw_mika_status_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 7u) {
+    if (size < 5u) {
         return (-EINVAL);
     }
 
@@ -3222,9 +3101,6 @@ int car_can_raw_mika_status_unpack(
     dst_p->so_c_temperature = unpack_right_shift_u8(src_p[2], 0u, 0xffu);
     dst_p->cm5_fan_tach = unpack_right_shift_u16(src_p[3], 0u, 0xffu);
     dst_p->cm5_fan_tach |= unpack_left_shift_u16(src_p[4], 8u, 0x0fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[4], 4u, 0xf0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[5], 4u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[6], 12u, 0x0fu);
 
     return (0);
 }
@@ -3303,13 +3179,6 @@ bool car_can_raw_mika_status_so_c_temperature_is_in_range(uint8_t value)
 bool car_can_raw_mika_status_cm5_fan_tach_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
-}
-
-bool car_can_raw_mika_status_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
 }
 
 int car_can_raw_lvc_status_pack(
@@ -3438,11 +3307,11 @@ int car_can_raw_lvc_current_data_pack(
     const struct car_can_raw_lvc_current_data_t *src_p,
     size_t size)
 {
-    if (size < 12u) {
+    if (size < 7u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 12);
+    memset(&dst_p[0], 0, 7);
 
     dst_p[0] |= pack_left_shift_u16(src_p->dcdc_current, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->dcdc_current, 8u, 0x3fu);
@@ -3454,11 +3323,8 @@ int car_can_raw_lvc_current_data_pack(
     dst_p[5] |= pack_right_shift_u16(src_p->total_output_current, 12u, 0x03u);
     dst_p[5] |= pack_left_shift_u16(src_p->bpslv_current, 2u, 0xfcu);
     dst_p[6] |= pack_right_shift_u16(src_p->bpslv_current, 6u, 0x3fu);
-    dst_p[6] |= pack_left_shift_u16(src_p->sample_age_ms, 6u, 0xc0u);
-    dst_p[7] |= pack_right_shift_u16(src_p->sample_age_ms, 2u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->sample_age_ms, 10u, 0x3fu);
 
-    return (12);
+    return (7);
 }
 
 int car_can_raw_lvc_current_data_unpack(
@@ -3466,7 +3332,7 @@ int car_can_raw_lvc_current_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 12u) {
+    if (size < 7u) {
         return (-EINVAL);
     }
 
@@ -3480,9 +3346,6 @@ int car_can_raw_lvc_current_data_unpack(
     dst_p->total_output_current |= unpack_left_shift_u16(src_p[5], 12u, 0x03u);
     dst_p->bpslv_current = unpack_right_shift_u16(src_p[5], 2u, 0xfcu);
     dst_p->bpslv_current |= unpack_left_shift_u16(src_p[6], 6u, 0x3fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[6], 6u, 0xc0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[7], 2u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[8], 10u, 0x3fu);
 
     return (0);
 }
@@ -3516,23 +3379,16 @@ bool car_can_raw_lvc_current_data_bpslv_current_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
-bool car_can_raw_lvc_current_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_lvc_voltage_data_pack(
     uint8_t *dst_p,
     const struct car_can_raw_lvc_voltage_data_t *src_p,
     size_t size)
 {
-    if (size < 7u) {
+    if (size < 5u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 7);
+    memset(&dst_p[0], 0, 5);
 
     dst_p[0] |= pack_left_shift_u16(src_p->dcdc_voltage, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->dcdc_voltage, 8u, 0x03u);
@@ -3542,10 +3398,8 @@ int car_can_raw_lvc_voltage_data_pack(
     dst_p[3] |= pack_right_shift_u16(src_p->power_supply_voltage, 4u, 0x3fu);
     dst_p[3] |= pack_left_shift_u16(src_p->bpslv_voltage, 6u, 0xc0u);
     dst_p[4] |= pack_right_shift_u16(src_p->bpslv_voltage, 2u, 0xffu);
-    dst_p[5] |= pack_left_shift_u16(src_p->sample_age_ms, 0u, 0xffu);
-    dst_p[6] |= pack_right_shift_u16(src_p->sample_age_ms, 8u, 0xffu);
 
-    return (7);
+    return (5);
 }
 
 int car_can_raw_lvc_voltage_data_unpack(
@@ -3553,7 +3407,7 @@ int car_can_raw_lvc_voltage_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 7u) {
+    if (size < 5u) {
         return (-EINVAL);
     }
 
@@ -3565,8 +3419,6 @@ int car_can_raw_lvc_voltage_data_unpack(
     dst_p->power_supply_voltage |= unpack_left_shift_u16(src_p[3], 4u, 0x3fu);
     dst_p->bpslv_voltage = unpack_right_shift_u16(src_p[3], 6u, 0xc0u);
     dst_p->bpslv_voltage |= unpack_left_shift_u16(src_p[4], 2u, 0xffu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[5], 0u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[6], 8u, 0xffu);
 
     return (0);
 }
@@ -3600,31 +3452,21 @@ bool car_can_raw_lvc_voltage_data_bpslv_voltage_is_in_range(uint16_t value)
     return (value <= 1023u);
 }
 
-bool car_can_raw_lvc_voltage_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_lvc_temperature_data_pack(
     uint8_t *dst_p,
     const struct car_can_raw_lvc_temperature_data_t *src_p,
     size_t size)
 {
-    if (size < 4u) {
+    if (size < 2u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 4);
+    memset(&dst_p[0], 0, 2);
 
     dst_p[0] |= pack_left_shift_u16(src_p->bpsfet_temperature, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->bpsfet_temperature, 8u, 0x1fu);
-    dst_p[1] |= pack_left_shift_u16(src_p->sample_age_ms, 5u, 0xe0u);
-    dst_p[2] |= pack_right_shift_u16(src_p->sample_age_ms, 3u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_age_ms, 11u, 0x1fu);
 
-    return (4);
+    return (2);
 }
 
 int car_can_raw_lvc_temperature_data_unpack(
@@ -3632,15 +3474,12 @@ int car_can_raw_lvc_temperature_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 4u) {
+    if (size < 2u) {
         return (-EINVAL);
     }
 
     dst_p->bpsfet_temperature = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->bpsfet_temperature |= unpack_left_shift_u16(src_p[1], 8u, 0x1fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[1], 5u, 0xe0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[2], 3u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[3], 11u, 0x1fu);
 
     return (0);
 }
@@ -3659,23 +3498,16 @@ bool car_can_raw_lvc_temperature_data_bpsfet_temperature_is_in_range(uint16_t va
     return (value <= 8191u);
 }
 
-bool car_can_raw_lvc_temperature_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_lvc_over_current_snapshot_pack(
     uint8_t *dst_p,
     const struct car_can_raw_lvc_over_current_snapshot_t *src_p,
     size_t size)
 {
-    if (size < 12u) {
+    if (size < 7u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 12);
+    memset(&dst_p[0], 0, 7);
 
     dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current, 0u, 0x01u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_i2_t, 1u, 0x02u);
@@ -3688,11 +3520,8 @@ int car_can_raw_lvc_over_current_snapshot_pack(
     dst_p[4] |= pack_left_shift_u16(src_p->trip_current, 3u, 0xf8u);
     dst_p[5] |= pack_right_shift_u16(src_p->trip_current, 5u, 0xffu);
     dst_p[6] |= pack_right_shift_u16(src_p->trip_current, 13u, 0x07u);
-    dst_p[6] |= pack_left_shift_u16(src_p->sample_age_ms, 3u, 0xf8u);
-    dst_p[7] |= pack_right_shift_u16(src_p->sample_age_ms, 5u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->sample_age_ms, 13u, 0x07u);
 
-    return (12);
+    return (7);
 }
 
 int car_can_raw_lvc_over_current_snapshot_unpack(
@@ -3700,7 +3529,7 @@ int car_can_raw_lvc_over_current_snapshot_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 12u) {
+    if (size < 7u) {
         return (-EINVAL);
     }
 
@@ -3715,9 +3544,6 @@ int car_can_raw_lvc_over_current_snapshot_unpack(
     dst_p->trip_current = unpack_right_shift_u16(src_p[4], 3u, 0xf8u);
     dst_p->trip_current |= unpack_left_shift_u16(src_p[5], 5u, 0xffu);
     dst_p->trip_current |= unpack_left_shift_u16(src_p[6], 13u, 0x07u);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[6], 3u, 0xf8u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[7], 5u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[8], 13u, 0x07u);
 
     return (0);
 }
@@ -3760,13 +3586,6 @@ bool car_can_raw_lvc_over_current_snapshot_trip_current_is_in_range(uint16_t val
     return (true);
 }
 
-bool car_can_raw_lvc_over_current_snapshot_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_pdu_status_pack(
     uint8_t *dst_p,
     const struct car_can_raw_pdu_status_t *src_p,
@@ -3778,109 +3597,109 @@ int car_can_raw_pdu_status_pack(
 
     memset(&dst_p[0], 0, 16);
 
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_over_current1, 0u, 0x01u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_i2_t1, 1u, 0x02u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_over_temperature1, 2u, 0x04u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_open_load1, 3u, 0x08u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery1, 4u, 0x10u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_over_current2, 5u, 0x20u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_i2_t2, 6u, 0x40u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_over_temperature2, 7u, 0x80u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_open_load2, 0u, 0x01u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery2, 1u, 0x02u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_over_current3, 2u, 0x04u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_i2_t3, 3u, 0x08u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_over_temperature3, 4u, 0x10u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_open_load3, 5u, 0x20u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery3, 6u, 0x40u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_over_current4, 7u, 0x80u);
-    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_i2_t4, 0u, 0x01u);
-    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_over_temperature4, 1u, 0x02u);
-    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_open_load4, 2u, 0x04u);
-    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery4, 3u, 0x08u);
-    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_over_current5, 4u, 0x10u);
-    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_i2_t5, 5u, 0x20u);
-    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_over_temperature5, 6u, 0x40u);
-    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_open_load5, 7u, 0x80u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery5, 0u, 0x01u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_over_current6, 1u, 0x02u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_i2_t6, 2u, 0x04u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_over_temperature6, 3u, 0x08u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_open_load6, 4u, 0x10u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery6, 5u, 0x20u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_over_current7, 6u, 0x40u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_i2_t7, 7u, 0x80u);
-    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_over_temperature7, 0u, 0x01u);
-    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_open_load7, 1u, 0x02u);
-    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery7, 2u, 0x04u);
-    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_over_current8, 3u, 0x08u);
-    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_i2_t8, 4u, 0x10u);
-    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_over_temperature8, 5u, 0x20u);
-    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_open_load8, 6u, 0x40u);
-    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery8, 7u, 0x80u);
-    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_over_current9, 0u, 0x01u);
-    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_i2_t9, 1u, 0x02u);
-    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_over_temperature9, 2u, 0x04u);
-    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_open_load9, 3u, 0x08u);
-    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery9, 4u, 0x10u);
-    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_over_current10, 5u, 0x20u);
-    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_i2_t10, 6u, 0x40u);
-    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_over_temperature10, 7u, 0x80u);
-    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_open_load10, 0u, 0x01u);
-    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery10, 1u, 0x02u);
-    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_over_current11, 2u, 0x04u);
-    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_i2_t11, 3u, 0x08u);
-    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_over_temperature11, 4u, 0x10u);
-    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_open_load11, 5u, 0x20u);
-    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery11, 6u, 0x40u);
-    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_over_current12, 7u, 0x80u);
-    dst_p[7] |= pack_left_shift_u8(src_p->fault_channel_i2_t12, 0u, 0x01u);
-    dst_p[7] |= pack_left_shift_u8(src_p->fault_channel_over_temperature12, 1u, 0x02u);
-    dst_p[7] |= pack_left_shift_u8(src_p->fault_channel_open_load12, 2u, 0x04u);
-    dst_p[7] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery12, 3u, 0x08u);
-    dst_p[7] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage1, 4u, 0x10u);
-    dst_p[7] |= pack_left_shift_u8(src_p->fault_chip_spi_error1, 5u, 0x20u);
-    dst_p[7] |= pack_left_shift_u8(src_p->fault_chip_watchdog1, 6u, 0x40u);
-    dst_p[7] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage2, 7u, 0x80u);
-    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_spi_error2, 0u, 0x01u);
-    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_watchdog2, 1u, 0x02u);
-    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage3, 2u, 0x04u);
-    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_spi_error3, 3u, 0x08u);
-    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_watchdog3, 4u, 0x10u);
-    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage4, 5u, 0x20u);
-    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_spi_error4, 6u, 0x40u);
-    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_watchdog4, 7u, 0x80u);
-    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage5, 0u, 0x01u);
-    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_spi_error5, 1u, 0x02u);
-    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_watchdog5, 2u, 0x04u);
-    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage6, 3u, 0x08u);
-    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_spi_error6, 4u, 0x10u);
-    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_watchdog6, 5u, 0x20u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_over_current0, 0u, 0x01u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_i2_t0, 1u, 0x02u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_over_temperature0, 2u, 0x04u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_open_load0, 3u, 0x08u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery0, 4u, 0x10u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_over_current1, 5u, 0x20u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_i2_t1, 6u, 0x40u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_channel_over_temperature1, 7u, 0x80u);
+    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_open_load1, 0u, 0x01u);
+    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery1, 1u, 0x02u);
+    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_over_current2, 2u, 0x04u);
+    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_i2_t2, 3u, 0x08u);
+    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_over_temperature2, 4u, 0x10u);
+    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_open_load2, 5u, 0x20u);
+    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery2, 6u, 0x40u);
+    dst_p[1] |= pack_left_shift_u8(src_p->fault_channel_over_current3, 7u, 0x80u);
+    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_i2_t3, 0u, 0x01u);
+    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_over_temperature3, 1u, 0x02u);
+    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_open_load3, 2u, 0x04u);
+    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery3, 3u, 0x08u);
+    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_over_current4, 4u, 0x10u);
+    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_i2_t4, 5u, 0x20u);
+    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_over_temperature4, 6u, 0x40u);
+    dst_p[2] |= pack_left_shift_u8(src_p->fault_channel_open_load4, 7u, 0x80u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery4, 0u, 0x01u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_over_current5, 1u, 0x02u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_i2_t5, 2u, 0x04u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_over_temperature5, 3u, 0x08u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_open_load5, 4u, 0x10u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery5, 5u, 0x20u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_over_current6, 6u, 0x40u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fault_channel_i2_t6, 7u, 0x80u);
+    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_over_temperature6, 0u, 0x01u);
+    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_open_load6, 1u, 0x02u);
+    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery6, 2u, 0x04u);
+    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_over_current7, 3u, 0x08u);
+    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_i2_t7, 4u, 0x10u);
+    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_over_temperature7, 5u, 0x20u);
+    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_open_load7, 6u, 0x40u);
+    dst_p[4] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery7, 7u, 0x80u);
+    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_over_current8, 0u, 0x01u);
+    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_i2_t8, 1u, 0x02u);
+    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_over_temperature8, 2u, 0x04u);
+    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_open_load8, 3u, 0x08u);
+    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery8, 4u, 0x10u);
+    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_over_current9, 5u, 0x20u);
+    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_i2_t9, 6u, 0x40u);
+    dst_p[5] |= pack_left_shift_u8(src_p->fault_channel_over_temperature9, 7u, 0x80u);
+    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_open_load9, 0u, 0x01u);
+    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery9, 1u, 0x02u);
+    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_over_current10, 2u, 0x04u);
+    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_i2_t10, 3u, 0x08u);
+    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_over_temperature10, 4u, 0x10u);
+    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_open_load10, 5u, 0x20u);
+    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery10, 6u, 0x40u);
+    dst_p[6] |= pack_left_shift_u8(src_p->fault_channel_over_current11, 7u, 0x80u);
+    dst_p[7] |= pack_left_shift_u8(src_p->fault_channel_i2_t11, 0u, 0x01u);
+    dst_p[7] |= pack_left_shift_u8(src_p->fault_channel_over_temperature11, 1u, 0x02u);
+    dst_p[7] |= pack_left_shift_u8(src_p->fault_channel_open_load11, 2u, 0x04u);
+    dst_p[7] |= pack_left_shift_u8(src_p->fault_channel_short_to_battery11, 3u, 0x08u);
+    dst_p[7] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage0, 4u, 0x10u);
+    dst_p[7] |= pack_left_shift_u8(src_p->fault_chip_spi_error0, 5u, 0x20u);
+    dst_p[7] |= pack_left_shift_u8(src_p->fault_chip_watchdog0, 6u, 0x40u);
+    dst_p[7] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage1, 7u, 0x80u);
+    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_spi_error1, 0u, 0x01u);
+    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_watchdog1, 1u, 0x02u);
+    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage2, 2u, 0x04u);
+    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_spi_error2, 3u, 0x08u);
+    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_watchdog2, 4u, 0x10u);
+    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage3, 5u, 0x20u);
+    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_spi_error3, 6u, 0x40u);
+    dst_p[8] |= pack_left_shift_u8(src_p->fault_chip_watchdog3, 7u, 0x80u);
+    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage4, 0u, 0x01u);
+    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_spi_error4, 1u, 0x02u);
+    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_watchdog4, 2u, 0x04u);
+    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_vbb_undervoltage5, 3u, 0x08u);
+    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_spi_error5, 4u, 0x10u);
+    dst_p[9] |= pack_left_shift_u8(src_p->fault_chip_watchdog5, 5u, 0x20u);
     dst_p[9] |= pack_left_shift_u8(src_p->warning_blown_fuse, 6u, 0x40u);
-    dst_p[9] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse1, 7u, 0x80u);
-    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse2, 0u, 0x01u);
-    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse3, 1u, 0x02u);
-    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse4, 2u, 0x04u);
-    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse5, 3u, 0x08u);
-    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse6, 4u, 0x10u);
-    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse7, 5u, 0x20u);
-    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse8, 6u, 0x40u);
-    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse9, 7u, 0x80u);
-    dst_p[11] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse10, 0u, 0x01u);
-    dst_p[11] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse11, 1u, 0x02u);
-    dst_p[11] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse12, 2u, 0x04u);
-    dst_p[11] |= pack_left_shift_u8(src_p->channel_enabled1, 3u, 0x08u);
-    dst_p[11] |= pack_left_shift_u8(src_p->channel_enabled2, 4u, 0x10u);
-    dst_p[11] |= pack_left_shift_u8(src_p->channel_enabled3, 5u, 0x20u);
-    dst_p[11] |= pack_left_shift_u8(src_p->channel_enabled4, 6u, 0x40u);
-    dst_p[11] |= pack_left_shift_u8(src_p->channel_enabled5, 7u, 0x80u);
-    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled6, 0u, 0x01u);
-    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled7, 1u, 0x02u);
-    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled8, 2u, 0x04u);
-    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled9, 3u, 0x08u);
-    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled10, 4u, 0x10u);
-    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled11, 5u, 0x20u);
-    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled12, 6u, 0x40u);
+    dst_p[9] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse0, 7u, 0x80u);
+    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse1, 0u, 0x01u);
+    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse2, 1u, 0x02u);
+    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse3, 2u, 0x04u);
+    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse4, 3u, 0x08u);
+    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse5, 4u, 0x10u);
+    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse6, 5u, 0x20u);
+    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse7, 6u, 0x40u);
+    dst_p[10] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse8, 7u, 0x80u);
+    dst_p[11] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse9, 0u, 0x01u);
+    dst_p[11] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse10, 1u, 0x02u);
+    dst_p[11] |= pack_left_shift_u8(src_p->warning_channel_blown_fuse11, 2u, 0x04u);
+    dst_p[11] |= pack_left_shift_u8(src_p->channel_enabled0, 3u, 0x08u);
+    dst_p[11] |= pack_left_shift_u8(src_p->channel_enabled1, 4u, 0x10u);
+    dst_p[11] |= pack_left_shift_u8(src_p->channel_enabled2, 5u, 0x20u);
+    dst_p[11] |= pack_left_shift_u8(src_p->channel_enabled3, 6u, 0x40u);
+    dst_p[11] |= pack_left_shift_u8(src_p->channel_enabled4, 7u, 0x80u);
+    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled5, 0u, 0x01u);
+    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled6, 1u, 0x02u);
+    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled7, 2u, 0x04u);
+    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled8, 3u, 0x08u);
+    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled9, 4u, 0x10u);
+    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled10, 5u, 0x20u);
+    dst_p[12] |= pack_left_shift_u8(src_p->channel_enabled11, 6u, 0x40u);
 
     return (16);
 }
@@ -3894,109 +3713,109 @@ int car_can_raw_pdu_status_unpack(
         return (-EINVAL);
     }
 
-    dst_p->fault_channel_over_current1 = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
-    dst_p->fault_channel_i2_t1 = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
-    dst_p->fault_channel_over_temperature1 = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
-    dst_p->fault_channel_open_load1 = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
-    dst_p->fault_channel_short_to_battery1 = unpack_right_shift_u8(src_p[0], 4u, 0x10u);
-    dst_p->fault_channel_over_current2 = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
-    dst_p->fault_channel_i2_t2 = unpack_right_shift_u8(src_p[0], 6u, 0x40u);
-    dst_p->fault_channel_over_temperature2 = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
-    dst_p->fault_channel_open_load2 = unpack_right_shift_u8(src_p[1], 0u, 0x01u);
-    dst_p->fault_channel_short_to_battery2 = unpack_right_shift_u8(src_p[1], 1u, 0x02u);
-    dst_p->fault_channel_over_current3 = unpack_right_shift_u8(src_p[1], 2u, 0x04u);
-    dst_p->fault_channel_i2_t3 = unpack_right_shift_u8(src_p[1], 3u, 0x08u);
-    dst_p->fault_channel_over_temperature3 = unpack_right_shift_u8(src_p[1], 4u, 0x10u);
-    dst_p->fault_channel_open_load3 = unpack_right_shift_u8(src_p[1], 5u, 0x20u);
-    dst_p->fault_channel_short_to_battery3 = unpack_right_shift_u8(src_p[1], 6u, 0x40u);
-    dst_p->fault_channel_over_current4 = unpack_right_shift_u8(src_p[1], 7u, 0x80u);
-    dst_p->fault_channel_i2_t4 = unpack_right_shift_u8(src_p[2], 0u, 0x01u);
-    dst_p->fault_channel_over_temperature4 = unpack_right_shift_u8(src_p[2], 1u, 0x02u);
-    dst_p->fault_channel_open_load4 = unpack_right_shift_u8(src_p[2], 2u, 0x04u);
-    dst_p->fault_channel_short_to_battery4 = unpack_right_shift_u8(src_p[2], 3u, 0x08u);
-    dst_p->fault_channel_over_current5 = unpack_right_shift_u8(src_p[2], 4u, 0x10u);
-    dst_p->fault_channel_i2_t5 = unpack_right_shift_u8(src_p[2], 5u, 0x20u);
-    dst_p->fault_channel_over_temperature5 = unpack_right_shift_u8(src_p[2], 6u, 0x40u);
-    dst_p->fault_channel_open_load5 = unpack_right_shift_u8(src_p[2], 7u, 0x80u);
-    dst_p->fault_channel_short_to_battery5 = unpack_right_shift_u8(src_p[3], 0u, 0x01u);
-    dst_p->fault_channel_over_current6 = unpack_right_shift_u8(src_p[3], 1u, 0x02u);
-    dst_p->fault_channel_i2_t6 = unpack_right_shift_u8(src_p[3], 2u, 0x04u);
-    dst_p->fault_channel_over_temperature6 = unpack_right_shift_u8(src_p[3], 3u, 0x08u);
-    dst_p->fault_channel_open_load6 = unpack_right_shift_u8(src_p[3], 4u, 0x10u);
-    dst_p->fault_channel_short_to_battery6 = unpack_right_shift_u8(src_p[3], 5u, 0x20u);
-    dst_p->fault_channel_over_current7 = unpack_right_shift_u8(src_p[3], 6u, 0x40u);
-    dst_p->fault_channel_i2_t7 = unpack_right_shift_u8(src_p[3], 7u, 0x80u);
-    dst_p->fault_channel_over_temperature7 = unpack_right_shift_u8(src_p[4], 0u, 0x01u);
-    dst_p->fault_channel_open_load7 = unpack_right_shift_u8(src_p[4], 1u, 0x02u);
-    dst_p->fault_channel_short_to_battery7 = unpack_right_shift_u8(src_p[4], 2u, 0x04u);
-    dst_p->fault_channel_over_current8 = unpack_right_shift_u8(src_p[4], 3u, 0x08u);
-    dst_p->fault_channel_i2_t8 = unpack_right_shift_u8(src_p[4], 4u, 0x10u);
-    dst_p->fault_channel_over_temperature8 = unpack_right_shift_u8(src_p[4], 5u, 0x20u);
-    dst_p->fault_channel_open_load8 = unpack_right_shift_u8(src_p[4], 6u, 0x40u);
-    dst_p->fault_channel_short_to_battery8 = unpack_right_shift_u8(src_p[4], 7u, 0x80u);
-    dst_p->fault_channel_over_current9 = unpack_right_shift_u8(src_p[5], 0u, 0x01u);
-    dst_p->fault_channel_i2_t9 = unpack_right_shift_u8(src_p[5], 1u, 0x02u);
-    dst_p->fault_channel_over_temperature9 = unpack_right_shift_u8(src_p[5], 2u, 0x04u);
-    dst_p->fault_channel_open_load9 = unpack_right_shift_u8(src_p[5], 3u, 0x08u);
-    dst_p->fault_channel_short_to_battery9 = unpack_right_shift_u8(src_p[5], 4u, 0x10u);
-    dst_p->fault_channel_over_current10 = unpack_right_shift_u8(src_p[5], 5u, 0x20u);
-    dst_p->fault_channel_i2_t10 = unpack_right_shift_u8(src_p[5], 6u, 0x40u);
-    dst_p->fault_channel_over_temperature10 = unpack_right_shift_u8(src_p[5], 7u, 0x80u);
-    dst_p->fault_channel_open_load10 = unpack_right_shift_u8(src_p[6], 0u, 0x01u);
-    dst_p->fault_channel_short_to_battery10 = unpack_right_shift_u8(src_p[6], 1u, 0x02u);
-    dst_p->fault_channel_over_current11 = unpack_right_shift_u8(src_p[6], 2u, 0x04u);
-    dst_p->fault_channel_i2_t11 = unpack_right_shift_u8(src_p[6], 3u, 0x08u);
-    dst_p->fault_channel_over_temperature11 = unpack_right_shift_u8(src_p[6], 4u, 0x10u);
-    dst_p->fault_channel_open_load11 = unpack_right_shift_u8(src_p[6], 5u, 0x20u);
-    dst_p->fault_channel_short_to_battery11 = unpack_right_shift_u8(src_p[6], 6u, 0x40u);
-    dst_p->fault_channel_over_current12 = unpack_right_shift_u8(src_p[6], 7u, 0x80u);
-    dst_p->fault_channel_i2_t12 = unpack_right_shift_u8(src_p[7], 0u, 0x01u);
-    dst_p->fault_channel_over_temperature12 = unpack_right_shift_u8(src_p[7], 1u, 0x02u);
-    dst_p->fault_channel_open_load12 = unpack_right_shift_u8(src_p[7], 2u, 0x04u);
-    dst_p->fault_channel_short_to_battery12 = unpack_right_shift_u8(src_p[7], 3u, 0x08u);
-    dst_p->fault_chip_vbb_undervoltage1 = unpack_right_shift_u8(src_p[7], 4u, 0x10u);
-    dst_p->fault_chip_spi_error1 = unpack_right_shift_u8(src_p[7], 5u, 0x20u);
-    dst_p->fault_chip_watchdog1 = unpack_right_shift_u8(src_p[7], 6u, 0x40u);
-    dst_p->fault_chip_vbb_undervoltage2 = unpack_right_shift_u8(src_p[7], 7u, 0x80u);
-    dst_p->fault_chip_spi_error2 = unpack_right_shift_u8(src_p[8], 0u, 0x01u);
-    dst_p->fault_chip_watchdog2 = unpack_right_shift_u8(src_p[8], 1u, 0x02u);
-    dst_p->fault_chip_vbb_undervoltage3 = unpack_right_shift_u8(src_p[8], 2u, 0x04u);
-    dst_p->fault_chip_spi_error3 = unpack_right_shift_u8(src_p[8], 3u, 0x08u);
-    dst_p->fault_chip_watchdog3 = unpack_right_shift_u8(src_p[8], 4u, 0x10u);
-    dst_p->fault_chip_vbb_undervoltage4 = unpack_right_shift_u8(src_p[8], 5u, 0x20u);
-    dst_p->fault_chip_spi_error4 = unpack_right_shift_u8(src_p[8], 6u, 0x40u);
-    dst_p->fault_chip_watchdog4 = unpack_right_shift_u8(src_p[8], 7u, 0x80u);
-    dst_p->fault_chip_vbb_undervoltage5 = unpack_right_shift_u8(src_p[9], 0u, 0x01u);
-    dst_p->fault_chip_spi_error5 = unpack_right_shift_u8(src_p[9], 1u, 0x02u);
-    dst_p->fault_chip_watchdog5 = unpack_right_shift_u8(src_p[9], 2u, 0x04u);
-    dst_p->fault_chip_vbb_undervoltage6 = unpack_right_shift_u8(src_p[9], 3u, 0x08u);
-    dst_p->fault_chip_spi_error6 = unpack_right_shift_u8(src_p[9], 4u, 0x10u);
-    dst_p->fault_chip_watchdog6 = unpack_right_shift_u8(src_p[9], 5u, 0x20u);
+    dst_p->fault_channel_over_current0 = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
+    dst_p->fault_channel_i2_t0 = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
+    dst_p->fault_channel_over_temperature0 = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
+    dst_p->fault_channel_open_load0 = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
+    dst_p->fault_channel_short_to_battery0 = unpack_right_shift_u8(src_p[0], 4u, 0x10u);
+    dst_p->fault_channel_over_current1 = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
+    dst_p->fault_channel_i2_t1 = unpack_right_shift_u8(src_p[0], 6u, 0x40u);
+    dst_p->fault_channel_over_temperature1 = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
+    dst_p->fault_channel_open_load1 = unpack_right_shift_u8(src_p[1], 0u, 0x01u);
+    dst_p->fault_channel_short_to_battery1 = unpack_right_shift_u8(src_p[1], 1u, 0x02u);
+    dst_p->fault_channel_over_current2 = unpack_right_shift_u8(src_p[1], 2u, 0x04u);
+    dst_p->fault_channel_i2_t2 = unpack_right_shift_u8(src_p[1], 3u, 0x08u);
+    dst_p->fault_channel_over_temperature2 = unpack_right_shift_u8(src_p[1], 4u, 0x10u);
+    dst_p->fault_channel_open_load2 = unpack_right_shift_u8(src_p[1], 5u, 0x20u);
+    dst_p->fault_channel_short_to_battery2 = unpack_right_shift_u8(src_p[1], 6u, 0x40u);
+    dst_p->fault_channel_over_current3 = unpack_right_shift_u8(src_p[1], 7u, 0x80u);
+    dst_p->fault_channel_i2_t3 = unpack_right_shift_u8(src_p[2], 0u, 0x01u);
+    dst_p->fault_channel_over_temperature3 = unpack_right_shift_u8(src_p[2], 1u, 0x02u);
+    dst_p->fault_channel_open_load3 = unpack_right_shift_u8(src_p[2], 2u, 0x04u);
+    dst_p->fault_channel_short_to_battery3 = unpack_right_shift_u8(src_p[2], 3u, 0x08u);
+    dst_p->fault_channel_over_current4 = unpack_right_shift_u8(src_p[2], 4u, 0x10u);
+    dst_p->fault_channel_i2_t4 = unpack_right_shift_u8(src_p[2], 5u, 0x20u);
+    dst_p->fault_channel_over_temperature4 = unpack_right_shift_u8(src_p[2], 6u, 0x40u);
+    dst_p->fault_channel_open_load4 = unpack_right_shift_u8(src_p[2], 7u, 0x80u);
+    dst_p->fault_channel_short_to_battery4 = unpack_right_shift_u8(src_p[3], 0u, 0x01u);
+    dst_p->fault_channel_over_current5 = unpack_right_shift_u8(src_p[3], 1u, 0x02u);
+    dst_p->fault_channel_i2_t5 = unpack_right_shift_u8(src_p[3], 2u, 0x04u);
+    dst_p->fault_channel_over_temperature5 = unpack_right_shift_u8(src_p[3], 3u, 0x08u);
+    dst_p->fault_channel_open_load5 = unpack_right_shift_u8(src_p[3], 4u, 0x10u);
+    dst_p->fault_channel_short_to_battery5 = unpack_right_shift_u8(src_p[3], 5u, 0x20u);
+    dst_p->fault_channel_over_current6 = unpack_right_shift_u8(src_p[3], 6u, 0x40u);
+    dst_p->fault_channel_i2_t6 = unpack_right_shift_u8(src_p[3], 7u, 0x80u);
+    dst_p->fault_channel_over_temperature6 = unpack_right_shift_u8(src_p[4], 0u, 0x01u);
+    dst_p->fault_channel_open_load6 = unpack_right_shift_u8(src_p[4], 1u, 0x02u);
+    dst_p->fault_channel_short_to_battery6 = unpack_right_shift_u8(src_p[4], 2u, 0x04u);
+    dst_p->fault_channel_over_current7 = unpack_right_shift_u8(src_p[4], 3u, 0x08u);
+    dst_p->fault_channel_i2_t7 = unpack_right_shift_u8(src_p[4], 4u, 0x10u);
+    dst_p->fault_channel_over_temperature7 = unpack_right_shift_u8(src_p[4], 5u, 0x20u);
+    dst_p->fault_channel_open_load7 = unpack_right_shift_u8(src_p[4], 6u, 0x40u);
+    dst_p->fault_channel_short_to_battery7 = unpack_right_shift_u8(src_p[4], 7u, 0x80u);
+    dst_p->fault_channel_over_current8 = unpack_right_shift_u8(src_p[5], 0u, 0x01u);
+    dst_p->fault_channel_i2_t8 = unpack_right_shift_u8(src_p[5], 1u, 0x02u);
+    dst_p->fault_channel_over_temperature8 = unpack_right_shift_u8(src_p[5], 2u, 0x04u);
+    dst_p->fault_channel_open_load8 = unpack_right_shift_u8(src_p[5], 3u, 0x08u);
+    dst_p->fault_channel_short_to_battery8 = unpack_right_shift_u8(src_p[5], 4u, 0x10u);
+    dst_p->fault_channel_over_current9 = unpack_right_shift_u8(src_p[5], 5u, 0x20u);
+    dst_p->fault_channel_i2_t9 = unpack_right_shift_u8(src_p[5], 6u, 0x40u);
+    dst_p->fault_channel_over_temperature9 = unpack_right_shift_u8(src_p[5], 7u, 0x80u);
+    dst_p->fault_channel_open_load9 = unpack_right_shift_u8(src_p[6], 0u, 0x01u);
+    dst_p->fault_channel_short_to_battery9 = unpack_right_shift_u8(src_p[6], 1u, 0x02u);
+    dst_p->fault_channel_over_current10 = unpack_right_shift_u8(src_p[6], 2u, 0x04u);
+    dst_p->fault_channel_i2_t10 = unpack_right_shift_u8(src_p[6], 3u, 0x08u);
+    dst_p->fault_channel_over_temperature10 = unpack_right_shift_u8(src_p[6], 4u, 0x10u);
+    dst_p->fault_channel_open_load10 = unpack_right_shift_u8(src_p[6], 5u, 0x20u);
+    dst_p->fault_channel_short_to_battery10 = unpack_right_shift_u8(src_p[6], 6u, 0x40u);
+    dst_p->fault_channel_over_current11 = unpack_right_shift_u8(src_p[6], 7u, 0x80u);
+    dst_p->fault_channel_i2_t11 = unpack_right_shift_u8(src_p[7], 0u, 0x01u);
+    dst_p->fault_channel_over_temperature11 = unpack_right_shift_u8(src_p[7], 1u, 0x02u);
+    dst_p->fault_channel_open_load11 = unpack_right_shift_u8(src_p[7], 2u, 0x04u);
+    dst_p->fault_channel_short_to_battery11 = unpack_right_shift_u8(src_p[7], 3u, 0x08u);
+    dst_p->fault_chip_vbb_undervoltage0 = unpack_right_shift_u8(src_p[7], 4u, 0x10u);
+    dst_p->fault_chip_spi_error0 = unpack_right_shift_u8(src_p[7], 5u, 0x20u);
+    dst_p->fault_chip_watchdog0 = unpack_right_shift_u8(src_p[7], 6u, 0x40u);
+    dst_p->fault_chip_vbb_undervoltage1 = unpack_right_shift_u8(src_p[7], 7u, 0x80u);
+    dst_p->fault_chip_spi_error1 = unpack_right_shift_u8(src_p[8], 0u, 0x01u);
+    dst_p->fault_chip_watchdog1 = unpack_right_shift_u8(src_p[8], 1u, 0x02u);
+    dst_p->fault_chip_vbb_undervoltage2 = unpack_right_shift_u8(src_p[8], 2u, 0x04u);
+    dst_p->fault_chip_spi_error2 = unpack_right_shift_u8(src_p[8], 3u, 0x08u);
+    dst_p->fault_chip_watchdog2 = unpack_right_shift_u8(src_p[8], 4u, 0x10u);
+    dst_p->fault_chip_vbb_undervoltage3 = unpack_right_shift_u8(src_p[8], 5u, 0x20u);
+    dst_p->fault_chip_spi_error3 = unpack_right_shift_u8(src_p[8], 6u, 0x40u);
+    dst_p->fault_chip_watchdog3 = unpack_right_shift_u8(src_p[8], 7u, 0x80u);
+    dst_p->fault_chip_vbb_undervoltage4 = unpack_right_shift_u8(src_p[9], 0u, 0x01u);
+    dst_p->fault_chip_spi_error4 = unpack_right_shift_u8(src_p[9], 1u, 0x02u);
+    dst_p->fault_chip_watchdog4 = unpack_right_shift_u8(src_p[9], 2u, 0x04u);
+    dst_p->fault_chip_vbb_undervoltage5 = unpack_right_shift_u8(src_p[9], 3u, 0x08u);
+    dst_p->fault_chip_spi_error5 = unpack_right_shift_u8(src_p[9], 4u, 0x10u);
+    dst_p->fault_chip_watchdog5 = unpack_right_shift_u8(src_p[9], 5u, 0x20u);
     dst_p->warning_blown_fuse = unpack_right_shift_u8(src_p[9], 6u, 0x40u);
-    dst_p->warning_channel_blown_fuse1 = unpack_right_shift_u8(src_p[9], 7u, 0x80u);
-    dst_p->warning_channel_blown_fuse2 = unpack_right_shift_u8(src_p[10], 0u, 0x01u);
-    dst_p->warning_channel_blown_fuse3 = unpack_right_shift_u8(src_p[10], 1u, 0x02u);
-    dst_p->warning_channel_blown_fuse4 = unpack_right_shift_u8(src_p[10], 2u, 0x04u);
-    dst_p->warning_channel_blown_fuse5 = unpack_right_shift_u8(src_p[10], 3u, 0x08u);
-    dst_p->warning_channel_blown_fuse6 = unpack_right_shift_u8(src_p[10], 4u, 0x10u);
-    dst_p->warning_channel_blown_fuse7 = unpack_right_shift_u8(src_p[10], 5u, 0x20u);
-    dst_p->warning_channel_blown_fuse8 = unpack_right_shift_u8(src_p[10], 6u, 0x40u);
-    dst_p->warning_channel_blown_fuse9 = unpack_right_shift_u8(src_p[10], 7u, 0x80u);
-    dst_p->warning_channel_blown_fuse10 = unpack_right_shift_u8(src_p[11], 0u, 0x01u);
-    dst_p->warning_channel_blown_fuse11 = unpack_right_shift_u8(src_p[11], 1u, 0x02u);
-    dst_p->warning_channel_blown_fuse12 = unpack_right_shift_u8(src_p[11], 2u, 0x04u);
-    dst_p->channel_enabled1 = unpack_right_shift_u8(src_p[11], 3u, 0x08u);
-    dst_p->channel_enabled2 = unpack_right_shift_u8(src_p[11], 4u, 0x10u);
-    dst_p->channel_enabled3 = unpack_right_shift_u8(src_p[11], 5u, 0x20u);
-    dst_p->channel_enabled4 = unpack_right_shift_u8(src_p[11], 6u, 0x40u);
-    dst_p->channel_enabled5 = unpack_right_shift_u8(src_p[11], 7u, 0x80u);
-    dst_p->channel_enabled6 = unpack_right_shift_u8(src_p[12], 0u, 0x01u);
-    dst_p->channel_enabled7 = unpack_right_shift_u8(src_p[12], 1u, 0x02u);
-    dst_p->channel_enabled8 = unpack_right_shift_u8(src_p[12], 2u, 0x04u);
-    dst_p->channel_enabled9 = unpack_right_shift_u8(src_p[12], 3u, 0x08u);
-    dst_p->channel_enabled10 = unpack_right_shift_u8(src_p[12], 4u, 0x10u);
-    dst_p->channel_enabled11 = unpack_right_shift_u8(src_p[12], 5u, 0x20u);
-    dst_p->channel_enabled12 = unpack_right_shift_u8(src_p[12], 6u, 0x40u);
+    dst_p->warning_channel_blown_fuse0 = unpack_right_shift_u8(src_p[9], 7u, 0x80u);
+    dst_p->warning_channel_blown_fuse1 = unpack_right_shift_u8(src_p[10], 0u, 0x01u);
+    dst_p->warning_channel_blown_fuse2 = unpack_right_shift_u8(src_p[10], 1u, 0x02u);
+    dst_p->warning_channel_blown_fuse3 = unpack_right_shift_u8(src_p[10], 2u, 0x04u);
+    dst_p->warning_channel_blown_fuse4 = unpack_right_shift_u8(src_p[10], 3u, 0x08u);
+    dst_p->warning_channel_blown_fuse5 = unpack_right_shift_u8(src_p[10], 4u, 0x10u);
+    dst_p->warning_channel_blown_fuse6 = unpack_right_shift_u8(src_p[10], 5u, 0x20u);
+    dst_p->warning_channel_blown_fuse7 = unpack_right_shift_u8(src_p[10], 6u, 0x40u);
+    dst_p->warning_channel_blown_fuse8 = unpack_right_shift_u8(src_p[10], 7u, 0x80u);
+    dst_p->warning_channel_blown_fuse9 = unpack_right_shift_u8(src_p[11], 0u, 0x01u);
+    dst_p->warning_channel_blown_fuse10 = unpack_right_shift_u8(src_p[11], 1u, 0x02u);
+    dst_p->warning_channel_blown_fuse11 = unpack_right_shift_u8(src_p[11], 2u, 0x04u);
+    dst_p->channel_enabled0 = unpack_right_shift_u8(src_p[11], 3u, 0x08u);
+    dst_p->channel_enabled1 = unpack_right_shift_u8(src_p[11], 4u, 0x10u);
+    dst_p->channel_enabled2 = unpack_right_shift_u8(src_p[11], 5u, 0x20u);
+    dst_p->channel_enabled3 = unpack_right_shift_u8(src_p[11], 6u, 0x40u);
+    dst_p->channel_enabled4 = unpack_right_shift_u8(src_p[11], 7u, 0x80u);
+    dst_p->channel_enabled5 = unpack_right_shift_u8(src_p[12], 0u, 0x01u);
+    dst_p->channel_enabled6 = unpack_right_shift_u8(src_p[12], 1u, 0x02u);
+    dst_p->channel_enabled7 = unpack_right_shift_u8(src_p[12], 2u, 0x04u);
+    dst_p->channel_enabled8 = unpack_right_shift_u8(src_p[12], 3u, 0x08u);
+    dst_p->channel_enabled9 = unpack_right_shift_u8(src_p[12], 4u, 0x10u);
+    dst_p->channel_enabled10 = unpack_right_shift_u8(src_p[12], 5u, 0x20u);
+    dst_p->channel_enabled11 = unpack_right_shift_u8(src_p[12], 6u, 0x40u);
 
     return (0);
 }
@@ -4008,6 +3827,31 @@ int car_can_raw_pdu_status_init(struct car_can_raw_pdu_status_t *msg_p)
     memset(msg_p, 0, sizeof(struct car_can_raw_pdu_status_t));
 
     return 0;
+}
+
+bool car_can_raw_pdu_status_fault_channel_over_current0_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_pdu_status_fault_channel_i2_t0_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_pdu_status_fault_channel_over_temperature0_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_pdu_status_fault_channel_open_load0_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_pdu_status_fault_channel_short_to_battery0_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
 }
 
 bool car_can_raw_pdu_status_fault_channel_over_current1_is_in_range(uint8_t value)
@@ -4285,27 +4129,17 @@ bool car_can_raw_pdu_status_fault_channel_short_to_battery11_is_in_range(uint8_t
     return (value <= 1u);
 }
 
-bool car_can_raw_pdu_status_fault_channel_over_current12_is_in_range(uint8_t value)
+bool car_can_raw_pdu_status_fault_chip_vbb_undervoltage0_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pdu_status_fault_channel_i2_t12_is_in_range(uint8_t value)
+bool car_can_raw_pdu_status_fault_chip_spi_error0_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pdu_status_fault_channel_over_temperature12_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_status_fault_channel_open_load12_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_status_fault_channel_short_to_battery12_is_in_range(uint8_t value)
+bool car_can_raw_pdu_status_fault_chip_watchdog0_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
@@ -4385,22 +4219,12 @@ bool car_can_raw_pdu_status_fault_chip_watchdog5_is_in_range(uint8_t value)
     return (value <= 1u);
 }
 
-bool car_can_raw_pdu_status_fault_chip_vbb_undervoltage6_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_status_fault_chip_spi_error6_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_status_fault_chip_watchdog6_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
 bool car_can_raw_pdu_status_warning_blown_fuse_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_pdu_status_warning_channel_blown_fuse0_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
@@ -4460,7 +4284,7 @@ bool car_can_raw_pdu_status_warning_channel_blown_fuse11_is_in_range(uint8_t val
     return (value <= 1u);
 }
 
-bool car_can_raw_pdu_status_warning_channel_blown_fuse12_is_in_range(uint8_t value)
+bool car_can_raw_pdu_status_channel_enabled0_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
@@ -4520,53 +4344,45 @@ bool car_can_raw_pdu_status_channel_enabled11_is_in_range(uint8_t value)
     return (value <= 1u);
 }
 
-bool car_can_raw_pdu_status_channel_enabled12_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
 int car_can_raw_pdu_current_data_pack(
     uint8_t *dst_p,
     const struct car_can_raw_pdu_current_data_t *src_p,
     size_t size)
 {
-    if (size < 24u) {
+    if (size < 20u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 24);
+    memset(&dst_p[0], 0, 20);
 
-    dst_p[0] |= pack_left_shift_u16(src_p->channel_current1, 0u, 0xffu);
-    dst_p[1] |= pack_right_shift_u16(src_p->channel_current1, 8u, 0x0fu);
-    dst_p[1] |= pack_left_shift_u16(src_p->channel_current2, 4u, 0xf0u);
-    dst_p[2] |= pack_right_shift_u16(src_p->channel_current2, 4u, 0xffu);
-    dst_p[3] |= pack_left_shift_u16(src_p->channel_current3, 0u, 0xffu);
-    dst_p[4] |= pack_right_shift_u16(src_p->channel_current3, 8u, 0x0fu);
-    dst_p[4] |= pack_left_shift_u16(src_p->channel_current4, 4u, 0xf0u);
-    dst_p[5] |= pack_right_shift_u16(src_p->channel_current4, 4u, 0xffu);
-    dst_p[6] |= pack_left_shift_u16(src_p->channel_current5, 0u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(src_p->channel_current5, 8u, 0x0fu);
-    dst_p[7] |= pack_left_shift_u16(src_p->channel_current6, 4u, 0xf0u);
-    dst_p[8] |= pack_right_shift_u16(src_p->channel_current6, 4u, 0xffu);
-    dst_p[9] |= pack_left_shift_u16(src_p->channel_current7, 0u, 0xffu);
-    dst_p[10] |= pack_right_shift_u16(src_p->channel_current7, 8u, 0x0fu);
-    dst_p[10] |= pack_left_shift_u16(src_p->channel_current8, 4u, 0xf0u);
-    dst_p[11] |= pack_right_shift_u16(src_p->channel_current8, 4u, 0xffu);
-    dst_p[12] |= pack_left_shift_u16(src_p->channel_current9, 0u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(src_p->channel_current9, 8u, 0x0fu);
-    dst_p[13] |= pack_left_shift_u16(src_p->channel_current10, 4u, 0xf0u);
-    dst_p[14] |= pack_right_shift_u16(src_p->channel_current10, 4u, 0xffu);
-    dst_p[15] |= pack_left_shift_u16(src_p->channel_current11, 0u, 0xffu);
-    dst_p[16] |= pack_right_shift_u16(src_p->channel_current11, 8u, 0x0fu);
-    dst_p[16] |= pack_left_shift_u16(src_p->channel_current12, 4u, 0xf0u);
-    dst_p[17] |= pack_right_shift_u16(src_p->channel_current12, 4u, 0xffu);
+    dst_p[0] |= pack_left_shift_u16(src_p->channel_current0, 0u, 0xffu);
+    dst_p[1] |= pack_right_shift_u16(src_p->channel_current0, 8u, 0x0fu);
+    dst_p[1] |= pack_left_shift_u16(src_p->channel_current1, 4u, 0xf0u);
+    dst_p[2] |= pack_right_shift_u16(src_p->channel_current1, 4u, 0xffu);
+    dst_p[3] |= pack_left_shift_u16(src_p->channel_current2, 0u, 0xffu);
+    dst_p[4] |= pack_right_shift_u16(src_p->channel_current2, 8u, 0x0fu);
+    dst_p[4] |= pack_left_shift_u16(src_p->channel_current3, 4u, 0xf0u);
+    dst_p[5] |= pack_right_shift_u16(src_p->channel_current3, 4u, 0xffu);
+    dst_p[6] |= pack_left_shift_u16(src_p->channel_current4, 0u, 0xffu);
+    dst_p[7] |= pack_right_shift_u16(src_p->channel_current4, 8u, 0x0fu);
+    dst_p[7] |= pack_left_shift_u16(src_p->channel_current5, 4u, 0xf0u);
+    dst_p[8] |= pack_right_shift_u16(src_p->channel_current5, 4u, 0xffu);
+    dst_p[9] |= pack_left_shift_u16(src_p->channel_current6, 0u, 0xffu);
+    dst_p[10] |= pack_right_shift_u16(src_p->channel_current6, 8u, 0x0fu);
+    dst_p[10] |= pack_left_shift_u16(src_p->channel_current7, 4u, 0xf0u);
+    dst_p[11] |= pack_right_shift_u16(src_p->channel_current7, 4u, 0xffu);
+    dst_p[12] |= pack_left_shift_u16(src_p->channel_current8, 0u, 0xffu);
+    dst_p[13] |= pack_right_shift_u16(src_p->channel_current8, 8u, 0x0fu);
+    dst_p[13] |= pack_left_shift_u16(src_p->channel_current9, 4u, 0xf0u);
+    dst_p[14] |= pack_right_shift_u16(src_p->channel_current9, 4u, 0xffu);
+    dst_p[15] |= pack_left_shift_u16(src_p->channel_current10, 0u, 0xffu);
+    dst_p[16] |= pack_right_shift_u16(src_p->channel_current10, 8u, 0x0fu);
+    dst_p[16] |= pack_left_shift_u16(src_p->channel_current11, 4u, 0xf0u);
+    dst_p[17] |= pack_right_shift_u16(src_p->channel_current11, 4u, 0xffu);
     dst_p[18] |= pack_left_shift_u16(src_p->total_current, 0u, 0xffu);
     dst_p[19] |= pack_right_shift_u16(src_p->total_current, 8u, 0x3fu);
-    dst_p[19] |= pack_left_shift_u16(src_p->sample_age_ms, 6u, 0xc0u);
-    dst_p[20] |= pack_right_shift_u16(src_p->sample_age_ms, 2u, 0xffu);
-    dst_p[21] |= pack_right_shift_u16(src_p->sample_age_ms, 10u, 0x3fu);
 
-    return (24);
+    return (20);
 }
 
 int car_can_raw_pdu_current_data_unpack(
@@ -4574,39 +4390,36 @@ int car_can_raw_pdu_current_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 24u) {
+    if (size < 20u) {
         return (-EINVAL);
     }
 
-    dst_p->channel_current1 = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
-    dst_p->channel_current1 |= unpack_left_shift_u16(src_p[1], 8u, 0x0fu);
-    dst_p->channel_current2 = unpack_right_shift_u16(src_p[1], 4u, 0xf0u);
-    dst_p->channel_current2 |= unpack_left_shift_u16(src_p[2], 4u, 0xffu);
-    dst_p->channel_current3 = unpack_right_shift_u16(src_p[3], 0u, 0xffu);
-    dst_p->channel_current3 |= unpack_left_shift_u16(src_p[4], 8u, 0x0fu);
-    dst_p->channel_current4 = unpack_right_shift_u16(src_p[4], 4u, 0xf0u);
-    dst_p->channel_current4 |= unpack_left_shift_u16(src_p[5], 4u, 0xffu);
-    dst_p->channel_current5 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
-    dst_p->channel_current5 |= unpack_left_shift_u16(src_p[7], 8u, 0x0fu);
-    dst_p->channel_current6 = unpack_right_shift_u16(src_p[7], 4u, 0xf0u);
-    dst_p->channel_current6 |= unpack_left_shift_u16(src_p[8], 4u, 0xffu);
-    dst_p->channel_current7 = unpack_right_shift_u16(src_p[9], 0u, 0xffu);
-    dst_p->channel_current7 |= unpack_left_shift_u16(src_p[10], 8u, 0x0fu);
-    dst_p->channel_current8 = unpack_right_shift_u16(src_p[10], 4u, 0xf0u);
-    dst_p->channel_current8 |= unpack_left_shift_u16(src_p[11], 4u, 0xffu);
-    dst_p->channel_current9 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
-    dst_p->channel_current9 |= unpack_left_shift_u16(src_p[13], 8u, 0x0fu);
-    dst_p->channel_current10 = unpack_right_shift_u16(src_p[13], 4u, 0xf0u);
-    dst_p->channel_current10 |= unpack_left_shift_u16(src_p[14], 4u, 0xffu);
-    dst_p->channel_current11 = unpack_right_shift_u16(src_p[15], 0u, 0xffu);
-    dst_p->channel_current11 |= unpack_left_shift_u16(src_p[16], 8u, 0x0fu);
-    dst_p->channel_current12 = unpack_right_shift_u16(src_p[16], 4u, 0xf0u);
-    dst_p->channel_current12 |= unpack_left_shift_u16(src_p[17], 4u, 0xffu);
+    dst_p->channel_current0 = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
+    dst_p->channel_current0 |= unpack_left_shift_u16(src_p[1], 8u, 0x0fu);
+    dst_p->channel_current1 = unpack_right_shift_u16(src_p[1], 4u, 0xf0u);
+    dst_p->channel_current1 |= unpack_left_shift_u16(src_p[2], 4u, 0xffu);
+    dst_p->channel_current2 = unpack_right_shift_u16(src_p[3], 0u, 0xffu);
+    dst_p->channel_current2 |= unpack_left_shift_u16(src_p[4], 8u, 0x0fu);
+    dst_p->channel_current3 = unpack_right_shift_u16(src_p[4], 4u, 0xf0u);
+    dst_p->channel_current3 |= unpack_left_shift_u16(src_p[5], 4u, 0xffu);
+    dst_p->channel_current4 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
+    dst_p->channel_current4 |= unpack_left_shift_u16(src_p[7], 8u, 0x0fu);
+    dst_p->channel_current5 = unpack_right_shift_u16(src_p[7], 4u, 0xf0u);
+    dst_p->channel_current5 |= unpack_left_shift_u16(src_p[8], 4u, 0xffu);
+    dst_p->channel_current6 = unpack_right_shift_u16(src_p[9], 0u, 0xffu);
+    dst_p->channel_current6 |= unpack_left_shift_u16(src_p[10], 8u, 0x0fu);
+    dst_p->channel_current7 = unpack_right_shift_u16(src_p[10], 4u, 0xf0u);
+    dst_p->channel_current7 |= unpack_left_shift_u16(src_p[11], 4u, 0xffu);
+    dst_p->channel_current8 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
+    dst_p->channel_current8 |= unpack_left_shift_u16(src_p[13], 8u, 0x0fu);
+    dst_p->channel_current9 = unpack_right_shift_u16(src_p[13], 4u, 0xf0u);
+    dst_p->channel_current9 |= unpack_left_shift_u16(src_p[14], 4u, 0xffu);
+    dst_p->channel_current10 = unpack_right_shift_u16(src_p[15], 0u, 0xffu);
+    dst_p->channel_current10 |= unpack_left_shift_u16(src_p[16], 8u, 0x0fu);
+    dst_p->channel_current11 = unpack_right_shift_u16(src_p[16], 4u, 0xf0u);
+    dst_p->channel_current11 |= unpack_left_shift_u16(src_p[17], 4u, 0xffu);
     dst_p->total_current = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
     dst_p->total_current |= unpack_left_shift_u16(src_p[19], 8u, 0x3fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[19], 6u, 0xc0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[20], 2u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[21], 10u, 0x3fu);
 
     return (0);
 }
@@ -4618,6 +4431,11 @@ int car_can_raw_pdu_current_data_init(struct car_can_raw_pdu_current_data_t *msg
     memset(msg_p, 0, sizeof(struct car_can_raw_pdu_current_data_t));
 
     return 0;
+}
+
+bool car_can_raw_pdu_current_data_channel_current0_is_in_range(uint16_t value)
+{
+    return (value <= 4095u);
 }
 
 bool car_can_raw_pdu_current_data_channel_current1_is_in_range(uint16_t value)
@@ -4675,21 +4493,9 @@ bool car_can_raw_pdu_current_data_channel_current11_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
-bool car_can_raw_pdu_current_data_channel_current12_is_in_range(uint16_t value)
-{
-    return (value <= 4095u);
-}
-
 bool car_can_raw_pdu_current_data_total_current_is_in_range(uint16_t value)
 {
     return (value <= 16383u);
-}
-
-bool car_can_raw_pdu_current_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
 }
 
 int car_can_raw_pdu_voltage_data_pack(
@@ -4705,33 +4511,30 @@ int car_can_raw_pdu_voltage_data_pack(
 
     dst_p[0] |= pack_left_shift_u16(src_p->input_voltage, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->input_voltage, 8u, 0x03u);
-    dst_p[1] |= pack_left_shift_u16(src_p->channel_voltage1, 2u, 0xfcu);
-    dst_p[2] |= pack_right_shift_u16(src_p->channel_voltage1, 6u, 0x0fu);
-    dst_p[2] |= pack_left_shift_u16(src_p->channel_voltage2, 4u, 0xf0u);
-    dst_p[3] |= pack_right_shift_u16(src_p->channel_voltage2, 4u, 0x3fu);
-    dst_p[3] |= pack_left_shift_u16(src_p->channel_voltage3, 6u, 0xc0u);
-    dst_p[4] |= pack_right_shift_u16(src_p->channel_voltage3, 2u, 0xffu);
-    dst_p[5] |= pack_left_shift_u16(src_p->channel_voltage4, 0u, 0xffu);
-    dst_p[6] |= pack_right_shift_u16(src_p->channel_voltage4, 8u, 0x03u);
-    dst_p[6] |= pack_left_shift_u16(src_p->channel_voltage5, 2u, 0xfcu);
-    dst_p[7] |= pack_right_shift_u16(src_p->channel_voltage5, 6u, 0x0fu);
-    dst_p[7] |= pack_left_shift_u16(src_p->channel_voltage6, 4u, 0xf0u);
-    dst_p[8] |= pack_right_shift_u16(src_p->channel_voltage6, 4u, 0x3fu);
-    dst_p[8] |= pack_left_shift_u16(src_p->channel_voltage7, 6u, 0xc0u);
-    dst_p[9] |= pack_right_shift_u16(src_p->channel_voltage7, 2u, 0xffu);
-    dst_p[10] |= pack_left_shift_u16(src_p->channel_voltage8, 0u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(src_p->channel_voltage8, 8u, 0x03u);
-    dst_p[11] |= pack_left_shift_u16(src_p->channel_voltage9, 2u, 0xfcu);
-    dst_p[12] |= pack_right_shift_u16(src_p->channel_voltage9, 6u, 0x0fu);
-    dst_p[12] |= pack_left_shift_u16(src_p->channel_voltage10, 4u, 0xf0u);
-    dst_p[13] |= pack_right_shift_u16(src_p->channel_voltage10, 4u, 0x3fu);
-    dst_p[13] |= pack_left_shift_u16(src_p->channel_voltage11, 6u, 0xc0u);
-    dst_p[14] |= pack_right_shift_u16(src_p->channel_voltage11, 2u, 0xffu);
-    dst_p[15] |= pack_left_shift_u16(src_p->channel_voltage12, 0u, 0xffu);
-    dst_p[16] |= pack_right_shift_u16(src_p->channel_voltage12, 8u, 0x03u);
-    dst_p[16] |= pack_left_shift_u16(src_p->sample_age_ms, 2u, 0xfcu);
-    dst_p[17] |= pack_right_shift_u16(src_p->sample_age_ms, 6u, 0xffu);
-    dst_p[18] |= pack_right_shift_u16(src_p->sample_age_ms, 14u, 0x03u);
+    dst_p[1] |= pack_left_shift_u16(src_p->channel_voltage0, 2u, 0xfcu);
+    dst_p[2] |= pack_right_shift_u16(src_p->channel_voltage0, 6u, 0x0fu);
+    dst_p[2] |= pack_left_shift_u16(src_p->channel_voltage1, 4u, 0xf0u);
+    dst_p[3] |= pack_right_shift_u16(src_p->channel_voltage1, 4u, 0x3fu);
+    dst_p[3] |= pack_left_shift_u16(src_p->channel_voltage2, 6u, 0xc0u);
+    dst_p[4] |= pack_right_shift_u16(src_p->channel_voltage2, 2u, 0xffu);
+    dst_p[5] |= pack_left_shift_u16(src_p->channel_voltage3, 0u, 0xffu);
+    dst_p[6] |= pack_right_shift_u16(src_p->channel_voltage3, 8u, 0x03u);
+    dst_p[6] |= pack_left_shift_u16(src_p->channel_voltage4, 2u, 0xfcu);
+    dst_p[7] |= pack_right_shift_u16(src_p->channel_voltage4, 6u, 0x0fu);
+    dst_p[7] |= pack_left_shift_u16(src_p->channel_voltage5, 4u, 0xf0u);
+    dst_p[8] |= pack_right_shift_u16(src_p->channel_voltage5, 4u, 0x3fu);
+    dst_p[8] |= pack_left_shift_u16(src_p->channel_voltage6, 6u, 0xc0u);
+    dst_p[9] |= pack_right_shift_u16(src_p->channel_voltage6, 2u, 0xffu);
+    dst_p[10] |= pack_left_shift_u16(src_p->channel_voltage7, 0u, 0xffu);
+    dst_p[11] |= pack_right_shift_u16(src_p->channel_voltage7, 8u, 0x03u);
+    dst_p[11] |= pack_left_shift_u16(src_p->channel_voltage8, 2u, 0xfcu);
+    dst_p[12] |= pack_right_shift_u16(src_p->channel_voltage8, 6u, 0x0fu);
+    dst_p[12] |= pack_left_shift_u16(src_p->channel_voltage9, 4u, 0xf0u);
+    dst_p[13] |= pack_right_shift_u16(src_p->channel_voltage9, 4u, 0x3fu);
+    dst_p[13] |= pack_left_shift_u16(src_p->channel_voltage10, 6u, 0xc0u);
+    dst_p[14] |= pack_right_shift_u16(src_p->channel_voltage10, 2u, 0xffu);
+    dst_p[15] |= pack_left_shift_u16(src_p->channel_voltage11, 0u, 0xffu);
+    dst_p[16] |= pack_right_shift_u16(src_p->channel_voltage11, 8u, 0x03u);
 
     return (20);
 }
@@ -4747,33 +4550,30 @@ int car_can_raw_pdu_voltage_data_unpack(
 
     dst_p->input_voltage = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->input_voltage |= unpack_left_shift_u16(src_p[1], 8u, 0x03u);
-    dst_p->channel_voltage1 = unpack_right_shift_u16(src_p[1], 2u, 0xfcu);
-    dst_p->channel_voltage1 |= unpack_left_shift_u16(src_p[2], 6u, 0x0fu);
-    dst_p->channel_voltage2 = unpack_right_shift_u16(src_p[2], 4u, 0xf0u);
-    dst_p->channel_voltage2 |= unpack_left_shift_u16(src_p[3], 4u, 0x3fu);
-    dst_p->channel_voltage3 = unpack_right_shift_u16(src_p[3], 6u, 0xc0u);
-    dst_p->channel_voltage3 |= unpack_left_shift_u16(src_p[4], 2u, 0xffu);
-    dst_p->channel_voltage4 = unpack_right_shift_u16(src_p[5], 0u, 0xffu);
-    dst_p->channel_voltage4 |= unpack_left_shift_u16(src_p[6], 8u, 0x03u);
-    dst_p->channel_voltage5 = unpack_right_shift_u16(src_p[6], 2u, 0xfcu);
-    dst_p->channel_voltage5 |= unpack_left_shift_u16(src_p[7], 6u, 0x0fu);
-    dst_p->channel_voltage6 = unpack_right_shift_u16(src_p[7], 4u, 0xf0u);
-    dst_p->channel_voltage6 |= unpack_left_shift_u16(src_p[8], 4u, 0x3fu);
-    dst_p->channel_voltage7 = unpack_right_shift_u16(src_p[8], 6u, 0xc0u);
-    dst_p->channel_voltage7 |= unpack_left_shift_u16(src_p[9], 2u, 0xffu);
-    dst_p->channel_voltage8 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
-    dst_p->channel_voltage8 |= unpack_left_shift_u16(src_p[11], 8u, 0x03u);
-    dst_p->channel_voltage9 = unpack_right_shift_u16(src_p[11], 2u, 0xfcu);
-    dst_p->channel_voltage9 |= unpack_left_shift_u16(src_p[12], 6u, 0x0fu);
-    dst_p->channel_voltage10 = unpack_right_shift_u16(src_p[12], 4u, 0xf0u);
-    dst_p->channel_voltage10 |= unpack_left_shift_u16(src_p[13], 4u, 0x3fu);
-    dst_p->channel_voltage11 = unpack_right_shift_u16(src_p[13], 6u, 0xc0u);
-    dst_p->channel_voltage11 |= unpack_left_shift_u16(src_p[14], 2u, 0xffu);
-    dst_p->channel_voltage12 = unpack_right_shift_u16(src_p[15], 0u, 0xffu);
-    dst_p->channel_voltage12 |= unpack_left_shift_u16(src_p[16], 8u, 0x03u);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[16], 2u, 0xfcu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[17], 6u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[18], 14u, 0x03u);
+    dst_p->channel_voltage0 = unpack_right_shift_u16(src_p[1], 2u, 0xfcu);
+    dst_p->channel_voltage0 |= unpack_left_shift_u16(src_p[2], 6u, 0x0fu);
+    dst_p->channel_voltage1 = unpack_right_shift_u16(src_p[2], 4u, 0xf0u);
+    dst_p->channel_voltage1 |= unpack_left_shift_u16(src_p[3], 4u, 0x3fu);
+    dst_p->channel_voltage2 = unpack_right_shift_u16(src_p[3], 6u, 0xc0u);
+    dst_p->channel_voltage2 |= unpack_left_shift_u16(src_p[4], 2u, 0xffu);
+    dst_p->channel_voltage3 = unpack_right_shift_u16(src_p[5], 0u, 0xffu);
+    dst_p->channel_voltage3 |= unpack_left_shift_u16(src_p[6], 8u, 0x03u);
+    dst_p->channel_voltage4 = unpack_right_shift_u16(src_p[6], 2u, 0xfcu);
+    dst_p->channel_voltage4 |= unpack_left_shift_u16(src_p[7], 6u, 0x0fu);
+    dst_p->channel_voltage5 = unpack_right_shift_u16(src_p[7], 4u, 0xf0u);
+    dst_p->channel_voltage5 |= unpack_left_shift_u16(src_p[8], 4u, 0x3fu);
+    dst_p->channel_voltage6 = unpack_right_shift_u16(src_p[8], 6u, 0xc0u);
+    dst_p->channel_voltage6 |= unpack_left_shift_u16(src_p[9], 2u, 0xffu);
+    dst_p->channel_voltage7 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
+    dst_p->channel_voltage7 |= unpack_left_shift_u16(src_p[11], 8u, 0x03u);
+    dst_p->channel_voltage8 = unpack_right_shift_u16(src_p[11], 2u, 0xfcu);
+    dst_p->channel_voltage8 |= unpack_left_shift_u16(src_p[12], 6u, 0x0fu);
+    dst_p->channel_voltage9 = unpack_right_shift_u16(src_p[12], 4u, 0xf0u);
+    dst_p->channel_voltage9 |= unpack_left_shift_u16(src_p[13], 4u, 0x3fu);
+    dst_p->channel_voltage10 = unpack_right_shift_u16(src_p[13], 6u, 0xc0u);
+    dst_p->channel_voltage10 |= unpack_left_shift_u16(src_p[14], 2u, 0xffu);
+    dst_p->channel_voltage11 = unpack_right_shift_u16(src_p[15], 0u, 0xffu);
+    dst_p->channel_voltage11 |= unpack_left_shift_u16(src_p[16], 8u, 0x03u);
 
     return (0);
 }
@@ -4788,6 +4588,11 @@ int car_can_raw_pdu_voltage_data_init(struct car_can_raw_pdu_voltage_data_t *msg
 }
 
 bool car_can_raw_pdu_voltage_data_input_voltage_is_in_range(uint16_t value)
+{
+    return (value <= 1023u);
+}
+
+bool car_can_raw_pdu_voltage_data_channel_voltage0_is_in_range(uint16_t value)
 {
     return (value <= 1023u);
 }
@@ -4847,64 +4652,49 @@ bool car_can_raw_pdu_voltage_data_channel_voltage11_is_in_range(uint16_t value)
     return (value <= 1023u);
 }
 
-bool car_can_raw_pdu_voltage_data_channel_voltage12_is_in_range(uint16_t value)
-{
-    return (value <= 1023u);
-}
-
-bool car_can_raw_pdu_voltage_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
 int car_can_raw_pdu_temperature_data_pack(
     uint8_t *dst_p,
     const struct car_can_raw_pdu_temperature_data_t *src_p,
     size_t size)
 {
-    if (size < 24u) {
+    if (size < 20u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 24);
+    memset(&dst_p[0], 0, 20);
 
-    dst_p[0] |= pack_left_shift_u16(src_p->channel_temperature1, 0u, 0xffu);
-    dst_p[1] |= pack_right_shift_u16(src_p->channel_temperature1, 8u, 0x1fu);
-    dst_p[1] |= pack_left_shift_u16(src_p->channel_temperature2, 5u, 0xe0u);
-    dst_p[2] |= pack_right_shift_u16(src_p->channel_temperature2, 3u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->channel_temperature2, 11u, 0x03u);
-    dst_p[3] |= pack_left_shift_u16(src_p->channel_temperature3, 2u, 0xfcu);
-    dst_p[4] |= pack_right_shift_u16(src_p->channel_temperature3, 6u, 0x7fu);
-    dst_p[4] |= pack_left_shift_u16(src_p->channel_temperature4, 7u, 0x80u);
-    dst_p[5] |= pack_right_shift_u16(src_p->channel_temperature4, 1u, 0xffu);
-    dst_p[6] |= pack_right_shift_u16(src_p->channel_temperature4, 9u, 0x0fu);
-    dst_p[6] |= pack_left_shift_u16(src_p->channel_temperature5, 4u, 0xf0u);
-    dst_p[7] |= pack_right_shift_u16(src_p->channel_temperature5, 4u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->channel_temperature5, 12u, 0x01u);
-    dst_p[8] |= pack_left_shift_u16(src_p->channel_temperature6, 1u, 0xfeu);
-    dst_p[9] |= pack_right_shift_u16(src_p->channel_temperature6, 7u, 0x3fu);
-    dst_p[9] |= pack_left_shift_u16(src_p->channel_temperature7, 6u, 0xc0u);
-    dst_p[10] |= pack_right_shift_u16(src_p->channel_temperature7, 2u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(src_p->channel_temperature7, 10u, 0x07u);
-    dst_p[11] |= pack_left_shift_u16(src_p->channel_temperature8, 3u, 0xf8u);
-    dst_p[12] |= pack_right_shift_u16(src_p->channel_temperature8, 5u, 0xffu);
-    dst_p[13] |= pack_left_shift_u16(src_p->channel_temperature9, 0u, 0xffu);
-    dst_p[14] |= pack_right_shift_u16(src_p->channel_temperature9, 8u, 0x1fu);
-    dst_p[14] |= pack_left_shift_u16(src_p->channel_temperature10, 5u, 0xe0u);
-    dst_p[15] |= pack_right_shift_u16(src_p->channel_temperature10, 3u, 0xffu);
-    dst_p[16] |= pack_right_shift_u16(src_p->channel_temperature10, 11u, 0x03u);
-    dst_p[16] |= pack_left_shift_u16(src_p->channel_temperature11, 2u, 0xfcu);
-    dst_p[17] |= pack_right_shift_u16(src_p->channel_temperature11, 6u, 0x7fu);
-    dst_p[17] |= pack_left_shift_u16(src_p->channel_temperature12, 7u, 0x80u);
-    dst_p[18] |= pack_right_shift_u16(src_p->channel_temperature12, 1u, 0xffu);
-    dst_p[19] |= pack_right_shift_u16(src_p->channel_temperature12, 9u, 0x0fu);
-    dst_p[19] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
-    dst_p[20] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
-    dst_p[21] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
+    dst_p[0] |= pack_left_shift_u16(src_p->channel_temperature0, 0u, 0xffu);
+    dst_p[1] |= pack_right_shift_u16(src_p->channel_temperature0, 8u, 0x1fu);
+    dst_p[1] |= pack_left_shift_u16(src_p->channel_temperature1, 5u, 0xe0u);
+    dst_p[2] |= pack_right_shift_u16(src_p->channel_temperature1, 3u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(src_p->channel_temperature1, 11u, 0x03u);
+    dst_p[3] |= pack_left_shift_u16(src_p->channel_temperature2, 2u, 0xfcu);
+    dst_p[4] |= pack_right_shift_u16(src_p->channel_temperature2, 6u, 0x7fu);
+    dst_p[4] |= pack_left_shift_u16(src_p->channel_temperature3, 7u, 0x80u);
+    dst_p[5] |= pack_right_shift_u16(src_p->channel_temperature3, 1u, 0xffu);
+    dst_p[6] |= pack_right_shift_u16(src_p->channel_temperature3, 9u, 0x0fu);
+    dst_p[6] |= pack_left_shift_u16(src_p->channel_temperature4, 4u, 0xf0u);
+    dst_p[7] |= pack_right_shift_u16(src_p->channel_temperature4, 4u, 0xffu);
+    dst_p[8] |= pack_right_shift_u16(src_p->channel_temperature4, 12u, 0x01u);
+    dst_p[8] |= pack_left_shift_u16(src_p->channel_temperature5, 1u, 0xfeu);
+    dst_p[9] |= pack_right_shift_u16(src_p->channel_temperature5, 7u, 0x3fu);
+    dst_p[9] |= pack_left_shift_u16(src_p->channel_temperature6, 6u, 0xc0u);
+    dst_p[10] |= pack_right_shift_u16(src_p->channel_temperature6, 2u, 0xffu);
+    dst_p[11] |= pack_right_shift_u16(src_p->channel_temperature6, 10u, 0x07u);
+    dst_p[11] |= pack_left_shift_u16(src_p->channel_temperature7, 3u, 0xf8u);
+    dst_p[12] |= pack_right_shift_u16(src_p->channel_temperature7, 5u, 0xffu);
+    dst_p[13] |= pack_left_shift_u16(src_p->channel_temperature8, 0u, 0xffu);
+    dst_p[14] |= pack_right_shift_u16(src_p->channel_temperature8, 8u, 0x1fu);
+    dst_p[14] |= pack_left_shift_u16(src_p->channel_temperature9, 5u, 0xe0u);
+    dst_p[15] |= pack_right_shift_u16(src_p->channel_temperature9, 3u, 0xffu);
+    dst_p[16] |= pack_right_shift_u16(src_p->channel_temperature9, 11u, 0x03u);
+    dst_p[16] |= pack_left_shift_u16(src_p->channel_temperature10, 2u, 0xfcu);
+    dst_p[17] |= pack_right_shift_u16(src_p->channel_temperature10, 6u, 0x7fu);
+    dst_p[17] |= pack_left_shift_u16(src_p->channel_temperature11, 7u, 0x80u);
+    dst_p[18] |= pack_right_shift_u16(src_p->channel_temperature11, 1u, 0xffu);
+    dst_p[19] |= pack_right_shift_u16(src_p->channel_temperature11, 9u, 0x0fu);
 
-    return (24);
+    return (20);
 }
 
 int car_can_raw_pdu_temperature_data_unpack(
@@ -4912,43 +4702,40 @@ int car_can_raw_pdu_temperature_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 24u) {
+    if (size < 20u) {
         return (-EINVAL);
     }
 
-    dst_p->channel_temperature1 = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
-    dst_p->channel_temperature1 |= unpack_left_shift_u16(src_p[1], 8u, 0x1fu);
-    dst_p->channel_temperature2 = unpack_right_shift_u16(src_p[1], 5u, 0xe0u);
-    dst_p->channel_temperature2 |= unpack_left_shift_u16(src_p[2], 3u, 0xffu);
-    dst_p->channel_temperature2 |= unpack_left_shift_u16(src_p[3], 11u, 0x03u);
-    dst_p->channel_temperature3 = unpack_right_shift_u16(src_p[3], 2u, 0xfcu);
-    dst_p->channel_temperature3 |= unpack_left_shift_u16(src_p[4], 6u, 0x7fu);
-    dst_p->channel_temperature4 = unpack_right_shift_u16(src_p[4], 7u, 0x80u);
-    dst_p->channel_temperature4 |= unpack_left_shift_u16(src_p[5], 1u, 0xffu);
-    dst_p->channel_temperature4 |= unpack_left_shift_u16(src_p[6], 9u, 0x0fu);
-    dst_p->channel_temperature5 = unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
-    dst_p->channel_temperature5 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
-    dst_p->channel_temperature5 |= unpack_left_shift_u16(src_p[8], 12u, 0x01u);
-    dst_p->channel_temperature6 = unpack_right_shift_u16(src_p[8], 1u, 0xfeu);
-    dst_p->channel_temperature6 |= unpack_left_shift_u16(src_p[9], 7u, 0x3fu);
-    dst_p->channel_temperature7 = unpack_right_shift_u16(src_p[9], 6u, 0xc0u);
-    dst_p->channel_temperature7 |= unpack_left_shift_u16(src_p[10], 2u, 0xffu);
-    dst_p->channel_temperature7 |= unpack_left_shift_u16(src_p[11], 10u, 0x07u);
-    dst_p->channel_temperature8 = unpack_right_shift_u16(src_p[11], 3u, 0xf8u);
-    dst_p->channel_temperature8 |= unpack_left_shift_u16(src_p[12], 5u, 0xffu);
-    dst_p->channel_temperature9 = unpack_right_shift_u16(src_p[13], 0u, 0xffu);
-    dst_p->channel_temperature9 |= unpack_left_shift_u16(src_p[14], 8u, 0x1fu);
-    dst_p->channel_temperature10 = unpack_right_shift_u16(src_p[14], 5u, 0xe0u);
-    dst_p->channel_temperature10 |= unpack_left_shift_u16(src_p[15], 3u, 0xffu);
-    dst_p->channel_temperature10 |= unpack_left_shift_u16(src_p[16], 11u, 0x03u);
-    dst_p->channel_temperature11 = unpack_right_shift_u16(src_p[16], 2u, 0xfcu);
-    dst_p->channel_temperature11 |= unpack_left_shift_u16(src_p[17], 6u, 0x7fu);
-    dst_p->channel_temperature12 = unpack_right_shift_u16(src_p[17], 7u, 0x80u);
-    dst_p->channel_temperature12 |= unpack_left_shift_u16(src_p[18], 1u, 0xffu);
-    dst_p->channel_temperature12 |= unpack_left_shift_u16(src_p[19], 9u, 0x0fu);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[19], 4u, 0xf0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[20], 4u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[21], 12u, 0x0fu);
+    dst_p->channel_temperature0 = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
+    dst_p->channel_temperature0 |= unpack_left_shift_u16(src_p[1], 8u, 0x1fu);
+    dst_p->channel_temperature1 = unpack_right_shift_u16(src_p[1], 5u, 0xe0u);
+    dst_p->channel_temperature1 |= unpack_left_shift_u16(src_p[2], 3u, 0xffu);
+    dst_p->channel_temperature1 |= unpack_left_shift_u16(src_p[3], 11u, 0x03u);
+    dst_p->channel_temperature2 = unpack_right_shift_u16(src_p[3], 2u, 0xfcu);
+    dst_p->channel_temperature2 |= unpack_left_shift_u16(src_p[4], 6u, 0x7fu);
+    dst_p->channel_temperature3 = unpack_right_shift_u16(src_p[4], 7u, 0x80u);
+    dst_p->channel_temperature3 |= unpack_left_shift_u16(src_p[5], 1u, 0xffu);
+    dst_p->channel_temperature3 |= unpack_left_shift_u16(src_p[6], 9u, 0x0fu);
+    dst_p->channel_temperature4 = unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
+    dst_p->channel_temperature4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
+    dst_p->channel_temperature4 |= unpack_left_shift_u16(src_p[8], 12u, 0x01u);
+    dst_p->channel_temperature5 = unpack_right_shift_u16(src_p[8], 1u, 0xfeu);
+    dst_p->channel_temperature5 |= unpack_left_shift_u16(src_p[9], 7u, 0x3fu);
+    dst_p->channel_temperature6 = unpack_right_shift_u16(src_p[9], 6u, 0xc0u);
+    dst_p->channel_temperature6 |= unpack_left_shift_u16(src_p[10], 2u, 0xffu);
+    dst_p->channel_temperature6 |= unpack_left_shift_u16(src_p[11], 10u, 0x07u);
+    dst_p->channel_temperature7 = unpack_right_shift_u16(src_p[11], 3u, 0xf8u);
+    dst_p->channel_temperature7 |= unpack_left_shift_u16(src_p[12], 5u, 0xffu);
+    dst_p->channel_temperature8 = unpack_right_shift_u16(src_p[13], 0u, 0xffu);
+    dst_p->channel_temperature8 |= unpack_left_shift_u16(src_p[14], 8u, 0x1fu);
+    dst_p->channel_temperature9 = unpack_right_shift_u16(src_p[14], 5u, 0xe0u);
+    dst_p->channel_temperature9 |= unpack_left_shift_u16(src_p[15], 3u, 0xffu);
+    dst_p->channel_temperature9 |= unpack_left_shift_u16(src_p[16], 11u, 0x03u);
+    dst_p->channel_temperature10 = unpack_right_shift_u16(src_p[16], 2u, 0xfcu);
+    dst_p->channel_temperature10 |= unpack_left_shift_u16(src_p[17], 6u, 0x7fu);
+    dst_p->channel_temperature11 = unpack_right_shift_u16(src_p[17], 7u, 0x80u);
+    dst_p->channel_temperature11 |= unpack_left_shift_u16(src_p[18], 1u, 0xffu);
+    dst_p->channel_temperature11 |= unpack_left_shift_u16(src_p[19], 9u, 0x0fu);
 
     return (0);
 }
@@ -4960,6 +4747,11 @@ int car_can_raw_pdu_temperature_data_init(struct car_can_raw_pdu_temperature_dat
     memset(msg_p, 0, sizeof(struct car_can_raw_pdu_temperature_data_t));
 
     return 0;
+}
+
+bool car_can_raw_pdu_temperature_data_channel_temperature0_is_in_range(uint16_t value)
+{
+    return (value <= 8191u);
 }
 
 bool car_can_raw_pdu_temperature_data_channel_temperature1_is_in_range(uint16_t value)
@@ -5017,880 +4809,108 @@ bool car_can_raw_pdu_temperature_data_channel_temperature11_is_in_range(uint16_t
     return (value <= 8191u);
 }
 
-bool car_can_raw_pdu_temperature_data_channel_temperature12_is_in_range(uint16_t value)
-{
-    return (value <= 8191u);
-}
-
-bool car_can_raw_pdu_temperature_data_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-int car_can_raw_pdu_over_current_snapshot_a_pack(
+int car_can_raw_pdu_over_current_snapshot_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_pdu_over_current_snapshot_a_t *src_p,
+    const struct car_can_raw_pdu_over_current_snapshot_t *src_p,
     size_t size)
 {
-    if (size < 64u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 64);
+    memset(&dst_p[0], 0, 12);
 
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current1, 0u, 0x01u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current2, 1u, 0x02u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current3, 2u, 0x04u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current4, 3u, 0x08u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current5, 4u, 0x10u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current6, 5u, 0x20u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_i2_t1, 6u, 0x40u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_i2_t2, 7u, 0x80u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_i2_t3, 0u, 0x01u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_i2_t4, 1u, 0x02u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_i2_t5, 2u, 0x04u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_i2_t6, 3u, 0x08u);
-    dst_p[1] |= pack_left_shift_u8(src_p->trip_current_saturated1, 4u, 0x10u);
-    dst_p[1] |= pack_left_shift_u8(src_p->trip_current_saturated2, 5u, 0x20u);
-    dst_p[1] |= pack_left_shift_u8(src_p->trip_current_saturated3, 6u, 0x40u);
-    dst_p[1] |= pack_left_shift_u8(src_p->trip_current_saturated4, 7u, 0x80u);
-    dst_p[2] |= pack_left_shift_u8(src_p->trip_current_saturated5, 0u, 0x01u);
-    dst_p[2] |= pack_left_shift_u8(src_p->trip_current_saturated6, 1u, 0x02u);
-    dst_p[2] |= pack_left_shift_u32(src_p->capture_time_ms1, 2u, 0xfcu);
-    dst_p[3] |= pack_right_shift_u32(src_p->capture_time_ms1, 6u, 0xffu);
-    dst_p[4] |= pack_right_shift_u32(src_p->capture_time_ms1, 14u, 0xffu);
-    dst_p[5] |= pack_right_shift_u32(src_p->capture_time_ms1, 22u, 0xffu);
-    dst_p[6] |= pack_right_shift_u32(src_p->capture_time_ms1, 30u, 0x03u);
-    dst_p[6] |= pack_left_shift_u16(src_p->current_sample_age_ms1, 2u, 0xfcu);
-    dst_p[7] |= pack_right_shift_u16(src_p->current_sample_age_ms1, 6u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->current_sample_age_ms1, 14u, 0x03u);
-    dst_p[8] |= pack_left_shift_u16(src_p->trip_current1, 2u, 0xfcu);
-    dst_p[9] |= pack_right_shift_u16(src_p->trip_current1, 6u, 0xffu);
-    dst_p[10] |= pack_right_shift_u16(src_p->trip_current1, 14u, 0x03u);
-    dst_p[10] |= pack_left_shift_u32(src_p->capture_time_ms2, 2u, 0xfcu);
-    dst_p[11] |= pack_right_shift_u32(src_p->capture_time_ms2, 6u, 0xffu);
-    dst_p[12] |= pack_right_shift_u32(src_p->capture_time_ms2, 14u, 0xffu);
-    dst_p[13] |= pack_right_shift_u32(src_p->capture_time_ms2, 22u, 0xffu);
-    dst_p[14] |= pack_right_shift_u32(src_p->capture_time_ms2, 30u, 0x03u);
-    dst_p[14] |= pack_left_shift_u16(src_p->current_sample_age_ms2, 2u, 0xfcu);
-    dst_p[15] |= pack_right_shift_u16(src_p->current_sample_age_ms2, 6u, 0xffu);
-    dst_p[16] |= pack_right_shift_u16(src_p->current_sample_age_ms2, 14u, 0x03u);
-    dst_p[16] |= pack_left_shift_u16(src_p->trip_current2, 2u, 0xfcu);
-    dst_p[17] |= pack_right_shift_u16(src_p->trip_current2, 6u, 0xffu);
-    dst_p[18] |= pack_right_shift_u16(src_p->trip_current2, 14u, 0x03u);
-    dst_p[18] |= pack_left_shift_u32(src_p->capture_time_ms3, 2u, 0xfcu);
-    dst_p[19] |= pack_right_shift_u32(src_p->capture_time_ms3, 6u, 0xffu);
-    dst_p[20] |= pack_right_shift_u32(src_p->capture_time_ms3, 14u, 0xffu);
-    dst_p[21] |= pack_right_shift_u32(src_p->capture_time_ms3, 22u, 0xffu);
-    dst_p[22] |= pack_right_shift_u32(src_p->capture_time_ms3, 30u, 0x03u);
-    dst_p[22] |= pack_left_shift_u16(src_p->current_sample_age_ms3, 2u, 0xfcu);
-    dst_p[23] |= pack_right_shift_u16(src_p->current_sample_age_ms3, 6u, 0xffu);
-    dst_p[24] |= pack_right_shift_u16(src_p->current_sample_age_ms3, 14u, 0x03u);
-    dst_p[24] |= pack_left_shift_u16(src_p->trip_current3, 2u, 0xfcu);
-    dst_p[25] |= pack_right_shift_u16(src_p->trip_current3, 6u, 0xffu);
-    dst_p[26] |= pack_right_shift_u16(src_p->trip_current3, 14u, 0x03u);
-    dst_p[26] |= pack_left_shift_u32(src_p->capture_time_ms4, 2u, 0xfcu);
-    dst_p[27] |= pack_right_shift_u32(src_p->capture_time_ms4, 6u, 0xffu);
-    dst_p[28] |= pack_right_shift_u32(src_p->capture_time_ms4, 14u, 0xffu);
-    dst_p[29] |= pack_right_shift_u32(src_p->capture_time_ms4, 22u, 0xffu);
-    dst_p[30] |= pack_right_shift_u32(src_p->capture_time_ms4, 30u, 0x03u);
-    dst_p[30] |= pack_left_shift_u16(src_p->current_sample_age_ms4, 2u, 0xfcu);
-    dst_p[31] |= pack_right_shift_u16(src_p->current_sample_age_ms4, 6u, 0xffu);
-    dst_p[32] |= pack_right_shift_u16(src_p->current_sample_age_ms4, 14u, 0x03u);
-    dst_p[32] |= pack_left_shift_u16(src_p->trip_current4, 2u, 0xfcu);
-    dst_p[33] |= pack_right_shift_u16(src_p->trip_current4, 6u, 0xffu);
-    dst_p[34] |= pack_right_shift_u16(src_p->trip_current4, 14u, 0x03u);
-    dst_p[34] |= pack_left_shift_u32(src_p->capture_time_ms5, 2u, 0xfcu);
-    dst_p[35] |= pack_right_shift_u32(src_p->capture_time_ms5, 6u, 0xffu);
-    dst_p[36] |= pack_right_shift_u32(src_p->capture_time_ms5, 14u, 0xffu);
-    dst_p[37] |= pack_right_shift_u32(src_p->capture_time_ms5, 22u, 0xffu);
-    dst_p[38] |= pack_right_shift_u32(src_p->capture_time_ms5, 30u, 0x03u);
-    dst_p[38] |= pack_left_shift_u16(src_p->current_sample_age_ms5, 2u, 0xfcu);
-    dst_p[39] |= pack_right_shift_u16(src_p->current_sample_age_ms5, 6u, 0xffu);
-    dst_p[40] |= pack_right_shift_u16(src_p->current_sample_age_ms5, 14u, 0x03u);
-    dst_p[40] |= pack_left_shift_u16(src_p->trip_current5, 2u, 0xfcu);
-    dst_p[41] |= pack_right_shift_u16(src_p->trip_current5, 6u, 0xffu);
-    dst_p[42] |= pack_right_shift_u16(src_p->trip_current5, 14u, 0x03u);
-    dst_p[42] |= pack_left_shift_u32(src_p->capture_time_ms6, 2u, 0xfcu);
-    dst_p[43] |= pack_right_shift_u32(src_p->capture_time_ms6, 6u, 0xffu);
-    dst_p[44] |= pack_right_shift_u32(src_p->capture_time_ms6, 14u, 0xffu);
-    dst_p[45] |= pack_right_shift_u32(src_p->capture_time_ms6, 22u, 0xffu);
-    dst_p[46] |= pack_right_shift_u32(src_p->capture_time_ms6, 30u, 0x03u);
-    dst_p[46] |= pack_left_shift_u16(src_p->current_sample_age_ms6, 2u, 0xfcu);
-    dst_p[47] |= pack_right_shift_u16(src_p->current_sample_age_ms6, 6u, 0xffu);
-    dst_p[48] |= pack_right_shift_u16(src_p->current_sample_age_ms6, 14u, 0x03u);
-    dst_p[48] |= pack_left_shift_u16(src_p->trip_current6, 2u, 0xfcu);
-    dst_p[49] |= pack_right_shift_u16(src_p->trip_current6, 6u, 0xffu);
-    dst_p[50] |= pack_right_shift_u16(src_p->trip_current6, 14u, 0x03u);
-    dst_p[50] |= pack_left_shift_u16(src_p->sample_age_ms, 2u, 0xfcu);
-    dst_p[51] |= pack_right_shift_u16(src_p->sample_age_ms, 6u, 0xffu);
-    dst_p[52] |= pack_right_shift_u16(src_p->sample_age_ms, 14u, 0x03u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current, 0u, 0x01u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_i2_t, 1u, 0x02u);
+    dst_p[0] |= pack_left_shift_u8(src_p->trip_current_saturated, 2u, 0x04u);
+    dst_p[0] |= pack_left_shift_u8(src_p->channel_index, 3u, 0x78u);
+    dst_p[0] |= pack_left_shift_u32(src_p->capture_time_ms, 7u, 0x80u);
+    dst_p[1] |= pack_right_shift_u32(src_p->capture_time_ms, 1u, 0xffu);
+    dst_p[2] |= pack_right_shift_u32(src_p->capture_time_ms, 9u, 0xffu);
+    dst_p[3] |= pack_right_shift_u32(src_p->capture_time_ms, 17u, 0xffu);
+    dst_p[4] |= pack_right_shift_u32(src_p->capture_time_ms, 25u, 0x7fu);
+    dst_p[4] |= pack_left_shift_u16(src_p->current_sample_age_ms, 7u, 0x80u);
+    dst_p[5] |= pack_right_shift_u16(src_p->current_sample_age_ms, 1u, 0xffu);
+    dst_p[6] |= pack_right_shift_u16(src_p->current_sample_age_ms, 9u, 0x7fu);
+    dst_p[6] |= pack_left_shift_u16(src_p->trip_current, 7u, 0x80u);
+    dst_p[7] |= pack_right_shift_u16(src_p->trip_current, 1u, 0xffu);
+    dst_p[8] |= pack_right_shift_u16(src_p->trip_current, 9u, 0x7fu);
 
-    return (64);
+    return (12);
 }
 
-int car_can_raw_pdu_over_current_snapshot_a_unpack(
-    struct car_can_raw_pdu_over_current_snapshot_a_t *dst_p,
+int car_can_raw_pdu_over_current_snapshot_unpack(
+    struct car_can_raw_pdu_over_current_snapshot_t *dst_p,
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 64u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
-    dst_p->fault_over_current1 = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
-    dst_p->fault_over_current2 = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
-    dst_p->fault_over_current3 = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
-    dst_p->fault_over_current4 = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
-    dst_p->fault_over_current5 = unpack_right_shift_u8(src_p[0], 4u, 0x10u);
-    dst_p->fault_over_current6 = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
-    dst_p->fault_i2_t1 = unpack_right_shift_u8(src_p[0], 6u, 0x40u);
-    dst_p->fault_i2_t2 = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
-    dst_p->fault_i2_t3 = unpack_right_shift_u8(src_p[1], 0u, 0x01u);
-    dst_p->fault_i2_t4 = unpack_right_shift_u8(src_p[1], 1u, 0x02u);
-    dst_p->fault_i2_t5 = unpack_right_shift_u8(src_p[1], 2u, 0x04u);
-    dst_p->fault_i2_t6 = unpack_right_shift_u8(src_p[1], 3u, 0x08u);
-    dst_p->trip_current_saturated1 = unpack_right_shift_u8(src_p[1], 4u, 0x10u);
-    dst_p->trip_current_saturated2 = unpack_right_shift_u8(src_p[1], 5u, 0x20u);
-    dst_p->trip_current_saturated3 = unpack_right_shift_u8(src_p[1], 6u, 0x40u);
-    dst_p->trip_current_saturated4 = unpack_right_shift_u8(src_p[1], 7u, 0x80u);
-    dst_p->trip_current_saturated5 = unpack_right_shift_u8(src_p[2], 0u, 0x01u);
-    dst_p->trip_current_saturated6 = unpack_right_shift_u8(src_p[2], 1u, 0x02u);
-    dst_p->capture_time_ms1 = unpack_right_shift_u32(src_p[2], 2u, 0xfcu);
-    dst_p->capture_time_ms1 |= unpack_left_shift_u32(src_p[3], 6u, 0xffu);
-    dst_p->capture_time_ms1 |= unpack_left_shift_u32(src_p[4], 14u, 0xffu);
-    dst_p->capture_time_ms1 |= unpack_left_shift_u32(src_p[5], 22u, 0xffu);
-    dst_p->capture_time_ms1 |= unpack_left_shift_u32(src_p[6], 30u, 0x03u);
-    dst_p->current_sample_age_ms1 = unpack_right_shift_u16(src_p[6], 2u, 0xfcu);
-    dst_p->current_sample_age_ms1 |= unpack_left_shift_u16(src_p[7], 6u, 0xffu);
-    dst_p->current_sample_age_ms1 |= unpack_left_shift_u16(src_p[8], 14u, 0x03u);
-    dst_p->trip_current1 = unpack_right_shift_u16(src_p[8], 2u, 0xfcu);
-    dst_p->trip_current1 |= unpack_left_shift_u16(src_p[9], 6u, 0xffu);
-    dst_p->trip_current1 |= unpack_left_shift_u16(src_p[10], 14u, 0x03u);
-    dst_p->capture_time_ms2 = unpack_right_shift_u32(src_p[10], 2u, 0xfcu);
-    dst_p->capture_time_ms2 |= unpack_left_shift_u32(src_p[11], 6u, 0xffu);
-    dst_p->capture_time_ms2 |= unpack_left_shift_u32(src_p[12], 14u, 0xffu);
-    dst_p->capture_time_ms2 |= unpack_left_shift_u32(src_p[13], 22u, 0xffu);
-    dst_p->capture_time_ms2 |= unpack_left_shift_u32(src_p[14], 30u, 0x03u);
-    dst_p->current_sample_age_ms2 = unpack_right_shift_u16(src_p[14], 2u, 0xfcu);
-    dst_p->current_sample_age_ms2 |= unpack_left_shift_u16(src_p[15], 6u, 0xffu);
-    dst_p->current_sample_age_ms2 |= unpack_left_shift_u16(src_p[16], 14u, 0x03u);
-    dst_p->trip_current2 = unpack_right_shift_u16(src_p[16], 2u, 0xfcu);
-    dst_p->trip_current2 |= unpack_left_shift_u16(src_p[17], 6u, 0xffu);
-    dst_p->trip_current2 |= unpack_left_shift_u16(src_p[18], 14u, 0x03u);
-    dst_p->capture_time_ms3 = unpack_right_shift_u32(src_p[18], 2u, 0xfcu);
-    dst_p->capture_time_ms3 |= unpack_left_shift_u32(src_p[19], 6u, 0xffu);
-    dst_p->capture_time_ms3 |= unpack_left_shift_u32(src_p[20], 14u, 0xffu);
-    dst_p->capture_time_ms3 |= unpack_left_shift_u32(src_p[21], 22u, 0xffu);
-    dst_p->capture_time_ms3 |= unpack_left_shift_u32(src_p[22], 30u, 0x03u);
-    dst_p->current_sample_age_ms3 = unpack_right_shift_u16(src_p[22], 2u, 0xfcu);
-    dst_p->current_sample_age_ms3 |= unpack_left_shift_u16(src_p[23], 6u, 0xffu);
-    dst_p->current_sample_age_ms3 |= unpack_left_shift_u16(src_p[24], 14u, 0x03u);
-    dst_p->trip_current3 = unpack_right_shift_u16(src_p[24], 2u, 0xfcu);
-    dst_p->trip_current3 |= unpack_left_shift_u16(src_p[25], 6u, 0xffu);
-    dst_p->trip_current3 |= unpack_left_shift_u16(src_p[26], 14u, 0x03u);
-    dst_p->capture_time_ms4 = unpack_right_shift_u32(src_p[26], 2u, 0xfcu);
-    dst_p->capture_time_ms4 |= unpack_left_shift_u32(src_p[27], 6u, 0xffu);
-    dst_p->capture_time_ms4 |= unpack_left_shift_u32(src_p[28], 14u, 0xffu);
-    dst_p->capture_time_ms4 |= unpack_left_shift_u32(src_p[29], 22u, 0xffu);
-    dst_p->capture_time_ms4 |= unpack_left_shift_u32(src_p[30], 30u, 0x03u);
-    dst_p->current_sample_age_ms4 = unpack_right_shift_u16(src_p[30], 2u, 0xfcu);
-    dst_p->current_sample_age_ms4 |= unpack_left_shift_u16(src_p[31], 6u, 0xffu);
-    dst_p->current_sample_age_ms4 |= unpack_left_shift_u16(src_p[32], 14u, 0x03u);
-    dst_p->trip_current4 = unpack_right_shift_u16(src_p[32], 2u, 0xfcu);
-    dst_p->trip_current4 |= unpack_left_shift_u16(src_p[33], 6u, 0xffu);
-    dst_p->trip_current4 |= unpack_left_shift_u16(src_p[34], 14u, 0x03u);
-    dst_p->capture_time_ms5 = unpack_right_shift_u32(src_p[34], 2u, 0xfcu);
-    dst_p->capture_time_ms5 |= unpack_left_shift_u32(src_p[35], 6u, 0xffu);
-    dst_p->capture_time_ms5 |= unpack_left_shift_u32(src_p[36], 14u, 0xffu);
-    dst_p->capture_time_ms5 |= unpack_left_shift_u32(src_p[37], 22u, 0xffu);
-    dst_p->capture_time_ms5 |= unpack_left_shift_u32(src_p[38], 30u, 0x03u);
-    dst_p->current_sample_age_ms5 = unpack_right_shift_u16(src_p[38], 2u, 0xfcu);
-    dst_p->current_sample_age_ms5 |= unpack_left_shift_u16(src_p[39], 6u, 0xffu);
-    dst_p->current_sample_age_ms5 |= unpack_left_shift_u16(src_p[40], 14u, 0x03u);
-    dst_p->trip_current5 = unpack_right_shift_u16(src_p[40], 2u, 0xfcu);
-    dst_p->trip_current5 |= unpack_left_shift_u16(src_p[41], 6u, 0xffu);
-    dst_p->trip_current5 |= unpack_left_shift_u16(src_p[42], 14u, 0x03u);
-    dst_p->capture_time_ms6 = unpack_right_shift_u32(src_p[42], 2u, 0xfcu);
-    dst_p->capture_time_ms6 |= unpack_left_shift_u32(src_p[43], 6u, 0xffu);
-    dst_p->capture_time_ms6 |= unpack_left_shift_u32(src_p[44], 14u, 0xffu);
-    dst_p->capture_time_ms6 |= unpack_left_shift_u32(src_p[45], 22u, 0xffu);
-    dst_p->capture_time_ms6 |= unpack_left_shift_u32(src_p[46], 30u, 0x03u);
-    dst_p->current_sample_age_ms6 = unpack_right_shift_u16(src_p[46], 2u, 0xfcu);
-    dst_p->current_sample_age_ms6 |= unpack_left_shift_u16(src_p[47], 6u, 0xffu);
-    dst_p->current_sample_age_ms6 |= unpack_left_shift_u16(src_p[48], 14u, 0x03u);
-    dst_p->trip_current6 = unpack_right_shift_u16(src_p[48], 2u, 0xfcu);
-    dst_p->trip_current6 |= unpack_left_shift_u16(src_p[49], 6u, 0xffu);
-    dst_p->trip_current6 |= unpack_left_shift_u16(src_p[50], 14u, 0x03u);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[50], 2u, 0xfcu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[51], 6u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[52], 14u, 0x03u);
+    dst_p->fault_over_current = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
+    dst_p->fault_i2_t = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
+    dst_p->trip_current_saturated = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
+    dst_p->channel_index = unpack_right_shift_u8(src_p[0], 3u, 0x78u);
+    dst_p->capture_time_ms = unpack_right_shift_u32(src_p[0], 7u, 0x80u);
+    dst_p->capture_time_ms |= unpack_left_shift_u32(src_p[1], 1u, 0xffu);
+    dst_p->capture_time_ms |= unpack_left_shift_u32(src_p[2], 9u, 0xffu);
+    dst_p->capture_time_ms |= unpack_left_shift_u32(src_p[3], 17u, 0xffu);
+    dst_p->capture_time_ms |= unpack_left_shift_u32(src_p[4], 25u, 0x7fu);
+    dst_p->current_sample_age_ms = unpack_right_shift_u16(src_p[4], 7u, 0x80u);
+    dst_p->current_sample_age_ms |= unpack_left_shift_u16(src_p[5], 1u, 0xffu);
+    dst_p->current_sample_age_ms |= unpack_left_shift_u16(src_p[6], 9u, 0x7fu);
+    dst_p->trip_current = unpack_right_shift_u16(src_p[6], 7u, 0x80u);
+    dst_p->trip_current |= unpack_left_shift_u16(src_p[7], 1u, 0xffu);
+    dst_p->trip_current |= unpack_left_shift_u16(src_p[8], 9u, 0x7fu);
 
     return (0);
 }
 
-int car_can_raw_pdu_over_current_snapshot_a_init(struct car_can_raw_pdu_over_current_snapshot_a_t *msg_p)
+int car_can_raw_pdu_over_current_snapshot_init(struct car_can_raw_pdu_over_current_snapshot_t *msg_p)
 {
     if (msg_p == NULL) return -1;
 
-    memset(msg_p, 0, sizeof(struct car_can_raw_pdu_over_current_snapshot_a_t));
+    memset(msg_p, 0, sizeof(struct car_can_raw_pdu_over_current_snapshot_t));
 
     return 0;
 }
 
-bool car_can_raw_pdu_over_current_snapshot_a_fault_over_current1_is_in_range(uint8_t value)
+bool car_can_raw_pdu_over_current_snapshot_fault_over_current_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pdu_over_current_snapshot_a_fault_over_current2_is_in_range(uint8_t value)
+bool car_can_raw_pdu_over_current_snapshot_fault_i2_t_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pdu_over_current_snapshot_a_fault_over_current3_is_in_range(uint8_t value)
+bool car_can_raw_pdu_over_current_snapshot_trip_current_saturated_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pdu_over_current_snapshot_a_fault_over_current4_is_in_range(uint8_t value)
+bool car_can_raw_pdu_over_current_snapshot_channel_index_is_in_range(uint8_t value)
 {
-    return (value <= 1u);
+    return (value <= 15u);
 }
 
-bool car_can_raw_pdu_over_current_snapshot_a_fault_over_current5_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_fault_over_current6_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_fault_i2_t1_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_fault_i2_t2_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_fault_i2_t3_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_fault_i2_t4_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_fault_i2_t5_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_fault_i2_t6_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current_saturated1_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current_saturated2_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current_saturated3_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current_saturated4_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current_saturated5_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current_saturated6_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_capture_time_ms1_is_in_range(uint32_t value)
+bool car_can_raw_pdu_over_current_snapshot_capture_time_ms_is_in_range(uint32_t value)
 {
     (void)value;
 
     return (true);
 }
 
-bool car_can_raw_pdu_over_current_snapshot_a_current_sample_age_ms1_is_in_range(uint16_t value)
+bool car_can_raw_pdu_over_current_snapshot_current_sample_age_ms_is_in_range(uint16_t value)
 {
     (void)value;
 
     return (true);
 }
 
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current1_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_capture_time_ms2_is_in_range(uint32_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_current_sample_age_ms2_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current2_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_capture_time_ms3_is_in_range(uint32_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_current_sample_age_ms3_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current3_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_capture_time_ms4_is_in_range(uint32_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_current_sample_age_ms4_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current4_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_capture_time_ms5_is_in_range(uint32_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_current_sample_age_ms5_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current5_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_capture_time_ms6_is_in_range(uint32_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_current_sample_age_ms6_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_trip_current6_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_a_sample_age_ms_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-int car_can_raw_pdu_over_current_snapshot_b_pack(
-    uint8_t *dst_p,
-    const struct car_can_raw_pdu_over_current_snapshot_b_t *src_p,
-    size_t size)
-{
-    if (size < 64u) {
-        return (-EINVAL);
-    }
-
-    memset(&dst_p[0], 0, 64);
-
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current7, 0u, 0x01u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current8, 1u, 0x02u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current9, 2u, 0x04u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current10, 3u, 0x08u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current11, 4u, 0x10u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_over_current12, 5u, 0x20u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_i2_t7, 6u, 0x40u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_i2_t8, 7u, 0x80u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_i2_t9, 0u, 0x01u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_i2_t10, 1u, 0x02u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_i2_t11, 2u, 0x04u);
-    dst_p[1] |= pack_left_shift_u8(src_p->fault_i2_t12, 3u, 0x08u);
-    dst_p[1] |= pack_left_shift_u8(src_p->trip_current_saturated7, 4u, 0x10u);
-    dst_p[1] |= pack_left_shift_u8(src_p->trip_current_saturated8, 5u, 0x20u);
-    dst_p[1] |= pack_left_shift_u8(src_p->trip_current_saturated9, 6u, 0x40u);
-    dst_p[1] |= pack_left_shift_u8(src_p->trip_current_saturated10, 7u, 0x80u);
-    dst_p[2] |= pack_left_shift_u8(src_p->trip_current_saturated11, 0u, 0x01u);
-    dst_p[2] |= pack_left_shift_u8(src_p->trip_current_saturated12, 1u, 0x02u);
-    dst_p[2] |= pack_left_shift_u32(src_p->capture_time_ms7, 2u, 0xfcu);
-    dst_p[3] |= pack_right_shift_u32(src_p->capture_time_ms7, 6u, 0xffu);
-    dst_p[4] |= pack_right_shift_u32(src_p->capture_time_ms7, 14u, 0xffu);
-    dst_p[5] |= pack_right_shift_u32(src_p->capture_time_ms7, 22u, 0xffu);
-    dst_p[6] |= pack_right_shift_u32(src_p->capture_time_ms7, 30u, 0x03u);
-    dst_p[6] |= pack_left_shift_u16(src_p->current_sample_age_ms7, 2u, 0xfcu);
-    dst_p[7] |= pack_right_shift_u16(src_p->current_sample_age_ms7, 6u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->current_sample_age_ms7, 14u, 0x03u);
-    dst_p[8] |= pack_left_shift_u16(src_p->trip_current7, 2u, 0xfcu);
-    dst_p[9] |= pack_right_shift_u16(src_p->trip_current7, 6u, 0xffu);
-    dst_p[10] |= pack_right_shift_u16(src_p->trip_current7, 14u, 0x03u);
-    dst_p[10] |= pack_left_shift_u32(src_p->capture_time_ms8, 2u, 0xfcu);
-    dst_p[11] |= pack_right_shift_u32(src_p->capture_time_ms8, 6u, 0xffu);
-    dst_p[12] |= pack_right_shift_u32(src_p->capture_time_ms8, 14u, 0xffu);
-    dst_p[13] |= pack_right_shift_u32(src_p->capture_time_ms8, 22u, 0xffu);
-    dst_p[14] |= pack_right_shift_u32(src_p->capture_time_ms8, 30u, 0x03u);
-    dst_p[14] |= pack_left_shift_u16(src_p->current_sample_age_ms8, 2u, 0xfcu);
-    dst_p[15] |= pack_right_shift_u16(src_p->current_sample_age_ms8, 6u, 0xffu);
-    dst_p[16] |= pack_right_shift_u16(src_p->current_sample_age_ms8, 14u, 0x03u);
-    dst_p[16] |= pack_left_shift_u16(src_p->trip_current8, 2u, 0xfcu);
-    dst_p[17] |= pack_right_shift_u16(src_p->trip_current8, 6u, 0xffu);
-    dst_p[18] |= pack_right_shift_u16(src_p->trip_current8, 14u, 0x03u);
-    dst_p[18] |= pack_left_shift_u32(src_p->capture_time_ms9, 2u, 0xfcu);
-    dst_p[19] |= pack_right_shift_u32(src_p->capture_time_ms9, 6u, 0xffu);
-    dst_p[20] |= pack_right_shift_u32(src_p->capture_time_ms9, 14u, 0xffu);
-    dst_p[21] |= pack_right_shift_u32(src_p->capture_time_ms9, 22u, 0xffu);
-    dst_p[22] |= pack_right_shift_u32(src_p->capture_time_ms9, 30u, 0x03u);
-    dst_p[22] |= pack_left_shift_u16(src_p->current_sample_age_ms9, 2u, 0xfcu);
-    dst_p[23] |= pack_right_shift_u16(src_p->current_sample_age_ms9, 6u, 0xffu);
-    dst_p[24] |= pack_right_shift_u16(src_p->current_sample_age_ms9, 14u, 0x03u);
-    dst_p[24] |= pack_left_shift_u16(src_p->trip_current9, 2u, 0xfcu);
-    dst_p[25] |= pack_right_shift_u16(src_p->trip_current9, 6u, 0xffu);
-    dst_p[26] |= pack_right_shift_u16(src_p->trip_current9, 14u, 0x03u);
-    dst_p[26] |= pack_left_shift_u32(src_p->capture_time_ms10, 2u, 0xfcu);
-    dst_p[27] |= pack_right_shift_u32(src_p->capture_time_ms10, 6u, 0xffu);
-    dst_p[28] |= pack_right_shift_u32(src_p->capture_time_ms10, 14u, 0xffu);
-    dst_p[29] |= pack_right_shift_u32(src_p->capture_time_ms10, 22u, 0xffu);
-    dst_p[30] |= pack_right_shift_u32(src_p->capture_time_ms10, 30u, 0x03u);
-    dst_p[30] |= pack_left_shift_u16(src_p->current_sample_age_ms10, 2u, 0xfcu);
-    dst_p[31] |= pack_right_shift_u16(src_p->current_sample_age_ms10, 6u, 0xffu);
-    dst_p[32] |= pack_right_shift_u16(src_p->current_sample_age_ms10, 14u, 0x03u);
-    dst_p[32] |= pack_left_shift_u16(src_p->trip_current10, 2u, 0xfcu);
-    dst_p[33] |= pack_right_shift_u16(src_p->trip_current10, 6u, 0xffu);
-    dst_p[34] |= pack_right_shift_u16(src_p->trip_current10, 14u, 0x03u);
-    dst_p[34] |= pack_left_shift_u32(src_p->capture_time_ms11, 2u, 0xfcu);
-    dst_p[35] |= pack_right_shift_u32(src_p->capture_time_ms11, 6u, 0xffu);
-    dst_p[36] |= pack_right_shift_u32(src_p->capture_time_ms11, 14u, 0xffu);
-    dst_p[37] |= pack_right_shift_u32(src_p->capture_time_ms11, 22u, 0xffu);
-    dst_p[38] |= pack_right_shift_u32(src_p->capture_time_ms11, 30u, 0x03u);
-    dst_p[38] |= pack_left_shift_u16(src_p->current_sample_age_ms11, 2u, 0xfcu);
-    dst_p[39] |= pack_right_shift_u16(src_p->current_sample_age_ms11, 6u, 0xffu);
-    dst_p[40] |= pack_right_shift_u16(src_p->current_sample_age_ms11, 14u, 0x03u);
-    dst_p[40] |= pack_left_shift_u16(src_p->trip_current11, 2u, 0xfcu);
-    dst_p[41] |= pack_right_shift_u16(src_p->trip_current11, 6u, 0xffu);
-    dst_p[42] |= pack_right_shift_u16(src_p->trip_current11, 14u, 0x03u);
-    dst_p[42] |= pack_left_shift_u32(src_p->capture_time_ms12, 2u, 0xfcu);
-    dst_p[43] |= pack_right_shift_u32(src_p->capture_time_ms12, 6u, 0xffu);
-    dst_p[44] |= pack_right_shift_u32(src_p->capture_time_ms12, 14u, 0xffu);
-    dst_p[45] |= pack_right_shift_u32(src_p->capture_time_ms12, 22u, 0xffu);
-    dst_p[46] |= pack_right_shift_u32(src_p->capture_time_ms12, 30u, 0x03u);
-    dst_p[46] |= pack_left_shift_u16(src_p->current_sample_age_ms12, 2u, 0xfcu);
-    dst_p[47] |= pack_right_shift_u16(src_p->current_sample_age_ms12, 6u, 0xffu);
-    dst_p[48] |= pack_right_shift_u16(src_p->current_sample_age_ms12, 14u, 0x03u);
-    dst_p[48] |= pack_left_shift_u16(src_p->trip_current12, 2u, 0xfcu);
-    dst_p[49] |= pack_right_shift_u16(src_p->trip_current12, 6u, 0xffu);
-    dst_p[50] |= pack_right_shift_u16(src_p->trip_current12, 14u, 0x03u);
-    dst_p[50] |= pack_left_shift_u16(src_p->sample_age_ms, 2u, 0xfcu);
-    dst_p[51] |= pack_right_shift_u16(src_p->sample_age_ms, 6u, 0xffu);
-    dst_p[52] |= pack_right_shift_u16(src_p->sample_age_ms, 14u, 0x03u);
-
-    return (64);
-}
-
-int car_can_raw_pdu_over_current_snapshot_b_unpack(
-    struct car_can_raw_pdu_over_current_snapshot_b_t *dst_p,
-    const uint8_t *src_p,
-    size_t size)
-{
-    if (size < 64u) {
-        return (-EINVAL);
-    }
-
-    dst_p->fault_over_current7 = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
-    dst_p->fault_over_current8 = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
-    dst_p->fault_over_current9 = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
-    dst_p->fault_over_current10 = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
-    dst_p->fault_over_current11 = unpack_right_shift_u8(src_p[0], 4u, 0x10u);
-    dst_p->fault_over_current12 = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
-    dst_p->fault_i2_t7 = unpack_right_shift_u8(src_p[0], 6u, 0x40u);
-    dst_p->fault_i2_t8 = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
-    dst_p->fault_i2_t9 = unpack_right_shift_u8(src_p[1], 0u, 0x01u);
-    dst_p->fault_i2_t10 = unpack_right_shift_u8(src_p[1], 1u, 0x02u);
-    dst_p->fault_i2_t11 = unpack_right_shift_u8(src_p[1], 2u, 0x04u);
-    dst_p->fault_i2_t12 = unpack_right_shift_u8(src_p[1], 3u, 0x08u);
-    dst_p->trip_current_saturated7 = unpack_right_shift_u8(src_p[1], 4u, 0x10u);
-    dst_p->trip_current_saturated8 = unpack_right_shift_u8(src_p[1], 5u, 0x20u);
-    dst_p->trip_current_saturated9 = unpack_right_shift_u8(src_p[1], 6u, 0x40u);
-    dst_p->trip_current_saturated10 = unpack_right_shift_u8(src_p[1], 7u, 0x80u);
-    dst_p->trip_current_saturated11 = unpack_right_shift_u8(src_p[2], 0u, 0x01u);
-    dst_p->trip_current_saturated12 = unpack_right_shift_u8(src_p[2], 1u, 0x02u);
-    dst_p->capture_time_ms7 = unpack_right_shift_u32(src_p[2], 2u, 0xfcu);
-    dst_p->capture_time_ms7 |= unpack_left_shift_u32(src_p[3], 6u, 0xffu);
-    dst_p->capture_time_ms7 |= unpack_left_shift_u32(src_p[4], 14u, 0xffu);
-    dst_p->capture_time_ms7 |= unpack_left_shift_u32(src_p[5], 22u, 0xffu);
-    dst_p->capture_time_ms7 |= unpack_left_shift_u32(src_p[6], 30u, 0x03u);
-    dst_p->current_sample_age_ms7 = unpack_right_shift_u16(src_p[6], 2u, 0xfcu);
-    dst_p->current_sample_age_ms7 |= unpack_left_shift_u16(src_p[7], 6u, 0xffu);
-    dst_p->current_sample_age_ms7 |= unpack_left_shift_u16(src_p[8], 14u, 0x03u);
-    dst_p->trip_current7 = unpack_right_shift_u16(src_p[8], 2u, 0xfcu);
-    dst_p->trip_current7 |= unpack_left_shift_u16(src_p[9], 6u, 0xffu);
-    dst_p->trip_current7 |= unpack_left_shift_u16(src_p[10], 14u, 0x03u);
-    dst_p->capture_time_ms8 = unpack_right_shift_u32(src_p[10], 2u, 0xfcu);
-    dst_p->capture_time_ms8 |= unpack_left_shift_u32(src_p[11], 6u, 0xffu);
-    dst_p->capture_time_ms8 |= unpack_left_shift_u32(src_p[12], 14u, 0xffu);
-    dst_p->capture_time_ms8 |= unpack_left_shift_u32(src_p[13], 22u, 0xffu);
-    dst_p->capture_time_ms8 |= unpack_left_shift_u32(src_p[14], 30u, 0x03u);
-    dst_p->current_sample_age_ms8 = unpack_right_shift_u16(src_p[14], 2u, 0xfcu);
-    dst_p->current_sample_age_ms8 |= unpack_left_shift_u16(src_p[15], 6u, 0xffu);
-    dst_p->current_sample_age_ms8 |= unpack_left_shift_u16(src_p[16], 14u, 0x03u);
-    dst_p->trip_current8 = unpack_right_shift_u16(src_p[16], 2u, 0xfcu);
-    dst_p->trip_current8 |= unpack_left_shift_u16(src_p[17], 6u, 0xffu);
-    dst_p->trip_current8 |= unpack_left_shift_u16(src_p[18], 14u, 0x03u);
-    dst_p->capture_time_ms9 = unpack_right_shift_u32(src_p[18], 2u, 0xfcu);
-    dst_p->capture_time_ms9 |= unpack_left_shift_u32(src_p[19], 6u, 0xffu);
-    dst_p->capture_time_ms9 |= unpack_left_shift_u32(src_p[20], 14u, 0xffu);
-    dst_p->capture_time_ms9 |= unpack_left_shift_u32(src_p[21], 22u, 0xffu);
-    dst_p->capture_time_ms9 |= unpack_left_shift_u32(src_p[22], 30u, 0x03u);
-    dst_p->current_sample_age_ms9 = unpack_right_shift_u16(src_p[22], 2u, 0xfcu);
-    dst_p->current_sample_age_ms9 |= unpack_left_shift_u16(src_p[23], 6u, 0xffu);
-    dst_p->current_sample_age_ms9 |= unpack_left_shift_u16(src_p[24], 14u, 0x03u);
-    dst_p->trip_current9 = unpack_right_shift_u16(src_p[24], 2u, 0xfcu);
-    dst_p->trip_current9 |= unpack_left_shift_u16(src_p[25], 6u, 0xffu);
-    dst_p->trip_current9 |= unpack_left_shift_u16(src_p[26], 14u, 0x03u);
-    dst_p->capture_time_ms10 = unpack_right_shift_u32(src_p[26], 2u, 0xfcu);
-    dst_p->capture_time_ms10 |= unpack_left_shift_u32(src_p[27], 6u, 0xffu);
-    dst_p->capture_time_ms10 |= unpack_left_shift_u32(src_p[28], 14u, 0xffu);
-    dst_p->capture_time_ms10 |= unpack_left_shift_u32(src_p[29], 22u, 0xffu);
-    dst_p->capture_time_ms10 |= unpack_left_shift_u32(src_p[30], 30u, 0x03u);
-    dst_p->current_sample_age_ms10 = unpack_right_shift_u16(src_p[30], 2u, 0xfcu);
-    dst_p->current_sample_age_ms10 |= unpack_left_shift_u16(src_p[31], 6u, 0xffu);
-    dst_p->current_sample_age_ms10 |= unpack_left_shift_u16(src_p[32], 14u, 0x03u);
-    dst_p->trip_current10 = unpack_right_shift_u16(src_p[32], 2u, 0xfcu);
-    dst_p->trip_current10 |= unpack_left_shift_u16(src_p[33], 6u, 0xffu);
-    dst_p->trip_current10 |= unpack_left_shift_u16(src_p[34], 14u, 0x03u);
-    dst_p->capture_time_ms11 = unpack_right_shift_u32(src_p[34], 2u, 0xfcu);
-    dst_p->capture_time_ms11 |= unpack_left_shift_u32(src_p[35], 6u, 0xffu);
-    dst_p->capture_time_ms11 |= unpack_left_shift_u32(src_p[36], 14u, 0xffu);
-    dst_p->capture_time_ms11 |= unpack_left_shift_u32(src_p[37], 22u, 0xffu);
-    dst_p->capture_time_ms11 |= unpack_left_shift_u32(src_p[38], 30u, 0x03u);
-    dst_p->current_sample_age_ms11 = unpack_right_shift_u16(src_p[38], 2u, 0xfcu);
-    dst_p->current_sample_age_ms11 |= unpack_left_shift_u16(src_p[39], 6u, 0xffu);
-    dst_p->current_sample_age_ms11 |= unpack_left_shift_u16(src_p[40], 14u, 0x03u);
-    dst_p->trip_current11 = unpack_right_shift_u16(src_p[40], 2u, 0xfcu);
-    dst_p->trip_current11 |= unpack_left_shift_u16(src_p[41], 6u, 0xffu);
-    dst_p->trip_current11 |= unpack_left_shift_u16(src_p[42], 14u, 0x03u);
-    dst_p->capture_time_ms12 = unpack_right_shift_u32(src_p[42], 2u, 0xfcu);
-    dst_p->capture_time_ms12 |= unpack_left_shift_u32(src_p[43], 6u, 0xffu);
-    dst_p->capture_time_ms12 |= unpack_left_shift_u32(src_p[44], 14u, 0xffu);
-    dst_p->capture_time_ms12 |= unpack_left_shift_u32(src_p[45], 22u, 0xffu);
-    dst_p->capture_time_ms12 |= unpack_left_shift_u32(src_p[46], 30u, 0x03u);
-    dst_p->current_sample_age_ms12 = unpack_right_shift_u16(src_p[46], 2u, 0xfcu);
-    dst_p->current_sample_age_ms12 |= unpack_left_shift_u16(src_p[47], 6u, 0xffu);
-    dst_p->current_sample_age_ms12 |= unpack_left_shift_u16(src_p[48], 14u, 0x03u);
-    dst_p->trip_current12 = unpack_right_shift_u16(src_p[48], 2u, 0xfcu);
-    dst_p->trip_current12 |= unpack_left_shift_u16(src_p[49], 6u, 0xffu);
-    dst_p->trip_current12 |= unpack_left_shift_u16(src_p[50], 14u, 0x03u);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[50], 2u, 0xfcu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[51], 6u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[52], 14u, 0x03u);
-
-    return (0);
-}
-
-int car_can_raw_pdu_over_current_snapshot_b_init(struct car_can_raw_pdu_over_current_snapshot_b_t *msg_p)
-{
-    if (msg_p == NULL) return -1;
-
-    memset(msg_p, 0, sizeof(struct car_can_raw_pdu_over_current_snapshot_b_t));
-
-    return 0;
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_over_current7_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_over_current8_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_over_current9_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_over_current10_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_over_current11_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_over_current12_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_i2_t7_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_i2_t8_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_i2_t9_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_i2_t10_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_i2_t11_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_fault_i2_t12_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current_saturated7_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current_saturated8_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current_saturated9_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current_saturated10_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current_saturated11_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current_saturated12_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_capture_time_ms7_is_in_range(uint32_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_current_sample_age_ms7_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current7_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_capture_time_ms8_is_in_range(uint32_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_current_sample_age_ms8_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current8_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_capture_time_ms9_is_in_range(uint32_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_current_sample_age_ms9_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current9_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_capture_time_ms10_is_in_range(uint32_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_current_sample_age_ms10_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current10_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_capture_time_ms11_is_in_range(uint32_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_current_sample_age_ms11_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current11_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_capture_time_ms12_is_in_range(uint32_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_current_sample_age_ms12_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_trip_current12_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pdu_over_current_snapshot_b_sample_age_ms_is_in_range(uint16_t value)
+bool car_can_raw_pdu_over_current_snapshot_trip_current_is_in_range(uint16_t value)
 {
     (void)value;
 

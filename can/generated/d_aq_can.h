@@ -68,8 +68,6 @@ typedef struct {
     double rsrq;
     /** SINR; unit=dB; physical=raw*0.5+0; raw=[-128,127]. SINR */
     double sinr;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_telemetry_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -92,7 +90,7 @@ typedef enum {
     D_AQ_CAN_GPS_DATA_GPS_FIX_FIX2_D = 1,
     D_AQ_CAN_GPS_DATA_GPS_FIX_FIX3_D = 2,
 } d_aq_can_gps_data_gps_fix_choice_t;
-/** GPS receiver state and measurements. SampleAgeMs is the age of the oldest included GPS measurement, saturated at 65535 ms. */
+/** GPS receiver state and measurements. */
 typedef struct {
     /** GPSAntennaState; unit=none; physical=raw*1+0; raw=[0,3]. GPSAntennaState */
     uint8_t gps_antenna_state;
@@ -110,8 +108,6 @@ typedef struct {
     double gps_altitude;
     /** SatellitesInUse; unit=none; physical=raw*1+0; raw=[0,255]. SatellitesInUse */
     uint8_t satellites_in_use;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_gps_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -217,8 +213,6 @@ typedef struct {
     double acceleration_z4;
     /** AccelerationZAverage; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double acceleration_z_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_chassis_acceleration_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -264,8 +258,6 @@ typedef struct {
     double gyro_z4;
     /** GyroZAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double gyro_z_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_chassis_gyro_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -311,8 +303,6 @@ typedef struct {
     double magnetic_field_z4;
     /** MagneticFieldZAverage; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Sender-populated arithmetic mean of MagneticFieldZ1..MagneticFieldZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double magnetic_field_z_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_chassis_magnetometer_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -358,8 +348,6 @@ typedef struct {
     double acceleration_z4;
     /** AccelerationZAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double acceleration_z_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_upright_fr_acceleration_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -405,8 +393,6 @@ typedef struct {
     double gyro_z4;
     /** GyroZAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double gyro_z_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_upright_fr_gyro_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -432,8 +418,6 @@ typedef struct {
     double wheel_rpm4;
     /** WheelRPMAverage; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double wheel_rpm_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_upright_fr_wheel_speed_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -479,8 +463,6 @@ typedef struct {
     double acceleration_z4;
     /** AccelerationZAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double acceleration_z_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_upright_fl_acceleration_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -526,8 +508,6 @@ typedef struct {
     double gyro_z4;
     /** GyroZAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double gyro_z_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_upright_fl_gyro_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -553,8 +533,6 @@ typedef struct {
     double wheel_rpm4;
     /** WheelRPMAverage; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double wheel_rpm_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_upright_fl_wheel_speed_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -600,8 +578,6 @@ typedef struct {
     double acceleration_z4;
     /** AccelerationZAverage; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Sender-populated arithmetic mean of AccelerationZ1..AccelerationZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double acceleration_z_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_upright_rear_acceleration_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -647,8 +623,6 @@ typedef struct {
     double gyro_z4;
     /** GyroZAverage; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Sender-populated arithmetic mean of GyroZ1..GyroZ4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double gyro_z_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_upright_rear_gyro_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -674,8 +648,6 @@ typedef struct {
     double wheel_rpm4;
     /** WheelRPMAverage; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Sender-populated arithmetic mean of WheelRPM1..WheelRPM4. Round to nearest wire step, exact ties away from zero in raw space. Codec does not compute this field. */
     double wheel_rpm_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_upright_rear_wheel_speed_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -699,8 +671,6 @@ typedef struct {
     double linpot_position4;
     /** LinpotPositionAverage; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field. */
     double linpot_position_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_suspension_fr_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -724,8 +694,6 @@ typedef struct {
     double linpot_position4;
     /** LinpotPositionAverage; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field. */
     double linpot_position_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_suspension_fl_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -749,8 +717,6 @@ typedef struct {
     double linpot_position4;
     /** LinpotPositionAverage; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Sender-populated arithmetic mean of LinpotPosition1..4 in mm. Same scale/offset as individual channels: average the four raw ADC counts, round to nearest raw count (half upward), then apply mm = raw * 0.0188885 + 1. Codec does not compute this field. */
     double linpot_position_average;
-    /** SampleAgeMs; unit=ms; physical=raw*1+0; raw=[0,65535]. Age in milliseconds of the oldest continuous sensor sample included in this frame when assembled; saturates at 65535. Age must advance for cached samples. In a fault snapshot, freeze age at fault detection; per-channel captured ages, if present, remain authoritative for individual trip records. */
-    uint16_t sample_age_ms;
 } d_aq_can_suspension_rear_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
