@@ -3186,9 +3186,9 @@ bool car_can_raw_bps_balancing_status_block_reason_is_in_range(uint8_t value)
     return (value <= 7u);
 }
 
-int car_can_raw_mppt_interface_status_pack(
+int car_can_raw_msv_status_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_mppt_interface_status_t *src_p,
+    const struct car_can_raw_msv_status_t *src_p,
     size_t size)
 {
     if (size < 3u) {
@@ -3210,8 +3210,8 @@ int car_can_raw_mppt_interface_status_pack(
     return (3);
 }
 
-int car_can_raw_mppt_interface_status_unpack(
-    struct car_can_raw_mppt_interface_status_t *dst_p,
+int car_can_raw_msv_status_unpack(
+    struct car_can_raw_msv_status_t *dst_p,
     const uint8_t *src_p,
     size_t size)
 {
@@ -3232,51 +3232,51 @@ int car_can_raw_mppt_interface_status_unpack(
     return (0);
 }
 
-int car_can_raw_mppt_interface_status_init(struct car_can_raw_mppt_interface_status_t *msg_p)
+int car_can_raw_msv_status_init(struct car_can_raw_msv_status_t *msg_p)
 {
     if (msg_p == NULL) return -1;
 
-    memset(msg_p, 0, sizeof(struct car_can_raw_mppt_interface_status_t));
+    memset(msg_p, 0, sizeof(struct car_can_raw_msv_status_t));
 
     return 0;
 }
 
-bool car_can_raw_mppt_interface_status_warning_bps_watchdog_is_in_range(uint8_t value)
+bool car_can_raw_msv_status_warning_bps_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mppt_interface_status_warning_mppta_watchdog_is_in_range(uint8_t value)
+bool car_can_raw_msv_status_warning_mppta_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mppt_interface_status_warning_mpptb_watchdog_is_in_range(uint8_t value)
+bool car_can_raw_msv_status_warning_mpptb_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mppt_interface_status_warning_mpptc_watchdog_is_in_range(uint8_t value)
+bool car_can_raw_msv_status_warning_mpptc_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mppt_interface_status_warning_fan_is_in_range(uint8_t value)
+bool car_can_raw_msv_status_warning_fan_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mppt_interface_status_mppt_set_mode_is_in_range(uint8_t value)
+bool car_can_raw_msv_status_mppt_set_mode_is_in_range(uint8_t value)
 {
     return (value <= 3u);
 }
 
-bool car_can_raw_mppt_interface_status_sweeping_active_is_in_range(uint8_t value)
+bool car_can_raw_msv_status_sweeping_active_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mppt_interface_status_fan_tach_is_in_range(uint16_t value)
+bool car_can_raw_msv_status_fan_tach_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
 }

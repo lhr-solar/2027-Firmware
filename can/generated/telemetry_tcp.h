@@ -134,11 +134,11 @@ typedef enum {
     TELEMETRY_TCP_ON_BOARD_WATCHDOG_LVC_WATCHDOG_ALIVE = 0,
     TELEMETRY_TCP_ON_BOARD_WATCHDOG_LVC_WATCHDOG_TIMED_OUT = 1,
 } telemetry_tcp_on_board_watchdog_lvc_watchdog_choice_t;
-/** Named raw values for MPPTInterfaceWatchdog; unknown values remain integers. */
+/** Named raw values for MSVWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_MPPT_INTERFACE_WATCHDOG_ALIVE = 0,
-    TELEMETRY_TCP_ON_BOARD_WATCHDOG_MPPT_INTERFACE_WATCHDOG_TIMED_OUT = 1,
-} telemetry_tcp_on_board_watchdog_mppt_interface_watchdog_choice_t;
+    TELEMETRY_TCP_ON_BOARD_WATCHDOG_MSV_WATCHDOG_ALIVE = 0,
+    TELEMETRY_TCP_ON_BOARD_WATCHDOG_MSV_WATCHDOG_TIMED_OUT = 1,
+} telemetry_tcp_on_board_watchdog_msv_watchdog_choice_t;
 /** CM5 reports watchdog state of other boards: 0 alive, 1 timed out. Former CM5 self-watchdog removed; bit 7 is reserved. */
 typedef struct {
     /** BPSWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. BPSWatchdog */
@@ -153,8 +153,8 @@ typedef struct {
     uint8_t pdu_watchdog;
     /** LVCWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. LVCWatchdog */
     uint8_t lvc_watchdog;
-    /** MPPTInterfaceWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. MPPTInterfaceWatchdog */
-    uint8_t mppt_interface_watchdog;
+    /** MSVWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. MSVWatchdog */
+    uint8_t msv_watchdog;
 } telemetry_tcp_on_board_watchdog_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.

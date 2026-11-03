@@ -38,8 +38,8 @@ const car_can_metadata_t car_can = {
         .lvc_temperature_data = { .id = UINT32_C(147), .payload_bytes = 2, .wire_bytes = 2, .dlc = 2, .is_extended = false, .is_fd = true },
         .lvc_over_current_snapshot = { .id = UINT32_C(148), .payload_bytes = 7, .wire_bytes = 7, .dlc = 7, .is_extended = false, .is_fd = true },
     },
-    .mppt_interface = {
-        .mppt_interface_status = { .id = UINT32_C(121), .payload_bytes = 3, .wire_bytes = 3, .dlc = 3, .is_extended = false, .is_fd = true },
+    .msv = {
+        .msv_status = { .id = UINT32_C(121), .payload_bytes = 3, .wire_bytes = 3, .dlc = 3, .is_extended = false, .is_fd = true },
     },
     .pdu = {
         .pdu_status = { .id = UINT32_C(160), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
@@ -3423,9 +3423,9 @@ can_status_t car_can_bps_balancing_status_unpack(car_can_bps_balancing_status_t*
     return CAN_OK;
 }
 
-can_status_t car_can_mppt_interface_status_pack(can_frame_t* dst, const car_can_mppt_interface_status_t* src) {
+can_status_t car_can_msv_status_pack(can_frame_t* dst, const car_can_msv_status_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct car_can_raw_mppt_interface_status_t raw = {0};
+    struct car_can_raw_msv_status_t raw = {0};
     can_status_t status = CAN_OK;
     {
         uint8_t value = src->warning_bps_watchdog;
@@ -3489,20 +3489,20 @@ can_status_t car_can_mppt_interface_status_pack(can_frame_t* dst, const car_can_
     can_frame_t result = { .id = UINT32_C(121),
         .len = 3, .is_extended = false,
         .is_fd = true };
-    if (car_can_raw_mppt_interface_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (car_can_raw_msv_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t car_can_mppt_interface_status_unpack(car_can_mppt_interface_status_t* dst, const can_frame_t* src) {
+can_status_t car_can_msv_status_unpack(car_can_msv_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(121) || src->len != 3 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct car_can_raw_mppt_interface_status_t raw = {0};
-    if (car_can_raw_mppt_interface_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    car_can_mppt_interface_status_t result = {0};
+    struct car_can_raw_msv_status_t raw = {0};
+    if (car_can_raw_msv_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    car_can_msv_status_t result = {0};
     if (raw.warning_bps_watchdog > INT64_C(1)) return CAN_RANGE;
     result.warning_bps_watchdog = (uint8_t)raw.warning_bps_watchdog;
     if (raw.warning_mppta_watchdog > INT64_C(1)) return CAN_RANGE;

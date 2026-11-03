@@ -83,7 +83,7 @@
       ]
     },
     {
-      "name": "MPPTInterface",
+      "name": "MSV",
       "subteam": "power",
       "node_id": 4,
       "rx_can_id": "0x004",

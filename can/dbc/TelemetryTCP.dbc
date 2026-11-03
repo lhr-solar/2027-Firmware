@@ -96,7 +96,7 @@ BO_ 1571 OnBoardWatchdog: 1 CM5
  SG_ PedalsWatchdog : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ PDUWatchdog : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ LVCWatchdog : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ MPPTInterfaceWatchdog : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MSVWatchdog : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 2045 Sig_Wave: 8 CM5
  SG_ Sine : 0|32@1+ (1,0) [-1|1] "" Vector__XXX
@@ -201,7 +201,7 @@ CM_ SG_ 1570 GPSLongitude "Longitude range corrected from swapped draft coordina
 CM_ SG_ 1570 GPSFix "GPSFix";
 CM_ SG_ 1570 GPSAntennaState "GPSAntennaState";
 CM_ BO_ 1571 "CM5 reports watchdog state of other boards: 0 alive, 1 timed out. Former CM5 self-watchdog removed; bit 7 is reserved.";
-CM_ SG_ 1571 MPPTInterfaceWatchdog "MPPTInterfaceWatchdog";
+CM_ SG_ 1571 MSVWatchdog "MSVWatchdog";
 CM_ SG_ 1571 LVCWatchdog "LVCWatchdog";
 CM_ SG_ 1571 PDUWatchdog "PDUWatchdog";
 CM_ SG_ 1571 PedalsWatchdog "PedalsWatchdog";
@@ -258,7 +258,7 @@ BA_ "VFrameFormat" BO_ 1571 14;
 BA_ "GenMsgSendType" BO_ 1571 0;
 BA_ "GenMsgCycleTime" BO_ 1571 100;
 BA_ "CANFD_BRS" BO_ 1571 0;
-BA_ "ValueTable" SG_ 1571 MPPTInterfaceWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1571 MSVWatchdog "Watchdog";
 BA_ "ValueTable" SG_ 1571 LVCWatchdog "Watchdog";
 BA_ "ValueTable" SG_ 1571 PDUWatchdog "Watchdog";
 BA_ "ValueTable" SG_ 1571 PedalsWatchdog "Watchdog";
@@ -287,7 +287,7 @@ VAL_ 1569 CellularTechnology 0 "None" 1 "LTE" 2 "LTE_M" 3 "NB_IoT" 4 "Other" ;
 VAL_ 1569 CellularConnected 0 "Disconnected" 1 "Connected" ;
 VAL_ 1570 GPSFix 0 "NoFix" 1 "Fix2D" 2 "Fix3D" ;
 VAL_ 1570 GPSAntennaState 0 "OK" 1 "OpenCircuit" 2 "ShortCircuit" 3 "Unknown" ;
-VAL_ 1571 MPPTInterfaceWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1571 MSVWatchdog 0 "Alive" 1 "TimedOut" ;
 VAL_ 1571 LVCWatchdog 0 "Alive" 1 "TimedOut" ;
 VAL_ 1571 PDUWatchdog 0 "Alive" 1 "TimedOut" ;
 VAL_ 1571 PedalsWatchdog 0 "Alive" 1 "TimedOut" ;

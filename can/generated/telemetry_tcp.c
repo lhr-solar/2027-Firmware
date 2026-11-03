@@ -273,11 +273,11 @@ can_status_t telemetry_tcp_on_board_watchdog_pack(can_frame_t* dst, const teleme
         raw.lvc_watchdog = (uint8_t)value;
     }
     {
-        uint8_t value = src->mppt_interface_watchdog;
+        uint8_t value = src->msv_watchdog;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.mppt_interface_watchdog = (uint8_t)value;
+        raw.msv_watchdog = (uint8_t)value;
     }
     can_frame_t result = { .id = UINT32_C(1571),
         .len = 1, .is_extended = false,
@@ -308,8 +308,8 @@ can_status_t telemetry_tcp_on_board_watchdog_unpack(telemetry_tcp_on_board_watch
     result.pdu_watchdog = (uint8_t)raw.pdu_watchdog;
     if (raw.lvc_watchdog > INT64_C(1)) return CAN_RANGE;
     result.lvc_watchdog = (uint8_t)raw.lvc_watchdog;
-    if (raw.mppt_interface_watchdog > INT64_C(1)) return CAN_RANGE;
-    result.mppt_interface_watchdog = (uint8_t)raw.mppt_interface_watchdog;
+    if (raw.msv_watchdog > INT64_C(1)) return CAN_RANGE;
+    result.msv_watchdog = (uint8_t)raw.msv_watchdog;
     *dst = result;
     return CAN_OK;
 }

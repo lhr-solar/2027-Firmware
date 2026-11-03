@@ -63,7 +63,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_FRAME_ID (0x76u)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_FRAME_ID (0x77u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_FRAME_ID (0x78u)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_FRAME_ID (0x79u)
+#define CAR_CAN_RAW_MSV_STATUS_FRAME_ID (0x79u)
 #define CAR_CAN_RAW_CM5_STATUS_FRAME_ID (0x82u)
 #define CAR_CAN_RAW_LVC_STATUS_FRAME_ID (0x90u)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_FRAME_ID (0x91u)
@@ -95,7 +95,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_LENGTH (64u)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_LENGTH (48u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_LENGTH (6u)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_LENGTH (3u)
+#define CAR_CAN_RAW_MSV_STATUS_LENGTH (3u)
 #define CAR_CAN_RAW_CM5_STATUS_LENGTH (5u)
 #define CAR_CAN_RAW_LVC_STATUS_LENGTH (2u)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_LENGTH (7u)
@@ -127,7 +127,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_IS_EXTENDED (0)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_IS_EXTENDED (0)
+#define CAR_CAN_RAW_MSV_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_CM5_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_LVC_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_IS_EXTENDED (0)
@@ -154,7 +154,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_CYCLE_TIME_MS (1000u)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_CYCLE_TIME_MS (1000u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_CYCLE_TIME_MS (1000u)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_CYCLE_TIME_MS (500u)
+#define CAR_CAN_RAW_MSV_STATUS_CYCLE_TIME_MS (500u)
 #define CAR_CAN_RAW_CM5_STATUS_CYCLE_TIME_MS (500u)
 #define CAR_CAN_RAW_LVC_STATUS_CYCLE_TIME_MS (100u)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_CYCLE_TIME_MS (100u)
@@ -540,27 +540,27 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_BPS_FAULT_CHOICE (6u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_OTHER_CHOICE (7u)
 
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_BPS_WATCHDOG_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_BPS_WATCHDOG_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_BPS_WATCHDOG_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_BPS_WATCHDOG_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_MPPTA_WATCHDOG_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_MPPTA_WATCHDOG_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTA_WATCHDOG_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTA_WATCHDOG_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_MPPTB_WATCHDOG_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_MPPTB_WATCHDOG_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTB_WATCHDOG_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTB_WATCHDOG_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_MPPTC_WATCHDOG_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_MPPTC_WATCHDOG_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTC_WATCHDOG_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTC_WATCHDOG_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_FAN_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_FAN_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_FAN_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_FAN_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_MPPT_SET_MODE_DISABLED_CHOICE (0u)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_MPPT_SET_MODE_PERTURB_AND_OBSERVE_CHOICE (1u)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_MPPT_SET_MODE_CONSTANT_INPUT_VOLTAGE_CHOICE (2u)
+#define CAR_CAN_RAW_MSV_STATUS_MPPT_SET_MODE_DISABLED_CHOICE (0u)
+#define CAR_CAN_RAW_MSV_STATUS_MPPT_SET_MODE_PERTURB_AND_OBSERVE_CHOICE (1u)
+#define CAR_CAN_RAW_MSV_STATUS_MPPT_SET_MODE_CONSTANT_INPUT_VOLTAGE_CHOICE (2u)
 
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_SWEEPING_ACTIVE_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_SWEEPING_ACTIVE_ON_CHOICE (1u)
+#define CAR_CAN_RAW_MSV_STATUS_SWEEPING_ACTIVE_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_MSV_STATUS_SWEEPING_ACTIVE_ON_CHOICE (1u)
 
 #define CAR_CAN_RAW_CM5_STATUS_WARNING_TEMPERATURE_NO_WARNING_CHOICE (0u)
 #define CAR_CAN_RAW_CM5_STATUS_WARNING_TEMPERATURE_WARNING_CHOICE (1u)
@@ -974,7 +974,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_NAME "BPSFaultVoltageSnapshot"
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_NAME "BPSFaultTemperatureSnapshot"
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_NAME "BPSBalancingStatus"
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_NAME "MPPTInterfaceStatus"
+#define CAR_CAN_RAW_MSV_STATUS_NAME "MSVStatus"
 #define CAR_CAN_RAW_CM5_STATUS_NAME "CM5Status"
 #define CAR_CAN_RAW_LVC_STATUS_NAME "LVCStatus"
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_NAME "LVCCurrentData"
@@ -1267,14 +1267,14 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_SELECTED_CELL_MASK_NAME "SelectedCellMask"
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_PAUSED_CHIP_MASK_NAME "PausedChipMask"
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_NAME "BlockReason"
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_BPS_WATCHDOG_NAME "WarningBPSWatchdog"
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_MPPTA_WATCHDOG_NAME "WarningMPPTAWatchdog"
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_MPPTB_WATCHDOG_NAME "WarningMPPTBWatchdog"
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_MPPTC_WATCHDOG_NAME "WarningMPPTCWatchdog"
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_WARNING_FAN_NAME "WarningFan"
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_MPPT_SET_MODE_NAME "MPPTSetMode"
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_SWEEPING_ACTIVE_NAME "SweepingActive"
-#define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_FAN_TACH_NAME "FanTach"
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_BPS_WATCHDOG_NAME "WarningBPSWatchdog"
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTA_WATCHDOG_NAME "WarningMPPTAWatchdog"
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTB_WATCHDOG_NAME "WarningMPPTBWatchdog"
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTC_WATCHDOG_NAME "WarningMPPTCWatchdog"
+#define CAR_CAN_RAW_MSV_STATUS_WARNING_FAN_NAME "WarningFan"
+#define CAR_CAN_RAW_MSV_STATUS_MPPT_SET_MODE_NAME "MPPTSetMode"
+#define CAR_CAN_RAW_MSV_STATUS_SWEEPING_ACTIVE_NAME "SweepingActive"
+#define CAR_CAN_RAW_MSV_STATUS_FAN_TACH_NAME "FanTach"
 #define CAR_CAN_RAW_CM5_STATUS_WARNING_TEMPERATURE_NAME "WarningTemperature"
 #define CAR_CAN_RAW_CM5_STATUS_WARNING_OVER_TEMPERATURE_NAME "WarningOverTemperature"
 #define CAR_CAN_RAW_CM5_STATUS_WARNING_DISPLAY_DISCONNECTED_NAME "WarningDisplayDisconnected"
@@ -1565,7 +1565,7 @@ struct car_can_raw_motor_controller_command_t {
 /**
  * Signals in message SweepMPPTs.
  *
- * Defined empty trigger: request a sweep from all MPPTs through MPPTInterface. Zero-byte CAN-FD payload.
+ * Defined empty trigger: request a sweep from all MPPTs through MSV. Zero-byte CAN-FD payload.
  *
  * All signal values are as on the CAN bus.
  */
@@ -4145,13 +4145,13 @@ struct car_can_raw_bps_balancing_status_t {
 };
 
 /**
- * Signals in message MPPTInterfaceStatus.
+ * Signals in message MSVStatus.
  *
  * 2027 team-defined layout; physical values use the shared scaling conventions.
  *
  * All signal values are as on the CAN bus.
  */
-struct car_can_raw_mppt_interface_status_t {
+struct car_can_raw_msv_status_t {
     /**
      * WarningBPSWatchdog
      *
@@ -9185,7 +9185,7 @@ bool car_can_raw_bps_balancing_status_paused_chip_mask_is_in_range(uint8_t value
 bool car_can_raw_bps_balancing_status_block_reason_is_in_range(uint8_t value);
 
 /**
- * Pack message MPPTInterfaceStatus.
+ * Pack message MSVStatus.
  *
  * @param[out] dst_p Buffer to pack the message into.
  * @param[in] src_p Data to pack.
@@ -9193,13 +9193,13 @@ bool car_can_raw_bps_balancing_status_block_reason_is_in_range(uint8_t value);
  *
  * @return Size of packed data, or negative error code.
  */
-int car_can_raw_mppt_interface_status_pack(
+int car_can_raw_msv_status_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_mppt_interface_status_t *src_p,
+    const struct car_can_raw_msv_status_t *src_p,
     size_t size);
 
 /**
- * Unpack message MPPTInterfaceStatus.
+ * Unpack message MSVStatus.
  *
  * @param[out] dst_p Object to unpack the message into.
  * @param[in] src_p Message to unpack.
@@ -9207,19 +9207,19 @@ int car_can_raw_mppt_interface_status_pack(
  *
  * @return zero(0) or negative error code.
  */
-int car_can_raw_mppt_interface_status_unpack(
-    struct car_can_raw_mppt_interface_status_t *dst_p,
+int car_can_raw_msv_status_unpack(
+    struct car_can_raw_msv_status_t *dst_p,
     const uint8_t *src_p,
     size_t size);
 
 /**
- * Init message fields to default values from MPPTInterfaceStatus.
+ * Init message fields to default values from MSVStatus.
  *
  * @param[in] msg_p Message to init.
  *
  * @return zero(0) on success or (-1) in case of nullptr argument.
  */
-int car_can_raw_mppt_interface_status_init(struct car_can_raw_mppt_interface_status_t *msg_p);
+int car_can_raw_msv_status_init(struct car_can_raw_msv_status_t *msg_p);
 
 /**
  * Check that given signal is in allowed range.
@@ -9228,7 +9228,7 @@ int car_can_raw_mppt_interface_status_init(struct car_can_raw_mppt_interface_sta
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mppt_interface_status_warning_bps_watchdog_is_in_range(uint8_t value);
+bool car_can_raw_msv_status_warning_bps_watchdog_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9237,7 +9237,7 @@ bool car_can_raw_mppt_interface_status_warning_bps_watchdog_is_in_range(uint8_t 
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mppt_interface_status_warning_mppta_watchdog_is_in_range(uint8_t value);
+bool car_can_raw_msv_status_warning_mppta_watchdog_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9246,7 +9246,7 @@ bool car_can_raw_mppt_interface_status_warning_mppta_watchdog_is_in_range(uint8_
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mppt_interface_status_warning_mpptb_watchdog_is_in_range(uint8_t value);
+bool car_can_raw_msv_status_warning_mpptb_watchdog_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9255,7 +9255,7 @@ bool car_can_raw_mppt_interface_status_warning_mpptb_watchdog_is_in_range(uint8_
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mppt_interface_status_warning_mpptc_watchdog_is_in_range(uint8_t value);
+bool car_can_raw_msv_status_warning_mpptc_watchdog_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9264,7 +9264,7 @@ bool car_can_raw_mppt_interface_status_warning_mpptc_watchdog_is_in_range(uint8_
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mppt_interface_status_warning_fan_is_in_range(uint8_t value);
+bool car_can_raw_msv_status_warning_fan_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9273,7 +9273,7 @@ bool car_can_raw_mppt_interface_status_warning_fan_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mppt_interface_status_mppt_set_mode_is_in_range(uint8_t value);
+bool car_can_raw_msv_status_mppt_set_mode_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9282,7 +9282,7 @@ bool car_can_raw_mppt_interface_status_mppt_set_mode_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mppt_interface_status_sweeping_active_is_in_range(uint8_t value);
+bool car_can_raw_msv_status_sweeping_active_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9291,7 +9291,7 @@ bool car_can_raw_mppt_interface_status_sweeping_active_is_in_range(uint8_t value
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mppt_interface_status_fan_tach_is_in_range(uint16_t value);
+bool car_can_raw_msv_status_fan_tach_is_in_range(uint16_t value);
 
 /**
  * Pack message CM5Status.

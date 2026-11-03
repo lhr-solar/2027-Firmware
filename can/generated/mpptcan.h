@@ -635,7 +635,7 @@ typedef struct {
     mpptcan_mpptc_perform_sweep_t mpptc_perform_sweep;
     mpptcan_mpptc_set_output_voltage_limit_t mpptc_set_output_voltage_limit;
     mpptcan_mpptc_set_output_current_limit_t mpptc_set_output_current_limit;
-} mpptcan_mppt_interface_t;
+} mpptcan_msv_t;
 
 /** Immutable metadata grouped by sender, for ID/filter/driver configuration. */
 typedef struct {
@@ -679,6 +679,6 @@ typedef struct {
         can_message_info_t mpptc_perform_sweep;
         can_message_info_t mpptc_set_output_voltage_limit;
         can_message_info_t mpptc_set_output_current_limit;
-    } mppt_interface;
+    } msv;
 } mpptcan_metadata_t;
 extern const mpptcan_metadata_t mpptcan;

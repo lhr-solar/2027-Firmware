@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: BPS DEI External LVC CM5 MPPTInterface PDU Pedals VCU
+BU_: BPS DEI External LVC CM5 MSV PDU Pedals VCU
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
@@ -383,7 +383,7 @@ BO_ 120 BPSBalancingStatus: 6 BPS
  SG_ PausedChipMask : 39|4@1+ (1,0) [0|15] "" Vector__XXX
  SG_ BlockReason : 43|3@1+ (1,0) [0|7] "" Vector__XXX
 
-BO_ 121 MPPTInterfaceStatus: 3 MPPTInterface
+BO_ 121 MSVStatus: 3 MSV
  SG_ WarningBPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningMPPTAWatchdog : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningMPPTBWatchdog : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -616,7 +616,7 @@ CM_ SG_ 82 Enable "Enable";
 CM_ SG_ 82 ChannelIndex "Zero-based channel index: 0 selects Channel0; 11 selects Channel11.";
 CM_ BO_ 83 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 83 CommandSource "CommandSource";
-CM_ BO_ 84 "Defined empty trigger: request a sweep from all MPPTs through MPPTInterface. Zero-byte CAN-FD payload.";
+CM_ BO_ 84 "Defined empty trigger: request a sweep from all MPPTs through MSV. Zero-byte CAN-FD payload.";
 CM_ BO_ 85 "Triggered balancing request. BPS evaluates safety conditions independently; manual selection does not bypass protection.";
 CM_ SG_ 85 ManualCellMask "Manual mode only: bit 0 selects cell 00; bit 31 selects cell 31.";
 CM_ SG_ 85 BalancingMode "Off, automatic selection by BPS, or manual selection by mask.";

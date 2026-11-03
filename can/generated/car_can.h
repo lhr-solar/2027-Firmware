@@ -81,7 +81,7 @@ can_status_t car_can_motor_controller_command_pack(can_frame_t* dst, const car_c
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t car_can_motor_controller_command_unpack(car_can_motor_controller_command_t* dst, const can_frame_t* src);
 
-/** Defined empty trigger: request a sweep from all MPPTs through MPPTInterface. Zero-byte CAN-FD payload. */
+/** Defined empty trigger: request a sweep from all MPPTs through MSV. Zero-byte CAN-FD payload. */
 typedef struct {
     uint8_t reserved; /**< Empty payload placeholder; ignored by codec. */
 } car_can_sweep_mpp_ts_t;
@@ -1367,40 +1367,40 @@ can_status_t car_can_bps_balancing_status_unpack(car_can_bps_balancing_status_t*
 
 /** Named raw values for WarningBPSWatchdog; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MPPT_INTERFACE_STATUS_WARNING_BPS_WATCHDOG_NO_WARNING = 0,
-    CAR_CAN_MPPT_INTERFACE_STATUS_WARNING_BPS_WATCHDOG_WARNING = 1,
-} car_can_mppt_interface_status_warning_bps_watchdog_choice_t;
+    CAR_CAN_MSV_STATUS_WARNING_BPS_WATCHDOG_NO_WARNING = 0,
+    CAR_CAN_MSV_STATUS_WARNING_BPS_WATCHDOG_WARNING = 1,
+} car_can_msv_status_warning_bps_watchdog_choice_t;
 /** Named raw values for WarningMPPTAWatchdog; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MPPT_INTERFACE_STATUS_WARNING_MPPTA_WATCHDOG_NO_WARNING = 0,
-    CAR_CAN_MPPT_INTERFACE_STATUS_WARNING_MPPTA_WATCHDOG_WARNING = 1,
-} car_can_mppt_interface_status_warning_mppta_watchdog_choice_t;
+    CAR_CAN_MSV_STATUS_WARNING_MPPTA_WATCHDOG_NO_WARNING = 0,
+    CAR_CAN_MSV_STATUS_WARNING_MPPTA_WATCHDOG_WARNING = 1,
+} car_can_msv_status_warning_mppta_watchdog_choice_t;
 /** Named raw values for WarningMPPTBWatchdog; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MPPT_INTERFACE_STATUS_WARNING_MPPTB_WATCHDOG_NO_WARNING = 0,
-    CAR_CAN_MPPT_INTERFACE_STATUS_WARNING_MPPTB_WATCHDOG_WARNING = 1,
-} car_can_mppt_interface_status_warning_mpptb_watchdog_choice_t;
+    CAR_CAN_MSV_STATUS_WARNING_MPPTB_WATCHDOG_NO_WARNING = 0,
+    CAR_CAN_MSV_STATUS_WARNING_MPPTB_WATCHDOG_WARNING = 1,
+} car_can_msv_status_warning_mpptb_watchdog_choice_t;
 /** Named raw values for WarningMPPTCWatchdog; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MPPT_INTERFACE_STATUS_WARNING_MPPTC_WATCHDOG_NO_WARNING = 0,
-    CAR_CAN_MPPT_INTERFACE_STATUS_WARNING_MPPTC_WATCHDOG_WARNING = 1,
-} car_can_mppt_interface_status_warning_mpptc_watchdog_choice_t;
+    CAR_CAN_MSV_STATUS_WARNING_MPPTC_WATCHDOG_NO_WARNING = 0,
+    CAR_CAN_MSV_STATUS_WARNING_MPPTC_WATCHDOG_WARNING = 1,
+} car_can_msv_status_warning_mpptc_watchdog_choice_t;
 /** Named raw values for WarningFan; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MPPT_INTERFACE_STATUS_WARNING_FAN_NO_WARNING = 0,
-    CAR_CAN_MPPT_INTERFACE_STATUS_WARNING_FAN_WARNING = 1,
-} car_can_mppt_interface_status_warning_fan_choice_t;
+    CAR_CAN_MSV_STATUS_WARNING_FAN_NO_WARNING = 0,
+    CAR_CAN_MSV_STATUS_WARNING_FAN_WARNING = 1,
+} car_can_msv_status_warning_fan_choice_t;
 /** Named raw values for MPPTSetMode; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MPPT_INTERFACE_STATUS_MPPT_SET_MODE_DISABLED = 0,
-    CAR_CAN_MPPT_INTERFACE_STATUS_MPPT_SET_MODE_PERTURB_AND_OBSERVE = 1,
-    CAR_CAN_MPPT_INTERFACE_STATUS_MPPT_SET_MODE_CONSTANT_INPUT_VOLTAGE = 2,
-} car_can_mppt_interface_status_mppt_set_mode_choice_t;
+    CAR_CAN_MSV_STATUS_MPPT_SET_MODE_DISABLED = 0,
+    CAR_CAN_MSV_STATUS_MPPT_SET_MODE_PERTURB_AND_OBSERVE = 1,
+    CAR_CAN_MSV_STATUS_MPPT_SET_MODE_CONSTANT_INPUT_VOLTAGE = 2,
+} car_can_msv_status_mppt_set_mode_choice_t;
 /** Named raw values for SweepingActive; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MPPT_INTERFACE_STATUS_SWEEPING_ACTIVE_OFF = 0,
-    CAR_CAN_MPPT_INTERFACE_STATUS_SWEEPING_ACTIVE_ON = 1,
-} car_can_mppt_interface_status_sweeping_active_choice_t;
+    CAR_CAN_MSV_STATUS_SWEEPING_ACTIVE_OFF = 0,
+    CAR_CAN_MSV_STATUS_SWEEPING_ACTIVE_ON = 1,
+} car_can_msv_status_sweeping_active_choice_t;
 /** 2027 team-defined layout; physical values use the shared scaling conventions. */
 typedef struct {
     /** WarningBPSWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. WarningBPSWatchdog */
@@ -1419,14 +1419,14 @@ typedef struct {
     uint8_t sweeping_active;
     /** FanTach; unit=rpm; physical=raw*5+0; raw=[0,4095]. FanTach */
     uint16_t fan_tach;
-} car_can_mppt_interface_status_t;
+} car_can_msv_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t car_can_mppt_interface_status_pack(can_frame_t* dst, const car_can_mppt_interface_status_t* src);
+can_status_t car_can_msv_status_pack(can_frame_t* dst, const car_can_msv_status_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t car_can_mppt_interface_status_unpack(car_can_mppt_interface_status_t* dst, const can_frame_t* src);
+can_status_t car_can_msv_status_unpack(car_can_msv_status_t* dst, const can_frame_t* src);
 
 /** Named raw values for WarningTemperature; unknown values remain integers. */
 typedef enum {
@@ -2616,8 +2616,8 @@ typedef struct {
 } car_can_lvc_t;
 
 typedef struct {
-    car_can_mppt_interface_status_t mppt_interface_status;
-} car_can_mppt_interface_t;
+    car_can_msv_status_t msv_status;
+} car_can_msv_t;
 
 typedef struct {
     car_can_pdu_status_t pdu_status;
@@ -2670,8 +2670,8 @@ typedef struct {
         can_message_info_t lvc_over_current_snapshot;
     } lvc;
     struct {
-        can_message_info_t mppt_interface_status;
-    } mppt_interface;
+        can_message_info_t msv_status;
+    } msv;
     struct {
         can_message_info_t pdu_status;
         can_message_info_t pdu_current_data;

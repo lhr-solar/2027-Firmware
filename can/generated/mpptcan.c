@@ -21,7 +21,7 @@ const mpptcan_metadata_t mpptcan = {
         .mpptc_status = { .id = UINT32_C(577), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = false },
         .mpptc_sweep_data = { .id = UINT32_C(578), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = false },
     },
-    .mppt_interface = {
+    .msv = {
         .mppta_fill_rx_buffer = { .id = UINT32_C(517), .payload_bytes = 0, .wire_bytes = 0, .dlc = 0, .is_extended = false, .is_fd = false },
         .mppta_fill_rx_buffer_long = { .id = UINT32_C(518), .payload_bytes = 0, .wire_bytes = 0, .dlc = 0, .is_extended = false, .is_fd = false },
         .mppta_process_rx_buffer = { .id = UINT32_C(519), .payload_bytes = 0, .wire_bytes = 0, .dlc = 0, .is_extended = false, .is_fd = false },

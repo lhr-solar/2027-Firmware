@@ -189,7 +189,7 @@ class DatabaseTests(unittest.TestCase):
             )
             for offset in (5, 6, 7, 8, 9, 10, 11, 12):
                 self.assertEqual(
-                    self.message("MPPTCAN", base + offset).senders, ["MPPTInterface"]
+                    self.message("MPPTCAN", base + offset).senders, ["MSV"]
                 )
             self.assertEqual(self.message("MPPTCAN", base).senders, ["MPPT" + label])
 

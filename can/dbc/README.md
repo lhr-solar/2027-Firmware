@@ -12,7 +12,7 @@ not wire-compatible with the old vehicle's team-defined messages.
 |---|---|---:|---:|
 | CarCAN | Team critical/control, power, battery and HMI status | 29 | 2 |
 | MotorCAN | VCU drive/power/reset commands and WS22 telemetry | 19 | 3 |
-| MPPTCAN | Three SEC-B175-7A MPPTs; commands from MPPTInterface | 33 | 12 |
+| MPPTCAN | Three SEC-B175-7A MPPTs; commands from MSV | 33 | 12 |
 | SteeringCAN | LWS measurements; configuration sent by DEI | 2 | 0 |
 | LightingCAN | Bottom-shell status from DEI; top-shell status from TopShellLighting | 2 | 0 |
 | ChargerCAN | BPS status/pack/cell data and ElconInterface status | 5 | 0 |
@@ -21,7 +21,7 @@ not wire-compatible with the old vehicle's team-defined messages.
 | TelemetryTCP | CM5 TCP-native telemetry and test messages | 6 | 0 |
 
 Every message has exactly one declared transmitter. `External` is the command
-injection tool/node for IDs 0x051–0x054. MPPTInterface receives BPSStatus
+injection tool/node for IDs 0x051–0x054. MSV receives BPSStatus
 on **CarCAN** and produces MPPT commands on **MPPTCAN**; BPS is not a transmitter
 on the private MPPT bus. DEI transmits all LWS configuration traffic; LWS remains
 the transmitter of its own measurements.
@@ -75,9 +75,9 @@ fields is removed to standardize bulk voltage encoding. LV voltages now use
 10 bits at 0.05 V/bit, including zero for disabled outputs (0–51.15 V). EVSE available current uses 12 bits
 at 0.01 A/bit to retain 0–25.5 A with the standard current resolution.
 
-BPS MPPT limits use the team voltage/current resolutions; MPPTInterface converts
+BPS MPPT limits use the team voltage/current resolutions; MSV converts
 them to the vendor command resolutions. This conversion does not replace device
-limits or battery protection checks. BPS MPPTSetMode and MPPTInterface MPPTSetMode
+limits or battery protection checks. BPS MPPTSetMode and MSV MPPTSetMode
 use two bits to represent the vendor's Disabled/PO/ConstantInputVoltage modes.
 
 **Vendor encodings are deliberate exceptions.** Changing a DBC cannot change a

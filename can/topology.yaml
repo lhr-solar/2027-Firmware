@@ -98,11 +98,11 @@ buses:
     bitrate: 1000000
     forwards:
       - to: CarCAN
-        via: MPPTInterface
+        via: MSV
         filter:
           mode: exclude
-          # All commands sent by MPPTInterface stay on this bus.
-          transmitters: [MPPTInterface]
+          # All commands sent by MSV stay on this bus.
+          transmitters: [MSV]
 
 outputs:
   TelemetryTCP:

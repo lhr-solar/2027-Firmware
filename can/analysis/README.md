@@ -68,7 +68,7 @@ Confirmed paths:
 | Source | Destination | Bridge | Filter |
 |---|---|---|---|
 | MotorCAN | CarCAN | VCU | All |
-| MPPTCAN | CarCAN | MPPTInterface | Exclude MPPTInterface-origin commands |
+| MPPTCAN | CarCAN | MSV | Exclude MSV-origin commands |
 | SteeringCAN | CarCAN | DEI | All |
 | LightingCAN | CarCAN | DEI | All |
 | ElconCAN | ChargerCAN | ElconInterface | All |

@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: MPPTA MPPTB MPPTC MPPTInterface
+BU_: MPPTA MPPTB MPPTC MSV
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
@@ -86,26 +86,26 @@ BO_ 514 MPPTASweepData: 5 MPPTA
  SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
  SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 517 MPPTAFillRXBuffer: 0 MPPTInterface
+BO_ 517 MPPTAFillRXBuffer: 0 MSV
 
-BO_ 518 MPPTAFillRXBufferLong: 0 MPPTInterface
+BO_ 518 MPPTAFillRXBufferLong: 0 MSV
 
-BO_ 519 MPPTAProcessRXBuffer: 0 MPPTInterface
+BO_ 519 MPPTAProcessRXBuffer: 0 MSV
 
-BO_ 520 MPPTAProcessShortBuffer: 0 MPPTInterface
+BO_ 520 MPPTAProcessShortBuffer: 0 MSV
 
-BO_ 521 MPPTASetMode: 1 MPPTInterface
+BO_ 521 MPPTASetMode: 1 MSV
  SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
 
-BO_ 522 MPPTAPerformSweep: 5 MPPTInterface
+BO_ 522 MPPTAPerformSweep: 5 MSV
  SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
 
-BO_ 523 MPPTASetOutputVoltageLimit: 2 MPPTInterface
+BO_ 523 MPPTASetOutputVoltageLimit: 2 MSV
  SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 524 MPPTASetOutputCurrentLimit: 2 MPPTInterface
+BO_ 524 MPPTASetOutputCurrentLimit: 2 MSV
  SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
 
 BO_ 544 MPPTBPowerMeasurements: 8 MPPTB
@@ -126,26 +126,26 @@ BO_ 546 MPPTBSweepData: 5 MPPTB
  SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
  SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 549 MPPTBFillRXBuffer: 0 MPPTInterface
+BO_ 549 MPPTBFillRXBuffer: 0 MSV
 
-BO_ 550 MPPTBFillRXBufferLong: 0 MPPTInterface
+BO_ 550 MPPTBFillRXBufferLong: 0 MSV
 
-BO_ 551 MPPTBProcessRXBuffer: 0 MPPTInterface
+BO_ 551 MPPTBProcessRXBuffer: 0 MSV
 
-BO_ 552 MPPTBProcessShortBuffer: 0 MPPTInterface
+BO_ 552 MPPTBProcessShortBuffer: 0 MSV
 
-BO_ 553 MPPTBSetMode: 1 MPPTInterface
+BO_ 553 MPPTBSetMode: 1 MSV
  SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
 
-BO_ 554 MPPTBPerformSweep: 5 MPPTInterface
+BO_ 554 MPPTBPerformSweep: 5 MSV
  SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
 
-BO_ 555 MPPTBSetOutputVoltageLimit: 2 MPPTInterface
+BO_ 555 MPPTBSetOutputVoltageLimit: 2 MSV
  SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 556 MPPTBSetOutputCurrentLimit: 2 MPPTInterface
+BO_ 556 MPPTBSetOutputCurrentLimit: 2 MSV
  SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
 
 BO_ 576 MPPTCPowerMeasurements: 8 MPPTC
@@ -166,26 +166,26 @@ BO_ 578 MPPTCSweepData: 5 MPPTC
  SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
  SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 581 MPPTCFillRXBuffer: 0 MPPTInterface
+BO_ 581 MPPTCFillRXBuffer: 0 MSV
 
-BO_ 582 MPPTCFillRXBufferLong: 0 MPPTInterface
+BO_ 582 MPPTCFillRXBufferLong: 0 MSV
 
-BO_ 583 MPPTCProcessRXBuffer: 0 MPPTInterface
+BO_ 583 MPPTCProcessRXBuffer: 0 MSV
 
-BO_ 584 MPPTCProcessShortBuffer: 0 MPPTInterface
+BO_ 584 MPPTCProcessShortBuffer: 0 MSV
 
-BO_ 585 MPPTCSetMode: 1 MPPTInterface
+BO_ 585 MPPTCSetMode: 1 MSV
  SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
 
-BO_ 586 MPPTCPerformSweep: 5 MPPTInterface
+BO_ 586 MPPTCPerformSweep: 5 MSV
  SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
 
-BO_ 587 MPPTCSetOutputVoltageLimit: 2 MPPTInterface
+BO_ 587 MPPTCSetOutputVoltageLimit: 2 MSV
  SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 588 MPPTCSetOutputCurrentLimit: 2 MPPTInterface
+BO_ 588 MPPTCSetOutputCurrentLimit: 2 MSV
  SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
 
 

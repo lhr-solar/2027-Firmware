@@ -119,8 +119,8 @@ extern "C" {
 #define TELEMETRY_TCP_RAW_ON_BOARD_WATCHDOG_LVC_WATCHDOG_ALIVE_CHOICE (0u)
 #define TELEMETRY_TCP_RAW_ON_BOARD_WATCHDOG_LVC_WATCHDOG_TIMED_OUT_CHOICE (1u)
 
-#define TELEMETRY_TCP_RAW_ON_BOARD_WATCHDOG_MPPT_INTERFACE_WATCHDOG_ALIVE_CHOICE (0u)
-#define TELEMETRY_TCP_RAW_ON_BOARD_WATCHDOG_MPPT_INTERFACE_WATCHDOG_TIMED_OUT_CHOICE (1u)
+#define TELEMETRY_TCP_RAW_ON_BOARD_WATCHDOG_MSV_WATCHDOG_ALIVE_CHOICE (0u)
+#define TELEMETRY_TCP_RAW_ON_BOARD_WATCHDOG_MSV_WATCHDOG_TIMED_OUT_CHOICE (1u)
 
 /* Frame Names. */
 #define TELEMETRY_TCP_RAW_TELEMETRY_STATUS_NAME "TelemetryStatus"
@@ -154,7 +154,7 @@ extern "C" {
 #define TELEMETRY_TCP_RAW_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_NAME "PedalsWatchdog"
 #define TELEMETRY_TCP_RAW_ON_BOARD_WATCHDOG_PDU_WATCHDOG_NAME "PDUWatchdog"
 #define TELEMETRY_TCP_RAW_ON_BOARD_WATCHDOG_LVC_WATCHDOG_NAME "LVCWatchdog"
-#define TELEMETRY_TCP_RAW_ON_BOARD_WATCHDOG_MPPT_INTERFACE_WATCHDOG_NAME "MPPTInterfaceWatchdog"
+#define TELEMETRY_TCP_RAW_ON_BOARD_WATCHDOG_MSV_WATCHDOG_NAME "MSVWatchdog"
 #define TELEMETRY_TCP_RAW_SIG_WAVE_SINE_NAME "Sine"
 #define TELEMETRY_TCP_RAW_SIG_WAVE_COSINE_NAME "Cosine"
 #define TELEMETRY_TCP_RAW_MAX_MESSAGE_CLASSICAL_SG0_NAME "sg0"
@@ -464,13 +464,13 @@ struct telemetry_tcp_raw_on_board_watchdog_t {
     uint8_t lvc_watchdog;
 
     /**
-     * MPPTInterfaceWatchdog
+     * MSVWatchdog
      *
      * Range: -
      * Scale: 1
      * Offset: 0
      */
-    uint8_t mppt_interface_watchdog;
+    uint8_t msv_watchdog;
 };
 
 /**
@@ -1343,7 +1343,7 @@ bool telemetry_tcp_raw_on_board_watchdog_lvc_watchdog_is_in_range(uint8_t value)
  *
  * @return true if in range, false otherwise.
  */
-bool telemetry_tcp_raw_on_board_watchdog_mppt_interface_watchdog_is_in_range(uint8_t value);
+bool telemetry_tcp_raw_on_board_watchdog_msv_watchdog_is_in_range(uint8_t value);
 
 /**
  * Pack message Sig_Wave.
