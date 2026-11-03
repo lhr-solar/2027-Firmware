@@ -3281,9 +3281,9 @@ bool car_can_raw_mppt_interface_status_fan_tach_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
-int car_can_raw_mika_status_pack(
+int car_can_raw_cm5_status_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_mika_status_t *src_p,
+    const struct car_can_raw_cm5_status_t *src_p,
     size_t size)
 {
     if (size < 5u) {
@@ -3310,8 +3310,8 @@ int car_can_raw_mika_status_pack(
     return (5);
 }
 
-int car_can_raw_mika_status_unpack(
-    struct car_can_raw_mika_status_t *dst_p,
+int car_can_raw_cm5_status_unpack(
+    struct car_can_raw_cm5_status_t *dst_p,
     const uint8_t *src_p,
     size_t size)
 {
@@ -3337,78 +3337,78 @@ int car_can_raw_mika_status_unpack(
     return (0);
 }
 
-int car_can_raw_mika_status_init(struct car_can_raw_mika_status_t *msg_p)
+int car_can_raw_cm5_status_init(struct car_can_raw_cm5_status_t *msg_p)
 {
     if (msg_p == NULL) return -1;
 
-    memset(msg_p, 0, sizeof(struct car_can_raw_mika_status_t));
+    memset(msg_p, 0, sizeof(struct car_can_raw_cm5_status_t));
 
     return 0;
 }
 
-bool car_can_raw_mika_status_warning_temperature_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_warning_temperature_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mika_status_warning_over_temperature_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_warning_over_temperature_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mika_status_warning_display_disconnected_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_warning_display_disconnected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mika_status_warning_rear_camera_disconnected_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_warning_rear_camera_disconnected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mika_status_warning_router_disconnected_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_warning_router_disconnected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mika_status_cellular_connected_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_cellular_connected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mika_status_internet_connected_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_internet_connected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mika_status_server_connected_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_server_connected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mika_status_gps_connected_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_gps_connected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mika_status_driver_camera_connected_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_driver_camera_connected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_mika_status_display_frame_rate_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_display_frame_rate_is_in_range(uint8_t value)
 {
     return (value <= 63u);
 }
 
-bool car_can_raw_mika_status_so_c_temperature_is_in_range(uint8_t value)
+bool car_can_raw_cm5_status_so_c_temperature_is_in_range(uint8_t value)
 {
     (void)value;
 
     return (true);
 }
 
-bool car_can_raw_mika_status_cm5_fan_tach_is_in_range(uint16_t value)
+bool car_can_raw_cm5_status_cm5_fan_tach_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
 }

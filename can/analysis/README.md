@@ -74,12 +74,13 @@ Confirmed paths:
 | ElconCAN | ChargerCAN | ElconInterface | All |
 | CarCAN | ChargerCAN | BPS | Include `"0x060"`, `"0x070"`, `"0x071"`, `"0x072"` |
 | ChargerCAN | CarCAN | BPS | Exclude those four BPS IDs to prevent echo |
-| CarCAN | TelemetryTCP | MIKA | All |
-| DAqCAN | TelemetryTCP | MIKA | Exclude `"0x620"` (TimestampSync) |
+| CarCAN | TelemetryTCP | CM5 | All |
+| DAqCAN | TelemetryTCP | CM5 | Exclude `"0x620"` (TimestampSync) |
 
 The calculator follows every hop, so forwarded Elcon traffic contributes to
 ChargerCAN occupancy as well as CarCAN. No DAqCAN-to-CarCAN route exists. The
-internet stream contains CarCAN after forwarding plus filtered DAqCAN; excluded
+internet stream contains CarCAN after forwarding, filtered DAqCAN, and TCP-native
+messages defined by the output DBC; excluded
 MPPT commands never bypass CarCAN through a direct TCP route. JSON output keeps
 native and routed bus totals separate and lists CarCAN/TCP message inventories.
 

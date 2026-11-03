@@ -64,7 +64,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_FRAME_ID (0x77u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_FRAME_ID (0x78u)
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_FRAME_ID (0x79u)
-#define CAR_CAN_RAW_MIKA_STATUS_FRAME_ID (0x82u)
+#define CAR_CAN_RAW_CM5_STATUS_FRAME_ID (0x82u)
 #define CAR_CAN_RAW_LVC_STATUS_FRAME_ID (0x90u)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_FRAME_ID (0x91u)
 #define CAR_CAN_RAW_LVC_VOLTAGE_DATA_FRAME_ID (0x92u)
@@ -96,7 +96,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_LENGTH (48u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_LENGTH (6u)
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_LENGTH (3u)
-#define CAR_CAN_RAW_MIKA_STATUS_LENGTH (5u)
+#define CAR_CAN_RAW_CM5_STATUS_LENGTH (5u)
 #define CAR_CAN_RAW_LVC_STATUS_LENGTH (2u)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_LENGTH (7u)
 #define CAR_CAN_RAW_LVC_VOLTAGE_DATA_LENGTH (5u)
@@ -128,7 +128,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_IS_EXTENDED (0)
-#define CAR_CAN_RAW_MIKA_STATUS_IS_EXTENDED (0)
+#define CAR_CAN_RAW_CM5_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_LVC_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_IS_EXTENDED (0)
 #define CAR_CAN_RAW_LVC_VOLTAGE_DATA_IS_EXTENDED (0)
@@ -155,7 +155,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_CYCLE_TIME_MS (1000u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_CYCLE_TIME_MS (1000u)
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_CYCLE_TIME_MS (500u)
-#define CAR_CAN_RAW_MIKA_STATUS_CYCLE_TIME_MS (500u)
+#define CAR_CAN_RAW_CM5_STATUS_CYCLE_TIME_MS (500u)
 #define CAR_CAN_RAW_LVC_STATUS_CYCLE_TIME_MS (100u)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_CYCLE_TIME_MS (100u)
 #define CAR_CAN_RAW_LVC_VOLTAGE_DATA_CYCLE_TIME_MS (500u)
@@ -562,35 +562,35 @@ extern "C" {
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_SWEEPING_ACTIVE_OFF_CHOICE (0u)
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_SWEEPING_ACTIVE_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_TEMPERATURE_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_TEMPERATURE_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_TEMPERATURE_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_TEMPERATURE_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_OVER_TEMPERATURE_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_OVER_TEMPERATURE_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_OVER_TEMPERATURE_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_OVER_TEMPERATURE_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_DISPLAY_DISCONNECTED_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_DISPLAY_DISCONNECTED_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_DISPLAY_DISCONNECTED_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_DISPLAY_DISCONNECTED_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_REAR_CAMERA_DISCONNECTED_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_REAR_CAMERA_DISCONNECTED_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_REAR_CAMERA_DISCONNECTED_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_REAR_CAMERA_DISCONNECTED_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_ROUTER_DISCONNECTED_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_ROUTER_DISCONNECTED_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_ROUTER_DISCONNECTED_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_ROUTER_DISCONNECTED_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_MIKA_STATUS_CELLULAR_CONNECTED_DISCONNECTED_CHOICE (0u)
-#define CAR_CAN_RAW_MIKA_STATUS_CELLULAR_CONNECTED_CONNECTED_CHOICE (1u)
+#define CAR_CAN_RAW_CM5_STATUS_CELLULAR_CONNECTED_DISCONNECTED_CHOICE (0u)
+#define CAR_CAN_RAW_CM5_STATUS_CELLULAR_CONNECTED_CONNECTED_CHOICE (1u)
 
-#define CAR_CAN_RAW_MIKA_STATUS_INTERNET_CONNECTED_DISCONNECTED_CHOICE (0u)
-#define CAR_CAN_RAW_MIKA_STATUS_INTERNET_CONNECTED_CONNECTED_CHOICE (1u)
+#define CAR_CAN_RAW_CM5_STATUS_INTERNET_CONNECTED_DISCONNECTED_CHOICE (0u)
+#define CAR_CAN_RAW_CM5_STATUS_INTERNET_CONNECTED_CONNECTED_CHOICE (1u)
 
-#define CAR_CAN_RAW_MIKA_STATUS_SERVER_CONNECTED_DISCONNECTED__RETRYING_CHOICE (0u)
-#define CAR_CAN_RAW_MIKA_STATUS_SERVER_CONNECTED_CONNECTED_CHOICE (1u)
+#define CAR_CAN_RAW_CM5_STATUS_SERVER_CONNECTED_DISCONNECTED__RETRYING_CHOICE (0u)
+#define CAR_CAN_RAW_CM5_STATUS_SERVER_CONNECTED_CONNECTED_CHOICE (1u)
 
-#define CAR_CAN_RAW_MIKA_STATUS_GPS_CONNECTED_DISCONNECTED_CHOICE (0u)
-#define CAR_CAN_RAW_MIKA_STATUS_GPS_CONNECTED_CONNECTED_CHOICE (1u)
+#define CAR_CAN_RAW_CM5_STATUS_GPS_CONNECTED_DISCONNECTED_CHOICE (0u)
+#define CAR_CAN_RAW_CM5_STATUS_GPS_CONNECTED_CONNECTED_CHOICE (1u)
 
-#define CAR_CAN_RAW_MIKA_STATUS_DRIVER_CAMERA_CONNECTED_DISCONNECTED_CHOICE (0u)
-#define CAR_CAN_RAW_MIKA_STATUS_DRIVER_CAMERA_CONNECTED_CONNECTED_CHOICE (1u)
+#define CAR_CAN_RAW_CM5_STATUS_DRIVER_CAMERA_CONNECTED_DISCONNECTED_CHOICE (0u)
+#define CAR_CAN_RAW_CM5_STATUS_DRIVER_CAMERA_CONNECTED_CONNECTED_CHOICE (1u)
 
 #define CAR_CAN_RAW_LVC_STATUS_WARNING_HSS_OVER_CURRENT_NO_WARNING_CHOICE (0u)
 #define CAR_CAN_RAW_LVC_STATUS_WARNING_HSS_OVER_CURRENT_WARNING_CHOICE (1u)
@@ -975,7 +975,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_NAME "BPSFaultTemperatureSnapshot"
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_NAME "BPSBalancingStatus"
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_NAME "MPPTInterfaceStatus"
-#define CAR_CAN_RAW_MIKA_STATUS_NAME "MIKAStatus"
+#define CAR_CAN_RAW_CM5_STATUS_NAME "CM5Status"
 #define CAR_CAN_RAW_LVC_STATUS_NAME "LVCStatus"
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_NAME "LVCCurrentData"
 #define CAR_CAN_RAW_LVC_VOLTAGE_DATA_NAME "LVCVoltageData"
@@ -1275,19 +1275,19 @@ extern "C" {
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_MPPT_SET_MODE_NAME "MPPTSetMode"
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_SWEEPING_ACTIVE_NAME "SweepingActive"
 #define CAR_CAN_RAW_MPPT_INTERFACE_STATUS_FAN_TACH_NAME "FanTach"
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_TEMPERATURE_NAME "WarningTemperature"
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_OVER_TEMPERATURE_NAME "WarningOverTemperature"
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_DISPLAY_DISCONNECTED_NAME "WarningDisplayDisconnected"
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_REAR_CAMERA_DISCONNECTED_NAME "WarningRearCameraDisconnected"
-#define CAR_CAN_RAW_MIKA_STATUS_WARNING_ROUTER_DISCONNECTED_NAME "WarningRouterDisconnected"
-#define CAR_CAN_RAW_MIKA_STATUS_CELLULAR_CONNECTED_NAME "CellularConnected"
-#define CAR_CAN_RAW_MIKA_STATUS_INTERNET_CONNECTED_NAME "InternetConnected"
-#define CAR_CAN_RAW_MIKA_STATUS_SERVER_CONNECTED_NAME "ServerConnected"
-#define CAR_CAN_RAW_MIKA_STATUS_GPS_CONNECTED_NAME "GPSConnected"
-#define CAR_CAN_RAW_MIKA_STATUS_DRIVER_CAMERA_CONNECTED_NAME "DriverCameraConnected"
-#define CAR_CAN_RAW_MIKA_STATUS_DISPLAY_FRAME_RATE_NAME "DisplayFrameRate"
-#define CAR_CAN_RAW_MIKA_STATUS_SO_C_TEMPERATURE_NAME "SoCTemperature"
-#define CAR_CAN_RAW_MIKA_STATUS_CM5_FAN_TACH_NAME "CM5FanTach"
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_TEMPERATURE_NAME "WarningTemperature"
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_OVER_TEMPERATURE_NAME "WarningOverTemperature"
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_DISPLAY_DISCONNECTED_NAME "WarningDisplayDisconnected"
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_REAR_CAMERA_DISCONNECTED_NAME "WarningRearCameraDisconnected"
+#define CAR_CAN_RAW_CM5_STATUS_WARNING_ROUTER_DISCONNECTED_NAME "WarningRouterDisconnected"
+#define CAR_CAN_RAW_CM5_STATUS_CELLULAR_CONNECTED_NAME "CellularConnected"
+#define CAR_CAN_RAW_CM5_STATUS_INTERNET_CONNECTED_NAME "InternetConnected"
+#define CAR_CAN_RAW_CM5_STATUS_SERVER_CONNECTED_NAME "ServerConnected"
+#define CAR_CAN_RAW_CM5_STATUS_GPS_CONNECTED_NAME "GPSConnected"
+#define CAR_CAN_RAW_CM5_STATUS_DRIVER_CAMERA_CONNECTED_NAME "DriverCameraConnected"
+#define CAR_CAN_RAW_CM5_STATUS_DISPLAY_FRAME_RATE_NAME "DisplayFrameRate"
+#define CAR_CAN_RAW_CM5_STATUS_SO_C_TEMPERATURE_NAME "SoCTemperature"
+#define CAR_CAN_RAW_CM5_STATUS_CM5_FAN_TACH_NAME "CM5FanTach"
 #define CAR_CAN_RAW_LVC_STATUS_WARNING_HSS_OVER_CURRENT_NAME "WarningHSSOverCurrent"
 #define CAR_CAN_RAW_LVC_STATUS_WARNING_HSSI2_T_NAME "WarningHSSI2T"
 #define CAR_CAN_RAW_LVC_STATUS_WARNING_HSS_OVER_TEMPERATURE_NAME "WarningHSSOverTemperature"
@@ -4226,13 +4226,13 @@ struct car_can_raw_mppt_interface_status_t {
 };
 
 /**
- * Signals in message MIKAStatus.
+ * Signals in message CM5Status.
  *
- * HMI and CM5 status from MIKA (combined HMI and telemetry board). Application ID 0x082 and signal layout retained.
+ * HMI and CM5 status from CM5 (combined HMI and telemetry board). Application ID 0x082 and signal layout retained.
  *
  * All signal values are as on the CAN bus.
  */
-struct car_can_raw_mika_status_t {
+struct car_can_raw_cm5_status_t {
     /**
      * WarningTemperature
      *
@@ -9294,7 +9294,7 @@ bool car_can_raw_mppt_interface_status_sweeping_active_is_in_range(uint8_t value
 bool car_can_raw_mppt_interface_status_fan_tach_is_in_range(uint16_t value);
 
 /**
- * Pack message MIKAStatus.
+ * Pack message CM5Status.
  *
  * @param[out] dst_p Buffer to pack the message into.
  * @param[in] src_p Data to pack.
@@ -9302,13 +9302,13 @@ bool car_can_raw_mppt_interface_status_fan_tach_is_in_range(uint16_t value);
  *
  * @return Size of packed data, or negative error code.
  */
-int car_can_raw_mika_status_pack(
+int car_can_raw_cm5_status_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_mika_status_t *src_p,
+    const struct car_can_raw_cm5_status_t *src_p,
     size_t size);
 
 /**
- * Unpack message MIKAStatus.
+ * Unpack message CM5Status.
  *
  * @param[out] dst_p Object to unpack the message into.
  * @param[in] src_p Message to unpack.
@@ -9316,19 +9316,19 @@ int car_can_raw_mika_status_pack(
  *
  * @return zero(0) or negative error code.
  */
-int car_can_raw_mika_status_unpack(
-    struct car_can_raw_mika_status_t *dst_p,
+int car_can_raw_cm5_status_unpack(
+    struct car_can_raw_cm5_status_t *dst_p,
     const uint8_t *src_p,
     size_t size);
 
 /**
- * Init message fields to default values from MIKAStatus.
+ * Init message fields to default values from CM5Status.
  *
  * @param[in] msg_p Message to init.
  *
  * @return zero(0) on success or (-1) in case of nullptr argument.
  */
-int car_can_raw_mika_status_init(struct car_can_raw_mika_status_t *msg_p);
+int car_can_raw_cm5_status_init(struct car_can_raw_cm5_status_t *msg_p);
 
 /**
  * Check that given signal is in allowed range.
@@ -9337,7 +9337,7 @@ int car_can_raw_mika_status_init(struct car_can_raw_mika_status_t *msg_p);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_warning_temperature_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_warning_temperature_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9346,7 +9346,7 @@ bool car_can_raw_mika_status_warning_temperature_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_warning_over_temperature_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_warning_over_temperature_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9355,7 +9355,7 @@ bool car_can_raw_mika_status_warning_over_temperature_is_in_range(uint8_t value)
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_warning_display_disconnected_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_warning_display_disconnected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9364,7 +9364,7 @@ bool car_can_raw_mika_status_warning_display_disconnected_is_in_range(uint8_t va
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_warning_rear_camera_disconnected_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_warning_rear_camera_disconnected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9373,7 +9373,7 @@ bool car_can_raw_mika_status_warning_rear_camera_disconnected_is_in_range(uint8_
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_warning_router_disconnected_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_warning_router_disconnected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9382,7 +9382,7 @@ bool car_can_raw_mika_status_warning_router_disconnected_is_in_range(uint8_t val
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_cellular_connected_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_cellular_connected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9391,7 +9391,7 @@ bool car_can_raw_mika_status_cellular_connected_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_internet_connected_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_internet_connected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9400,7 +9400,7 @@ bool car_can_raw_mika_status_internet_connected_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_server_connected_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_server_connected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9409,7 +9409,7 @@ bool car_can_raw_mika_status_server_connected_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_gps_connected_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_gps_connected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9418,7 +9418,7 @@ bool car_can_raw_mika_status_gps_connected_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_driver_camera_connected_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_driver_camera_connected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9427,7 +9427,7 @@ bool car_can_raw_mika_status_driver_camera_connected_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_display_frame_rate_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_display_frame_rate_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9436,7 +9436,7 @@ bool car_can_raw_mika_status_display_frame_rate_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_so_c_temperature_is_in_range(uint8_t value);
+bool car_can_raw_cm5_status_so_c_temperature_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9445,7 +9445,7 @@ bool car_can_raw_mika_status_so_c_temperature_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_mika_status_cm5_fan_tach_is_in_range(uint16_t value);
+bool car_can_raw_cm5_status_cm5_fan_tach_is_in_range(uint16_t value);
 
 /**
  * Pack message LVCStatus.

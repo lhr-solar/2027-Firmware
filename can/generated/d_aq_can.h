@@ -7,7 +7,7 @@
 #pragma once
 #include "can_types.h"
 
-/** MIKA timestamp synchronization: legacy two-byte unsigned little-endian raw count. New allocation ID 0x620 and CAN-FD retained; time unit/epoch/period are not specified. */
+/** CM5 timestamp synchronization: legacy two-byte unsigned little-endian raw count. New allocation ID 0x620 and CAN-FD retained; time unit/epoch/period are not specified. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -19,163 +19,6 @@ can_status_t d_aq_can_timestamp_sync_pack(can_frame_t* dst, const d_aq_can_times
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_timestamp_sync_unpack(d_aq_can_timestamp_sync_t* dst, const can_frame_t* src);
-
-/** Named raw values for CellularConnected; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_TELEMETRY_STATUS_CELLULAR_CONNECTED_DISCONNECTED = 0,
-    D_AQ_CAN_TELEMETRY_STATUS_CELLULAR_CONNECTED_CONNECTED = 1,
-} d_aq_can_telemetry_status_cellular_connected_choice_t;
-/** Named raw values for CellularTechnology; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_NONE = 0,
-    D_AQ_CAN_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_LTE = 1,
-    D_AQ_CAN_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_LTE_M = 2,
-    D_AQ_CAN_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_NB_IO_T = 3,
-    D_AQ_CAN_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_OTHER = 4,
-} d_aq_can_telemetry_status_cellular_technology_choice_t;
-/** Named raw values for Roaming; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_TELEMETRY_STATUS_ROAMING_OFF = 0,
-    D_AQ_CAN_TELEMETRY_STATUS_ROAMING_ON = 1,
-} d_aq_can_telemetry_status_roaming_choice_t;
-/** Named raw values for InternetConnected; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_TELEMETRY_STATUS_INTERNET_CONNECTED_DISCONNECTED = 0,
-    D_AQ_CAN_TELEMETRY_STATUS_INTERNET_CONNECTED_CONNECTED = 1,
-} d_aq_can_telemetry_status_internet_connected_choice_t;
-/** Named raw values for ServerConnected; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_TELEMETRY_STATUS_SERVER_CONNECTED_DISCONNECTED__RETRYING = 0,
-    D_AQ_CAN_TELEMETRY_STATUS_SERVER_CONNECTED_CONNECTED = 1,
-} d_aq_can_telemetry_status_server_connected_choice_t;
-/** 2027 team-defined layout; physical values use the shared scaling conventions. */
-typedef struct {
-    /** CellularConnected; unit=none; physical=raw*1+0; raw=[0,1]. CellularConnected */
-    uint8_t cellular_connected;
-    /** CellularTechnology; unit=none; physical=raw*1+0; raw=[0,7]. CellularTechnology */
-    uint8_t cellular_technology;
-    /** Roaming; unit=none; physical=raw*1+0; raw=[0,1]. Roaming */
-    uint8_t roaming;
-    /** InternetConnected; unit=none; physical=raw*1+0; raw=[0,1]. InternetConnected */
-    uint8_t internet_connected;
-    /** ServerConnected; unit=none; physical=raw*1+0; raw=[0,1]. Connection to the telemetry server; independent of internet connectivity. */
-    uint8_t server_connected;
-    /** RSSI; unit=dBm; physical=raw*1+0; raw=[-128,127]. RSSI */
-    int8_t rssi;
-    /** RSRP; unit=dBm; physical=raw*1+0; raw=[-128,127]. RSRP */
-    int8_t rsrp;
-    /** RSRQ; unit=dB; physical=raw*0.5+0; raw=[-128,127]. RSRQ */
-    double rsrq;
-    /** SINR; unit=dB; physical=raw*0.5+0; raw=[-128,127]. SINR */
-    double sinr;
-} d_aq_can_telemetry_status_t;
-
-/** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
- * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t d_aq_can_telemetry_status_pack(can_frame_t* dst, const d_aq_can_telemetry_status_t* src);
-/** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
- * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t d_aq_can_telemetry_status_unpack(d_aq_can_telemetry_status_t* dst, const can_frame_t* src);
-
-/** Named raw values for GPSAntennaState; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_GPS_DATA_GPS_ANTENNA_STATE_OK = 0,
-    D_AQ_CAN_GPS_DATA_GPS_ANTENNA_STATE_OPEN_CIRCUIT = 1,
-    D_AQ_CAN_GPS_DATA_GPS_ANTENNA_STATE_SHORT_CIRCUIT = 2,
-    D_AQ_CAN_GPS_DATA_GPS_ANTENNA_STATE_UNKNOWN = 3,
-} d_aq_can_gps_data_gps_antenna_state_choice_t;
-/** Named raw values for GPSFix; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_GPS_DATA_GPS_FIX_NO_FIX = 0,
-    D_AQ_CAN_GPS_DATA_GPS_FIX_FIX2_D = 1,
-    D_AQ_CAN_GPS_DATA_GPS_FIX_FIX3_D = 2,
-} d_aq_can_gps_data_gps_fix_choice_t;
-/** GPS receiver state and measurements. */
-typedef struct {
-    /** GPSAntennaState; unit=none; physical=raw*1+0; raw=[0,3]. GPSAntennaState */
-    uint8_t gps_antenna_state;
-    /** GPSFix; unit=none; physical=raw*1+0; raw=[0,3]. GPSFix */
-    uint8_t gps_fix;
-    /** GPSLongitude; unit=deg; physical=raw*0.000001+0; raw=[-180000000,180000000]. Longitude range corrected from swapped draft coordinates. */
-    double gps_longitude;
-    /** GPSLatitude; unit=deg; physical=raw*0.000001+0; raw=[-90000000,90000000]. GPSLatitude */
-    double gps_latitude;
-    /** GPSSpeed; unit=m/s; physical=raw*0.01+0; raw=[0,65535]. GPSSpeed */
-    double gps_speed;
-    /** GPSHeading; unit=deg; physical=raw*0.01+0; raw=[0,35999]. GPSHeading */
-    double gps_heading;
-    /** GPSAltitude; unit=m; physical=raw*0.1+0; raw=[-32768,32767]. GPSAltitude */
-    double gps_altitude;
-    /** SatellitesInUse; unit=none; physical=raw*1+0; raw=[0,255]. SatellitesInUse */
-    uint8_t satellites_in_use;
-} d_aq_can_gps_data_t;
-
-/** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
- * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t d_aq_can_gps_data_pack(can_frame_t* dst, const d_aq_can_gps_data_t* src);
-/** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
- * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t d_aq_can_gps_data_unpack(d_aq_can_gps_data_t* dst, const can_frame_t* src);
-
-/** Named raw values for BPSWatchdog; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_ON_BOARD_WATCHDOG_BPS_WATCHDOG_ALIVE = 0,
-    D_AQ_CAN_ON_BOARD_WATCHDOG_BPS_WATCHDOG_TIMED_OUT = 1,
-} d_aq_can_on_board_watchdog_bps_watchdog_choice_t;
-/** Named raw values for VCUWatchdog; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_ON_BOARD_WATCHDOG_VCU_WATCHDOG_ALIVE = 0,
-    D_AQ_CAN_ON_BOARD_WATCHDOG_VCU_WATCHDOG_TIMED_OUT = 1,
-} d_aq_can_on_board_watchdog_vcu_watchdog_choice_t;
-/** Named raw values for DEIWatchdog; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_ON_BOARD_WATCHDOG_DEI_WATCHDOG_ALIVE = 0,
-    D_AQ_CAN_ON_BOARD_WATCHDOG_DEI_WATCHDOG_TIMED_OUT = 1,
-} d_aq_can_on_board_watchdog_dei_watchdog_choice_t;
-/** Named raw values for PedalsWatchdog; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_ALIVE = 0,
-    D_AQ_CAN_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_TIMED_OUT = 1,
-} d_aq_can_on_board_watchdog_pedals_watchdog_choice_t;
-/** Named raw values for PDUWatchdog; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_ON_BOARD_WATCHDOG_PDU_WATCHDOG_ALIVE = 0,
-    D_AQ_CAN_ON_BOARD_WATCHDOG_PDU_WATCHDOG_TIMED_OUT = 1,
-} d_aq_can_on_board_watchdog_pdu_watchdog_choice_t;
-/** Named raw values for LVCWatchdog; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_ON_BOARD_WATCHDOG_LVC_WATCHDOG_ALIVE = 0,
-    D_AQ_CAN_ON_BOARD_WATCHDOG_LVC_WATCHDOG_TIMED_OUT = 1,
-} d_aq_can_on_board_watchdog_lvc_watchdog_choice_t;
-/** Named raw values for MPPTInterfaceWatchdog; unknown values remain integers. */
-typedef enum {
-    D_AQ_CAN_ON_BOARD_WATCHDOG_MPPT_INTERFACE_WATCHDOG_ALIVE = 0,
-    D_AQ_CAN_ON_BOARD_WATCHDOG_MPPT_INTERFACE_WATCHDOG_TIMED_OUT = 1,
-} d_aq_can_on_board_watchdog_mppt_interface_watchdog_choice_t;
-/** MIKA reports watchdog state of other boards: 0 alive, 1 timed out. Former MIKA self-watchdog removed; bit 7 is reserved. */
-typedef struct {
-    /** BPSWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. BPSWatchdog */
-    uint8_t bps_watchdog;
-    /** VCUWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. VCUWatchdog */
-    uint8_t vcu_watchdog;
-    /** DEIWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. DEIWatchdog */
-    uint8_t dei_watchdog;
-    /** PedalsWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. PedalsWatchdog */
-    uint8_t pedals_watchdog;
-    /** PDUWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. PDUWatchdog */
-    uint8_t pdu_watchdog;
-    /** LVCWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. LVCWatchdog */
-    uint8_t lvc_watchdog;
-    /** MPPTInterfaceWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. MPPTInterfaceWatchdog */
-    uint8_t mppt_interface_watchdog;
-} d_aq_can_on_board_watchdog_t;
-
-/** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
- * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t d_aq_can_on_board_watchdog_pack(can_frame_t* dst, const d_aq_can_on_board_watchdog_t* src);
-/** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
- * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t d_aq_can_on_board_watchdog_unpack(d_aq_can_on_board_watchdog_t* dst, const can_frame_t* src);
 
 /** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
 typedef struct {
@@ -733,17 +576,14 @@ typedef struct {
 } d_aq_can_blackbody3_t;
 
 typedef struct {
+    d_aq_can_timestamp_sync_t timestamp_sync;
+} d_aq_can_cm5_t;
+
+typedef struct {
     d_aq_can_chassis_acceleration_data_t chassis_acceleration_data;
     d_aq_can_chassis_gyro_data_t chassis_gyro_data;
     d_aq_can_chassis_magnetometer_data_t chassis_magnetometer_data;
 } d_aq_can_chassis_imu_t;
-
-typedef struct {
-    d_aq_can_timestamp_sync_t timestamp_sync;
-    d_aq_can_telemetry_status_t telemetry_status;
-    d_aq_can_gps_data_t gps_data;
-    d_aq_can_on_board_watchdog_t on_board_watchdog;
-} d_aq_can_mika_t;
 
 typedef struct {
     d_aq_can_strain_gauge_front_data_t strain_gauge_front_data;
@@ -795,16 +635,13 @@ typedef struct {
         can_message_info_t blackbody3_data;
     } blackbody3;
     struct {
+        can_message_info_t timestamp_sync;
+    } cm5;
+    struct {
         can_message_info_t chassis_acceleration_data;
         can_message_info_t chassis_gyro_data;
         can_message_info_t chassis_magnetometer_data;
     } chassis_imu;
-    struct {
-        can_message_info_t timestamp_sync;
-        can_message_info_t telemetry_status;
-        can_message_info_t gps_data;
-        can_message_info_t on_board_watchdog;
-    } mika;
     struct {
         can_message_info_t strain_gauge_front_data;
     } strain_gauge_front;

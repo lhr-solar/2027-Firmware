@@ -25,7 +25,7 @@
     "External/bootloader host and COTS devices are not board allocations.",
     "Bottom-shell lighting is integrated on DEI; it is not a separate programmable board.",
     "ElconInterface is intentionally excluded from this bootloader allocation; its DBC node and application traffic remain.",
-    "MIKA and TelemetryLeader are one physical node, named MIKA in the DBCs; both names are excluded from this bootloader allocation.",
+    "CM5 and TelemetryLeader are one physical node, named CM5 in the DBCs; both names are excluded from this bootloader allocation.",
     "Removed node IDs 5, 9, 11 and 12 remain reserved; all remaining board node/RX/TX IDs are unchanged."
   ],
   "reserved_node_ids": [

@@ -1,7 +1,7 @@
 # Shared generated CAN codecs. Link only the physical buses a board needs.
 cmake_minimum_required(VERSION 3.20)
 
-foreach(entry IN ITEMS car:car_can charger:charger_can daq:d_aq_can elcon:elcon_can lighting:lighting_can motor:motor_can mppt:mpptcan steering:steering_can)
+foreach(entry IN ITEMS car:car_can charger:charger_can daq:d_aq_can elcon:elcon_can lighting:lighting_can motor:motor_can mppt:mpptcan steering:steering_can telemetry_tcp:telemetry_tcp)
     string(REPLACE ":" ";" parts "${entry}")
     list(GET parts 0 bus)
     list(GET parts 1 source)

@@ -120,7 +120,7 @@ Each `.dbc` in `can/dbc/` is one physical bus, not one board:
 | `LightingCAN.dbc` | Lighting |
 | `DAqCAN.dbc` | Data acquisition |
 | `ElconCAN.dbc` | Elcon charger (vendor-defined IDs — follow the charger datasheet, not our conventions) |
-| `debug_telemetry.dbc` | Telemetry debug |
+| `TelemetryTCP.dbc` | Telemetry debug |
 | `bootloading.dbc` | Bootloader protocol |
 
 ### Boards (2027 targets)
@@ -131,7 +131,7 @@ create the first one, follow §5 and flag the naming choice for human review.
 | Subteam | Boards | Meaning |
 |---|---|---|
 | `firmware/psys/` | LV, HV, BPS | Low-voltage distribution, high-voltage, battery protection system |
-| `firmware/controls/` | VCU, MIKA, Pedals | Vehicle control unit, MIKA, pedal box |
+| `firmware/controls/` | VCU, CM5, Pedals | Vehicle control unit, CM5, pedal box |
 | `firmware/telemetry/` | Sensor board | Telemetry / sensor acquisition |
 
 **Safety-critical:** BPS and HV govern a high-voltage pack; VCU and Pedals

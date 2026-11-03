@@ -35,7 +35,7 @@ logging, and getting data off the car.
 - `psp/ADC.c` — analog sensor acquisition
 
 See [`firmware/platform/AGENTS.md`](../platform/AGENTS.md). `DAqCAN.dbc` and
-`debug_telemetry.dbc` in `can/dbc/` are this subteam's buses — both empty today.
+`TelemetryTCP.dbc` in `can/dbc/` define physical sensor traffic and TCP-only telemetry respectively.
 
 There is no CMake build yet (root `AGENTS.md` §5). Get human sign-off on board
 layout and build integration before generating files.

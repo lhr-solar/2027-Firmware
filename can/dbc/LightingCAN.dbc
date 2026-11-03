@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: DEI MIKA TopShellLighting
+BU_: DEI CM5 TopShellLighting
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;

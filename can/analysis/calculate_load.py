@@ -188,7 +188,8 @@ def calculate(databases, topology, event_rates, args):
     """Validated source contracts and forwarding policy -> complete estimate report."""
     rows, unresolved = traffic(databases, event_rates)
     native = {}
-    for bus, database in databases.items():
+    for bus in topology["buses"]:
+        database = databases[bus]
         bitrate = attribute(database, "Baudrate")
         if not isinstance(bitrate, int) or bitrate <= 0:
             raise ValueError(f"{bus}: missing positive Baudrate")

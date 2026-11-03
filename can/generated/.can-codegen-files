@@ -8,8 +8,6 @@ charger_can.c
 charger_can.h
 d_aq_can.c
 d_aq_can.h
-debug_telemetry.c
-debug_telemetry.h
 detail/bootloading_raw.c
 detail/bootloading_raw.h
 detail/car_can_raw.c
@@ -18,8 +16,6 @@ detail/charger_can_raw.c
 detail/charger_can_raw.h
 detail/d_aq_can_raw.c
 detail/d_aq_can_raw.h
-detail/debug_telemetry_raw.c
-detail/debug_telemetry_raw.h
 detail/elcon_can_raw.c
 detail/elcon_can_raw.h
 detail/lighting_can_raw.c
@@ -30,6 +26,8 @@ detail/mpptcan_raw.c
 detail/mpptcan_raw.h
 detail/steering_can_raw.c
 detail/steering_can_raw.h
+detail/telemetry_tcp_raw.c
+detail/telemetry_tcp_raw.h
 elcon_can.c
 elcon_can.h
 lighting_can.c
@@ -40,3 +38,5 @@ mpptcan.c
 mpptcan.h
 steering_can.c
 steering_can.h
+telemetry_tcp.c
+telemetry_tcp.h

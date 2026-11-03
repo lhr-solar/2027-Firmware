@@ -18,7 +18,7 @@ buses:
           mode: include
           messages: ["0x060", "0x070", "0x071", "0x072"]
       - to: TelemetryTCP
-        via: MIKA
+        via: CM5
         filter:
           mode: exclude
           messages: []
@@ -30,7 +30,7 @@ buses:
     brs: false
     forwards:
       - to: TelemetryTCP
-        via: MIKA
+        via: CM5
         filter:
           mode: exclude
           messages: ["0x620"]
@@ -107,3 +107,4 @@ buses:
 outputs:
   TelemetryTCP:
     transport: tcp
+    dbc: dbc/TelemetryTCP.dbc

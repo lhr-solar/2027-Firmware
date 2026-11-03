@@ -1430,55 +1430,55 @@ can_status_t car_can_mppt_interface_status_unpack(car_can_mppt_interface_status_
 
 /** Named raw values for WarningTemperature; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MIKA_STATUS_WARNING_TEMPERATURE_NO_WARNING = 0,
-    CAR_CAN_MIKA_STATUS_WARNING_TEMPERATURE_WARNING = 1,
-} car_can_mika_status_warning_temperature_choice_t;
+    CAR_CAN_CM5_STATUS_WARNING_TEMPERATURE_NO_WARNING = 0,
+    CAR_CAN_CM5_STATUS_WARNING_TEMPERATURE_WARNING = 1,
+} car_can_cm5_status_warning_temperature_choice_t;
 /** Named raw values for WarningOverTemperature; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MIKA_STATUS_WARNING_OVER_TEMPERATURE_NO_WARNING = 0,
-    CAR_CAN_MIKA_STATUS_WARNING_OVER_TEMPERATURE_WARNING = 1,
-} car_can_mika_status_warning_over_temperature_choice_t;
+    CAR_CAN_CM5_STATUS_WARNING_OVER_TEMPERATURE_NO_WARNING = 0,
+    CAR_CAN_CM5_STATUS_WARNING_OVER_TEMPERATURE_WARNING = 1,
+} car_can_cm5_status_warning_over_temperature_choice_t;
 /** Named raw values for WarningDisplayDisconnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MIKA_STATUS_WARNING_DISPLAY_DISCONNECTED_NO_WARNING = 0,
-    CAR_CAN_MIKA_STATUS_WARNING_DISPLAY_DISCONNECTED_WARNING = 1,
-} car_can_mika_status_warning_display_disconnected_choice_t;
+    CAR_CAN_CM5_STATUS_WARNING_DISPLAY_DISCONNECTED_NO_WARNING = 0,
+    CAR_CAN_CM5_STATUS_WARNING_DISPLAY_DISCONNECTED_WARNING = 1,
+} car_can_cm5_status_warning_display_disconnected_choice_t;
 /** Named raw values for WarningRearCameraDisconnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MIKA_STATUS_WARNING_REAR_CAMERA_DISCONNECTED_NO_WARNING = 0,
-    CAR_CAN_MIKA_STATUS_WARNING_REAR_CAMERA_DISCONNECTED_WARNING = 1,
-} car_can_mika_status_warning_rear_camera_disconnected_choice_t;
+    CAR_CAN_CM5_STATUS_WARNING_REAR_CAMERA_DISCONNECTED_NO_WARNING = 0,
+    CAR_CAN_CM5_STATUS_WARNING_REAR_CAMERA_DISCONNECTED_WARNING = 1,
+} car_can_cm5_status_warning_rear_camera_disconnected_choice_t;
 /** Named raw values for WarningRouterDisconnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MIKA_STATUS_WARNING_ROUTER_DISCONNECTED_NO_WARNING = 0,
-    CAR_CAN_MIKA_STATUS_WARNING_ROUTER_DISCONNECTED_WARNING = 1,
-} car_can_mika_status_warning_router_disconnected_choice_t;
+    CAR_CAN_CM5_STATUS_WARNING_ROUTER_DISCONNECTED_NO_WARNING = 0,
+    CAR_CAN_CM5_STATUS_WARNING_ROUTER_DISCONNECTED_WARNING = 1,
+} car_can_cm5_status_warning_router_disconnected_choice_t;
 /** Named raw values for CellularConnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MIKA_STATUS_CELLULAR_CONNECTED_DISCONNECTED = 0,
-    CAR_CAN_MIKA_STATUS_CELLULAR_CONNECTED_CONNECTED = 1,
-} car_can_mika_status_cellular_connected_choice_t;
+    CAR_CAN_CM5_STATUS_CELLULAR_CONNECTED_DISCONNECTED = 0,
+    CAR_CAN_CM5_STATUS_CELLULAR_CONNECTED_CONNECTED = 1,
+} car_can_cm5_status_cellular_connected_choice_t;
 /** Named raw values for InternetConnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MIKA_STATUS_INTERNET_CONNECTED_DISCONNECTED = 0,
-    CAR_CAN_MIKA_STATUS_INTERNET_CONNECTED_CONNECTED = 1,
-} car_can_mika_status_internet_connected_choice_t;
+    CAR_CAN_CM5_STATUS_INTERNET_CONNECTED_DISCONNECTED = 0,
+    CAR_CAN_CM5_STATUS_INTERNET_CONNECTED_CONNECTED = 1,
+} car_can_cm5_status_internet_connected_choice_t;
 /** Named raw values for ServerConnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MIKA_STATUS_SERVER_CONNECTED_DISCONNECTED__RETRYING = 0,
-    CAR_CAN_MIKA_STATUS_SERVER_CONNECTED_CONNECTED = 1,
-} car_can_mika_status_server_connected_choice_t;
+    CAR_CAN_CM5_STATUS_SERVER_CONNECTED_DISCONNECTED__RETRYING = 0,
+    CAR_CAN_CM5_STATUS_SERVER_CONNECTED_CONNECTED = 1,
+} car_can_cm5_status_server_connected_choice_t;
 /** Named raw values for GPSConnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MIKA_STATUS_GPS_CONNECTED_DISCONNECTED = 0,
-    CAR_CAN_MIKA_STATUS_GPS_CONNECTED_CONNECTED = 1,
-} car_can_mika_status_gps_connected_choice_t;
+    CAR_CAN_CM5_STATUS_GPS_CONNECTED_DISCONNECTED = 0,
+    CAR_CAN_CM5_STATUS_GPS_CONNECTED_CONNECTED = 1,
+} car_can_cm5_status_gps_connected_choice_t;
 /** Named raw values for DriverCameraConnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MIKA_STATUS_DRIVER_CAMERA_CONNECTED_DISCONNECTED = 0,
-    CAR_CAN_MIKA_STATUS_DRIVER_CAMERA_CONNECTED_CONNECTED = 1,
-} car_can_mika_status_driver_camera_connected_choice_t;
-/** HMI and CM5 status from MIKA (combined HMI and telemetry board). Application ID 0x082 and signal layout retained. */
+    CAR_CAN_CM5_STATUS_DRIVER_CAMERA_CONNECTED_DISCONNECTED = 0,
+    CAR_CAN_CM5_STATUS_DRIVER_CAMERA_CONNECTED_CONNECTED = 1,
+} car_can_cm5_status_driver_camera_connected_choice_t;
+/** HMI and CM5 status from CM5 (combined HMI and telemetry board). Application ID 0x082 and signal layout retained. */
 typedef struct {
     /** WarningTemperature; unit=none; physical=raw*1+0; raw=[0,1]. WarningTemperature */
     uint8_t warning_temperature;
@@ -1506,14 +1506,14 @@ typedef struct {
     double so_c_temperature;
     /** CM5FanTach; unit=rpm; physical=raw*5+0; raw=[0,4095]. CM5 cooling fan tachometer: unsigned 12 bits, 5 rpm/bit, offset 0 rpm. */
     uint16_t cm5_fan_tach;
-} car_can_mika_status_t;
+} car_can_cm5_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t car_can_mika_status_pack(can_frame_t* dst, const car_can_mika_status_t* src);
+can_status_t car_can_cm5_status_pack(can_frame_t* dst, const car_can_cm5_status_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t car_can_mika_status_unpack(car_can_mika_status_t* dst, const can_frame_t* src);
+can_status_t car_can_cm5_status_unpack(car_can_cm5_status_t* dst, const can_frame_t* src);
 
 /** Named raw values for WarningHSSOverCurrent; unknown values remain integers. */
 typedef enum {
@@ -2592,6 +2592,10 @@ typedef struct {
 } car_can_bps_t;
 
 typedef struct {
+    car_can_cm5_status_t cm5_status;
+} car_can_cm5_t;
+
+typedef struct {
     car_can_dei_status_t dei_status;
 } car_can_dei_t;
 
@@ -2610,10 +2614,6 @@ typedef struct {
     car_can_lvc_temperature_data_t lvc_temperature_data;
     car_can_lvc_over_current_snapshot_t lvc_over_current_snapshot;
 } car_can_lvc_t;
-
-typedef struct {
-    car_can_mika_status_t mika_status;
-} car_can_mika_t;
 
 typedef struct {
     car_can_mppt_interface_status_t mppt_interface_status;
@@ -2650,6 +2650,9 @@ typedef struct {
         can_message_info_t bps_balancing_status;
     } bps;
     struct {
+        can_message_info_t cm5_status;
+    } cm5;
+    struct {
         can_message_info_t dei_status;
     } dei;
     struct {
@@ -2666,9 +2669,6 @@ typedef struct {
         can_message_info_t lvc_temperature_data;
         can_message_info_t lvc_over_current_snapshot;
     } lvc;
-    struct {
-        can_message_info_t mika_status;
-    } mika;
     struct {
         can_message_info_t mppt_interface_status;
     } mppt_interface;

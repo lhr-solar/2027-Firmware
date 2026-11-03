@@ -38,7 +38,7 @@ class TopologyTests(unittest.TestCase):
         self.assertTrue(selected({"mode": "include", "messages": ["0x620"]}, message))
         self.assertTrue(
             selected(
-                {"mode": "include", "messages": ["0x621"], "transmitters": ["MIKA"]},
+                {"mode": "include", "messages": ["0x621"], "transmitters": ["CM5"]},
                 message,
             )
         )
@@ -60,7 +60,7 @@ class TopologyTests(unittest.TestCase):
 
     def test_bad_bridge_and_cycles(self):
         config = deepcopy(self.config)
-        config["buses"]["MotorCAN"]["forwards"][0]["via"] = "MIKA"
+        config["buses"]["MotorCAN"]["forwards"][0]["via"] = "CM5"
         with self.assertRaisesRegex(ValueError, "connect both"):
             validate(config, self.databases)
         config = deepcopy(self.config)

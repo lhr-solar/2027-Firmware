@@ -90,13 +90,15 @@ def validate(config, databases):
     for name in ("buses", "outputs"):
         if not isinstance(config[name], dict):
             raise TypeError(f"{name} must be a mapping")
-    if set(config["buses"]) != set(databases):
-        raise ValueError("Topology buses must match the populated DBC set")
+    if set(config["buses"]) | {name for name, output in config["outputs"].items() if "dbc" in output} != set(databases):
+        raise ValueError("Topology buses and DBC-backed outputs must match the populated DBC set")
     if set(config["buses"]) & set(config["outputs"]):
         raise ValueError("Bus/output names must be distinct")
     endpoints = set(config["buses"]) | set(config["outputs"])
     for name, output in config["outputs"].items():
-        fields(output, ("transport",), ("transport",), name)
+        fields(output, ("transport", "dbc"), ("transport",), name)
+        if "dbc" in output and Path(output["dbc"]).stem != name:
+            raise ValueError(f"{name}: output DBC must match its name")
         if output["transport"] != "tcp":
             raise ValueError(f"{name}: only TCP outputs are supported")
     for bus, spec in config["buses"].items():

@@ -49,7 +49,8 @@ class LoadAnalysisTests(unittest.TestCase):
             "MPPTCAN": 1000000,
             "SteeringCAN": 500000,
         }
-        for bus, db in self.databases.items():
+        for bus in rates:
+            db = self.databases[bus]
             self.assertEqual(attribute(db, "Baudrate"), rates[bus])
             fd = bus in ("CarCAN", "DAqCAN", "ChargerCAN")
             self.assertEqual(attribute(db, "BusType"), "CAN FD" if fd else "CAN")
@@ -157,6 +158,12 @@ class LoadAnalysisTests(unittest.TestCase):
         tcp = report["internet_messages"]
         self.assertFalse(any(row["source_network"] == "DAqCAN" for row in car))
         self.assertFalse(any(row["name"] == "TimestampSync" for row in tcp))
+        for name in ("TelemetryStatus", "GPSData", "OnBoardWatchdog"):
+            self.assertIn(name, {row["name"] for row in tcp})
+            self.assertNotIn(name, {m.name for m in self.databases["DAqCAN"].messages})
+        self.assertIn("DAqCAN", report["native_buses"])
+        self.assertNotIn("TelemetryTCP", report["native_buses"])
+
         for prefix in ("MPPTA", "MPPTB", "MPPTC"):
             for suffix in ("SetMode", "SetOutputVoltageLimit", "SetOutputCurrentLimit"):
                 self.assertNotIn(prefix + suffix, {row["name"] for row in car})

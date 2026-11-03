@@ -1,6 +1,6 @@
 # 2027 CAN databases
 
-These eight draft databases implement the supplied **2026–2027 ID Allocation &
+These draft databases implement the supplied **2026–2027 ID Allocation &
 Drafting** export (edited October 22, 2026), incorporating the HighNoon DBCs from
 Embedded-Sharepoint and the vendor references below. New team signal bit layouts
 are proposed here; the source allocation did not specify start bits. They are
@@ -17,7 +17,8 @@ not wire-compatible with the old vehicle's team-defined messages.
 | LightingCAN | Bottom-shell status from DEI; top-shell status from TopShellLighting | 2 | 0 |
 | ChargerCAN | BPS status/pack/cell data and ElconInterface status | 5 | 0 |
 | ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
-| DAqCAN | MIKA infrastructure and all 12 sensor boards | 23 | 5 |
+| DAqCAN | CM5 timestamp and sensor-board traffic | 20 | 5 |
+| TelemetryTCP | CM5 TCP-native telemetry and test messages | 6 | 0 |
 
 Every message has exactly one declared transmitter. `External` is the command
 injection tool/node for IDs 0x051–0x054. MPPTInterface receives BPSStatus
@@ -41,15 +42,15 @@ DAqCAN 1000000, ChargerCAN/ElconCAN/MotorCAN/LightingCAN 250000, SteeringCAN
 
 The telemetry/sensor bus is **DAqCAN**, using the formerly empty DAqCAN.dbc
 scaffold. TelemetryCAN.dbc is removed at the user's request. The empty
-bootloading.dbc and debug_telemetry.dbc scaffolds remain untouched. Both lighting
+bootloading.dbc scaffold remains. TCP-only definitions use TelemetryTCP.dbc. Both lighting
 messages live on **LightingCAN**: DEI transmits BottomShellLightingStatus at
 **0x080**, and TopShellLighting transmits TopShellLightingStatus at **0x081**.
 Their IDs and payload layouts are retained. Bottom-shell circuitry is on DEI,
 not a separate CAN node. TopShellLighting is attached only to LightingCAN; its
 former direct CarCAN DEI-status subscription is removed. DEI is attached to
-CarCAN, SteeringCAN and LightingCAN. MIKA is the combined HMI
-and telemetry board: it transmits MIKAStatus (0x082) on CarCAN and
-TimestampSync/TelemetryStatus/OnBoardWatchdog on DAqCAN. Its former
+CarCAN, SteeringCAN and LightingCAN. CM5 is the combined HMI
+and telemetry board: it transmits CM5Status (0x082) on CarCAN and
+TimestampSync on DAqCAN; TelemetryStatus, GPSData, and OnBoardWatchdog are TCP-only. Its former
 self-watchdog bit is reserved rather than monitoring a second board identity.
 
 ## Shared encodings
@@ -63,7 +64,7 @@ self-watchdog bit is reserved rather than monitoring a second board identity.
 | LV battery current | A | 0.01 | −50; unsigned 14 bits, −50.00–113.83 A; positive discharge, negative charge |
 | HSS FET temperatures | degC | 0.05 | −40; unsigned 13 bits, permitted −40–200 degC |
 | Battery temperatures | degC | 0.05 | 0; unsigned 11 bits, 0–102.35 degC |
-| MIKA SoC temperature | degC | **0.5** | **−20; unsigned 8 bits, permitted −20–85 degC** |
+| CM5 SoC temperature | degC | **0.5** | **−20; unsigned 8 bits, permitted −20–85 degC** |
 | Fan tachometers | rpm | 5 | 0; unsigned 12 bits |
 | Accelerator position | % | 100/255 | 0; unsigned 8 bits |
 | Brake pressures | PSI | 1 | 0; unsigned 12 bits, permitted 0–3000 PSI |
@@ -115,9 +116,9 @@ consumers together rather than mixing versions.
   It cyclically reports the command values held by BPS; it is not a per-request
   acknowledgement or confirmation that a command was successfully applied.
   The reviewed cyclic period is 1000 ms.
-- MIKA's rear-camera warning is explicitly `WarningRearCameraDisconnected`.
+- CM5's rear-camera warning is explicitly `WarningRearCameraDisconnected`.
   A separate one-bit `DriverCameraConnected` uses the shared Connection table.
-- MIKA includes `CM5FanTach`: unsigned 12-bit, 5 rpm/bit, 0–20475 rpm.
+- CM5 includes `CM5FanTach`: unsigned 12-bit, 5 rpm/bit, 0–20475 rpm.
   Its discrete connection bits precede frame rate, temperature and fan speed;
   the frame is 5 bytes. The SoC-temperature encoding remains unchanged.
 
@@ -152,7 +153,7 @@ hysteresis, delay, and reset behavior require BPS firmware review.
 
 ## Legacy timestamp and linpot formats
 
-`TimestampSync` at **0x620**, TX MIKA, now uses the calibrated HighNoon sync
+`TimestampSync` at **0x620**, TX CM5, now uses the calibrated HighNoon sync
 layout: **two bytes**, unsigned 16-bit `Timestamp` at bit 0, little-endian,
 scale 1, offset 0. TimestampSync broadcasts every 10 ms, following the reviewed
 timing CSV. The legacy sender increments its raw counter once per broadcast
@@ -160,7 +161,7 @@ timing CSV. The legacy sender increments its raw counter once per broadcast
 agreement.
 The 16-bit raw counter wraps after 65536 counts; its DBC scale remains 1.
 The message remains CAN-FD under this year's bus convention. The status message
-at **0x621** is named `TelemetryStatus`, also transmitted by MIKA.
+at **0x621** is named `TelemetryStatus`, also transmitted by CM5.
 
 Suspension FR/FL/Rear at **0x670/0x671/0x672** each contain an unsigned 16-bit
 raw timestamp and **four unsigned 12-bit ADC/linpot values** in eight bytes.
@@ -209,7 +210,7 @@ DBCs, not enabled bootloader transports. The user's explicit exclusions are:
 
 - BottomShellLighting: integrated on DEI; no independent firmware target.
 - ElconInterface: excluded from bootloader allocation; retained in the DBCs.
-- MIKA and its former TelemetryLeader identity: one physical board, named MIKA
+- CM5 and its former TelemetryLeader identity: one physical board, named CM5
   in the DBCs; neither needs CAN bootloading.
 - SMBs (no CAN), COTS devices, and the external host.
 
@@ -323,7 +324,7 @@ limitation. Python cantools can encode/decode all eight databases.
 | 0x690–0x691 | Front and rear strain gauges |
 
 Other slots in 0x630–0x6DF remain unallocated. Infrastructure retains
-TimestampSync 0x620, TelemetryStatus 0x621, and OnBoardWatchdog 0x623.
+TimestampSync 0x620 on DAqCAN; TelemetryStatus 0x621, GPSData 0x622 and OnBoardWatchdog 0x623 are TCP-only.
 Bootloader node IDs are independent and unchanged.
 
 Acceleration, gyro, magnetometer and wheel-speed frames contain four consecutive
@@ -472,10 +473,22 @@ are unchanged. Some payloads shrink when their sample-age fields are removed.
 
 ## GPS and lighting commands
 
-MIKA sends `GPSData` on DAqCAN at 0x622 every 200 ms, containing GPS state,
+CM5 sends `GPSData` over telemetry TCP at 0x622 every 200 ms, containing GPS state,
 position, speed, heading, altitude and satellites. Cellular
 connection and radio measurements remain in TelemetryStatus. LightingCAN uses
 classic CAN: DEI sends `LightingCommand` at 0x083 every 200 ms with BlinkPhase,
 Headlight, Left, Right, Brake, Strobe and three raw PWM commands (0-255). BlinkPhase
 moved from BottomShellLightingStatus. The existing LightingCAN-to-CarCAN route
-forwards LightingCommand; DAqCAN GPS reaches telemetry TCP through the DAq route.
+forwards LightingCommand; GPS is produced directly for telemetry TCP.
+
+## TCP-only telemetry definitions
+
+`TelemetryTCP.dbc` contains frames produced by CM5 directly for telemetry TCP,
+without DAqCAN transmission. `topology.yaml` associates this DBC with the TCP
+output; forwarded CarCAN and DAqCAN traffic is merged at that output. Native
+TCP messages count toward TCP bandwidth, not CAN bus loading.
+
+On-demand test frames are `Sig_Wave` (0x7FD, two IEEE-754 binary32 values),
+`max_message_classical` (0x7FE, eight bytes) and `max_message_fd` (0x7FF,
+64 bytes). They have no assumed periodic rate. Their standard frame IDs are
+the three highest and are currently free on the routed networks.

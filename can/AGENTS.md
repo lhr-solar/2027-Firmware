@@ -44,7 +44,7 @@ two buses appears in two DBCs. Do not create a per-board DBC.
 charger's datasheet. Do not renumber them to fit our conventions.
 
 **Do not rename DBC files without explicit user approval.** The telemetry debug
-scaffold is named `debug_telemetry.dbc` following the approved rename.
+TCP-native output definitions use `TelemetryTCP.dbc`.
 
 **Never commit generated artifacts.** `dist/`, `canspec-data.json`, `.ldb`
 Vector lock files. CI builds and publishes the site; generated output on `main`

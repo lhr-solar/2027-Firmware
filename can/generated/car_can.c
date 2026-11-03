@@ -18,6 +18,9 @@ const car_can_metadata_t car_can = {
         .bps_fault_temperature_snapshot = { .id = UINT32_C(119), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
         .bps_balancing_status = { .id = UINT32_C(120), .payload_bytes = 6, .wire_bytes = 6, .dlc = 6, .is_extended = false, .is_fd = true },
     },
+    .cm5 = {
+        .cm5_status = { .id = UINT32_C(130), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
+    },
     .dei = {
         .dei_status = { .id = UINT32_C(98), .payload_bytes = 2, .wire_bytes = 2, .dlc = 2, .is_extended = false, .is_fd = true },
     },
@@ -34,9 +37,6 @@ const car_can_metadata_t car_can = {
         .lvc_voltage_data = { .id = UINT32_C(146), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
         .lvc_temperature_data = { .id = UINT32_C(147), .payload_bytes = 2, .wire_bytes = 2, .dlc = 2, .is_extended = false, .is_fd = true },
         .lvc_over_current_snapshot = { .id = UINT32_C(148), .payload_bytes = 7, .wire_bytes = 7, .dlc = 7, .is_extended = false, .is_fd = true },
-    },
-    .mika = {
-        .mika_status = { .id = UINT32_C(130), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
     },
     .mppt_interface = {
         .mppt_interface_status = { .id = UINT32_C(121), .payload_bytes = 3, .wire_bytes = 3, .dlc = 3, .is_extended = false, .is_fd = true },
@@ -3523,9 +3523,9 @@ can_status_t car_can_mppt_interface_status_unpack(car_can_mppt_interface_status_
     return CAN_OK;
 }
 
-can_status_t car_can_mika_status_pack(can_frame_t* dst, const car_can_mika_status_t* src) {
+can_status_t car_can_cm5_status_pack(can_frame_t* dst, const car_can_cm5_status_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct car_can_raw_mika_status_t raw = {0};
+    struct car_can_raw_cm5_status_t raw = {0};
     can_status_t status = CAN_OK;
     {
         uint8_t value = src->warning_temperature;
@@ -3627,20 +3627,20 @@ can_status_t car_can_mika_status_pack(can_frame_t* dst, const car_can_mika_statu
     can_frame_t result = { .id = UINT32_C(130),
         .len = 5, .is_extended = false,
         .is_fd = true };
-    if (car_can_raw_mika_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (car_can_raw_cm5_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t car_can_mika_status_unpack(car_can_mika_status_t* dst, const can_frame_t* src) {
+can_status_t car_can_cm5_status_unpack(car_can_cm5_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(130) || src->len != 5 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct car_can_raw_mika_status_t raw = {0};
-    if (car_can_raw_mika_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    car_can_mika_status_t result = {0};
+    struct car_can_raw_cm5_status_t raw = {0};
+    if (car_can_raw_cm5_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    car_can_cm5_status_t result = {0};
     if (raw.warning_temperature > INT64_C(1)) return CAN_RANGE;
     result.warning_temperature = (uint8_t)raw.warning_temperature;
     if (raw.warning_over_temperature > INT64_C(1)) return CAN_RANGE;

@@ -63,7 +63,8 @@ def synchronize(path=ROOT / "topology.yaml"):
         database.refresh()
     load_topology(path, databases)
     changed = []
-    for bus, database in databases.items():
+    for bus in config["buses"]:
+        database = databases[bus]
         output = path.parent / config["buses"][bus]["dbc"]
         content = database.as_dbc_string(
             sort_signals=lambda signals: sorted(
