@@ -330,7 +330,7 @@ export function TopologyPage() {
                       ? `BRS ${spec.brs ? "on" : "off"}`
                       : spec
                         ? "Native classic frames"
-                        : "CarCAN + filtered DAqCAN"}
+                        : ""}
                   </text>
                 </g>
               );
