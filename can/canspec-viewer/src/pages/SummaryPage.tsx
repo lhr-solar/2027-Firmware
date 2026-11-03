@@ -1,3 +1,4 @@
+import { busType, busBitrate, messageType, cycleTime } from "../metadata";
 import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { allNetworks, findNetworkById } from "../data";
@@ -39,6 +40,10 @@ export function SummaryPage() {
             senderLabel(msg),
             n.id,
             String(msg.signals.length),
+            messageType(msg),
+            cycleTime(msg),
+            busType(n),
+            busBitrate(n),
           )
         ) {
           continue;
@@ -46,7 +51,10 @@ export function SummaryPage() {
         out.push({ networkId: n.id, msg });
       }
     }
-    out.sort((a, b) => a.msg.frameId - b.msg.frameId || a.msg.name.localeCompare(b.msg.name));
+    out.sort(
+      (a, b) =>
+        a.msg.frameId - b.msg.frameId || a.msg.name.localeCompare(b.msg.name),
+    );
     return out;
   }, [activeNetwork, networkId, networks, q]);
 
@@ -62,7 +70,11 @@ export function SummaryPage() {
         {activeNetwork ? ` — ${activeNetwork.id}` : " — all networks"}.
       </p>
 
-      <div className="summary-bus-bar" role="tablist" aria-label="Network filter">
+      <div
+        className="summary-bus-bar"
+        role="tablist"
+        aria-label="Network filter"
+      >
         <Link
           className={`ecu-chip${!networkId ? " ecu-chip-on" : ""}`}
           to="/summary"
@@ -92,6 +104,10 @@ export function SummaryPage() {
               <th>ID</th>
               <th>Sender</th>
               <th>Message</th>
+              <th>Type</th>
+              <th>Cycle time</th>
+              <th>Bus type</th>
+              <th>Bus bitrate</th>
               <th># Signals</th>
             </tr>
           </thead>
@@ -100,7 +116,10 @@ export function SummaryPage() {
               <tr key={`${bus}-${msg.frameId}-${msg.name}`}>
                 {!activeNetwork && (
                   <td>
-                    <Link className="mono-link" to={`/n/${encodeURIComponent(bus)}`}>
+                    <Link
+                      className="mono-link"
+                      to={`/n/${encodeURIComponent(bus)}`}
+                    >
                       {bus}
                     </Link>
                   </td>
@@ -116,13 +135,21 @@ export function SummaryPage() {
                     {msg.name}
                   </Link>
                 </td>
+                <td>{messageType(msg)}</td>
+                <td className="mono nowrap">{cycleTime(msg)}</td>
+                <td>{busType(networks.find((n) => n.id === bus)!)}</td>
+                <td className="nowrap">
+                  {busBitrate(networks.find((n) => n.id === bus)!)}
+                </td>
                 <td className="mono">{msg.signals.length}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      {rows.length === 0 && <div className="empty-state">No messages match your filter.</div>}
+      {rows.length === 0 && (
+        <div className="empty-state">No messages match your filter.</div>
+      )}
     </div>
   );
 }

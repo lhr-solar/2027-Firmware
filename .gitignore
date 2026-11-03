@@ -32,3 +32,11 @@ can/dbc/**/*.ldb
 
 # Arduino-cli files
 .arduino*
+
+# CAN viewer generated artifacts
+can/canspec-viewer/node_modules/
+can/canspec-viewer/dist/
+can/canspec-viewer/public/canspec-data.json
+can/canspec-viewer/canspec-data.json
+can/canspec-viewer/*.tsbuildinfo
+_site/

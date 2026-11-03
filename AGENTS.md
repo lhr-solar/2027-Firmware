@@ -238,8 +238,8 @@ cd can/canspec-viewer && npm ci && npm run dev
 
 # CAN spec JSON export (needs Python + cantools) — will produce nothing
 # useful until the DBCs have content
-pip install -r can/canspec-viewer/requirements.txt
-python3 can/canspec-viewer/export_canspec_json.py -o ./canspec-data.json
+uv sync --locked
+uv run --locked python can/canspec-viewer/export_canspec_json.py -o ./canspec-data.json
 ```
 
 `firmware/platform/tests/` holds **on-target hardware test programs**, one

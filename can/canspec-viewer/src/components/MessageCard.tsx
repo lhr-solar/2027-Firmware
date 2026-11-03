@@ -1,144 +1,171 @@
+import { messageTiming } from "../metadata";
 import type { IdSearchFormat } from "../search";
-import type { CanMessage, CanSignal } from "../types";
+import type { CanMessage } from "../types";
 
-function formatMessageId(msg: CanMessage, idFormat: IdSearchFormat): string {
-  return idFormat === "decimal" ? String(msg.frameId) : msg.hexId;
-}
+const fmt = (value: unknown): string => (value == null ? "—" : String(value));
 
-function fmt(v: unknown): string {
-  if (v === null || v === undefined) return "—";
-  if (typeof v === "boolean") return v ? "yes" : "no";
-  if (typeof v === "number" && Number.isNaN(v)) return "—";
-  return String(v);
-}
-
-function bitRange(s: CanSignal): string {
-  const end = s.startBit + s.lengthBits - 1;
-  return `${s.startBit}–${end}`;
-}
-
-/** Map DBC byte order strings to common CAN naming. */
-function endianLabel(byteOrder: string): string {
-  const b = byteOrder.toLowerCase();
-  if (b === "little_endian" || b.includes("little")) {
-    return "Intel (little-endian)";
-  }
-  if (b === "big_endian" || b.includes("big")) {
-    return "Motorola (big-endian)";
-  }
-  return byteOrder;
-}
-
-export function MessageCard({ msg, idFormat }: { msg: CanMessage; idFormat: IdSearchFormat }) {
-  const metaParts = [
-    msg.cycleTimeMs != null ? `cycle ${msg.cycleTimeMs} ms` : null,
-    msg.protocol ? String(msg.protocol) : null,
-    msg.isFd ? "CAN FD" : null,
-    msg.busName ? `bus ${msg.busName}` : null,
-  ].filter(Boolean);
-
+/** Compact message -> expandable signal layout, enums and documentation. */
+export function MessageCard({
+  msg,
+  idFormat,
+  expanded = false,
+}: {
+  msg: CanMessage;
+  idFormat: IdSearchFormat;
+  expanded?: boolean;
+}) {
   return (
-    <article className="msg-card">
-      <header className="msg-card-head">
-        <div className="msg-card-title-row">
-          <span className={`msg-card-id${idFormat === "decimal" ? " msg-card-id--decimal" : ""}`}>
-            {formatMessageId(msg, idFormat)}
-          </span>
-          <span className="msg-card-name">{msg.name}</span>
-        </div>
-        <div className="msg-card-meta">
-          <span>DLC {msg.dlc}</span>
-          {msg.isExtended ? <span className="msg-badge">ext</span> : <span className="msg-badge">std</span>}
-          {msg.senders.length > 0 ? (
-            <span className="msg-card-ecu">
-              ECU: {msg.senders.join(", ")}
-            </span>
-          ) : (
-            <span className="msg-card-ecu muted-sm">no sender in DBC</span>
-          )}
-        </div>
-        {metaParts.length > 0 ? (
-          <p className="msg-card-meta-line">{metaParts.join(" · ")}</p>
-        ) : null}
-        {msg.comment ? <p className="msg-card-comment">{msg.comment}</p> : null}
-        {Object.keys(msg.attributes).length > 0 ? (
-          <div className="msg-attr-inline">
-            {Object.entries(msg.attributes).map(([k, v]) => (
-              <div key={k} className="msg-attr-pair">
-                <span className="msg-attr-k">{k}</span>
-                <span className="msg-attr-v">{fmt(v)}</span>
-              </div>
-            ))}
-          </div>
-        ) : null}
-      </header>
-
-      {msg.signals.length > 0 ? (
-        <div className="msg-signals">
-          {msg.signals.map((s) => (
-            <div key={s.name} className="sig-block">
-              <div className="sig-name-row">
-                <span className="sig-name">{s.name}</span>
-              </div>
-              <div className="sig-meta-row">
-                <span className="sig-dt">{s.dataType}</span>
-                <span className="sig-bits">
-                  bits {bitRange(s)} <span className="muted-sm">({s.lengthBits} bits)</span>
-                </span>
-                {s.unit ? <span className="sig-unit">unit {s.unit}</span> : null}
-              </div>
-              {(s.scale != null ||
-                s.offset != null ||
-                s.minimum != null ||
-                s.maximum != null) && (
-                <div className="sig-formula mono-sm">
-                  {s.scale != null || s.offset != null ? (
-                    <>
-                      {s.scale != null ? `scale=${fmt(s.scale)}` : null}
-                      {s.scale != null && s.offset != null ? " · " : null}
-                      {s.offset != null ? `offset=${fmt(s.offset)}` : null}
-                    </>
-                  ) : null}
-                  {(s.minimum != null || s.maximum != null) && (
-                    <>
-                      {s.scale != null || s.offset != null ? " · " : null}
-                      range [{fmt(s.minimum)}, {fmt(s.maximum)}]
-                    </>
-                  )}
-                </div>
-              )}
-              <div className="sig-extra mono-sm">{endianLabel(s.byteOrder)}</div>
-              {(s.initial != null || s.invalid != null || s.rawInitial != null || s.rawInvalid != null) && (
-                <div className="sig-extra mono-sm">
-                  init {fmt(s.initial)} / invalid {fmt(s.invalid)}
-                  {" · "}
-                  raw {fmt(s.rawInitial)} / {fmt(s.rawInvalid)}
-                </div>
-              )}
-              {s.multiplexerSignal ? (
-                <div className="sig-mux mono-sm">
-                  parent {s.multiplexerSignal} → values [{s.multiplexerIds?.join(", ") ?? "—"}]
-                </div>
-              ) : null}
-              {s.choices.length > 0 ? (
-                <div className="sig-choices">
-                  <span className="sig-choices-label">values:</span>{" "}
-                  {s.choices.map((c) => (
-                    <span key={c.value} className="choice-pair">
-                      <span className="cv">{c.value}</span>
-                      <span>=</span>
-                      <span>{c.label}</span>
-                    </span>
-                  ))}
-                </div>
-              ) : null}
-              {s.comment ? <p className="sig-comment">{s.comment}</p> : null}
+    <details className="msg-card" open={expanded || undefined}>
+      <summary className="message-summary">
+        <span className="msg-card-id">
+          {idFormat === "decimal" ? msg.frameId : msg.hexId}
+        </span>
+        <span className="msg-card-name">{msg.name}</span>
+        <span className="msg-card-ecu">{msg.senders.join(", ") || "—"}</span>
+        <span className="msg-badge">
+          {msg.isFd ? "FD" : "CAN"}
+          {msg.isExtended ? " · ext" : ""}
+        </span>
+        <span
+          className={`msg-badge timing-badge timing-${(msg.sendType ?? "unknown").toLowerCase()}`}
+        >
+          {messageTiming(msg)}
+        </span>
+        <span className="muted-sm">
+          {msg.dlc} B · {msg.signals.length} signals
+        </span>
+      </summary>
+      {msg.comment && <p className="msg-card-comment">{msg.comment}</p>}
+      <div className="table-scroll">
+        {msg.signals.length ? (
+          <table className="data data-compact signal-table">
+            <colgroup>
+              <col style={{ width: "34%" }} />
+              <col style={{ width: "25%" }} />
+              <col style={{ width: "16%" }} />
+              <col style={{ width: "17%" }} />
+              <col style={{ width: "8%" }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Signal</th>
+                <th>
+                  <details className="wire-legend">
+                    <summary title="Signal type, bit width, start bit and byte order">
+                      Wire ⓘ
+                    </summary>
+                    <div>
+                      <p>
+                        <code>u3 · @0 · LE | Intel</code>: unsigned 3-bit
+                        signal, starting at bit 0, little-endian.
+                      </p>
+                      <p>
+                        <code>u</code> = unsigned integer; <code>i</code> =
+                        signed integer; <code>f</code> = floating point. The
+                        number is the width in bits.
+                      </p>
+                      <p>
+                        <code>@</code> gives the zero-based DBC start bit (bits
+                        0–7 are in the first byte). <code>LE | Intel</code> =
+                        little-endian, start bit is the least significant bit.{" "}
+                        <code>BE | Motorola</code> = big-endian, start bit is
+                        the most significant bit; DBC bit numbering runs 7→0,
+                        then 15→8.
+                      </p>
+                    </div>
+                  </details>
+                </th>
+                <th>Scale / offset</th>
+                <th>Range</th>
+                <th>Unit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {msg.signals.map((s) => (
+                <tr key={s.name}>
+                  <td>
+                    <strong>{s.name}</strong>
+                    {(s.comment ||
+                      s.choices.length > 0 ||
+                      s.isMultiplexer ||
+                      s.multiplexerSignal ||
+                      s.initial != null ||
+                      s.invalid != null ||
+                      s.rawInitial != null ||
+                      s.rawInvalid != null) && (
+                      <details className="signal-notes">
+                        <summary>
+                          Details
+                          {s.choices.length
+                            ? ` · ${s.choices.length} values`
+                            : ""}
+                        </summary>
+                        {s.comment && <p>{s.comment}</p>}
+                        {s.choices.map((c) => (
+                          <span className="choice-pair" key={c.value}>
+                            <span className="cv">{c.value}</span> = {c.label}
+                          </span>
+                        ))}
+                        {s.isMultiplexer && <p>Multiplexer selector</p>}
+                        {s.multiplexerSignal && (
+                          <p>
+                            Selector {s.multiplexerSignal}:{" "}
+                            {s.multiplexerIds?.join(", ")}
+                          </p>
+                        )}
+                        {(s.initial != null ||
+                          s.invalid != null ||
+                          s.rawInitial != null ||
+                          s.rawInvalid != null) && (
+                          <p>
+                            Initial {fmt(s.initial)} · invalid {fmt(s.invalid)}{" "}
+                            · raw initial {fmt(s.rawInitial)} · raw invalid{" "}
+                            {fmt(s.rawInvalid)}
+                          </p>
+                        )}
+                      </details>
+                    )}
+                  </td>
+                  <td className="mono nowrap">
+                    {s.isFloat ? "f" : s.isSigned ? "i" : "u"}
+                    {s.lengthBits} · @{s.startBit} ·{" "}
+                    {s.byteOrder === "little_endian"
+                      ? "LE | Intel"
+                      : "BE | Motorola"}
+                  </td>
+                  <td className="mono">
+                    {fmt(s.scale)} / {fmt(s.offset)}
+                  </td>
+                  <td className="mono nowrap">
+                    {fmt(s.minimum)} … {fmt(s.maximum)}
+                  </td>
+                  <td>{s.unit || "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className="muted-sm">Placeholder · no signals defined.</p>
+        )}
+      </div>
+      <details className="signal-notes">
+        <summary>Message metadata</summary>
+        <p>
+          {msg.isExtended ? "Extended 29-bit" : "Standard 11-bit"} ID ·{" "}
+          {msg.isFd ? "CAN FD" : "Classic CAN"}
+          {msg.cycleTimeMs != null ? ` · cycle ${msg.cycleTimeMs} ms` : ""}
+          {msg.protocol ? ` · ${msg.protocol}` : ""}
+          {msg.busName ? ` · ${msg.busName}` : ""}
+        </p>
+        <dl className="attr-dl">
+          {Object.entries(msg.attributes).map(([key, value]) => (
+            <div key={key} className="attr-row">
+              <dt>{key}</dt>
+              <dd>{fmt(value)}</dd>
             </div>
           ))}
-        </div>
-      ) : (
-        <p className="muted-sm pad-sm">No signals defined.</p>
-      )}
-    </article>
+        </dl>
+      </details>
+    </details>
   );
 }
