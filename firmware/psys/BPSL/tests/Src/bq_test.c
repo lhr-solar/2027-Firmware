@@ -1,0 +1,257 @@
+// Inits, wakes, auto-addresses and configures the BQ79600 + BQ79616 chain, then reads the cell
+// voltages every BQ_TEST_READ_PERIOD_MS. The heartbeat LED (green) is on only while cell 1 of
+// BQ79616 device 1 reads BQ_TEST_CELL1_MIN_MV..BQ_TEST_CELL1_MAX_MV, and off otherwise, including
+// after any driver error.
+// On a failure the test prints it, waits BQ_TEST_RETRY_DELAY_MS and starts again from bq_wake(),
+// so a failure keeps being reported until a terminal is connected to see it.
+// Progress and readings are printed on the USB serial port (the board shows up as two serial ports,
+// e.g. /dev/ttyACM0 and /dev/ttyACM1; printf writes to both). printf only sends to a port with a
+// terminal open, so anything printed before you connect is lost; the readings repeat every loop.
+// Also in GDB: `p bq_test_fail_step`, `p bq_test_fail_status`, `p bq_test_cell1_mv`,
+// `p bq_test_attempts`.
+#include "stm32xx_hal.h"
+#include "common.h"
+#include "StatusLEDs.h"
+#include "pinDefs.h"
+#include "BQ79616.h"
+#include "printf.h"
+#include "task.h"
+#include "tusb_port.h"
+
+// Task configuration
+#define BQ_TEST_TASK_STACK_SIZE (configMINIMAL_STACK_SIZE * 4) // printf needs the extra room
+#define BQ_TEST_TASK_PRIORITY   (tskIDLE_PRIORITY + 1)
+
+// USB task: above the test task, so printed data goes out promptly. tud_task() blocks until there's
+// a USB event, so it doesn't starve the test task.
+#define USB_TASK_STACK_SIZE (configMINIMAL_STACK_SIZE * 2)
+#define USB_TASK_PRIORITY   (tskIDLE_PRIORITY + 2)
+
+#define BQ_TEST_NUM_DEVICES    1U    // BQ79616s behind the BQ79600 bridge
+#define BQ_TEST_READ_PERIOD_MS 500U  // how often cell 1 is read and the LED updated
+#define BQ_TEST_RETRY_DELAY_MS 5000U // wait after a failure before trying again
+
+// LED on only while cell 1 reads within these, inclusive
+#define BQ_TEST_CELL1_MIN_MV 3000U
+#define BQ_TEST_CELL1_MAX_MV 3300U
+
+// The comm timeout must outlast the read period, or the stack shuts down between reads
+#define BQ_TEST_COMM_TIMEOUT BQ_COMM_TIMEOUT_2S
+_Static_assert(BQ_TEST_READ_PERIOD_MS < 2000U,
+               "BQ_TEST_COMM_TIMEOUT would shut the stack down between reads");
+
+// One printed line. Each loop prints two lines of about 60 bytes: TinyUSB holds 64 bytes per port
+// plus one 64-byte packet in flight, and drops what doesn't fit until the USB task sends it.
+#define BQ_TEST_LINE_LEN 80U
+
+// Static task buffers
+static StaticTask_t xBqTestTaskBuffer;
+static StackType_t xBqTestStack[BQ_TEST_TASK_STACK_SIZE];
+static StaticTask_t xUsbTaskBuffer;
+static StackType_t xUsbStack[USB_TASK_STACK_SIZE];
+
+// Where the last failure happened, for GDB
+typedef enum {
+    BQ_TEST_NONE = 0,
+    BQ_TEST_INIT,
+    BQ_TEST_WAKE,
+    BQ_TEST_AUTO_ADDRESS,
+    BQ_TEST_CONFIG,
+    BQ_TEST_READ,      // bq_read_volt_temp()
+    BQ_TEST_GET_VOLTS, // bq_get_volts_mv()
+    BQ_TEST_GET_TEMPS, // bq_get_temps_mc()
+} bq_test_step_t;
+
+volatile bq_test_step_t bq_test_fail_step = BQ_TEST_NONE;
+volatile bq_status_t bq_test_fail_status = BQ_OK; // driver error behind the failure
+volatile uint16_t bq_test_cell1_mv = 0U;          // last cell 1 reading
+volatile uint32_t bq_test_attempts = 0U;          // wake-to-read attempts started so far
+
+// Turns the LED off, and prints and records where and why for GDB
+static void fail(bq_test_step_t step, const char* what, bq_status_t status) {
+    StatusLEDs_SetHeartbeat(false);
+    printf("FAIL: %s returned %s\r\n", what, bq_status_str(status));
+    bq_test_fail_status = status;
+    bq_test_fail_step = step;
+}
+
+// Prints the cell voltages in mV on one line, and whether cell 1 is in range (LED on)
+static void print_cells(const uint16_t cell_mv[BQ_NUM_CELLS], bool led_on) {
+    char line[BQ_TEST_LINE_LEN];
+    int len = snprintf(line, sizeof(line), "cells mV:");
+
+    for (uint8_t cell = 0U; cell < BQ_NUM_CELLS && len > 0 && (size_t)len < sizeof(line); cell++) {
+        len += snprintf(&line[len], sizeof(line) - (size_t)len, " %u", cell_mv[cell]);
+    }
+    printf("%s  LED %s\r\n", line, led_on ? "on" : "off");
+}
+
+// Prints the GPIO (thermistor) temperatures on one line, in C to 0.1 C, or "--" for a GPIO with no
+// valid thermistor reading
+static void print_temps(const int32_t temp_mc[BQ_NUM_GPIO]) {
+    char line[BQ_TEST_LINE_LEN];
+    int len = snprintf(line, sizeof(line), "temps C:");
+
+    for (uint8_t gpio = 0U; gpio < BQ_NUM_GPIO && len > 0 && (size_t)len < sizeof(line); gpio++) {
+        const int32_t mc = temp_mc[gpio];
+        if (mc == BQ_TEMP_INVALID_MC) {
+            len += snprintf(&line[len], sizeof(line) - (size_t)len, " --");
+        } else {
+            // mC split into degrees and tenths, so no floating point is needed
+            const uint32_t mag = (mc < 0) ? (uint32_t)(-(int64_t)mc) : (uint32_t)mc;
+            len +=
+                snprintf(&line[len], sizeof(line) - (size_t)len, " %s%lu.%lu", (mc < 0) ? "-" : "",
+                         (unsigned long)(mag / 1000U), (unsigned long)((mag % 1000U) / 100U));
+        }
+    }
+    printf("%s\r\n", line);
+}
+
+// One attempt: wake, auto-address and configure the chain, then read and print forever. Returns
+// only on a failure, after fail() has reported it.
+static void run_attempt(void) {
+    uint16_t cell_mv[BQ_NUM_CELLS];
+    int32_t temp_mc[BQ_NUM_GPIO];
+    bq_status_t status;
+
+    status = bq_wake();
+    if (status != BQ_OK) {
+        fail(BQ_TEST_WAKE, "bq_wake", status);
+        return;
+    }
+    printf("bq_wake OK\r\n");
+
+    status = bq_auto_address();
+    if (status != BQ_OK) {
+        fail(BQ_TEST_AUTO_ADDRESS, "bq_auto_address", status);
+        return;
+    }
+    printf("bq_auto_address OK\r\n");
+
+    status = bq_config(BQ_TEST_COMM_TIMEOUT);
+    if (status != BQ_OK) {
+        fail(BQ_TEST_CONFIG, "bq_config", status);
+        return;
+    }
+    printf("bq_config OK, cell 1 LED range %u-%u mV\r\n", BQ_TEST_CELL1_MIN_MV,
+           BQ_TEST_CELL1_MAX_MV);
+
+    // Reading every period also keeps the comm timeout from shutting the stack down
+    while (true) {
+        status = bq_read_volt_temp();
+        if (status != BQ_OK) {
+            fail(BQ_TEST_READ, "bq_read_volt_temp", status);
+            return;
+        }
+
+        status = bq_get_volts_mv(1U, cell_mv);
+        if (status != BQ_OK) {
+            fail(BQ_TEST_GET_VOLTS, "bq_get_volts_mv", status);
+            return;
+        }
+
+        status = bq_get_temps_mc(1U, temp_mc);
+        if (status != BQ_OK) {
+            fail(BQ_TEST_GET_TEMPS, "bq_get_temps_mc", status);
+            return;
+        }
+
+        bq_test_cell1_mv = cell_mv[0];
+        const bool led_on =
+            cell_mv[0] >= BQ_TEST_CELL1_MIN_MV && cell_mv[0] <= BQ_TEST_CELL1_MAX_MV;
+        StatusLEDs_SetHeartbeat(led_on);
+
+        print_cells(cell_mv, led_on);
+        print_temps(temp_mc);
+
+        vTaskDelay(pdMS_TO_TICKS(BQ_TEST_READ_PERIOD_MS));
+    }
+}
+
+static void vBqTestTask(void* pvParameters) {
+    (void)pvParameters;
+    const bq_init_struct_t bq_cfg = {
+        .tx_pin = BQ79600_UART_TX_PIN,
+        .rx_pin = BQ79600_UART_RX_PIN,
+        .tx_rx_port = BQ79600_UART_PORT,
+        .fault_pin = BQ79600_NFAULT_PIN,
+        .fault_port = BQ79600_NFAULT_PORT,
+        .huart = husart3,
+        .uart_af = BQ79600_UART_AF,
+        .wake_tim = BQ79600_WAKE_TIM,
+        .wake_tim_channel = BQ79600_WAKE_TIM_CHANNEL,
+        .wake_tim_af = BQ79600_WAKE_TIM_AF,
+        .wake_tim_complementary = BQ79600_WAKE_TIM_COMPLEMENTARY,
+        .num_devices = BQ_TEST_NUM_DEVICES,
+    };
+
+    // can only fail if the color is out of range, which would be a bug
+    if (StatusLEDs_SetHeartbeatColor(RGB_GREEN) != LED_OK) {
+        configASSERT(pdFALSE);
+    }
+
+    printf("\r\nBQ test start, %u BQ79616(s)\r\n", BQ_TEST_NUM_DEVICES);
+
+    /* bq_init() runs once: calling it again fails, because the UART it set up is already
+     * receiving. A failure here is a configuration problem a retry can't fix, so just keep
+     * reporting it. */
+    const bq_status_t status = bq_init(bq_cfg);
+    while (status != BQ_OK) {
+        fail(BQ_TEST_INIT, "bq_init", status);
+        vTaskDelay(pdMS_TO_TICKS(BQ_TEST_RETRY_DELAY_MS));
+    }
+    printf("bq_init OK\r\n");
+
+    // A WAKE resets the BQ79616s, so each attempt redoes addressing and config after it
+    while (true) {
+        bq_test_attempts++;
+        printf("\r\nAttempt %lu\r\n", (unsigned long)bq_test_attempts);
+
+        run_attempt();
+
+        printf("Retrying in %u s\r\n", BQ_TEST_RETRY_DELAY_MS / 1000U);
+        vTaskDelay(pdMS_TO_TICKS(BQ_TEST_RETRY_DELAY_MS));
+    }
+}
+
+// Runs TinyUSB's device stack: enumeration, and sending what printf queues
+static void vUsbTask(void* pvParameters) {
+    (void)pvParameters;
+
+    while (true) {
+        tud_task(); // blocks until the USB interrupt queues an event
+    }
+}
+
+int main(void) {
+    if (HAL_Init() != HAL_OK) {
+        Error_Handler();
+    }
+
+    SystemClock_Config();
+
+    if (StatusLEDs_Init() != LED_OK) {
+        Error_Handler();
+    }
+
+    // USB peripheral first (48 MHz clock, interrupts; platform/common/Src/tusb_port.c), then
+    // printf_init() starts TinyUSB on it
+    MX_USB_PCD_Init();
+    if (!printf_init()) {
+        Error_Handler();
+    }
+
+    TaskHandle_t handle = xTaskCreateStatic(vUsbTask, "USB", USB_TASK_STACK_SIZE, NULL,
+                                            USB_TASK_PRIORITY, xUsbStack, &xUsbTaskBuffer);
+    configASSERT(handle != NULL);
+
+    handle = xTaskCreateStatic(vBqTestTask, "BQ Test", BQ_TEST_TASK_STACK_SIZE, NULL,
+                               BQ_TEST_TASK_PRIORITY, xBqTestStack, &xBqTestTaskBuffer);
+    configASSERT(handle != NULL);
+    (void)handle;
+
+    vTaskStartScheduler();
+
+    // only reached if the scheduler failed to start
+    Error_Handler();
+}
