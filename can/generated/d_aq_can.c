@@ -40,17 +40,17 @@ const d_aq_can_metadata_t d_aq_can = {
     .upright_fl = {
         .upright_fl_acceleration_data = { .id = UINT32_C(1616), .payload_bytes = 32, .wire_bytes = 32, .dlc = 13, .is_extended = false, .is_fd = true },
         .upright_fl_gyro_data = { .id = UINT32_C(1617), .payload_bytes = 32, .wire_bytes = 32, .dlc = 13, .is_extended = false, .is_fd = true },
-        .upright_fl_wheel_speed_data = { .id = UINT32_C(1618), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
+        .upright_fl_wheel_speed_data = { .id = UINT32_C(1618), .payload_bytes = 8, .wire_bytes = 8, .dlc = 8, .is_extended = false, .is_fd = true },
     },
     .upright_fr = {
         .upright_fr_acceleration_data = { .id = UINT32_C(1600), .payload_bytes = 32, .wire_bytes = 32, .dlc = 13, .is_extended = false, .is_fd = true },
         .upright_fr_gyro_data = { .id = UINT32_C(1601), .payload_bytes = 32, .wire_bytes = 32, .dlc = 13, .is_extended = false, .is_fd = true },
-        .upright_fr_wheel_speed_data = { .id = UINT32_C(1602), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
+        .upright_fr_wheel_speed_data = { .id = UINT32_C(1602), .payload_bytes = 8, .wire_bytes = 8, .dlc = 8, .is_extended = false, .is_fd = true },
     },
     .upright_rear = {
         .upright_rear_acceleration_data = { .id = UINT32_C(1632), .payload_bytes = 32, .wire_bytes = 32, .dlc = 13, .is_extended = false, .is_fd = true },
         .upright_rear_gyro_data = { .id = UINT32_C(1633), .payload_bytes = 32, .wire_bytes = 32, .dlc = 13, .is_extended = false, .is_fd = true },
-        .upright_rear_wheel_speed_data = { .id = UINT32_C(1634), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
+        .upright_rear_wheel_speed_data = { .id = UINT32_C(1634), .payload_bytes = 8, .wire_bytes = 8, .dlc = 8, .is_extended = false, .is_fd = true },
     },
 };
 
@@ -91,13 +91,6 @@ can_status_t d_aq_can_chassis_acceleration_data_pack(can_frame_t* dst, const d_a
     {
         uint16_t value = src->timestamp;
         raw.timestamp = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->sample_interval_ticks;
-        if (value < INT64_C(1)) {
-            value = (uint16_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sample_interval_ticks = (uint16_t)value;
     }
     {
         double value = (double)src->acceleration_x1;
@@ -237,8 +230,6 @@ can_status_t d_aq_can_chassis_acceleration_data_unpack(d_aq_can_chassis_accelera
     if (d_aq_can_raw_chassis_acceleration_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_chassis_acceleration_data_t result = {0};
     result.timestamp = (uint16_t)raw.timestamp;
-    if (raw.sample_interval_ticks < INT64_C(1)) return CAN_RANGE;
-    result.sample_interval_ticks = (uint16_t)raw.sample_interval_ticks;
     if (raw.acceleration_x1 < (-INT64_C(4096))) return CAN_RANGE;
     if (raw.acceleration_x1 > INT64_C(4095)) return CAN_RANGE;
     result.acceleration_x1 = (double)((double)raw.acceleration_x1 * 0.001 + 0.0);
@@ -286,13 +277,6 @@ can_status_t d_aq_can_chassis_gyro_data_pack(can_frame_t* dst, const d_aq_can_ch
     {
         uint16_t value = src->timestamp;
         raw.timestamp = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->sample_interval_ticks;
-        if (value < INT64_C(1)) {
-            value = (uint16_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sample_interval_ticks = (uint16_t)value;
     }
     {
         double value = (double)src->gyro_x1;
@@ -432,8 +416,6 @@ can_status_t d_aq_can_chassis_gyro_data_unpack(d_aq_can_chassis_gyro_data_t* dst
     if (d_aq_can_raw_chassis_gyro_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_chassis_gyro_data_t result = {0};
     result.timestamp = (uint16_t)raw.timestamp;
-    if (raw.sample_interval_ticks < INT64_C(1)) return CAN_RANGE;
-    result.sample_interval_ticks = (uint16_t)raw.sample_interval_ticks;
     result.gyro_x1 = (double)((double)raw.gyro_x1 * 0.02 + 0.0);
     result.gyro_x2 = (double)((double)raw.gyro_x2 * 0.02 + 0.0);
     result.gyro_x3 = (double)((double)raw.gyro_x3 * 0.02 + 0.0);
@@ -457,13 +439,6 @@ can_status_t d_aq_can_upright_fr_acceleration_data_pack(can_frame_t* dst, const 
     {
         uint16_t value = src->timestamp;
         raw.timestamp = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->sample_interval_ticks;
-        if (value < INT64_C(1)) {
-            value = (uint16_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sample_interval_ticks = (uint16_t)value;
     }
     {
         double value = (double)src->acceleration_x1;
@@ -603,8 +578,6 @@ can_status_t d_aq_can_upright_fr_acceleration_data_unpack(d_aq_can_upright_fr_ac
     if (d_aq_can_raw_upright_fr_acceleration_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_upright_fr_acceleration_data_t result = {0};
     result.timestamp = (uint16_t)raw.timestamp;
-    if (raw.sample_interval_ticks < INT64_C(1)) return CAN_RANGE;
-    result.sample_interval_ticks = (uint16_t)raw.sample_interval_ticks;
     if (raw.acceleration_x1 < (-INT64_C(16384))) return CAN_RANGE;
     if (raw.acceleration_x1 > INT64_C(16383)) return CAN_RANGE;
     result.acceleration_x1 = (double)((double)raw.acceleration_x1 * 0.001 + 0.0);
@@ -652,13 +625,6 @@ can_status_t d_aq_can_upright_fr_gyro_data_pack(can_frame_t* dst, const d_aq_can
     {
         uint16_t value = src->timestamp;
         raw.timestamp = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->sample_interval_ticks;
-        if (value < INT64_C(1)) {
-            value = (uint16_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sample_interval_ticks = (uint16_t)value;
     }
     {
         double value = (double)src->gyro_x1;
@@ -798,8 +764,6 @@ can_status_t d_aq_can_upright_fr_gyro_data_unpack(d_aq_can_upright_fr_gyro_data_
     if (d_aq_can_raw_upright_fr_gyro_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_upright_fr_gyro_data_t result = {0};
     result.timestamp = (uint16_t)raw.timestamp;
-    if (raw.sample_interval_ticks < INT64_C(1)) return CAN_RANGE;
-    result.sample_interval_ticks = (uint16_t)raw.sample_interval_ticks;
     result.gyro_x1 = (double)((double)raw.gyro_x1 * 0.02 + 0.0);
     result.gyro_x2 = (double)((double)raw.gyro_x2 * 0.02 + 0.0);
     result.gyro_x3 = (double)((double)raw.gyro_x3 * 0.02 + 0.0);
@@ -823,13 +787,6 @@ can_status_t d_aq_can_upright_fr_wheel_speed_data_pack(can_frame_t* dst, const d
     {
         uint16_t value = src->timestamp;
         raw.timestamp = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->sample_interval_ticks;
-        if (value < INT64_C(1)) {
-            value = (uint16_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sample_interval_ticks = (uint16_t)value;
     }
     {
         double value = (double)src->wheel_rpm1;
@@ -872,7 +829,7 @@ can_status_t d_aq_can_upright_fr_wheel_speed_data_pack(can_frame_t* dst, const d
         raw.wheel_rpm4 = (uint16_t)encoded;
     }
     can_frame_t result = { .id = UINT32_C(1602),
-        .len = 12, .is_extended = false,
+        .len = 8, .is_extended = false,
         .is_fd = true };
     if (d_aq_can_raw_upright_fr_wheel_speed_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -881,7 +838,7 @@ can_status_t d_aq_can_upright_fr_wheel_speed_data_pack(can_frame_t* dst, const d
 
 can_status_t d_aq_can_upright_fr_wheel_speed_data_unpack(d_aq_can_upright_fr_wheel_speed_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1602) || src->len != 12 ||
+    if (src->id != UINT32_C(1602) || src->len != 8 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -889,8 +846,6 @@ can_status_t d_aq_can_upright_fr_wheel_speed_data_unpack(d_aq_can_upright_fr_whe
     if (d_aq_can_raw_upright_fr_wheel_speed_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_upright_fr_wheel_speed_data_t result = {0};
     result.timestamp = (uint16_t)raw.timestamp;
-    if (raw.sample_interval_ticks < INT64_C(1)) return CAN_RANGE;
-    result.sample_interval_ticks = (uint16_t)raw.sample_interval_ticks;
     if (raw.wheel_rpm1 > INT64_C(4095)) return CAN_RANGE;
     result.wheel_rpm1 = (double)((double)raw.wheel_rpm1 * 0.5 + 0.0);
     if (raw.wheel_rpm2 > INT64_C(4095)) return CAN_RANGE;
@@ -910,13 +865,6 @@ can_status_t d_aq_can_upright_fl_acceleration_data_pack(can_frame_t* dst, const 
     {
         uint16_t value = src->timestamp;
         raw.timestamp = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->sample_interval_ticks;
-        if (value < INT64_C(1)) {
-            value = (uint16_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sample_interval_ticks = (uint16_t)value;
     }
     {
         double value = (double)src->acceleration_x1;
@@ -1056,8 +1004,6 @@ can_status_t d_aq_can_upright_fl_acceleration_data_unpack(d_aq_can_upright_fl_ac
     if (d_aq_can_raw_upright_fl_acceleration_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_upright_fl_acceleration_data_t result = {0};
     result.timestamp = (uint16_t)raw.timestamp;
-    if (raw.sample_interval_ticks < INT64_C(1)) return CAN_RANGE;
-    result.sample_interval_ticks = (uint16_t)raw.sample_interval_ticks;
     if (raw.acceleration_x1 < (-INT64_C(16384))) return CAN_RANGE;
     if (raw.acceleration_x1 > INT64_C(16383)) return CAN_RANGE;
     result.acceleration_x1 = (double)((double)raw.acceleration_x1 * 0.001 + 0.0);
@@ -1105,13 +1051,6 @@ can_status_t d_aq_can_upright_fl_gyro_data_pack(can_frame_t* dst, const d_aq_can
     {
         uint16_t value = src->timestamp;
         raw.timestamp = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->sample_interval_ticks;
-        if (value < INT64_C(1)) {
-            value = (uint16_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sample_interval_ticks = (uint16_t)value;
     }
     {
         double value = (double)src->gyro_x1;
@@ -1251,8 +1190,6 @@ can_status_t d_aq_can_upright_fl_gyro_data_unpack(d_aq_can_upright_fl_gyro_data_
     if (d_aq_can_raw_upright_fl_gyro_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_upright_fl_gyro_data_t result = {0};
     result.timestamp = (uint16_t)raw.timestamp;
-    if (raw.sample_interval_ticks < INT64_C(1)) return CAN_RANGE;
-    result.sample_interval_ticks = (uint16_t)raw.sample_interval_ticks;
     result.gyro_x1 = (double)((double)raw.gyro_x1 * 0.02 + 0.0);
     result.gyro_x2 = (double)((double)raw.gyro_x2 * 0.02 + 0.0);
     result.gyro_x3 = (double)((double)raw.gyro_x3 * 0.02 + 0.0);
@@ -1276,13 +1213,6 @@ can_status_t d_aq_can_upright_fl_wheel_speed_data_pack(can_frame_t* dst, const d
     {
         uint16_t value = src->timestamp;
         raw.timestamp = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->sample_interval_ticks;
-        if (value < INT64_C(1)) {
-            value = (uint16_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sample_interval_ticks = (uint16_t)value;
     }
     {
         double value = (double)src->wheel_rpm1;
@@ -1325,7 +1255,7 @@ can_status_t d_aq_can_upright_fl_wheel_speed_data_pack(can_frame_t* dst, const d
         raw.wheel_rpm4 = (uint16_t)encoded;
     }
     can_frame_t result = { .id = UINT32_C(1618),
-        .len = 12, .is_extended = false,
+        .len = 8, .is_extended = false,
         .is_fd = true };
     if (d_aq_can_raw_upright_fl_wheel_speed_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -1334,7 +1264,7 @@ can_status_t d_aq_can_upright_fl_wheel_speed_data_pack(can_frame_t* dst, const d
 
 can_status_t d_aq_can_upright_fl_wheel_speed_data_unpack(d_aq_can_upright_fl_wheel_speed_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1618) || src->len != 12 ||
+    if (src->id != UINT32_C(1618) || src->len != 8 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -1342,8 +1272,6 @@ can_status_t d_aq_can_upright_fl_wheel_speed_data_unpack(d_aq_can_upright_fl_whe
     if (d_aq_can_raw_upright_fl_wheel_speed_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_upright_fl_wheel_speed_data_t result = {0};
     result.timestamp = (uint16_t)raw.timestamp;
-    if (raw.sample_interval_ticks < INT64_C(1)) return CAN_RANGE;
-    result.sample_interval_ticks = (uint16_t)raw.sample_interval_ticks;
     if (raw.wheel_rpm1 > INT64_C(4095)) return CAN_RANGE;
     result.wheel_rpm1 = (double)((double)raw.wheel_rpm1 * 0.5 + 0.0);
     if (raw.wheel_rpm2 > INT64_C(4095)) return CAN_RANGE;
@@ -1363,13 +1291,6 @@ can_status_t d_aq_can_upright_rear_acceleration_data_pack(can_frame_t* dst, cons
     {
         uint16_t value = src->timestamp;
         raw.timestamp = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->sample_interval_ticks;
-        if (value < INT64_C(1)) {
-            value = (uint16_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sample_interval_ticks = (uint16_t)value;
     }
     {
         double value = (double)src->acceleration_x1;
@@ -1509,8 +1430,6 @@ can_status_t d_aq_can_upright_rear_acceleration_data_unpack(d_aq_can_upright_rea
     if (d_aq_can_raw_upright_rear_acceleration_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_upright_rear_acceleration_data_t result = {0};
     result.timestamp = (uint16_t)raw.timestamp;
-    if (raw.sample_interval_ticks < INT64_C(1)) return CAN_RANGE;
-    result.sample_interval_ticks = (uint16_t)raw.sample_interval_ticks;
     if (raw.acceleration_x1 < (-INT64_C(16384))) return CAN_RANGE;
     if (raw.acceleration_x1 > INT64_C(16383)) return CAN_RANGE;
     result.acceleration_x1 = (double)((double)raw.acceleration_x1 * 0.001 + 0.0);
@@ -1558,13 +1477,6 @@ can_status_t d_aq_can_upright_rear_gyro_data_pack(can_frame_t* dst, const d_aq_c
     {
         uint16_t value = src->timestamp;
         raw.timestamp = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->sample_interval_ticks;
-        if (value < INT64_C(1)) {
-            value = (uint16_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sample_interval_ticks = (uint16_t)value;
     }
     {
         double value = (double)src->gyro_x1;
@@ -1704,8 +1616,6 @@ can_status_t d_aq_can_upright_rear_gyro_data_unpack(d_aq_can_upright_rear_gyro_d
     if (d_aq_can_raw_upright_rear_gyro_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_upright_rear_gyro_data_t result = {0};
     result.timestamp = (uint16_t)raw.timestamp;
-    if (raw.sample_interval_ticks < INT64_C(1)) return CAN_RANGE;
-    result.sample_interval_ticks = (uint16_t)raw.sample_interval_ticks;
     result.gyro_x1 = (double)((double)raw.gyro_x1 * 0.02 + 0.0);
     result.gyro_x2 = (double)((double)raw.gyro_x2 * 0.02 + 0.0);
     result.gyro_x3 = (double)((double)raw.gyro_x3 * 0.02 + 0.0);
@@ -1729,13 +1639,6 @@ can_status_t d_aq_can_upright_rear_wheel_speed_data_pack(can_frame_t* dst, const
     {
         uint16_t value = src->timestamp;
         raw.timestamp = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->sample_interval_ticks;
-        if (value < INT64_C(1)) {
-            value = (uint16_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sample_interval_ticks = (uint16_t)value;
     }
     {
         double value = (double)src->wheel_rpm1;
@@ -1778,7 +1681,7 @@ can_status_t d_aq_can_upright_rear_wheel_speed_data_pack(can_frame_t* dst, const
         raw.wheel_rpm4 = (uint16_t)encoded;
     }
     can_frame_t result = { .id = UINT32_C(1634),
-        .len = 12, .is_extended = false,
+        .len = 8, .is_extended = false,
         .is_fd = true };
     if (d_aq_can_raw_upright_rear_wheel_speed_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -1787,7 +1690,7 @@ can_status_t d_aq_can_upright_rear_wheel_speed_data_pack(can_frame_t* dst, const
 
 can_status_t d_aq_can_upright_rear_wheel_speed_data_unpack(d_aq_can_upright_rear_wheel_speed_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1634) || src->len != 12 ||
+    if (src->id != UINT32_C(1634) || src->len != 8 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -1795,8 +1698,6 @@ can_status_t d_aq_can_upright_rear_wheel_speed_data_unpack(d_aq_can_upright_rear
     if (d_aq_can_raw_upright_rear_wheel_speed_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_upright_rear_wheel_speed_data_t result = {0};
     result.timestamp = (uint16_t)raw.timestamp;
-    if (raw.sample_interval_ticks < INT64_C(1)) return CAN_RANGE;
-    result.sample_interval_ticks = (uint16_t)raw.sample_interval_ticks;
     if (raw.wheel_rpm1 > INT64_C(4095)) return CAN_RANGE;
     result.wheel_rpm1 = (double)((double)raw.wheel_rpm1 * 0.5 + 0.0);
     if (raw.wheel_rpm2 > INT64_C(4095)) return CAN_RANGE;

@@ -72,13 +72,13 @@ extern "C" {
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_LENGTH (32u)
-#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_LENGTH (12u)
+#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_LENGTH (8u)
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_LENGTH (32u)
-#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_LENGTH (12u)
+#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_LENGTH (8u)
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_LENGTH (32u)
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_LENGTH (12u)
+#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_LENGTH (8u)
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LENGTH (8u)
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LENGTH (8u)
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LENGTH (8u)
@@ -160,7 +160,6 @@ extern "C" {
 /* Signal Names. */
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_X2_NAME "AccelerationX2"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_X3_NAME "AccelerationX3"
@@ -174,7 +173,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_X1_NAME "GyroX1"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_X2_NAME "GyroX2"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_X3_NAME "GyroX3"
@@ -188,7 +186,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_X2_NAME "AccelerationX2"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_X3_NAME "AccelerationX3"
@@ -202,7 +199,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_X1_NAME "GyroX1"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_X2_NAME "GyroX2"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_X3_NAME "GyroX3"
@@ -216,13 +212,11 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM1_NAME "WheelRPM1"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM2_NAME "WheelRPM2"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM4_NAME "WheelRPM4"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_X2_NAME "AccelerationX2"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_X3_NAME "AccelerationX3"
@@ -236,7 +230,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_X1_NAME "GyroX1"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_X2_NAME "GyroX2"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_X3_NAME "GyroX3"
@@ -250,13 +243,11 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM1_NAME "WheelRPM1"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM2_NAME "WheelRPM2"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM4_NAME "WheelRPM4"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_X2_NAME "AccelerationX2"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_X3_NAME "AccelerationX3"
@@ -270,7 +261,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Z3_NAME "AccelerationZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_Z4_NAME "AccelerationZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_X1_NAME "GyroX1"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_X2_NAME "GyroX2"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_X3_NAME "GyroX3"
@@ -284,7 +274,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM1_NAME "WheelRPM1"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM2_NAME "WheelRPM2"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
@@ -326,7 +315,7 @@ struct d_aq_can_raw_timestamp_sync_t {
 /**
  * Signals in message ChassisAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -339,15 +328,6 @@ struct d_aq_can_raw_chassis_acceleration_data_t {
      * Offset: 0
      */
     uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
 
     /**
      * Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.
@@ -461,7 +441,7 @@ struct d_aq_can_raw_chassis_acceleration_data_t {
 /**
  * Signals in message ChassisGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -474,15 +454,6 @@ struct d_aq_can_raw_chassis_gyro_data_t {
      * Offset: 0
      */
     uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
 
     /**
      * Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.
@@ -596,7 +567,7 @@ struct d_aq_can_raw_chassis_gyro_data_t {
 /**
  * Signals in message UprightFRAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -609,15 +580,6 @@ struct d_aq_can_raw_upright_fr_acceleration_data_t {
      * Offset: 0
      */
     uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
 
     /**
      * Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.
@@ -731,7 +693,7 @@ struct d_aq_can_raw_upright_fr_acceleration_data_t {
 /**
  * Signals in message UprightFRGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -744,15 +706,6 @@ struct d_aq_can_raw_upright_fr_gyro_data_t {
      * Offset: 0
      */
     uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
 
     /**
      * Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.
@@ -866,7 +819,7 @@ struct d_aq_can_raw_upright_fr_gyro_data_t {
 /**
  * Signals in message UprightFRWheelSpeedData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -879,15 +832,6 @@ struct d_aq_can_raw_upright_fr_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
 
     /**
      * Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.
@@ -929,7 +873,7 @@ struct d_aq_can_raw_upright_fr_wheel_speed_data_t {
 /**
  * Signals in message UprightFLAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -942,15 +886,6 @@ struct d_aq_can_raw_upright_fl_acceleration_data_t {
      * Offset: 0
      */
     uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
 
     /**
      * Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.
@@ -1064,7 +999,7 @@ struct d_aq_can_raw_upright_fl_acceleration_data_t {
 /**
  * Signals in message UprightFLGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1077,15 +1012,6 @@ struct d_aq_can_raw_upright_fl_gyro_data_t {
      * Offset: 0
      */
     uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
 
     /**
      * Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.
@@ -1199,7 +1125,7 @@ struct d_aq_can_raw_upright_fl_gyro_data_t {
 /**
  * Signals in message UprightFLWheelSpeedData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1212,15 +1138,6 @@ struct d_aq_can_raw_upright_fl_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
 
     /**
      * Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.
@@ -1262,7 +1179,7 @@ struct d_aq_can_raw_upright_fl_wheel_speed_data_t {
 /**
  * Signals in message UprightRearAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1275,15 +1192,6 @@ struct d_aq_can_raw_upright_rear_acceleration_data_t {
      * Offset: 0
      */
     uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
 
     /**
      * Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.
@@ -1397,7 +1305,7 @@ struct d_aq_can_raw_upright_rear_acceleration_data_t {
 /**
  * Signals in message UprightRearGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1410,15 +1318,6 @@ struct d_aq_can_raw_upright_rear_gyro_data_t {
      * Offset: 0
      */
     uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
 
     /**
      * Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.
@@ -1532,7 +1431,7 @@ struct d_aq_can_raw_upright_rear_gyro_data_t {
 /**
  * Signals in message UprightRearWheelSpeedData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1545,15 +1444,6 @@ struct d_aq_can_raw_upright_rear_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
 
     /**
      * Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.
@@ -1923,15 +1813,6 @@ bool d_aq_can_raw_chassis_acceleration_data_timestamp_is_in_range(uint16_t value
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_chassis_acceleration_data_sample_interval_ticks_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_chassis_acceleration_data_acceleration_x1_is_in_range(int16_t value);
 
 /**
@@ -2078,15 +1959,6 @@ int d_aq_can_raw_chassis_gyro_data_init(struct d_aq_can_raw_chassis_gyro_data_t 
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_chassis_gyro_data_timestamp_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_gyro_data_sample_interval_ticks_is_in_range(uint16_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -2249,15 +2121,6 @@ bool d_aq_can_raw_upright_fr_acceleration_data_timestamp_is_in_range(uint16_t va
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fr_acceleration_data_sample_interval_ticks_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fr_acceleration_data_acceleration_x1_is_in_range(int16_t value);
 
 /**
@@ -2404,15 +2267,6 @@ int d_aq_can_raw_upright_fr_gyro_data_init(struct d_aq_can_raw_upright_fr_gyro_d
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fr_gyro_data_timestamp_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fr_gyro_data_sample_interval_ticks_is_in_range(uint16_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -2575,15 +2429,6 @@ bool d_aq_can_raw_upright_fr_wheel_speed_data_timestamp_is_in_range(uint16_t val
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fr_wheel_speed_data_sample_interval_ticks_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm1_is_in_range(uint16_t value);
 
 /**
@@ -2658,15 +2503,6 @@ int d_aq_can_raw_upright_fl_acceleration_data_init(struct d_aq_can_raw_upright_f
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fl_acceleration_data_timestamp_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_fl_acceleration_data_sample_interval_ticks_is_in_range(uint16_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -2829,15 +2665,6 @@ bool d_aq_can_raw_upright_fl_gyro_data_timestamp_is_in_range(uint16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fl_gyro_data_sample_interval_ticks_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fl_gyro_data_gyro_x1_is_in_range(int16_t value);
 
 /**
@@ -2992,15 +2819,6 @@ bool d_aq_can_raw_upright_fl_wheel_speed_data_timestamp_is_in_range(uint16_t val
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_fl_wheel_speed_data_sample_interval_ticks_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm1_is_in_range(uint16_t value);
 
 /**
@@ -3075,15 +2893,6 @@ int d_aq_can_raw_upright_rear_acceleration_data_init(struct d_aq_can_raw_upright
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_rear_acceleration_data_timestamp_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_rear_acceleration_data_sample_interval_ticks_is_in_range(uint16_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -3246,15 +3055,6 @@ bool d_aq_can_raw_upright_rear_gyro_data_timestamp_is_in_range(uint16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_upright_rear_gyro_data_sample_interval_ticks_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
 bool d_aq_can_raw_upright_rear_gyro_data_gyro_x1_is_in_range(int16_t value);
 
 /**
@@ -3401,15 +3201,6 @@ int d_aq_can_raw_upright_rear_wheel_speed_data_init(struct d_aq_can_raw_upright_
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_rear_wheel_speed_data_timestamp_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_upright_rear_wheel_speed_data_sample_interval_ticks_is_in_range(uint16_t value);
 
 /**
  * Check that given signal is in allowed range.

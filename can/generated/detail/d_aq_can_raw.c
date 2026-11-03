@@ -139,50 +139,48 @@ int d_aq_can_raw_chassis_acceleration_data_pack(
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_interval_ticks, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_interval_ticks, 8u, 0xffu);
     acceleration_x1 = (uint16_t)src_p->acceleration_x1;
-    dst_p[4] |= pack_left_shift_u16(acceleration_x1, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(acceleration_x1, 8u, 0x1fu);
+    dst_p[2] |= pack_left_shift_u16(acceleration_x1, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(acceleration_x1, 8u, 0x1fu);
     acceleration_x2 = (uint16_t)src_p->acceleration_x2;
-    dst_p[5] |= pack_left_shift_u16(acceleration_x2, 5u, 0xe0u);
-    dst_p[6] |= pack_right_shift_u16(acceleration_x2, 3u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(acceleration_x2, 11u, 0x03u);
+    dst_p[3] |= pack_left_shift_u16(acceleration_x2, 5u, 0xe0u);
+    dst_p[4] |= pack_right_shift_u16(acceleration_x2, 3u, 0xffu);
+    dst_p[5] |= pack_right_shift_u16(acceleration_x2, 11u, 0x03u);
     acceleration_x3 = (uint16_t)src_p->acceleration_x3;
-    dst_p[7] |= pack_left_shift_u16(acceleration_x3, 2u, 0xfcu);
-    dst_p[8] |= pack_right_shift_u16(acceleration_x3, 6u, 0x7fu);
+    dst_p[5] |= pack_left_shift_u16(acceleration_x3, 2u, 0xfcu);
+    dst_p[6] |= pack_right_shift_u16(acceleration_x3, 6u, 0x7fu);
     acceleration_x4 = (uint16_t)src_p->acceleration_x4;
-    dst_p[8] |= pack_left_shift_u16(acceleration_x4, 7u, 0x80u);
-    dst_p[9] |= pack_right_shift_u16(acceleration_x4, 1u, 0xffu);
-    dst_p[10] |= pack_right_shift_u16(acceleration_x4, 9u, 0x0fu);
+    dst_p[6] |= pack_left_shift_u16(acceleration_x4, 7u, 0x80u);
+    dst_p[7] |= pack_right_shift_u16(acceleration_x4, 1u, 0xffu);
+    dst_p[8] |= pack_right_shift_u16(acceleration_x4, 9u, 0x0fu);
     acceleration_y1 = (uint16_t)src_p->acceleration_y1;
-    dst_p[10] |= pack_left_shift_u16(acceleration_y1, 4u, 0xf0u);
-    dst_p[11] |= pack_right_shift_u16(acceleration_y1, 4u, 0xffu);
-    dst_p[12] |= pack_right_shift_u16(acceleration_y1, 12u, 0x01u);
+    dst_p[8] |= pack_left_shift_u16(acceleration_y1, 4u, 0xf0u);
+    dst_p[9] |= pack_right_shift_u16(acceleration_y1, 4u, 0xffu);
+    dst_p[10] |= pack_right_shift_u16(acceleration_y1, 12u, 0x01u);
     acceleration_y2 = (uint16_t)src_p->acceleration_y2;
-    dst_p[12] |= pack_left_shift_u16(acceleration_y2, 1u, 0xfeu);
-    dst_p[13] |= pack_right_shift_u16(acceleration_y2, 7u, 0x3fu);
+    dst_p[10] |= pack_left_shift_u16(acceleration_y2, 1u, 0xfeu);
+    dst_p[11] |= pack_right_shift_u16(acceleration_y2, 7u, 0x3fu);
     acceleration_y3 = (uint16_t)src_p->acceleration_y3;
-    dst_p[13] |= pack_left_shift_u16(acceleration_y3, 6u, 0xc0u);
-    dst_p[14] |= pack_right_shift_u16(acceleration_y3, 2u, 0xffu);
-    dst_p[15] |= pack_right_shift_u16(acceleration_y3, 10u, 0x07u);
+    dst_p[11] |= pack_left_shift_u16(acceleration_y3, 6u, 0xc0u);
+    dst_p[12] |= pack_right_shift_u16(acceleration_y3, 2u, 0xffu);
+    dst_p[13] |= pack_right_shift_u16(acceleration_y3, 10u, 0x07u);
     acceleration_y4 = (uint16_t)src_p->acceleration_y4;
-    dst_p[15] |= pack_left_shift_u16(acceleration_y4, 3u, 0xf8u);
-    dst_p[16] |= pack_right_shift_u16(acceleration_y4, 5u, 0xffu);
+    dst_p[13] |= pack_left_shift_u16(acceleration_y4, 3u, 0xf8u);
+    dst_p[14] |= pack_right_shift_u16(acceleration_y4, 5u, 0xffu);
     acceleration_z1 = (uint16_t)src_p->acceleration_z1;
-    dst_p[17] |= pack_left_shift_u16(acceleration_z1, 0u, 0xffu);
-    dst_p[18] |= pack_right_shift_u16(acceleration_z1, 8u, 0x1fu);
+    dst_p[15] |= pack_left_shift_u16(acceleration_z1, 0u, 0xffu);
+    dst_p[16] |= pack_right_shift_u16(acceleration_z1, 8u, 0x1fu);
     acceleration_z2 = (uint16_t)src_p->acceleration_z2;
-    dst_p[18] |= pack_left_shift_u16(acceleration_z2, 5u, 0xe0u);
-    dst_p[19] |= pack_right_shift_u16(acceleration_z2, 3u, 0xffu);
-    dst_p[20] |= pack_right_shift_u16(acceleration_z2, 11u, 0x03u);
+    dst_p[16] |= pack_left_shift_u16(acceleration_z2, 5u, 0xe0u);
+    dst_p[17] |= pack_right_shift_u16(acceleration_z2, 3u, 0xffu);
+    dst_p[18] |= pack_right_shift_u16(acceleration_z2, 11u, 0x03u);
     acceleration_z3 = (uint16_t)src_p->acceleration_z3;
-    dst_p[20] |= pack_left_shift_u16(acceleration_z3, 2u, 0xfcu);
-    dst_p[21] |= pack_right_shift_u16(acceleration_z3, 6u, 0x7fu);
+    dst_p[18] |= pack_left_shift_u16(acceleration_z3, 2u, 0xfcu);
+    dst_p[19] |= pack_right_shift_u16(acceleration_z3, 6u, 0x7fu);
     acceleration_z4 = (uint16_t)src_p->acceleration_z4;
-    dst_p[21] |= pack_left_shift_u16(acceleration_z4, 7u, 0x80u);
-    dst_p[22] |= pack_right_shift_u16(acceleration_z4, 1u, 0xffu);
-    dst_p[23] |= pack_right_shift_u16(acceleration_z4, 9u, 0x0fu);
+    dst_p[19] |= pack_left_shift_u16(acceleration_z4, 7u, 0x80u);
+    dst_p[20] |= pack_right_shift_u16(acceleration_z4, 1u, 0xffu);
+    dst_p[21] |= pack_right_shift_u16(acceleration_z4, 9u, 0x0fu);
 
     return (24);
 }
@@ -211,104 +209,102 @@ int d_aq_can_raw_chassis_acceleration_data_unpack(
 
     dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
-    dst_p->sample_interval_ticks = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->sample_interval_ticks |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
-    acceleration_x1 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    acceleration_x1 |= unpack_left_shift_u16(src_p[5], 8u, 0x1fu);
+    acceleration_x1 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    acceleration_x1 |= unpack_left_shift_u16(src_p[3], 8u, 0x1fu);
 
     if ((acceleration_x1 & (1u << 12)) != 0u) {
         acceleration_x1 |= 0xe000u;
     }
 
     dst_p->acceleration_x1 = (int16_t)acceleration_x1;
-    acceleration_x2 = unpack_right_shift_u16(src_p[5], 5u, 0xe0u);
-    acceleration_x2 |= unpack_left_shift_u16(src_p[6], 3u, 0xffu);
-    acceleration_x2 |= unpack_left_shift_u16(src_p[7], 11u, 0x03u);
+    acceleration_x2 = unpack_right_shift_u16(src_p[3], 5u, 0xe0u);
+    acceleration_x2 |= unpack_left_shift_u16(src_p[4], 3u, 0xffu);
+    acceleration_x2 |= unpack_left_shift_u16(src_p[5], 11u, 0x03u);
 
     if ((acceleration_x2 & (1u << 12)) != 0u) {
         acceleration_x2 |= 0xe000u;
     }
 
     dst_p->acceleration_x2 = (int16_t)acceleration_x2;
-    acceleration_x3 = unpack_right_shift_u16(src_p[7], 2u, 0xfcu);
-    acceleration_x3 |= unpack_left_shift_u16(src_p[8], 6u, 0x7fu);
+    acceleration_x3 = unpack_right_shift_u16(src_p[5], 2u, 0xfcu);
+    acceleration_x3 |= unpack_left_shift_u16(src_p[6], 6u, 0x7fu);
 
     if ((acceleration_x3 & (1u << 12)) != 0u) {
         acceleration_x3 |= 0xe000u;
     }
 
     dst_p->acceleration_x3 = (int16_t)acceleration_x3;
-    acceleration_x4 = unpack_right_shift_u16(src_p[8], 7u, 0x80u);
-    acceleration_x4 |= unpack_left_shift_u16(src_p[9], 1u, 0xffu);
-    acceleration_x4 |= unpack_left_shift_u16(src_p[10], 9u, 0x0fu);
+    acceleration_x4 = unpack_right_shift_u16(src_p[6], 7u, 0x80u);
+    acceleration_x4 |= unpack_left_shift_u16(src_p[7], 1u, 0xffu);
+    acceleration_x4 |= unpack_left_shift_u16(src_p[8], 9u, 0x0fu);
 
     if ((acceleration_x4 & (1u << 12)) != 0u) {
         acceleration_x4 |= 0xe000u;
     }
 
     dst_p->acceleration_x4 = (int16_t)acceleration_x4;
-    acceleration_y1 = unpack_right_shift_u16(src_p[10], 4u, 0xf0u);
-    acceleration_y1 |= unpack_left_shift_u16(src_p[11], 4u, 0xffu);
-    acceleration_y1 |= unpack_left_shift_u16(src_p[12], 12u, 0x01u);
+    acceleration_y1 = unpack_right_shift_u16(src_p[8], 4u, 0xf0u);
+    acceleration_y1 |= unpack_left_shift_u16(src_p[9], 4u, 0xffu);
+    acceleration_y1 |= unpack_left_shift_u16(src_p[10], 12u, 0x01u);
 
     if ((acceleration_y1 & (1u << 12)) != 0u) {
         acceleration_y1 |= 0xe000u;
     }
 
     dst_p->acceleration_y1 = (int16_t)acceleration_y1;
-    acceleration_y2 = unpack_right_shift_u16(src_p[12], 1u, 0xfeu);
-    acceleration_y2 |= unpack_left_shift_u16(src_p[13], 7u, 0x3fu);
+    acceleration_y2 = unpack_right_shift_u16(src_p[10], 1u, 0xfeu);
+    acceleration_y2 |= unpack_left_shift_u16(src_p[11], 7u, 0x3fu);
 
     if ((acceleration_y2 & (1u << 12)) != 0u) {
         acceleration_y2 |= 0xe000u;
     }
 
     dst_p->acceleration_y2 = (int16_t)acceleration_y2;
-    acceleration_y3 = unpack_right_shift_u16(src_p[13], 6u, 0xc0u);
-    acceleration_y3 |= unpack_left_shift_u16(src_p[14], 2u, 0xffu);
-    acceleration_y3 |= unpack_left_shift_u16(src_p[15], 10u, 0x07u);
+    acceleration_y3 = unpack_right_shift_u16(src_p[11], 6u, 0xc0u);
+    acceleration_y3 |= unpack_left_shift_u16(src_p[12], 2u, 0xffu);
+    acceleration_y3 |= unpack_left_shift_u16(src_p[13], 10u, 0x07u);
 
     if ((acceleration_y3 & (1u << 12)) != 0u) {
         acceleration_y3 |= 0xe000u;
     }
 
     dst_p->acceleration_y3 = (int16_t)acceleration_y3;
-    acceleration_y4 = unpack_right_shift_u16(src_p[15], 3u, 0xf8u);
-    acceleration_y4 |= unpack_left_shift_u16(src_p[16], 5u, 0xffu);
+    acceleration_y4 = unpack_right_shift_u16(src_p[13], 3u, 0xf8u);
+    acceleration_y4 |= unpack_left_shift_u16(src_p[14], 5u, 0xffu);
 
     if ((acceleration_y4 & (1u << 12)) != 0u) {
         acceleration_y4 |= 0xe000u;
     }
 
     dst_p->acceleration_y4 = (int16_t)acceleration_y4;
-    acceleration_z1 = unpack_right_shift_u16(src_p[17], 0u, 0xffu);
-    acceleration_z1 |= unpack_left_shift_u16(src_p[18], 8u, 0x1fu);
+    acceleration_z1 = unpack_right_shift_u16(src_p[15], 0u, 0xffu);
+    acceleration_z1 |= unpack_left_shift_u16(src_p[16], 8u, 0x1fu);
 
     if ((acceleration_z1 & (1u << 12)) != 0u) {
         acceleration_z1 |= 0xe000u;
     }
 
     dst_p->acceleration_z1 = (int16_t)acceleration_z1;
-    acceleration_z2 = unpack_right_shift_u16(src_p[18], 5u, 0xe0u);
-    acceleration_z2 |= unpack_left_shift_u16(src_p[19], 3u, 0xffu);
-    acceleration_z2 |= unpack_left_shift_u16(src_p[20], 11u, 0x03u);
+    acceleration_z2 = unpack_right_shift_u16(src_p[16], 5u, 0xe0u);
+    acceleration_z2 |= unpack_left_shift_u16(src_p[17], 3u, 0xffu);
+    acceleration_z2 |= unpack_left_shift_u16(src_p[18], 11u, 0x03u);
 
     if ((acceleration_z2 & (1u << 12)) != 0u) {
         acceleration_z2 |= 0xe000u;
     }
 
     dst_p->acceleration_z2 = (int16_t)acceleration_z2;
-    acceleration_z3 = unpack_right_shift_u16(src_p[20], 2u, 0xfcu);
-    acceleration_z3 |= unpack_left_shift_u16(src_p[21], 6u, 0x7fu);
+    acceleration_z3 = unpack_right_shift_u16(src_p[18], 2u, 0xfcu);
+    acceleration_z3 |= unpack_left_shift_u16(src_p[19], 6u, 0x7fu);
 
     if ((acceleration_z3 & (1u << 12)) != 0u) {
         acceleration_z3 |= 0xe000u;
     }
 
     dst_p->acceleration_z3 = (int16_t)acceleration_z3;
-    acceleration_z4 = unpack_right_shift_u16(src_p[21], 7u, 0x80u);
-    acceleration_z4 |= unpack_left_shift_u16(src_p[22], 1u, 0xffu);
-    acceleration_z4 |= unpack_left_shift_u16(src_p[23], 9u, 0x0fu);
+    acceleration_z4 = unpack_right_shift_u16(src_p[19], 7u, 0x80u);
+    acceleration_z4 |= unpack_left_shift_u16(src_p[20], 1u, 0xffu);
+    acceleration_z4 |= unpack_left_shift_u16(src_p[21], 9u, 0x0fu);
 
     if ((acceleration_z4 & (1u << 12)) != 0u) {
         acceleration_z4 |= 0xe000u;
@@ -329,13 +325,6 @@ int d_aq_can_raw_chassis_acceleration_data_init(struct d_aq_can_raw_chassis_acce
 }
 
 bool d_aq_can_raw_chassis_acceleration_data_timestamp_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_chassis_acceleration_data_sample_interval_ticks_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -428,44 +417,42 @@ int d_aq_can_raw_chassis_gyro_data_pack(
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_interval_ticks, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_interval_ticks, 8u, 0xffu);
     gyro_x1 = (uint16_t)src_p->gyro_x1;
-    dst_p[4] |= pack_left_shift_u16(gyro_x1, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(gyro_x1, 8u, 0xffu);
+    dst_p[2] |= pack_left_shift_u16(gyro_x1, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(gyro_x1, 8u, 0xffu);
     gyro_x2 = (uint16_t)src_p->gyro_x2;
-    dst_p[6] |= pack_left_shift_u16(gyro_x2, 0u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(gyro_x2, 8u, 0xffu);
+    dst_p[4] |= pack_left_shift_u16(gyro_x2, 0u, 0xffu);
+    dst_p[5] |= pack_right_shift_u16(gyro_x2, 8u, 0xffu);
     gyro_x3 = (uint16_t)src_p->gyro_x3;
-    dst_p[8] |= pack_left_shift_u16(gyro_x3, 0u, 0xffu);
-    dst_p[9] |= pack_right_shift_u16(gyro_x3, 8u, 0xffu);
+    dst_p[6] |= pack_left_shift_u16(gyro_x3, 0u, 0xffu);
+    dst_p[7] |= pack_right_shift_u16(gyro_x3, 8u, 0xffu);
     gyro_x4 = (uint16_t)src_p->gyro_x4;
-    dst_p[10] |= pack_left_shift_u16(gyro_x4, 0u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(gyro_x4, 8u, 0xffu);
+    dst_p[8] |= pack_left_shift_u16(gyro_x4, 0u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(gyro_x4, 8u, 0xffu);
     gyro_y1 = (uint16_t)src_p->gyro_y1;
-    dst_p[12] |= pack_left_shift_u16(gyro_y1, 0u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(gyro_y1, 8u, 0xffu);
+    dst_p[10] |= pack_left_shift_u16(gyro_y1, 0u, 0xffu);
+    dst_p[11] |= pack_right_shift_u16(gyro_y1, 8u, 0xffu);
     gyro_y2 = (uint16_t)src_p->gyro_y2;
-    dst_p[14] |= pack_left_shift_u16(gyro_y2, 0u, 0xffu);
-    dst_p[15] |= pack_right_shift_u16(gyro_y2, 8u, 0xffu);
+    dst_p[12] |= pack_left_shift_u16(gyro_y2, 0u, 0xffu);
+    dst_p[13] |= pack_right_shift_u16(gyro_y2, 8u, 0xffu);
     gyro_y3 = (uint16_t)src_p->gyro_y3;
-    dst_p[16] |= pack_left_shift_u16(gyro_y3, 0u, 0xffu);
-    dst_p[17] |= pack_right_shift_u16(gyro_y3, 8u, 0xffu);
+    dst_p[14] |= pack_left_shift_u16(gyro_y3, 0u, 0xffu);
+    dst_p[15] |= pack_right_shift_u16(gyro_y3, 8u, 0xffu);
     gyro_y4 = (uint16_t)src_p->gyro_y4;
-    dst_p[18] |= pack_left_shift_u16(gyro_y4, 0u, 0xffu);
-    dst_p[19] |= pack_right_shift_u16(gyro_y4, 8u, 0xffu);
+    dst_p[16] |= pack_left_shift_u16(gyro_y4, 0u, 0xffu);
+    dst_p[17] |= pack_right_shift_u16(gyro_y4, 8u, 0xffu);
     gyro_z1 = (uint16_t)src_p->gyro_z1;
-    dst_p[20] |= pack_left_shift_u16(gyro_z1, 0u, 0xffu);
-    dst_p[21] |= pack_right_shift_u16(gyro_z1, 8u, 0xffu);
+    dst_p[18] |= pack_left_shift_u16(gyro_z1, 0u, 0xffu);
+    dst_p[19] |= pack_right_shift_u16(gyro_z1, 8u, 0xffu);
     gyro_z2 = (uint16_t)src_p->gyro_z2;
-    dst_p[22] |= pack_left_shift_u16(gyro_z2, 0u, 0xffu);
-    dst_p[23] |= pack_right_shift_u16(gyro_z2, 8u, 0xffu);
+    dst_p[20] |= pack_left_shift_u16(gyro_z2, 0u, 0xffu);
+    dst_p[21] |= pack_right_shift_u16(gyro_z2, 8u, 0xffu);
     gyro_z3 = (uint16_t)src_p->gyro_z3;
-    dst_p[24] |= pack_left_shift_u16(gyro_z3, 0u, 0xffu);
-    dst_p[25] |= pack_right_shift_u16(gyro_z3, 8u, 0xffu);
+    dst_p[22] |= pack_left_shift_u16(gyro_z3, 0u, 0xffu);
+    dst_p[23] |= pack_right_shift_u16(gyro_z3, 8u, 0xffu);
     gyro_z4 = (uint16_t)src_p->gyro_z4;
-    dst_p[26] |= pack_left_shift_u16(gyro_z4, 0u, 0xffu);
-    dst_p[27] |= pack_right_shift_u16(gyro_z4, 8u, 0xffu);
+    dst_p[24] |= pack_left_shift_u16(gyro_z4, 0u, 0xffu);
+    dst_p[25] |= pack_right_shift_u16(gyro_z4, 8u, 0xffu);
 
     return (32);
 }
@@ -494,43 +481,41 @@ int d_aq_can_raw_chassis_gyro_data_unpack(
 
     dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
-    dst_p->sample_interval_ticks = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->sample_interval_ticks |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
-    gyro_x1 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    gyro_x1 |= unpack_left_shift_u16(src_p[5], 8u, 0xffu);
+    gyro_x1 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    gyro_x1 |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
     dst_p->gyro_x1 = (int16_t)gyro_x1;
-    gyro_x2 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
-    gyro_x2 |= unpack_left_shift_u16(src_p[7], 8u, 0xffu);
+    gyro_x2 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
+    gyro_x2 |= unpack_left_shift_u16(src_p[5], 8u, 0xffu);
     dst_p->gyro_x2 = (int16_t)gyro_x2;
-    gyro_x3 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
-    gyro_x3 |= unpack_left_shift_u16(src_p[9], 8u, 0xffu);
+    gyro_x3 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
+    gyro_x3 |= unpack_left_shift_u16(src_p[7], 8u, 0xffu);
     dst_p->gyro_x3 = (int16_t)gyro_x3;
-    gyro_x4 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
-    gyro_x4 |= unpack_left_shift_u16(src_p[11], 8u, 0xffu);
+    gyro_x4 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
+    gyro_x4 |= unpack_left_shift_u16(src_p[9], 8u, 0xffu);
     dst_p->gyro_x4 = (int16_t)gyro_x4;
-    gyro_y1 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
-    gyro_y1 |= unpack_left_shift_u16(src_p[13], 8u, 0xffu);
+    gyro_y1 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
+    gyro_y1 |= unpack_left_shift_u16(src_p[11], 8u, 0xffu);
     dst_p->gyro_y1 = (int16_t)gyro_y1;
-    gyro_y2 = unpack_right_shift_u16(src_p[14], 0u, 0xffu);
-    gyro_y2 |= unpack_left_shift_u16(src_p[15], 8u, 0xffu);
+    gyro_y2 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
+    gyro_y2 |= unpack_left_shift_u16(src_p[13], 8u, 0xffu);
     dst_p->gyro_y2 = (int16_t)gyro_y2;
-    gyro_y3 = unpack_right_shift_u16(src_p[16], 0u, 0xffu);
-    gyro_y3 |= unpack_left_shift_u16(src_p[17], 8u, 0xffu);
+    gyro_y3 = unpack_right_shift_u16(src_p[14], 0u, 0xffu);
+    gyro_y3 |= unpack_left_shift_u16(src_p[15], 8u, 0xffu);
     dst_p->gyro_y3 = (int16_t)gyro_y3;
-    gyro_y4 = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
-    gyro_y4 |= unpack_left_shift_u16(src_p[19], 8u, 0xffu);
+    gyro_y4 = unpack_right_shift_u16(src_p[16], 0u, 0xffu);
+    gyro_y4 |= unpack_left_shift_u16(src_p[17], 8u, 0xffu);
     dst_p->gyro_y4 = (int16_t)gyro_y4;
-    gyro_z1 = unpack_right_shift_u16(src_p[20], 0u, 0xffu);
-    gyro_z1 |= unpack_left_shift_u16(src_p[21], 8u, 0xffu);
+    gyro_z1 = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
+    gyro_z1 |= unpack_left_shift_u16(src_p[19], 8u, 0xffu);
     dst_p->gyro_z1 = (int16_t)gyro_z1;
-    gyro_z2 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
-    gyro_z2 |= unpack_left_shift_u16(src_p[23], 8u, 0xffu);
+    gyro_z2 = unpack_right_shift_u16(src_p[20], 0u, 0xffu);
+    gyro_z2 |= unpack_left_shift_u16(src_p[21], 8u, 0xffu);
     dst_p->gyro_z2 = (int16_t)gyro_z2;
-    gyro_z3 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
-    gyro_z3 |= unpack_left_shift_u16(src_p[25], 8u, 0xffu);
+    gyro_z3 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
+    gyro_z3 |= unpack_left_shift_u16(src_p[23], 8u, 0xffu);
     dst_p->gyro_z3 = (int16_t)gyro_z3;
-    gyro_z4 = unpack_right_shift_u16(src_p[26], 0u, 0xffu);
-    gyro_z4 |= unpack_left_shift_u16(src_p[27], 8u, 0xffu);
+    gyro_z4 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
+    gyro_z4 |= unpack_left_shift_u16(src_p[25], 8u, 0xffu);
     dst_p->gyro_z4 = (int16_t)gyro_z4;
 
     return (0);
@@ -546,13 +531,6 @@ int d_aq_can_raw_chassis_gyro_data_init(struct d_aq_can_raw_chassis_gyro_data_t 
 }
 
 bool d_aq_can_raw_chassis_gyro_data_timestamp_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_chassis_gyro_data_sample_interval_ticks_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -669,53 +647,51 @@ int d_aq_can_raw_upright_fr_acceleration_data_pack(
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_interval_ticks, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_interval_ticks, 8u, 0xffu);
     acceleration_x1 = (uint16_t)src_p->acceleration_x1;
-    dst_p[4] |= pack_left_shift_u16(acceleration_x1, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(acceleration_x1, 8u, 0x7fu);
+    dst_p[2] |= pack_left_shift_u16(acceleration_x1, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(acceleration_x1, 8u, 0x7fu);
     acceleration_x2 = (uint16_t)src_p->acceleration_x2;
-    dst_p[5] |= pack_left_shift_u16(acceleration_x2, 7u, 0x80u);
-    dst_p[6] |= pack_right_shift_u16(acceleration_x2, 1u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(acceleration_x2, 9u, 0x3fu);
+    dst_p[3] |= pack_left_shift_u16(acceleration_x2, 7u, 0x80u);
+    dst_p[4] |= pack_right_shift_u16(acceleration_x2, 1u, 0xffu);
+    dst_p[5] |= pack_right_shift_u16(acceleration_x2, 9u, 0x3fu);
     acceleration_x3 = (uint16_t)src_p->acceleration_x3;
-    dst_p[7] |= pack_left_shift_u16(acceleration_x3, 6u, 0xc0u);
-    dst_p[8] |= pack_right_shift_u16(acceleration_x3, 2u, 0xffu);
-    dst_p[9] |= pack_right_shift_u16(acceleration_x3, 10u, 0x1fu);
+    dst_p[5] |= pack_left_shift_u16(acceleration_x3, 6u, 0xc0u);
+    dst_p[6] |= pack_right_shift_u16(acceleration_x3, 2u, 0xffu);
+    dst_p[7] |= pack_right_shift_u16(acceleration_x3, 10u, 0x1fu);
     acceleration_x4 = (uint16_t)src_p->acceleration_x4;
-    dst_p[9] |= pack_left_shift_u16(acceleration_x4, 5u, 0xe0u);
-    dst_p[10] |= pack_right_shift_u16(acceleration_x4, 3u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(acceleration_x4, 11u, 0x0fu);
+    dst_p[7] |= pack_left_shift_u16(acceleration_x4, 5u, 0xe0u);
+    dst_p[8] |= pack_right_shift_u16(acceleration_x4, 3u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(acceleration_x4, 11u, 0x0fu);
     acceleration_y1 = (uint16_t)src_p->acceleration_y1;
-    dst_p[11] |= pack_left_shift_u16(acceleration_y1, 4u, 0xf0u);
-    dst_p[12] |= pack_right_shift_u16(acceleration_y1, 4u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(acceleration_y1, 12u, 0x07u);
+    dst_p[9] |= pack_left_shift_u16(acceleration_y1, 4u, 0xf0u);
+    dst_p[10] |= pack_right_shift_u16(acceleration_y1, 4u, 0xffu);
+    dst_p[11] |= pack_right_shift_u16(acceleration_y1, 12u, 0x07u);
     acceleration_y2 = (uint16_t)src_p->acceleration_y2;
-    dst_p[13] |= pack_left_shift_u16(acceleration_y2, 3u, 0xf8u);
-    dst_p[14] |= pack_right_shift_u16(acceleration_y2, 5u, 0xffu);
-    dst_p[15] |= pack_right_shift_u16(acceleration_y2, 13u, 0x03u);
+    dst_p[11] |= pack_left_shift_u16(acceleration_y2, 3u, 0xf8u);
+    dst_p[12] |= pack_right_shift_u16(acceleration_y2, 5u, 0xffu);
+    dst_p[13] |= pack_right_shift_u16(acceleration_y2, 13u, 0x03u);
     acceleration_y3 = (uint16_t)src_p->acceleration_y3;
-    dst_p[15] |= pack_left_shift_u16(acceleration_y3, 2u, 0xfcu);
-    dst_p[16] |= pack_right_shift_u16(acceleration_y3, 6u, 0xffu);
-    dst_p[17] |= pack_right_shift_u16(acceleration_y3, 14u, 0x01u);
+    dst_p[13] |= pack_left_shift_u16(acceleration_y3, 2u, 0xfcu);
+    dst_p[14] |= pack_right_shift_u16(acceleration_y3, 6u, 0xffu);
+    dst_p[15] |= pack_right_shift_u16(acceleration_y3, 14u, 0x01u);
     acceleration_y4 = (uint16_t)src_p->acceleration_y4;
-    dst_p[17] |= pack_left_shift_u16(acceleration_y4, 1u, 0xfeu);
-    dst_p[18] |= pack_right_shift_u16(acceleration_y4, 7u, 0xffu);
+    dst_p[15] |= pack_left_shift_u16(acceleration_y4, 1u, 0xfeu);
+    dst_p[16] |= pack_right_shift_u16(acceleration_y4, 7u, 0xffu);
     acceleration_z1 = (uint16_t)src_p->acceleration_z1;
-    dst_p[19] |= pack_left_shift_u16(acceleration_z1, 0u, 0xffu);
-    dst_p[20] |= pack_right_shift_u16(acceleration_z1, 8u, 0x7fu);
+    dst_p[17] |= pack_left_shift_u16(acceleration_z1, 0u, 0xffu);
+    dst_p[18] |= pack_right_shift_u16(acceleration_z1, 8u, 0x7fu);
     acceleration_z2 = (uint16_t)src_p->acceleration_z2;
-    dst_p[20] |= pack_left_shift_u16(acceleration_z2, 7u, 0x80u);
-    dst_p[21] |= pack_right_shift_u16(acceleration_z2, 1u, 0xffu);
-    dst_p[22] |= pack_right_shift_u16(acceleration_z2, 9u, 0x3fu);
+    dst_p[18] |= pack_left_shift_u16(acceleration_z2, 7u, 0x80u);
+    dst_p[19] |= pack_right_shift_u16(acceleration_z2, 1u, 0xffu);
+    dst_p[20] |= pack_right_shift_u16(acceleration_z2, 9u, 0x3fu);
     acceleration_z3 = (uint16_t)src_p->acceleration_z3;
-    dst_p[22] |= pack_left_shift_u16(acceleration_z3, 6u, 0xc0u);
-    dst_p[23] |= pack_right_shift_u16(acceleration_z3, 2u, 0xffu);
-    dst_p[24] |= pack_right_shift_u16(acceleration_z3, 10u, 0x1fu);
+    dst_p[20] |= pack_left_shift_u16(acceleration_z3, 6u, 0xc0u);
+    dst_p[21] |= pack_right_shift_u16(acceleration_z3, 2u, 0xffu);
+    dst_p[22] |= pack_right_shift_u16(acceleration_z3, 10u, 0x1fu);
     acceleration_z4 = (uint16_t)src_p->acceleration_z4;
-    dst_p[24] |= pack_left_shift_u16(acceleration_z4, 5u, 0xe0u);
-    dst_p[25] |= pack_right_shift_u16(acceleration_z4, 3u, 0xffu);
-    dst_p[26] |= pack_right_shift_u16(acceleration_z4, 11u, 0x0fu);
+    dst_p[22] |= pack_left_shift_u16(acceleration_z4, 5u, 0xe0u);
+    dst_p[23] |= pack_right_shift_u16(acceleration_z4, 3u, 0xffu);
+    dst_p[24] |= pack_right_shift_u16(acceleration_z4, 11u, 0x0fu);
 
     return (32);
 }
@@ -744,107 +720,105 @@ int d_aq_can_raw_upright_fr_acceleration_data_unpack(
 
     dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
-    dst_p->sample_interval_ticks = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->sample_interval_ticks |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
-    acceleration_x1 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    acceleration_x1 |= unpack_left_shift_u16(src_p[5], 8u, 0x7fu);
+    acceleration_x1 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    acceleration_x1 |= unpack_left_shift_u16(src_p[3], 8u, 0x7fu);
 
     if ((acceleration_x1 & (1u << 14)) != 0u) {
         acceleration_x1 |= 0x8000u;
     }
 
     dst_p->acceleration_x1 = (int16_t)acceleration_x1;
-    acceleration_x2 = unpack_right_shift_u16(src_p[5], 7u, 0x80u);
-    acceleration_x2 |= unpack_left_shift_u16(src_p[6], 1u, 0xffu);
-    acceleration_x2 |= unpack_left_shift_u16(src_p[7], 9u, 0x3fu);
+    acceleration_x2 = unpack_right_shift_u16(src_p[3], 7u, 0x80u);
+    acceleration_x2 |= unpack_left_shift_u16(src_p[4], 1u, 0xffu);
+    acceleration_x2 |= unpack_left_shift_u16(src_p[5], 9u, 0x3fu);
 
     if ((acceleration_x2 & (1u << 14)) != 0u) {
         acceleration_x2 |= 0x8000u;
     }
 
     dst_p->acceleration_x2 = (int16_t)acceleration_x2;
-    acceleration_x3 = unpack_right_shift_u16(src_p[7], 6u, 0xc0u);
-    acceleration_x3 |= unpack_left_shift_u16(src_p[8], 2u, 0xffu);
-    acceleration_x3 |= unpack_left_shift_u16(src_p[9], 10u, 0x1fu);
+    acceleration_x3 = unpack_right_shift_u16(src_p[5], 6u, 0xc0u);
+    acceleration_x3 |= unpack_left_shift_u16(src_p[6], 2u, 0xffu);
+    acceleration_x3 |= unpack_left_shift_u16(src_p[7], 10u, 0x1fu);
 
     if ((acceleration_x3 & (1u << 14)) != 0u) {
         acceleration_x3 |= 0x8000u;
     }
 
     dst_p->acceleration_x3 = (int16_t)acceleration_x3;
-    acceleration_x4 = unpack_right_shift_u16(src_p[9], 5u, 0xe0u);
-    acceleration_x4 |= unpack_left_shift_u16(src_p[10], 3u, 0xffu);
-    acceleration_x4 |= unpack_left_shift_u16(src_p[11], 11u, 0x0fu);
+    acceleration_x4 = unpack_right_shift_u16(src_p[7], 5u, 0xe0u);
+    acceleration_x4 |= unpack_left_shift_u16(src_p[8], 3u, 0xffu);
+    acceleration_x4 |= unpack_left_shift_u16(src_p[9], 11u, 0x0fu);
 
     if ((acceleration_x4 & (1u << 14)) != 0u) {
         acceleration_x4 |= 0x8000u;
     }
 
     dst_p->acceleration_x4 = (int16_t)acceleration_x4;
-    acceleration_y1 = unpack_right_shift_u16(src_p[11], 4u, 0xf0u);
-    acceleration_y1 |= unpack_left_shift_u16(src_p[12], 4u, 0xffu);
-    acceleration_y1 |= unpack_left_shift_u16(src_p[13], 12u, 0x07u);
+    acceleration_y1 = unpack_right_shift_u16(src_p[9], 4u, 0xf0u);
+    acceleration_y1 |= unpack_left_shift_u16(src_p[10], 4u, 0xffu);
+    acceleration_y1 |= unpack_left_shift_u16(src_p[11], 12u, 0x07u);
 
     if ((acceleration_y1 & (1u << 14)) != 0u) {
         acceleration_y1 |= 0x8000u;
     }
 
     dst_p->acceleration_y1 = (int16_t)acceleration_y1;
-    acceleration_y2 = unpack_right_shift_u16(src_p[13], 3u, 0xf8u);
-    acceleration_y2 |= unpack_left_shift_u16(src_p[14], 5u, 0xffu);
-    acceleration_y2 |= unpack_left_shift_u16(src_p[15], 13u, 0x03u);
+    acceleration_y2 = unpack_right_shift_u16(src_p[11], 3u, 0xf8u);
+    acceleration_y2 |= unpack_left_shift_u16(src_p[12], 5u, 0xffu);
+    acceleration_y2 |= unpack_left_shift_u16(src_p[13], 13u, 0x03u);
 
     if ((acceleration_y2 & (1u << 14)) != 0u) {
         acceleration_y2 |= 0x8000u;
     }
 
     dst_p->acceleration_y2 = (int16_t)acceleration_y2;
-    acceleration_y3 = unpack_right_shift_u16(src_p[15], 2u, 0xfcu);
-    acceleration_y3 |= unpack_left_shift_u16(src_p[16], 6u, 0xffu);
-    acceleration_y3 |= unpack_left_shift_u16(src_p[17], 14u, 0x01u);
+    acceleration_y3 = unpack_right_shift_u16(src_p[13], 2u, 0xfcu);
+    acceleration_y3 |= unpack_left_shift_u16(src_p[14], 6u, 0xffu);
+    acceleration_y3 |= unpack_left_shift_u16(src_p[15], 14u, 0x01u);
 
     if ((acceleration_y3 & (1u << 14)) != 0u) {
         acceleration_y3 |= 0x8000u;
     }
 
     dst_p->acceleration_y3 = (int16_t)acceleration_y3;
-    acceleration_y4 = unpack_right_shift_u16(src_p[17], 1u, 0xfeu);
-    acceleration_y4 |= unpack_left_shift_u16(src_p[18], 7u, 0xffu);
+    acceleration_y4 = unpack_right_shift_u16(src_p[15], 1u, 0xfeu);
+    acceleration_y4 |= unpack_left_shift_u16(src_p[16], 7u, 0xffu);
 
     if ((acceleration_y4 & (1u << 14)) != 0u) {
         acceleration_y4 |= 0x8000u;
     }
 
     dst_p->acceleration_y4 = (int16_t)acceleration_y4;
-    acceleration_z1 = unpack_right_shift_u16(src_p[19], 0u, 0xffu);
-    acceleration_z1 |= unpack_left_shift_u16(src_p[20], 8u, 0x7fu);
+    acceleration_z1 = unpack_right_shift_u16(src_p[17], 0u, 0xffu);
+    acceleration_z1 |= unpack_left_shift_u16(src_p[18], 8u, 0x7fu);
 
     if ((acceleration_z1 & (1u << 14)) != 0u) {
         acceleration_z1 |= 0x8000u;
     }
 
     dst_p->acceleration_z1 = (int16_t)acceleration_z1;
-    acceleration_z2 = unpack_right_shift_u16(src_p[20], 7u, 0x80u);
-    acceleration_z2 |= unpack_left_shift_u16(src_p[21], 1u, 0xffu);
-    acceleration_z2 |= unpack_left_shift_u16(src_p[22], 9u, 0x3fu);
+    acceleration_z2 = unpack_right_shift_u16(src_p[18], 7u, 0x80u);
+    acceleration_z2 |= unpack_left_shift_u16(src_p[19], 1u, 0xffu);
+    acceleration_z2 |= unpack_left_shift_u16(src_p[20], 9u, 0x3fu);
 
     if ((acceleration_z2 & (1u << 14)) != 0u) {
         acceleration_z2 |= 0x8000u;
     }
 
     dst_p->acceleration_z2 = (int16_t)acceleration_z2;
-    acceleration_z3 = unpack_right_shift_u16(src_p[22], 6u, 0xc0u);
-    acceleration_z3 |= unpack_left_shift_u16(src_p[23], 2u, 0xffu);
-    acceleration_z3 |= unpack_left_shift_u16(src_p[24], 10u, 0x1fu);
+    acceleration_z3 = unpack_right_shift_u16(src_p[20], 6u, 0xc0u);
+    acceleration_z3 |= unpack_left_shift_u16(src_p[21], 2u, 0xffu);
+    acceleration_z3 |= unpack_left_shift_u16(src_p[22], 10u, 0x1fu);
 
     if ((acceleration_z3 & (1u << 14)) != 0u) {
         acceleration_z3 |= 0x8000u;
     }
 
     dst_p->acceleration_z3 = (int16_t)acceleration_z3;
-    acceleration_z4 = unpack_right_shift_u16(src_p[24], 5u, 0xe0u);
-    acceleration_z4 |= unpack_left_shift_u16(src_p[25], 3u, 0xffu);
-    acceleration_z4 |= unpack_left_shift_u16(src_p[26], 11u, 0x0fu);
+    acceleration_z4 = unpack_right_shift_u16(src_p[22], 5u, 0xe0u);
+    acceleration_z4 |= unpack_left_shift_u16(src_p[23], 3u, 0xffu);
+    acceleration_z4 |= unpack_left_shift_u16(src_p[24], 11u, 0x0fu);
 
     if ((acceleration_z4 & (1u << 14)) != 0u) {
         acceleration_z4 |= 0x8000u;
@@ -865,13 +839,6 @@ int d_aq_can_raw_upright_fr_acceleration_data_init(struct d_aq_can_raw_upright_f
 }
 
 bool d_aq_can_raw_upright_fr_acceleration_data_timestamp_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_upright_fr_acceleration_data_sample_interval_ticks_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -964,44 +931,42 @@ int d_aq_can_raw_upright_fr_gyro_data_pack(
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_interval_ticks, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_interval_ticks, 8u, 0xffu);
     gyro_x1 = (uint16_t)src_p->gyro_x1;
-    dst_p[4] |= pack_left_shift_u16(gyro_x1, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(gyro_x1, 8u, 0xffu);
+    dst_p[2] |= pack_left_shift_u16(gyro_x1, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(gyro_x1, 8u, 0xffu);
     gyro_x2 = (uint16_t)src_p->gyro_x2;
-    dst_p[6] |= pack_left_shift_u16(gyro_x2, 0u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(gyro_x2, 8u, 0xffu);
+    dst_p[4] |= pack_left_shift_u16(gyro_x2, 0u, 0xffu);
+    dst_p[5] |= pack_right_shift_u16(gyro_x2, 8u, 0xffu);
     gyro_x3 = (uint16_t)src_p->gyro_x3;
-    dst_p[8] |= pack_left_shift_u16(gyro_x3, 0u, 0xffu);
-    dst_p[9] |= pack_right_shift_u16(gyro_x3, 8u, 0xffu);
+    dst_p[6] |= pack_left_shift_u16(gyro_x3, 0u, 0xffu);
+    dst_p[7] |= pack_right_shift_u16(gyro_x3, 8u, 0xffu);
     gyro_x4 = (uint16_t)src_p->gyro_x4;
-    dst_p[10] |= pack_left_shift_u16(gyro_x4, 0u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(gyro_x4, 8u, 0xffu);
+    dst_p[8] |= pack_left_shift_u16(gyro_x4, 0u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(gyro_x4, 8u, 0xffu);
     gyro_y1 = (uint16_t)src_p->gyro_y1;
-    dst_p[12] |= pack_left_shift_u16(gyro_y1, 0u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(gyro_y1, 8u, 0xffu);
+    dst_p[10] |= pack_left_shift_u16(gyro_y1, 0u, 0xffu);
+    dst_p[11] |= pack_right_shift_u16(gyro_y1, 8u, 0xffu);
     gyro_y2 = (uint16_t)src_p->gyro_y2;
-    dst_p[14] |= pack_left_shift_u16(gyro_y2, 0u, 0xffu);
-    dst_p[15] |= pack_right_shift_u16(gyro_y2, 8u, 0xffu);
+    dst_p[12] |= pack_left_shift_u16(gyro_y2, 0u, 0xffu);
+    dst_p[13] |= pack_right_shift_u16(gyro_y2, 8u, 0xffu);
     gyro_y3 = (uint16_t)src_p->gyro_y3;
-    dst_p[16] |= pack_left_shift_u16(gyro_y3, 0u, 0xffu);
-    dst_p[17] |= pack_right_shift_u16(gyro_y3, 8u, 0xffu);
+    dst_p[14] |= pack_left_shift_u16(gyro_y3, 0u, 0xffu);
+    dst_p[15] |= pack_right_shift_u16(gyro_y3, 8u, 0xffu);
     gyro_y4 = (uint16_t)src_p->gyro_y4;
-    dst_p[18] |= pack_left_shift_u16(gyro_y4, 0u, 0xffu);
-    dst_p[19] |= pack_right_shift_u16(gyro_y4, 8u, 0xffu);
+    dst_p[16] |= pack_left_shift_u16(gyro_y4, 0u, 0xffu);
+    dst_p[17] |= pack_right_shift_u16(gyro_y4, 8u, 0xffu);
     gyro_z1 = (uint16_t)src_p->gyro_z1;
-    dst_p[20] |= pack_left_shift_u16(gyro_z1, 0u, 0xffu);
-    dst_p[21] |= pack_right_shift_u16(gyro_z1, 8u, 0xffu);
+    dst_p[18] |= pack_left_shift_u16(gyro_z1, 0u, 0xffu);
+    dst_p[19] |= pack_right_shift_u16(gyro_z1, 8u, 0xffu);
     gyro_z2 = (uint16_t)src_p->gyro_z2;
-    dst_p[22] |= pack_left_shift_u16(gyro_z2, 0u, 0xffu);
-    dst_p[23] |= pack_right_shift_u16(gyro_z2, 8u, 0xffu);
+    dst_p[20] |= pack_left_shift_u16(gyro_z2, 0u, 0xffu);
+    dst_p[21] |= pack_right_shift_u16(gyro_z2, 8u, 0xffu);
     gyro_z3 = (uint16_t)src_p->gyro_z3;
-    dst_p[24] |= pack_left_shift_u16(gyro_z3, 0u, 0xffu);
-    dst_p[25] |= pack_right_shift_u16(gyro_z3, 8u, 0xffu);
+    dst_p[22] |= pack_left_shift_u16(gyro_z3, 0u, 0xffu);
+    dst_p[23] |= pack_right_shift_u16(gyro_z3, 8u, 0xffu);
     gyro_z4 = (uint16_t)src_p->gyro_z4;
-    dst_p[26] |= pack_left_shift_u16(gyro_z4, 0u, 0xffu);
-    dst_p[27] |= pack_right_shift_u16(gyro_z4, 8u, 0xffu);
+    dst_p[24] |= pack_left_shift_u16(gyro_z4, 0u, 0xffu);
+    dst_p[25] |= pack_right_shift_u16(gyro_z4, 8u, 0xffu);
 
     return (32);
 }
@@ -1030,43 +995,41 @@ int d_aq_can_raw_upright_fr_gyro_data_unpack(
 
     dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
-    dst_p->sample_interval_ticks = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->sample_interval_ticks |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
-    gyro_x1 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    gyro_x1 |= unpack_left_shift_u16(src_p[5], 8u, 0xffu);
+    gyro_x1 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    gyro_x1 |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
     dst_p->gyro_x1 = (int16_t)gyro_x1;
-    gyro_x2 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
-    gyro_x2 |= unpack_left_shift_u16(src_p[7], 8u, 0xffu);
+    gyro_x2 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
+    gyro_x2 |= unpack_left_shift_u16(src_p[5], 8u, 0xffu);
     dst_p->gyro_x2 = (int16_t)gyro_x2;
-    gyro_x3 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
-    gyro_x3 |= unpack_left_shift_u16(src_p[9], 8u, 0xffu);
+    gyro_x3 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
+    gyro_x3 |= unpack_left_shift_u16(src_p[7], 8u, 0xffu);
     dst_p->gyro_x3 = (int16_t)gyro_x3;
-    gyro_x4 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
-    gyro_x4 |= unpack_left_shift_u16(src_p[11], 8u, 0xffu);
+    gyro_x4 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
+    gyro_x4 |= unpack_left_shift_u16(src_p[9], 8u, 0xffu);
     dst_p->gyro_x4 = (int16_t)gyro_x4;
-    gyro_y1 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
-    gyro_y1 |= unpack_left_shift_u16(src_p[13], 8u, 0xffu);
+    gyro_y1 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
+    gyro_y1 |= unpack_left_shift_u16(src_p[11], 8u, 0xffu);
     dst_p->gyro_y1 = (int16_t)gyro_y1;
-    gyro_y2 = unpack_right_shift_u16(src_p[14], 0u, 0xffu);
-    gyro_y2 |= unpack_left_shift_u16(src_p[15], 8u, 0xffu);
+    gyro_y2 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
+    gyro_y2 |= unpack_left_shift_u16(src_p[13], 8u, 0xffu);
     dst_p->gyro_y2 = (int16_t)gyro_y2;
-    gyro_y3 = unpack_right_shift_u16(src_p[16], 0u, 0xffu);
-    gyro_y3 |= unpack_left_shift_u16(src_p[17], 8u, 0xffu);
+    gyro_y3 = unpack_right_shift_u16(src_p[14], 0u, 0xffu);
+    gyro_y3 |= unpack_left_shift_u16(src_p[15], 8u, 0xffu);
     dst_p->gyro_y3 = (int16_t)gyro_y3;
-    gyro_y4 = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
-    gyro_y4 |= unpack_left_shift_u16(src_p[19], 8u, 0xffu);
+    gyro_y4 = unpack_right_shift_u16(src_p[16], 0u, 0xffu);
+    gyro_y4 |= unpack_left_shift_u16(src_p[17], 8u, 0xffu);
     dst_p->gyro_y4 = (int16_t)gyro_y4;
-    gyro_z1 = unpack_right_shift_u16(src_p[20], 0u, 0xffu);
-    gyro_z1 |= unpack_left_shift_u16(src_p[21], 8u, 0xffu);
+    gyro_z1 = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
+    gyro_z1 |= unpack_left_shift_u16(src_p[19], 8u, 0xffu);
     dst_p->gyro_z1 = (int16_t)gyro_z1;
-    gyro_z2 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
-    gyro_z2 |= unpack_left_shift_u16(src_p[23], 8u, 0xffu);
+    gyro_z2 = unpack_right_shift_u16(src_p[20], 0u, 0xffu);
+    gyro_z2 |= unpack_left_shift_u16(src_p[21], 8u, 0xffu);
     dst_p->gyro_z2 = (int16_t)gyro_z2;
-    gyro_z3 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
-    gyro_z3 |= unpack_left_shift_u16(src_p[25], 8u, 0xffu);
+    gyro_z3 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
+    gyro_z3 |= unpack_left_shift_u16(src_p[23], 8u, 0xffu);
     dst_p->gyro_z3 = (int16_t)gyro_z3;
-    gyro_z4 = unpack_right_shift_u16(src_p[26], 0u, 0xffu);
-    gyro_z4 |= unpack_left_shift_u16(src_p[27], 8u, 0xffu);
+    gyro_z4 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
+    gyro_z4 |= unpack_left_shift_u16(src_p[25], 8u, 0xffu);
     dst_p->gyro_z4 = (int16_t)gyro_z4;
 
     return (0);
@@ -1082,13 +1045,6 @@ int d_aq_can_raw_upright_fr_gyro_data_init(struct d_aq_can_raw_upright_fr_gyro_d
 }
 
 bool d_aq_can_raw_upright_fr_gyro_data_timestamp_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_upright_fr_gyro_data_sample_interval_ticks_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -1184,26 +1140,24 @@ int d_aq_can_raw_upright_fr_wheel_speed_data_pack(
     const struct d_aq_can_raw_upright_fr_wheel_speed_data_t *src_p,
     size_t size)
 {
-    if (size < 12u) {
+    if (size < 8u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 12);
+    memset(&dst_p[0], 0, 8);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_interval_ticks, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_interval_ticks, 8u, 0xffu);
-    dst_p[4] |= pack_left_shift_u16(src_p->wheel_rpm1, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(src_p->wheel_rpm1, 8u, 0x0fu);
-    dst_p[5] |= pack_left_shift_u16(src_p->wheel_rpm2, 4u, 0xf0u);
-    dst_p[6] |= pack_right_shift_u16(src_p->wheel_rpm2, 4u, 0xffu);
-    dst_p[7] |= pack_left_shift_u16(src_p->wheel_rpm3, 0u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->wheel_rpm3, 8u, 0x0fu);
-    dst_p[8] |= pack_left_shift_u16(src_p->wheel_rpm4, 4u, 0xf0u);
-    dst_p[9] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
+    dst_p[2] |= pack_left_shift_u16(src_p->wheel_rpm1, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(src_p->wheel_rpm1, 8u, 0x0fu);
+    dst_p[3] |= pack_left_shift_u16(src_p->wheel_rpm2, 4u, 0xf0u);
+    dst_p[4] |= pack_right_shift_u16(src_p->wheel_rpm2, 4u, 0xffu);
+    dst_p[5] |= pack_left_shift_u16(src_p->wheel_rpm3, 0u, 0xffu);
+    dst_p[6] |= pack_right_shift_u16(src_p->wheel_rpm3, 8u, 0x0fu);
+    dst_p[6] |= pack_left_shift_u16(src_p->wheel_rpm4, 4u, 0xf0u);
+    dst_p[7] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
 
-    return (12);
+    return (8);
 }
 
 int d_aq_can_raw_upright_fr_wheel_speed_data_unpack(
@@ -1211,22 +1165,20 @@ int d_aq_can_raw_upright_fr_wheel_speed_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 12u) {
+    if (size < 8u) {
         return (-EINVAL);
     }
 
     dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
-    dst_p->sample_interval_ticks = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->sample_interval_ticks |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
-    dst_p->wheel_rpm1 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    dst_p->wheel_rpm1 |= unpack_left_shift_u16(src_p[5], 8u, 0x0fu);
-    dst_p->wheel_rpm2 = unpack_right_shift_u16(src_p[5], 4u, 0xf0u);
-    dst_p->wheel_rpm2 |= unpack_left_shift_u16(src_p[6], 4u, 0xffu);
-    dst_p->wheel_rpm3 = unpack_right_shift_u16(src_p[7], 0u, 0xffu);
-    dst_p->wheel_rpm3 |= unpack_left_shift_u16(src_p[8], 8u, 0x0fu);
-    dst_p->wheel_rpm4 = unpack_right_shift_u16(src_p[8], 4u, 0xf0u);
-    dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[9], 4u, 0xffu);
+    dst_p->wheel_rpm1 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    dst_p->wheel_rpm1 |= unpack_left_shift_u16(src_p[3], 8u, 0x0fu);
+    dst_p->wheel_rpm2 = unpack_right_shift_u16(src_p[3], 4u, 0xf0u);
+    dst_p->wheel_rpm2 |= unpack_left_shift_u16(src_p[4], 4u, 0xffu);
+    dst_p->wheel_rpm3 = unpack_right_shift_u16(src_p[5], 0u, 0xffu);
+    dst_p->wheel_rpm3 |= unpack_left_shift_u16(src_p[6], 8u, 0x0fu);
+    dst_p->wheel_rpm4 = unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
+    dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
 
     return (0);
 }
@@ -1241,13 +1193,6 @@ int d_aq_can_raw_upright_fr_wheel_speed_data_init(struct d_aq_can_raw_upright_fr
 }
 
 bool d_aq_can_raw_upright_fr_wheel_speed_data_timestamp_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_upright_fr_wheel_speed_data_sample_interval_ticks_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -1300,53 +1245,51 @@ int d_aq_can_raw_upright_fl_acceleration_data_pack(
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_interval_ticks, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_interval_ticks, 8u, 0xffu);
     acceleration_x1 = (uint16_t)src_p->acceleration_x1;
-    dst_p[4] |= pack_left_shift_u16(acceleration_x1, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(acceleration_x1, 8u, 0x7fu);
+    dst_p[2] |= pack_left_shift_u16(acceleration_x1, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(acceleration_x1, 8u, 0x7fu);
     acceleration_x2 = (uint16_t)src_p->acceleration_x2;
-    dst_p[5] |= pack_left_shift_u16(acceleration_x2, 7u, 0x80u);
-    dst_p[6] |= pack_right_shift_u16(acceleration_x2, 1u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(acceleration_x2, 9u, 0x3fu);
+    dst_p[3] |= pack_left_shift_u16(acceleration_x2, 7u, 0x80u);
+    dst_p[4] |= pack_right_shift_u16(acceleration_x2, 1u, 0xffu);
+    dst_p[5] |= pack_right_shift_u16(acceleration_x2, 9u, 0x3fu);
     acceleration_x3 = (uint16_t)src_p->acceleration_x3;
-    dst_p[7] |= pack_left_shift_u16(acceleration_x3, 6u, 0xc0u);
-    dst_p[8] |= pack_right_shift_u16(acceleration_x3, 2u, 0xffu);
-    dst_p[9] |= pack_right_shift_u16(acceleration_x3, 10u, 0x1fu);
+    dst_p[5] |= pack_left_shift_u16(acceleration_x3, 6u, 0xc0u);
+    dst_p[6] |= pack_right_shift_u16(acceleration_x3, 2u, 0xffu);
+    dst_p[7] |= pack_right_shift_u16(acceleration_x3, 10u, 0x1fu);
     acceleration_x4 = (uint16_t)src_p->acceleration_x4;
-    dst_p[9] |= pack_left_shift_u16(acceleration_x4, 5u, 0xe0u);
-    dst_p[10] |= pack_right_shift_u16(acceleration_x4, 3u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(acceleration_x4, 11u, 0x0fu);
+    dst_p[7] |= pack_left_shift_u16(acceleration_x4, 5u, 0xe0u);
+    dst_p[8] |= pack_right_shift_u16(acceleration_x4, 3u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(acceleration_x4, 11u, 0x0fu);
     acceleration_y1 = (uint16_t)src_p->acceleration_y1;
-    dst_p[11] |= pack_left_shift_u16(acceleration_y1, 4u, 0xf0u);
-    dst_p[12] |= pack_right_shift_u16(acceleration_y1, 4u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(acceleration_y1, 12u, 0x07u);
+    dst_p[9] |= pack_left_shift_u16(acceleration_y1, 4u, 0xf0u);
+    dst_p[10] |= pack_right_shift_u16(acceleration_y1, 4u, 0xffu);
+    dst_p[11] |= pack_right_shift_u16(acceleration_y1, 12u, 0x07u);
     acceleration_y2 = (uint16_t)src_p->acceleration_y2;
-    dst_p[13] |= pack_left_shift_u16(acceleration_y2, 3u, 0xf8u);
-    dst_p[14] |= pack_right_shift_u16(acceleration_y2, 5u, 0xffu);
-    dst_p[15] |= pack_right_shift_u16(acceleration_y2, 13u, 0x03u);
+    dst_p[11] |= pack_left_shift_u16(acceleration_y2, 3u, 0xf8u);
+    dst_p[12] |= pack_right_shift_u16(acceleration_y2, 5u, 0xffu);
+    dst_p[13] |= pack_right_shift_u16(acceleration_y2, 13u, 0x03u);
     acceleration_y3 = (uint16_t)src_p->acceleration_y3;
-    dst_p[15] |= pack_left_shift_u16(acceleration_y3, 2u, 0xfcu);
-    dst_p[16] |= pack_right_shift_u16(acceleration_y3, 6u, 0xffu);
-    dst_p[17] |= pack_right_shift_u16(acceleration_y3, 14u, 0x01u);
+    dst_p[13] |= pack_left_shift_u16(acceleration_y3, 2u, 0xfcu);
+    dst_p[14] |= pack_right_shift_u16(acceleration_y3, 6u, 0xffu);
+    dst_p[15] |= pack_right_shift_u16(acceleration_y3, 14u, 0x01u);
     acceleration_y4 = (uint16_t)src_p->acceleration_y4;
-    dst_p[17] |= pack_left_shift_u16(acceleration_y4, 1u, 0xfeu);
-    dst_p[18] |= pack_right_shift_u16(acceleration_y4, 7u, 0xffu);
+    dst_p[15] |= pack_left_shift_u16(acceleration_y4, 1u, 0xfeu);
+    dst_p[16] |= pack_right_shift_u16(acceleration_y4, 7u, 0xffu);
     acceleration_z1 = (uint16_t)src_p->acceleration_z1;
-    dst_p[19] |= pack_left_shift_u16(acceleration_z1, 0u, 0xffu);
-    dst_p[20] |= pack_right_shift_u16(acceleration_z1, 8u, 0x7fu);
+    dst_p[17] |= pack_left_shift_u16(acceleration_z1, 0u, 0xffu);
+    dst_p[18] |= pack_right_shift_u16(acceleration_z1, 8u, 0x7fu);
     acceleration_z2 = (uint16_t)src_p->acceleration_z2;
-    dst_p[20] |= pack_left_shift_u16(acceleration_z2, 7u, 0x80u);
-    dst_p[21] |= pack_right_shift_u16(acceleration_z2, 1u, 0xffu);
-    dst_p[22] |= pack_right_shift_u16(acceleration_z2, 9u, 0x3fu);
+    dst_p[18] |= pack_left_shift_u16(acceleration_z2, 7u, 0x80u);
+    dst_p[19] |= pack_right_shift_u16(acceleration_z2, 1u, 0xffu);
+    dst_p[20] |= pack_right_shift_u16(acceleration_z2, 9u, 0x3fu);
     acceleration_z3 = (uint16_t)src_p->acceleration_z3;
-    dst_p[22] |= pack_left_shift_u16(acceleration_z3, 6u, 0xc0u);
-    dst_p[23] |= pack_right_shift_u16(acceleration_z3, 2u, 0xffu);
-    dst_p[24] |= pack_right_shift_u16(acceleration_z3, 10u, 0x1fu);
+    dst_p[20] |= pack_left_shift_u16(acceleration_z3, 6u, 0xc0u);
+    dst_p[21] |= pack_right_shift_u16(acceleration_z3, 2u, 0xffu);
+    dst_p[22] |= pack_right_shift_u16(acceleration_z3, 10u, 0x1fu);
     acceleration_z4 = (uint16_t)src_p->acceleration_z4;
-    dst_p[24] |= pack_left_shift_u16(acceleration_z4, 5u, 0xe0u);
-    dst_p[25] |= pack_right_shift_u16(acceleration_z4, 3u, 0xffu);
-    dst_p[26] |= pack_right_shift_u16(acceleration_z4, 11u, 0x0fu);
+    dst_p[22] |= pack_left_shift_u16(acceleration_z4, 5u, 0xe0u);
+    dst_p[23] |= pack_right_shift_u16(acceleration_z4, 3u, 0xffu);
+    dst_p[24] |= pack_right_shift_u16(acceleration_z4, 11u, 0x0fu);
 
     return (32);
 }
@@ -1375,107 +1318,105 @@ int d_aq_can_raw_upright_fl_acceleration_data_unpack(
 
     dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
-    dst_p->sample_interval_ticks = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->sample_interval_ticks |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
-    acceleration_x1 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    acceleration_x1 |= unpack_left_shift_u16(src_p[5], 8u, 0x7fu);
+    acceleration_x1 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    acceleration_x1 |= unpack_left_shift_u16(src_p[3], 8u, 0x7fu);
 
     if ((acceleration_x1 & (1u << 14)) != 0u) {
         acceleration_x1 |= 0x8000u;
     }
 
     dst_p->acceleration_x1 = (int16_t)acceleration_x1;
-    acceleration_x2 = unpack_right_shift_u16(src_p[5], 7u, 0x80u);
-    acceleration_x2 |= unpack_left_shift_u16(src_p[6], 1u, 0xffu);
-    acceleration_x2 |= unpack_left_shift_u16(src_p[7], 9u, 0x3fu);
+    acceleration_x2 = unpack_right_shift_u16(src_p[3], 7u, 0x80u);
+    acceleration_x2 |= unpack_left_shift_u16(src_p[4], 1u, 0xffu);
+    acceleration_x2 |= unpack_left_shift_u16(src_p[5], 9u, 0x3fu);
 
     if ((acceleration_x2 & (1u << 14)) != 0u) {
         acceleration_x2 |= 0x8000u;
     }
 
     dst_p->acceleration_x2 = (int16_t)acceleration_x2;
-    acceleration_x3 = unpack_right_shift_u16(src_p[7], 6u, 0xc0u);
-    acceleration_x3 |= unpack_left_shift_u16(src_p[8], 2u, 0xffu);
-    acceleration_x3 |= unpack_left_shift_u16(src_p[9], 10u, 0x1fu);
+    acceleration_x3 = unpack_right_shift_u16(src_p[5], 6u, 0xc0u);
+    acceleration_x3 |= unpack_left_shift_u16(src_p[6], 2u, 0xffu);
+    acceleration_x3 |= unpack_left_shift_u16(src_p[7], 10u, 0x1fu);
 
     if ((acceleration_x3 & (1u << 14)) != 0u) {
         acceleration_x3 |= 0x8000u;
     }
 
     dst_p->acceleration_x3 = (int16_t)acceleration_x3;
-    acceleration_x4 = unpack_right_shift_u16(src_p[9], 5u, 0xe0u);
-    acceleration_x4 |= unpack_left_shift_u16(src_p[10], 3u, 0xffu);
-    acceleration_x4 |= unpack_left_shift_u16(src_p[11], 11u, 0x0fu);
+    acceleration_x4 = unpack_right_shift_u16(src_p[7], 5u, 0xe0u);
+    acceleration_x4 |= unpack_left_shift_u16(src_p[8], 3u, 0xffu);
+    acceleration_x4 |= unpack_left_shift_u16(src_p[9], 11u, 0x0fu);
 
     if ((acceleration_x4 & (1u << 14)) != 0u) {
         acceleration_x4 |= 0x8000u;
     }
 
     dst_p->acceleration_x4 = (int16_t)acceleration_x4;
-    acceleration_y1 = unpack_right_shift_u16(src_p[11], 4u, 0xf0u);
-    acceleration_y1 |= unpack_left_shift_u16(src_p[12], 4u, 0xffu);
-    acceleration_y1 |= unpack_left_shift_u16(src_p[13], 12u, 0x07u);
+    acceleration_y1 = unpack_right_shift_u16(src_p[9], 4u, 0xf0u);
+    acceleration_y1 |= unpack_left_shift_u16(src_p[10], 4u, 0xffu);
+    acceleration_y1 |= unpack_left_shift_u16(src_p[11], 12u, 0x07u);
 
     if ((acceleration_y1 & (1u << 14)) != 0u) {
         acceleration_y1 |= 0x8000u;
     }
 
     dst_p->acceleration_y1 = (int16_t)acceleration_y1;
-    acceleration_y2 = unpack_right_shift_u16(src_p[13], 3u, 0xf8u);
-    acceleration_y2 |= unpack_left_shift_u16(src_p[14], 5u, 0xffu);
-    acceleration_y2 |= unpack_left_shift_u16(src_p[15], 13u, 0x03u);
+    acceleration_y2 = unpack_right_shift_u16(src_p[11], 3u, 0xf8u);
+    acceleration_y2 |= unpack_left_shift_u16(src_p[12], 5u, 0xffu);
+    acceleration_y2 |= unpack_left_shift_u16(src_p[13], 13u, 0x03u);
 
     if ((acceleration_y2 & (1u << 14)) != 0u) {
         acceleration_y2 |= 0x8000u;
     }
 
     dst_p->acceleration_y2 = (int16_t)acceleration_y2;
-    acceleration_y3 = unpack_right_shift_u16(src_p[15], 2u, 0xfcu);
-    acceleration_y3 |= unpack_left_shift_u16(src_p[16], 6u, 0xffu);
-    acceleration_y3 |= unpack_left_shift_u16(src_p[17], 14u, 0x01u);
+    acceleration_y3 = unpack_right_shift_u16(src_p[13], 2u, 0xfcu);
+    acceleration_y3 |= unpack_left_shift_u16(src_p[14], 6u, 0xffu);
+    acceleration_y3 |= unpack_left_shift_u16(src_p[15], 14u, 0x01u);
 
     if ((acceleration_y3 & (1u << 14)) != 0u) {
         acceleration_y3 |= 0x8000u;
     }
 
     dst_p->acceleration_y3 = (int16_t)acceleration_y3;
-    acceleration_y4 = unpack_right_shift_u16(src_p[17], 1u, 0xfeu);
-    acceleration_y4 |= unpack_left_shift_u16(src_p[18], 7u, 0xffu);
+    acceleration_y4 = unpack_right_shift_u16(src_p[15], 1u, 0xfeu);
+    acceleration_y4 |= unpack_left_shift_u16(src_p[16], 7u, 0xffu);
 
     if ((acceleration_y4 & (1u << 14)) != 0u) {
         acceleration_y4 |= 0x8000u;
     }
 
     dst_p->acceleration_y4 = (int16_t)acceleration_y4;
-    acceleration_z1 = unpack_right_shift_u16(src_p[19], 0u, 0xffu);
-    acceleration_z1 |= unpack_left_shift_u16(src_p[20], 8u, 0x7fu);
+    acceleration_z1 = unpack_right_shift_u16(src_p[17], 0u, 0xffu);
+    acceleration_z1 |= unpack_left_shift_u16(src_p[18], 8u, 0x7fu);
 
     if ((acceleration_z1 & (1u << 14)) != 0u) {
         acceleration_z1 |= 0x8000u;
     }
 
     dst_p->acceleration_z1 = (int16_t)acceleration_z1;
-    acceleration_z2 = unpack_right_shift_u16(src_p[20], 7u, 0x80u);
-    acceleration_z2 |= unpack_left_shift_u16(src_p[21], 1u, 0xffu);
-    acceleration_z2 |= unpack_left_shift_u16(src_p[22], 9u, 0x3fu);
+    acceleration_z2 = unpack_right_shift_u16(src_p[18], 7u, 0x80u);
+    acceleration_z2 |= unpack_left_shift_u16(src_p[19], 1u, 0xffu);
+    acceleration_z2 |= unpack_left_shift_u16(src_p[20], 9u, 0x3fu);
 
     if ((acceleration_z2 & (1u << 14)) != 0u) {
         acceleration_z2 |= 0x8000u;
     }
 
     dst_p->acceleration_z2 = (int16_t)acceleration_z2;
-    acceleration_z3 = unpack_right_shift_u16(src_p[22], 6u, 0xc0u);
-    acceleration_z3 |= unpack_left_shift_u16(src_p[23], 2u, 0xffu);
-    acceleration_z3 |= unpack_left_shift_u16(src_p[24], 10u, 0x1fu);
+    acceleration_z3 = unpack_right_shift_u16(src_p[20], 6u, 0xc0u);
+    acceleration_z3 |= unpack_left_shift_u16(src_p[21], 2u, 0xffu);
+    acceleration_z3 |= unpack_left_shift_u16(src_p[22], 10u, 0x1fu);
 
     if ((acceleration_z3 & (1u << 14)) != 0u) {
         acceleration_z3 |= 0x8000u;
     }
 
     dst_p->acceleration_z3 = (int16_t)acceleration_z3;
-    acceleration_z4 = unpack_right_shift_u16(src_p[24], 5u, 0xe0u);
-    acceleration_z4 |= unpack_left_shift_u16(src_p[25], 3u, 0xffu);
-    acceleration_z4 |= unpack_left_shift_u16(src_p[26], 11u, 0x0fu);
+    acceleration_z4 = unpack_right_shift_u16(src_p[22], 5u, 0xe0u);
+    acceleration_z4 |= unpack_left_shift_u16(src_p[23], 3u, 0xffu);
+    acceleration_z4 |= unpack_left_shift_u16(src_p[24], 11u, 0x0fu);
 
     if ((acceleration_z4 & (1u << 14)) != 0u) {
         acceleration_z4 |= 0x8000u;
@@ -1496,13 +1437,6 @@ int d_aq_can_raw_upright_fl_acceleration_data_init(struct d_aq_can_raw_upright_f
 }
 
 bool d_aq_can_raw_upright_fl_acceleration_data_timestamp_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_upright_fl_acceleration_data_sample_interval_ticks_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -1595,44 +1529,42 @@ int d_aq_can_raw_upright_fl_gyro_data_pack(
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_interval_ticks, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_interval_ticks, 8u, 0xffu);
     gyro_x1 = (uint16_t)src_p->gyro_x1;
-    dst_p[4] |= pack_left_shift_u16(gyro_x1, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(gyro_x1, 8u, 0xffu);
+    dst_p[2] |= pack_left_shift_u16(gyro_x1, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(gyro_x1, 8u, 0xffu);
     gyro_x2 = (uint16_t)src_p->gyro_x2;
-    dst_p[6] |= pack_left_shift_u16(gyro_x2, 0u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(gyro_x2, 8u, 0xffu);
+    dst_p[4] |= pack_left_shift_u16(gyro_x2, 0u, 0xffu);
+    dst_p[5] |= pack_right_shift_u16(gyro_x2, 8u, 0xffu);
     gyro_x3 = (uint16_t)src_p->gyro_x3;
-    dst_p[8] |= pack_left_shift_u16(gyro_x3, 0u, 0xffu);
-    dst_p[9] |= pack_right_shift_u16(gyro_x3, 8u, 0xffu);
+    dst_p[6] |= pack_left_shift_u16(gyro_x3, 0u, 0xffu);
+    dst_p[7] |= pack_right_shift_u16(gyro_x3, 8u, 0xffu);
     gyro_x4 = (uint16_t)src_p->gyro_x4;
-    dst_p[10] |= pack_left_shift_u16(gyro_x4, 0u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(gyro_x4, 8u, 0xffu);
+    dst_p[8] |= pack_left_shift_u16(gyro_x4, 0u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(gyro_x4, 8u, 0xffu);
     gyro_y1 = (uint16_t)src_p->gyro_y1;
-    dst_p[12] |= pack_left_shift_u16(gyro_y1, 0u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(gyro_y1, 8u, 0xffu);
+    dst_p[10] |= pack_left_shift_u16(gyro_y1, 0u, 0xffu);
+    dst_p[11] |= pack_right_shift_u16(gyro_y1, 8u, 0xffu);
     gyro_y2 = (uint16_t)src_p->gyro_y2;
-    dst_p[14] |= pack_left_shift_u16(gyro_y2, 0u, 0xffu);
-    dst_p[15] |= pack_right_shift_u16(gyro_y2, 8u, 0xffu);
+    dst_p[12] |= pack_left_shift_u16(gyro_y2, 0u, 0xffu);
+    dst_p[13] |= pack_right_shift_u16(gyro_y2, 8u, 0xffu);
     gyro_y3 = (uint16_t)src_p->gyro_y3;
-    dst_p[16] |= pack_left_shift_u16(gyro_y3, 0u, 0xffu);
-    dst_p[17] |= pack_right_shift_u16(gyro_y3, 8u, 0xffu);
+    dst_p[14] |= pack_left_shift_u16(gyro_y3, 0u, 0xffu);
+    dst_p[15] |= pack_right_shift_u16(gyro_y3, 8u, 0xffu);
     gyro_y4 = (uint16_t)src_p->gyro_y4;
-    dst_p[18] |= pack_left_shift_u16(gyro_y4, 0u, 0xffu);
-    dst_p[19] |= pack_right_shift_u16(gyro_y4, 8u, 0xffu);
+    dst_p[16] |= pack_left_shift_u16(gyro_y4, 0u, 0xffu);
+    dst_p[17] |= pack_right_shift_u16(gyro_y4, 8u, 0xffu);
     gyro_z1 = (uint16_t)src_p->gyro_z1;
-    dst_p[20] |= pack_left_shift_u16(gyro_z1, 0u, 0xffu);
-    dst_p[21] |= pack_right_shift_u16(gyro_z1, 8u, 0xffu);
+    dst_p[18] |= pack_left_shift_u16(gyro_z1, 0u, 0xffu);
+    dst_p[19] |= pack_right_shift_u16(gyro_z1, 8u, 0xffu);
     gyro_z2 = (uint16_t)src_p->gyro_z2;
-    dst_p[22] |= pack_left_shift_u16(gyro_z2, 0u, 0xffu);
-    dst_p[23] |= pack_right_shift_u16(gyro_z2, 8u, 0xffu);
+    dst_p[20] |= pack_left_shift_u16(gyro_z2, 0u, 0xffu);
+    dst_p[21] |= pack_right_shift_u16(gyro_z2, 8u, 0xffu);
     gyro_z3 = (uint16_t)src_p->gyro_z3;
-    dst_p[24] |= pack_left_shift_u16(gyro_z3, 0u, 0xffu);
-    dst_p[25] |= pack_right_shift_u16(gyro_z3, 8u, 0xffu);
+    dst_p[22] |= pack_left_shift_u16(gyro_z3, 0u, 0xffu);
+    dst_p[23] |= pack_right_shift_u16(gyro_z3, 8u, 0xffu);
     gyro_z4 = (uint16_t)src_p->gyro_z4;
-    dst_p[26] |= pack_left_shift_u16(gyro_z4, 0u, 0xffu);
-    dst_p[27] |= pack_right_shift_u16(gyro_z4, 8u, 0xffu);
+    dst_p[24] |= pack_left_shift_u16(gyro_z4, 0u, 0xffu);
+    dst_p[25] |= pack_right_shift_u16(gyro_z4, 8u, 0xffu);
 
     return (32);
 }
@@ -1661,43 +1593,41 @@ int d_aq_can_raw_upright_fl_gyro_data_unpack(
 
     dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
-    dst_p->sample_interval_ticks = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->sample_interval_ticks |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
-    gyro_x1 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    gyro_x1 |= unpack_left_shift_u16(src_p[5], 8u, 0xffu);
+    gyro_x1 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    gyro_x1 |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
     dst_p->gyro_x1 = (int16_t)gyro_x1;
-    gyro_x2 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
-    gyro_x2 |= unpack_left_shift_u16(src_p[7], 8u, 0xffu);
+    gyro_x2 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
+    gyro_x2 |= unpack_left_shift_u16(src_p[5], 8u, 0xffu);
     dst_p->gyro_x2 = (int16_t)gyro_x2;
-    gyro_x3 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
-    gyro_x3 |= unpack_left_shift_u16(src_p[9], 8u, 0xffu);
+    gyro_x3 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
+    gyro_x3 |= unpack_left_shift_u16(src_p[7], 8u, 0xffu);
     dst_p->gyro_x3 = (int16_t)gyro_x3;
-    gyro_x4 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
-    gyro_x4 |= unpack_left_shift_u16(src_p[11], 8u, 0xffu);
+    gyro_x4 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
+    gyro_x4 |= unpack_left_shift_u16(src_p[9], 8u, 0xffu);
     dst_p->gyro_x4 = (int16_t)gyro_x4;
-    gyro_y1 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
-    gyro_y1 |= unpack_left_shift_u16(src_p[13], 8u, 0xffu);
+    gyro_y1 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
+    gyro_y1 |= unpack_left_shift_u16(src_p[11], 8u, 0xffu);
     dst_p->gyro_y1 = (int16_t)gyro_y1;
-    gyro_y2 = unpack_right_shift_u16(src_p[14], 0u, 0xffu);
-    gyro_y2 |= unpack_left_shift_u16(src_p[15], 8u, 0xffu);
+    gyro_y2 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
+    gyro_y2 |= unpack_left_shift_u16(src_p[13], 8u, 0xffu);
     dst_p->gyro_y2 = (int16_t)gyro_y2;
-    gyro_y3 = unpack_right_shift_u16(src_p[16], 0u, 0xffu);
-    gyro_y3 |= unpack_left_shift_u16(src_p[17], 8u, 0xffu);
+    gyro_y3 = unpack_right_shift_u16(src_p[14], 0u, 0xffu);
+    gyro_y3 |= unpack_left_shift_u16(src_p[15], 8u, 0xffu);
     dst_p->gyro_y3 = (int16_t)gyro_y3;
-    gyro_y4 = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
-    gyro_y4 |= unpack_left_shift_u16(src_p[19], 8u, 0xffu);
+    gyro_y4 = unpack_right_shift_u16(src_p[16], 0u, 0xffu);
+    gyro_y4 |= unpack_left_shift_u16(src_p[17], 8u, 0xffu);
     dst_p->gyro_y4 = (int16_t)gyro_y4;
-    gyro_z1 = unpack_right_shift_u16(src_p[20], 0u, 0xffu);
-    gyro_z1 |= unpack_left_shift_u16(src_p[21], 8u, 0xffu);
+    gyro_z1 = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
+    gyro_z1 |= unpack_left_shift_u16(src_p[19], 8u, 0xffu);
     dst_p->gyro_z1 = (int16_t)gyro_z1;
-    gyro_z2 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
-    gyro_z2 |= unpack_left_shift_u16(src_p[23], 8u, 0xffu);
+    gyro_z2 = unpack_right_shift_u16(src_p[20], 0u, 0xffu);
+    gyro_z2 |= unpack_left_shift_u16(src_p[21], 8u, 0xffu);
     dst_p->gyro_z2 = (int16_t)gyro_z2;
-    gyro_z3 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
-    gyro_z3 |= unpack_left_shift_u16(src_p[25], 8u, 0xffu);
+    gyro_z3 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
+    gyro_z3 |= unpack_left_shift_u16(src_p[23], 8u, 0xffu);
     dst_p->gyro_z3 = (int16_t)gyro_z3;
-    gyro_z4 = unpack_right_shift_u16(src_p[26], 0u, 0xffu);
-    gyro_z4 |= unpack_left_shift_u16(src_p[27], 8u, 0xffu);
+    gyro_z4 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
+    gyro_z4 |= unpack_left_shift_u16(src_p[25], 8u, 0xffu);
     dst_p->gyro_z4 = (int16_t)gyro_z4;
 
     return (0);
@@ -1713,13 +1643,6 @@ int d_aq_can_raw_upright_fl_gyro_data_init(struct d_aq_can_raw_upright_fl_gyro_d
 }
 
 bool d_aq_can_raw_upright_fl_gyro_data_timestamp_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_upright_fl_gyro_data_sample_interval_ticks_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -1815,26 +1738,24 @@ int d_aq_can_raw_upright_fl_wheel_speed_data_pack(
     const struct d_aq_can_raw_upright_fl_wheel_speed_data_t *src_p,
     size_t size)
 {
-    if (size < 12u) {
+    if (size < 8u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 12);
+    memset(&dst_p[0], 0, 8);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_interval_ticks, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_interval_ticks, 8u, 0xffu);
-    dst_p[4] |= pack_left_shift_u16(src_p->wheel_rpm1, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(src_p->wheel_rpm1, 8u, 0x0fu);
-    dst_p[5] |= pack_left_shift_u16(src_p->wheel_rpm2, 4u, 0xf0u);
-    dst_p[6] |= pack_right_shift_u16(src_p->wheel_rpm2, 4u, 0xffu);
-    dst_p[7] |= pack_left_shift_u16(src_p->wheel_rpm3, 0u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->wheel_rpm3, 8u, 0x0fu);
-    dst_p[8] |= pack_left_shift_u16(src_p->wheel_rpm4, 4u, 0xf0u);
-    dst_p[9] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
+    dst_p[2] |= pack_left_shift_u16(src_p->wheel_rpm1, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(src_p->wheel_rpm1, 8u, 0x0fu);
+    dst_p[3] |= pack_left_shift_u16(src_p->wheel_rpm2, 4u, 0xf0u);
+    dst_p[4] |= pack_right_shift_u16(src_p->wheel_rpm2, 4u, 0xffu);
+    dst_p[5] |= pack_left_shift_u16(src_p->wheel_rpm3, 0u, 0xffu);
+    dst_p[6] |= pack_right_shift_u16(src_p->wheel_rpm3, 8u, 0x0fu);
+    dst_p[6] |= pack_left_shift_u16(src_p->wheel_rpm4, 4u, 0xf0u);
+    dst_p[7] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
 
-    return (12);
+    return (8);
 }
 
 int d_aq_can_raw_upright_fl_wheel_speed_data_unpack(
@@ -1842,22 +1763,20 @@ int d_aq_can_raw_upright_fl_wheel_speed_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 12u) {
+    if (size < 8u) {
         return (-EINVAL);
     }
 
     dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
-    dst_p->sample_interval_ticks = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->sample_interval_ticks |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
-    dst_p->wheel_rpm1 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    dst_p->wheel_rpm1 |= unpack_left_shift_u16(src_p[5], 8u, 0x0fu);
-    dst_p->wheel_rpm2 = unpack_right_shift_u16(src_p[5], 4u, 0xf0u);
-    dst_p->wheel_rpm2 |= unpack_left_shift_u16(src_p[6], 4u, 0xffu);
-    dst_p->wheel_rpm3 = unpack_right_shift_u16(src_p[7], 0u, 0xffu);
-    dst_p->wheel_rpm3 |= unpack_left_shift_u16(src_p[8], 8u, 0x0fu);
-    dst_p->wheel_rpm4 = unpack_right_shift_u16(src_p[8], 4u, 0xf0u);
-    dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[9], 4u, 0xffu);
+    dst_p->wheel_rpm1 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    dst_p->wheel_rpm1 |= unpack_left_shift_u16(src_p[3], 8u, 0x0fu);
+    dst_p->wheel_rpm2 = unpack_right_shift_u16(src_p[3], 4u, 0xf0u);
+    dst_p->wheel_rpm2 |= unpack_left_shift_u16(src_p[4], 4u, 0xffu);
+    dst_p->wheel_rpm3 = unpack_right_shift_u16(src_p[5], 0u, 0xffu);
+    dst_p->wheel_rpm3 |= unpack_left_shift_u16(src_p[6], 8u, 0x0fu);
+    dst_p->wheel_rpm4 = unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
+    dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
 
     return (0);
 }
@@ -1872,13 +1791,6 @@ int d_aq_can_raw_upright_fl_wheel_speed_data_init(struct d_aq_can_raw_upright_fl
 }
 
 bool d_aq_can_raw_upright_fl_wheel_speed_data_timestamp_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_upright_fl_wheel_speed_data_sample_interval_ticks_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -1931,53 +1843,51 @@ int d_aq_can_raw_upright_rear_acceleration_data_pack(
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_interval_ticks, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_interval_ticks, 8u, 0xffu);
     acceleration_x1 = (uint16_t)src_p->acceleration_x1;
-    dst_p[4] |= pack_left_shift_u16(acceleration_x1, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(acceleration_x1, 8u, 0x7fu);
+    dst_p[2] |= pack_left_shift_u16(acceleration_x1, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(acceleration_x1, 8u, 0x7fu);
     acceleration_x2 = (uint16_t)src_p->acceleration_x2;
-    dst_p[5] |= pack_left_shift_u16(acceleration_x2, 7u, 0x80u);
-    dst_p[6] |= pack_right_shift_u16(acceleration_x2, 1u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(acceleration_x2, 9u, 0x3fu);
+    dst_p[3] |= pack_left_shift_u16(acceleration_x2, 7u, 0x80u);
+    dst_p[4] |= pack_right_shift_u16(acceleration_x2, 1u, 0xffu);
+    dst_p[5] |= pack_right_shift_u16(acceleration_x2, 9u, 0x3fu);
     acceleration_x3 = (uint16_t)src_p->acceleration_x3;
-    dst_p[7] |= pack_left_shift_u16(acceleration_x3, 6u, 0xc0u);
-    dst_p[8] |= pack_right_shift_u16(acceleration_x3, 2u, 0xffu);
-    dst_p[9] |= pack_right_shift_u16(acceleration_x3, 10u, 0x1fu);
+    dst_p[5] |= pack_left_shift_u16(acceleration_x3, 6u, 0xc0u);
+    dst_p[6] |= pack_right_shift_u16(acceleration_x3, 2u, 0xffu);
+    dst_p[7] |= pack_right_shift_u16(acceleration_x3, 10u, 0x1fu);
     acceleration_x4 = (uint16_t)src_p->acceleration_x4;
-    dst_p[9] |= pack_left_shift_u16(acceleration_x4, 5u, 0xe0u);
-    dst_p[10] |= pack_right_shift_u16(acceleration_x4, 3u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(acceleration_x4, 11u, 0x0fu);
+    dst_p[7] |= pack_left_shift_u16(acceleration_x4, 5u, 0xe0u);
+    dst_p[8] |= pack_right_shift_u16(acceleration_x4, 3u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(acceleration_x4, 11u, 0x0fu);
     acceleration_y1 = (uint16_t)src_p->acceleration_y1;
-    dst_p[11] |= pack_left_shift_u16(acceleration_y1, 4u, 0xf0u);
-    dst_p[12] |= pack_right_shift_u16(acceleration_y1, 4u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(acceleration_y1, 12u, 0x07u);
+    dst_p[9] |= pack_left_shift_u16(acceleration_y1, 4u, 0xf0u);
+    dst_p[10] |= pack_right_shift_u16(acceleration_y1, 4u, 0xffu);
+    dst_p[11] |= pack_right_shift_u16(acceleration_y1, 12u, 0x07u);
     acceleration_y2 = (uint16_t)src_p->acceleration_y2;
-    dst_p[13] |= pack_left_shift_u16(acceleration_y2, 3u, 0xf8u);
-    dst_p[14] |= pack_right_shift_u16(acceleration_y2, 5u, 0xffu);
-    dst_p[15] |= pack_right_shift_u16(acceleration_y2, 13u, 0x03u);
+    dst_p[11] |= pack_left_shift_u16(acceleration_y2, 3u, 0xf8u);
+    dst_p[12] |= pack_right_shift_u16(acceleration_y2, 5u, 0xffu);
+    dst_p[13] |= pack_right_shift_u16(acceleration_y2, 13u, 0x03u);
     acceleration_y3 = (uint16_t)src_p->acceleration_y3;
-    dst_p[15] |= pack_left_shift_u16(acceleration_y3, 2u, 0xfcu);
-    dst_p[16] |= pack_right_shift_u16(acceleration_y3, 6u, 0xffu);
-    dst_p[17] |= pack_right_shift_u16(acceleration_y3, 14u, 0x01u);
+    dst_p[13] |= pack_left_shift_u16(acceleration_y3, 2u, 0xfcu);
+    dst_p[14] |= pack_right_shift_u16(acceleration_y3, 6u, 0xffu);
+    dst_p[15] |= pack_right_shift_u16(acceleration_y3, 14u, 0x01u);
     acceleration_y4 = (uint16_t)src_p->acceleration_y4;
-    dst_p[17] |= pack_left_shift_u16(acceleration_y4, 1u, 0xfeu);
-    dst_p[18] |= pack_right_shift_u16(acceleration_y4, 7u, 0xffu);
+    dst_p[15] |= pack_left_shift_u16(acceleration_y4, 1u, 0xfeu);
+    dst_p[16] |= pack_right_shift_u16(acceleration_y4, 7u, 0xffu);
     acceleration_z1 = (uint16_t)src_p->acceleration_z1;
-    dst_p[19] |= pack_left_shift_u16(acceleration_z1, 0u, 0xffu);
-    dst_p[20] |= pack_right_shift_u16(acceleration_z1, 8u, 0x7fu);
+    dst_p[17] |= pack_left_shift_u16(acceleration_z1, 0u, 0xffu);
+    dst_p[18] |= pack_right_shift_u16(acceleration_z1, 8u, 0x7fu);
     acceleration_z2 = (uint16_t)src_p->acceleration_z2;
-    dst_p[20] |= pack_left_shift_u16(acceleration_z2, 7u, 0x80u);
-    dst_p[21] |= pack_right_shift_u16(acceleration_z2, 1u, 0xffu);
-    dst_p[22] |= pack_right_shift_u16(acceleration_z2, 9u, 0x3fu);
+    dst_p[18] |= pack_left_shift_u16(acceleration_z2, 7u, 0x80u);
+    dst_p[19] |= pack_right_shift_u16(acceleration_z2, 1u, 0xffu);
+    dst_p[20] |= pack_right_shift_u16(acceleration_z2, 9u, 0x3fu);
     acceleration_z3 = (uint16_t)src_p->acceleration_z3;
-    dst_p[22] |= pack_left_shift_u16(acceleration_z3, 6u, 0xc0u);
-    dst_p[23] |= pack_right_shift_u16(acceleration_z3, 2u, 0xffu);
-    dst_p[24] |= pack_right_shift_u16(acceleration_z3, 10u, 0x1fu);
+    dst_p[20] |= pack_left_shift_u16(acceleration_z3, 6u, 0xc0u);
+    dst_p[21] |= pack_right_shift_u16(acceleration_z3, 2u, 0xffu);
+    dst_p[22] |= pack_right_shift_u16(acceleration_z3, 10u, 0x1fu);
     acceleration_z4 = (uint16_t)src_p->acceleration_z4;
-    dst_p[24] |= pack_left_shift_u16(acceleration_z4, 5u, 0xe0u);
-    dst_p[25] |= pack_right_shift_u16(acceleration_z4, 3u, 0xffu);
-    dst_p[26] |= pack_right_shift_u16(acceleration_z4, 11u, 0x0fu);
+    dst_p[22] |= pack_left_shift_u16(acceleration_z4, 5u, 0xe0u);
+    dst_p[23] |= pack_right_shift_u16(acceleration_z4, 3u, 0xffu);
+    dst_p[24] |= pack_right_shift_u16(acceleration_z4, 11u, 0x0fu);
 
     return (32);
 }
@@ -2006,107 +1916,105 @@ int d_aq_can_raw_upright_rear_acceleration_data_unpack(
 
     dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
-    dst_p->sample_interval_ticks = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->sample_interval_ticks |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
-    acceleration_x1 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    acceleration_x1 |= unpack_left_shift_u16(src_p[5], 8u, 0x7fu);
+    acceleration_x1 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    acceleration_x1 |= unpack_left_shift_u16(src_p[3], 8u, 0x7fu);
 
     if ((acceleration_x1 & (1u << 14)) != 0u) {
         acceleration_x1 |= 0x8000u;
     }
 
     dst_p->acceleration_x1 = (int16_t)acceleration_x1;
-    acceleration_x2 = unpack_right_shift_u16(src_p[5], 7u, 0x80u);
-    acceleration_x2 |= unpack_left_shift_u16(src_p[6], 1u, 0xffu);
-    acceleration_x2 |= unpack_left_shift_u16(src_p[7], 9u, 0x3fu);
+    acceleration_x2 = unpack_right_shift_u16(src_p[3], 7u, 0x80u);
+    acceleration_x2 |= unpack_left_shift_u16(src_p[4], 1u, 0xffu);
+    acceleration_x2 |= unpack_left_shift_u16(src_p[5], 9u, 0x3fu);
 
     if ((acceleration_x2 & (1u << 14)) != 0u) {
         acceleration_x2 |= 0x8000u;
     }
 
     dst_p->acceleration_x2 = (int16_t)acceleration_x2;
-    acceleration_x3 = unpack_right_shift_u16(src_p[7], 6u, 0xc0u);
-    acceleration_x3 |= unpack_left_shift_u16(src_p[8], 2u, 0xffu);
-    acceleration_x3 |= unpack_left_shift_u16(src_p[9], 10u, 0x1fu);
+    acceleration_x3 = unpack_right_shift_u16(src_p[5], 6u, 0xc0u);
+    acceleration_x3 |= unpack_left_shift_u16(src_p[6], 2u, 0xffu);
+    acceleration_x3 |= unpack_left_shift_u16(src_p[7], 10u, 0x1fu);
 
     if ((acceleration_x3 & (1u << 14)) != 0u) {
         acceleration_x3 |= 0x8000u;
     }
 
     dst_p->acceleration_x3 = (int16_t)acceleration_x3;
-    acceleration_x4 = unpack_right_shift_u16(src_p[9], 5u, 0xe0u);
-    acceleration_x4 |= unpack_left_shift_u16(src_p[10], 3u, 0xffu);
-    acceleration_x4 |= unpack_left_shift_u16(src_p[11], 11u, 0x0fu);
+    acceleration_x4 = unpack_right_shift_u16(src_p[7], 5u, 0xe0u);
+    acceleration_x4 |= unpack_left_shift_u16(src_p[8], 3u, 0xffu);
+    acceleration_x4 |= unpack_left_shift_u16(src_p[9], 11u, 0x0fu);
 
     if ((acceleration_x4 & (1u << 14)) != 0u) {
         acceleration_x4 |= 0x8000u;
     }
 
     dst_p->acceleration_x4 = (int16_t)acceleration_x4;
-    acceleration_y1 = unpack_right_shift_u16(src_p[11], 4u, 0xf0u);
-    acceleration_y1 |= unpack_left_shift_u16(src_p[12], 4u, 0xffu);
-    acceleration_y1 |= unpack_left_shift_u16(src_p[13], 12u, 0x07u);
+    acceleration_y1 = unpack_right_shift_u16(src_p[9], 4u, 0xf0u);
+    acceleration_y1 |= unpack_left_shift_u16(src_p[10], 4u, 0xffu);
+    acceleration_y1 |= unpack_left_shift_u16(src_p[11], 12u, 0x07u);
 
     if ((acceleration_y1 & (1u << 14)) != 0u) {
         acceleration_y1 |= 0x8000u;
     }
 
     dst_p->acceleration_y1 = (int16_t)acceleration_y1;
-    acceleration_y2 = unpack_right_shift_u16(src_p[13], 3u, 0xf8u);
-    acceleration_y2 |= unpack_left_shift_u16(src_p[14], 5u, 0xffu);
-    acceleration_y2 |= unpack_left_shift_u16(src_p[15], 13u, 0x03u);
+    acceleration_y2 = unpack_right_shift_u16(src_p[11], 3u, 0xf8u);
+    acceleration_y2 |= unpack_left_shift_u16(src_p[12], 5u, 0xffu);
+    acceleration_y2 |= unpack_left_shift_u16(src_p[13], 13u, 0x03u);
 
     if ((acceleration_y2 & (1u << 14)) != 0u) {
         acceleration_y2 |= 0x8000u;
     }
 
     dst_p->acceleration_y2 = (int16_t)acceleration_y2;
-    acceleration_y3 = unpack_right_shift_u16(src_p[15], 2u, 0xfcu);
-    acceleration_y3 |= unpack_left_shift_u16(src_p[16], 6u, 0xffu);
-    acceleration_y3 |= unpack_left_shift_u16(src_p[17], 14u, 0x01u);
+    acceleration_y3 = unpack_right_shift_u16(src_p[13], 2u, 0xfcu);
+    acceleration_y3 |= unpack_left_shift_u16(src_p[14], 6u, 0xffu);
+    acceleration_y3 |= unpack_left_shift_u16(src_p[15], 14u, 0x01u);
 
     if ((acceleration_y3 & (1u << 14)) != 0u) {
         acceleration_y3 |= 0x8000u;
     }
 
     dst_p->acceleration_y3 = (int16_t)acceleration_y3;
-    acceleration_y4 = unpack_right_shift_u16(src_p[17], 1u, 0xfeu);
-    acceleration_y4 |= unpack_left_shift_u16(src_p[18], 7u, 0xffu);
+    acceleration_y4 = unpack_right_shift_u16(src_p[15], 1u, 0xfeu);
+    acceleration_y4 |= unpack_left_shift_u16(src_p[16], 7u, 0xffu);
 
     if ((acceleration_y4 & (1u << 14)) != 0u) {
         acceleration_y4 |= 0x8000u;
     }
 
     dst_p->acceleration_y4 = (int16_t)acceleration_y4;
-    acceleration_z1 = unpack_right_shift_u16(src_p[19], 0u, 0xffu);
-    acceleration_z1 |= unpack_left_shift_u16(src_p[20], 8u, 0x7fu);
+    acceleration_z1 = unpack_right_shift_u16(src_p[17], 0u, 0xffu);
+    acceleration_z1 |= unpack_left_shift_u16(src_p[18], 8u, 0x7fu);
 
     if ((acceleration_z1 & (1u << 14)) != 0u) {
         acceleration_z1 |= 0x8000u;
     }
 
     dst_p->acceleration_z1 = (int16_t)acceleration_z1;
-    acceleration_z2 = unpack_right_shift_u16(src_p[20], 7u, 0x80u);
-    acceleration_z2 |= unpack_left_shift_u16(src_p[21], 1u, 0xffu);
-    acceleration_z2 |= unpack_left_shift_u16(src_p[22], 9u, 0x3fu);
+    acceleration_z2 = unpack_right_shift_u16(src_p[18], 7u, 0x80u);
+    acceleration_z2 |= unpack_left_shift_u16(src_p[19], 1u, 0xffu);
+    acceleration_z2 |= unpack_left_shift_u16(src_p[20], 9u, 0x3fu);
 
     if ((acceleration_z2 & (1u << 14)) != 0u) {
         acceleration_z2 |= 0x8000u;
     }
 
     dst_p->acceleration_z2 = (int16_t)acceleration_z2;
-    acceleration_z3 = unpack_right_shift_u16(src_p[22], 6u, 0xc0u);
-    acceleration_z3 |= unpack_left_shift_u16(src_p[23], 2u, 0xffu);
-    acceleration_z3 |= unpack_left_shift_u16(src_p[24], 10u, 0x1fu);
+    acceleration_z3 = unpack_right_shift_u16(src_p[20], 6u, 0xc0u);
+    acceleration_z3 |= unpack_left_shift_u16(src_p[21], 2u, 0xffu);
+    acceleration_z3 |= unpack_left_shift_u16(src_p[22], 10u, 0x1fu);
 
     if ((acceleration_z3 & (1u << 14)) != 0u) {
         acceleration_z3 |= 0x8000u;
     }
 
     dst_p->acceleration_z3 = (int16_t)acceleration_z3;
-    acceleration_z4 = unpack_right_shift_u16(src_p[24], 5u, 0xe0u);
-    acceleration_z4 |= unpack_left_shift_u16(src_p[25], 3u, 0xffu);
-    acceleration_z4 |= unpack_left_shift_u16(src_p[26], 11u, 0x0fu);
+    acceleration_z4 = unpack_right_shift_u16(src_p[22], 5u, 0xe0u);
+    acceleration_z4 |= unpack_left_shift_u16(src_p[23], 3u, 0xffu);
+    acceleration_z4 |= unpack_left_shift_u16(src_p[24], 11u, 0x0fu);
 
     if ((acceleration_z4 & (1u << 14)) != 0u) {
         acceleration_z4 |= 0x8000u;
@@ -2127,13 +2035,6 @@ int d_aq_can_raw_upright_rear_acceleration_data_init(struct d_aq_can_raw_upright
 }
 
 bool d_aq_can_raw_upright_rear_acceleration_data_timestamp_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_upright_rear_acceleration_data_sample_interval_ticks_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -2226,44 +2127,42 @@ int d_aq_can_raw_upright_rear_gyro_data_pack(
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_interval_ticks, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_interval_ticks, 8u, 0xffu);
     gyro_x1 = (uint16_t)src_p->gyro_x1;
-    dst_p[4] |= pack_left_shift_u16(gyro_x1, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(gyro_x1, 8u, 0xffu);
+    dst_p[2] |= pack_left_shift_u16(gyro_x1, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(gyro_x1, 8u, 0xffu);
     gyro_x2 = (uint16_t)src_p->gyro_x2;
-    dst_p[6] |= pack_left_shift_u16(gyro_x2, 0u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(gyro_x2, 8u, 0xffu);
+    dst_p[4] |= pack_left_shift_u16(gyro_x2, 0u, 0xffu);
+    dst_p[5] |= pack_right_shift_u16(gyro_x2, 8u, 0xffu);
     gyro_x3 = (uint16_t)src_p->gyro_x3;
-    dst_p[8] |= pack_left_shift_u16(gyro_x3, 0u, 0xffu);
-    dst_p[9] |= pack_right_shift_u16(gyro_x3, 8u, 0xffu);
+    dst_p[6] |= pack_left_shift_u16(gyro_x3, 0u, 0xffu);
+    dst_p[7] |= pack_right_shift_u16(gyro_x3, 8u, 0xffu);
     gyro_x4 = (uint16_t)src_p->gyro_x4;
-    dst_p[10] |= pack_left_shift_u16(gyro_x4, 0u, 0xffu);
-    dst_p[11] |= pack_right_shift_u16(gyro_x4, 8u, 0xffu);
+    dst_p[8] |= pack_left_shift_u16(gyro_x4, 0u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(gyro_x4, 8u, 0xffu);
     gyro_y1 = (uint16_t)src_p->gyro_y1;
-    dst_p[12] |= pack_left_shift_u16(gyro_y1, 0u, 0xffu);
-    dst_p[13] |= pack_right_shift_u16(gyro_y1, 8u, 0xffu);
+    dst_p[10] |= pack_left_shift_u16(gyro_y1, 0u, 0xffu);
+    dst_p[11] |= pack_right_shift_u16(gyro_y1, 8u, 0xffu);
     gyro_y2 = (uint16_t)src_p->gyro_y2;
-    dst_p[14] |= pack_left_shift_u16(gyro_y2, 0u, 0xffu);
-    dst_p[15] |= pack_right_shift_u16(gyro_y2, 8u, 0xffu);
+    dst_p[12] |= pack_left_shift_u16(gyro_y2, 0u, 0xffu);
+    dst_p[13] |= pack_right_shift_u16(gyro_y2, 8u, 0xffu);
     gyro_y3 = (uint16_t)src_p->gyro_y3;
-    dst_p[16] |= pack_left_shift_u16(gyro_y3, 0u, 0xffu);
-    dst_p[17] |= pack_right_shift_u16(gyro_y3, 8u, 0xffu);
+    dst_p[14] |= pack_left_shift_u16(gyro_y3, 0u, 0xffu);
+    dst_p[15] |= pack_right_shift_u16(gyro_y3, 8u, 0xffu);
     gyro_y4 = (uint16_t)src_p->gyro_y4;
-    dst_p[18] |= pack_left_shift_u16(gyro_y4, 0u, 0xffu);
-    dst_p[19] |= pack_right_shift_u16(gyro_y4, 8u, 0xffu);
+    dst_p[16] |= pack_left_shift_u16(gyro_y4, 0u, 0xffu);
+    dst_p[17] |= pack_right_shift_u16(gyro_y4, 8u, 0xffu);
     gyro_z1 = (uint16_t)src_p->gyro_z1;
-    dst_p[20] |= pack_left_shift_u16(gyro_z1, 0u, 0xffu);
-    dst_p[21] |= pack_right_shift_u16(gyro_z1, 8u, 0xffu);
+    dst_p[18] |= pack_left_shift_u16(gyro_z1, 0u, 0xffu);
+    dst_p[19] |= pack_right_shift_u16(gyro_z1, 8u, 0xffu);
     gyro_z2 = (uint16_t)src_p->gyro_z2;
-    dst_p[22] |= pack_left_shift_u16(gyro_z2, 0u, 0xffu);
-    dst_p[23] |= pack_right_shift_u16(gyro_z2, 8u, 0xffu);
+    dst_p[20] |= pack_left_shift_u16(gyro_z2, 0u, 0xffu);
+    dst_p[21] |= pack_right_shift_u16(gyro_z2, 8u, 0xffu);
     gyro_z3 = (uint16_t)src_p->gyro_z3;
-    dst_p[24] |= pack_left_shift_u16(gyro_z3, 0u, 0xffu);
-    dst_p[25] |= pack_right_shift_u16(gyro_z3, 8u, 0xffu);
+    dst_p[22] |= pack_left_shift_u16(gyro_z3, 0u, 0xffu);
+    dst_p[23] |= pack_right_shift_u16(gyro_z3, 8u, 0xffu);
     gyro_z4 = (uint16_t)src_p->gyro_z4;
-    dst_p[26] |= pack_left_shift_u16(gyro_z4, 0u, 0xffu);
-    dst_p[27] |= pack_right_shift_u16(gyro_z4, 8u, 0xffu);
+    dst_p[24] |= pack_left_shift_u16(gyro_z4, 0u, 0xffu);
+    dst_p[25] |= pack_right_shift_u16(gyro_z4, 8u, 0xffu);
 
     return (32);
 }
@@ -2292,43 +2191,41 @@ int d_aq_can_raw_upright_rear_gyro_data_unpack(
 
     dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
-    dst_p->sample_interval_ticks = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->sample_interval_ticks |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
-    gyro_x1 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    gyro_x1 |= unpack_left_shift_u16(src_p[5], 8u, 0xffu);
+    gyro_x1 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    gyro_x1 |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
     dst_p->gyro_x1 = (int16_t)gyro_x1;
-    gyro_x2 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
-    gyro_x2 |= unpack_left_shift_u16(src_p[7], 8u, 0xffu);
+    gyro_x2 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
+    gyro_x2 |= unpack_left_shift_u16(src_p[5], 8u, 0xffu);
     dst_p->gyro_x2 = (int16_t)gyro_x2;
-    gyro_x3 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
-    gyro_x3 |= unpack_left_shift_u16(src_p[9], 8u, 0xffu);
+    gyro_x3 = unpack_right_shift_u16(src_p[6], 0u, 0xffu);
+    gyro_x3 |= unpack_left_shift_u16(src_p[7], 8u, 0xffu);
     dst_p->gyro_x3 = (int16_t)gyro_x3;
-    gyro_x4 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
-    gyro_x4 |= unpack_left_shift_u16(src_p[11], 8u, 0xffu);
+    gyro_x4 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
+    gyro_x4 |= unpack_left_shift_u16(src_p[9], 8u, 0xffu);
     dst_p->gyro_x4 = (int16_t)gyro_x4;
-    gyro_y1 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
-    gyro_y1 |= unpack_left_shift_u16(src_p[13], 8u, 0xffu);
+    gyro_y1 = unpack_right_shift_u16(src_p[10], 0u, 0xffu);
+    gyro_y1 |= unpack_left_shift_u16(src_p[11], 8u, 0xffu);
     dst_p->gyro_y1 = (int16_t)gyro_y1;
-    gyro_y2 = unpack_right_shift_u16(src_p[14], 0u, 0xffu);
-    gyro_y2 |= unpack_left_shift_u16(src_p[15], 8u, 0xffu);
+    gyro_y2 = unpack_right_shift_u16(src_p[12], 0u, 0xffu);
+    gyro_y2 |= unpack_left_shift_u16(src_p[13], 8u, 0xffu);
     dst_p->gyro_y2 = (int16_t)gyro_y2;
-    gyro_y3 = unpack_right_shift_u16(src_p[16], 0u, 0xffu);
-    gyro_y3 |= unpack_left_shift_u16(src_p[17], 8u, 0xffu);
+    gyro_y3 = unpack_right_shift_u16(src_p[14], 0u, 0xffu);
+    gyro_y3 |= unpack_left_shift_u16(src_p[15], 8u, 0xffu);
     dst_p->gyro_y3 = (int16_t)gyro_y3;
-    gyro_y4 = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
-    gyro_y4 |= unpack_left_shift_u16(src_p[19], 8u, 0xffu);
+    gyro_y4 = unpack_right_shift_u16(src_p[16], 0u, 0xffu);
+    gyro_y4 |= unpack_left_shift_u16(src_p[17], 8u, 0xffu);
     dst_p->gyro_y4 = (int16_t)gyro_y4;
-    gyro_z1 = unpack_right_shift_u16(src_p[20], 0u, 0xffu);
-    gyro_z1 |= unpack_left_shift_u16(src_p[21], 8u, 0xffu);
+    gyro_z1 = unpack_right_shift_u16(src_p[18], 0u, 0xffu);
+    gyro_z1 |= unpack_left_shift_u16(src_p[19], 8u, 0xffu);
     dst_p->gyro_z1 = (int16_t)gyro_z1;
-    gyro_z2 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
-    gyro_z2 |= unpack_left_shift_u16(src_p[23], 8u, 0xffu);
+    gyro_z2 = unpack_right_shift_u16(src_p[20], 0u, 0xffu);
+    gyro_z2 |= unpack_left_shift_u16(src_p[21], 8u, 0xffu);
     dst_p->gyro_z2 = (int16_t)gyro_z2;
-    gyro_z3 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
-    gyro_z3 |= unpack_left_shift_u16(src_p[25], 8u, 0xffu);
+    gyro_z3 = unpack_right_shift_u16(src_p[22], 0u, 0xffu);
+    gyro_z3 |= unpack_left_shift_u16(src_p[23], 8u, 0xffu);
     dst_p->gyro_z3 = (int16_t)gyro_z3;
-    gyro_z4 = unpack_right_shift_u16(src_p[26], 0u, 0xffu);
-    gyro_z4 |= unpack_left_shift_u16(src_p[27], 8u, 0xffu);
+    gyro_z4 = unpack_right_shift_u16(src_p[24], 0u, 0xffu);
+    gyro_z4 |= unpack_left_shift_u16(src_p[25], 8u, 0xffu);
     dst_p->gyro_z4 = (int16_t)gyro_z4;
 
     return (0);
@@ -2344,13 +2241,6 @@ int d_aq_can_raw_upright_rear_gyro_data_init(struct d_aq_can_raw_upright_rear_gy
 }
 
 bool d_aq_can_raw_upright_rear_gyro_data_timestamp_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_upright_rear_gyro_data_sample_interval_ticks_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -2446,26 +2336,24 @@ int d_aq_can_raw_upright_rear_wheel_speed_data_pack(
     const struct d_aq_can_raw_upright_rear_wheel_speed_data_t *src_p,
     size_t size)
 {
-    if (size < 12u) {
+    if (size < 8u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 12);
+    memset(&dst_p[0], 0, 8);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
-    dst_p[2] |= pack_left_shift_u16(src_p->sample_interval_ticks, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->sample_interval_ticks, 8u, 0xffu);
-    dst_p[4] |= pack_left_shift_u16(src_p->wheel_rpm1, 0u, 0xffu);
-    dst_p[5] |= pack_right_shift_u16(src_p->wheel_rpm1, 8u, 0x0fu);
-    dst_p[5] |= pack_left_shift_u16(src_p->wheel_rpm2, 4u, 0xf0u);
-    dst_p[6] |= pack_right_shift_u16(src_p->wheel_rpm2, 4u, 0xffu);
-    dst_p[7] |= pack_left_shift_u16(src_p->wheel_rpm3, 0u, 0xffu);
-    dst_p[8] |= pack_right_shift_u16(src_p->wheel_rpm3, 8u, 0x0fu);
-    dst_p[8] |= pack_left_shift_u16(src_p->wheel_rpm4, 4u, 0xf0u);
-    dst_p[9] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
+    dst_p[2] |= pack_left_shift_u16(src_p->wheel_rpm1, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(src_p->wheel_rpm1, 8u, 0x0fu);
+    dst_p[3] |= pack_left_shift_u16(src_p->wheel_rpm2, 4u, 0xf0u);
+    dst_p[4] |= pack_right_shift_u16(src_p->wheel_rpm2, 4u, 0xffu);
+    dst_p[5] |= pack_left_shift_u16(src_p->wheel_rpm3, 0u, 0xffu);
+    dst_p[6] |= pack_right_shift_u16(src_p->wheel_rpm3, 8u, 0x0fu);
+    dst_p[6] |= pack_left_shift_u16(src_p->wheel_rpm4, 4u, 0xf0u);
+    dst_p[7] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
 
-    return (12);
+    return (8);
 }
 
 int d_aq_can_raw_upright_rear_wheel_speed_data_unpack(
@@ -2473,22 +2361,20 @@ int d_aq_can_raw_upright_rear_wheel_speed_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 12u) {
+    if (size < 8u) {
         return (-EINVAL);
     }
 
     dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
     dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
-    dst_p->sample_interval_ticks = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->sample_interval_ticks |= unpack_left_shift_u16(src_p[3], 8u, 0xffu);
-    dst_p->wheel_rpm1 = unpack_right_shift_u16(src_p[4], 0u, 0xffu);
-    dst_p->wheel_rpm1 |= unpack_left_shift_u16(src_p[5], 8u, 0x0fu);
-    dst_p->wheel_rpm2 = unpack_right_shift_u16(src_p[5], 4u, 0xf0u);
-    dst_p->wheel_rpm2 |= unpack_left_shift_u16(src_p[6], 4u, 0xffu);
-    dst_p->wheel_rpm3 = unpack_right_shift_u16(src_p[7], 0u, 0xffu);
-    dst_p->wheel_rpm3 |= unpack_left_shift_u16(src_p[8], 8u, 0x0fu);
-    dst_p->wheel_rpm4 = unpack_right_shift_u16(src_p[8], 4u, 0xf0u);
-    dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[9], 4u, 0xffu);
+    dst_p->wheel_rpm1 = unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    dst_p->wheel_rpm1 |= unpack_left_shift_u16(src_p[3], 8u, 0x0fu);
+    dst_p->wheel_rpm2 = unpack_right_shift_u16(src_p[3], 4u, 0xf0u);
+    dst_p->wheel_rpm2 |= unpack_left_shift_u16(src_p[4], 4u, 0xffu);
+    dst_p->wheel_rpm3 = unpack_right_shift_u16(src_p[5], 0u, 0xffu);
+    dst_p->wheel_rpm3 |= unpack_left_shift_u16(src_p[6], 8u, 0x0fu);
+    dst_p->wheel_rpm4 = unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
+    dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
 
     return (0);
 }
@@ -2503,13 +2389,6 @@ int d_aq_can_raw_upright_rear_wheel_speed_data_init(struct d_aq_can_raw_upright_
 }
 
 bool d_aq_can_raw_upright_rear_wheel_speed_data_timestamp_is_in_range(uint16_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool d_aq_can_raw_upright_rear_wheel_speed_data_sample_interval_ticks_is_in_range(uint16_t value)
 {
     (void)value;
 

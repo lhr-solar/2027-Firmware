@@ -331,11 +331,8 @@ Acceleration, gyro and wheel-speed frames contain four consecutive
 samples per axis/value. Number suffixes follow the quantity, for example
 `AccelerationX1` through `AccelerationX4`. Send only complete four-sample batches.
 
-`Timestamp` identifies sample 1. `SampleIntervalTicks` is a positive 16-bit gap
-between successive samples, using the same clock. Sample times are Timestamp,
-Timestamp + interval, +2 intervals, +3 intervals, modulo 65536. Tick duration
-remains unresolved. Corresponding acceleration/gyro batches from one board share
-timing.
+`Timestamp` identifies sample 1; its tick duration remains unresolved. Sample spacing
+is not encoded in these frames.
 
 | Quantity | Encoding | Range |
 |---|---|---|

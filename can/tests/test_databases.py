@@ -765,12 +765,9 @@ class DatabaseTests(unittest.TestCase):
                 message = self.message("DAqCAN", base + index)
                 self.assertEqual(message.name, f"{board}{measurement}Data")
                 self.assertLessEqual(message.length, 64)
-                interval = message.get_signal_by_name("SampleIntervalTicks")
-                self.assertEqual(
-                    (interval.start, interval.length, interval.minimum), (16, 16, 1)
-                )
-                raw = {"Timestamp": 0x1234, "SampleIntervalTicks": 5}
-                packed = 0x1234 | (5 << 16)
+                self.assertNotIn("SampleIntervalTicks", {signal.name for signal in message.signals})
+                raw = {"Timestamp": 0x1234}
+                packed = 0x1234
                 samples = [
                     signal for signal in message.signals if signal.name not in raw
                 ]

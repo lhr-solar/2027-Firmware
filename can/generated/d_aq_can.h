@@ -20,12 +20,10 @@ can_status_t d_aq_can_timestamp_sync_pack(can_frame_t* dst, const d_aq_can_times
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_timestamp_sync_unpack(d_aq_can_timestamp_sync_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
     /** AccelerationX1; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x1;
     /** AccelerationX2; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -59,12 +57,10 @@ can_status_t d_aq_can_chassis_acceleration_data_pack(can_frame_t* dst, const d_a
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_chassis_acceleration_data_unpack(d_aq_can_chassis_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
     /** GyroX1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x1;
     /** GyroX2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -98,12 +94,10 @@ can_status_t d_aq_can_chassis_gyro_data_pack(can_frame_t* dst, const d_aq_can_ch
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_chassis_gyro_data_unpack(d_aq_can_chassis_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
     /** AccelerationX1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x1;
     /** AccelerationX2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -137,12 +131,10 @@ can_status_t d_aq_can_upright_fr_acceleration_data_pack(can_frame_t* dst, const 
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_acceleration_data_unpack(d_aq_can_upright_fr_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
     /** GyroX1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x1;
     /** GyroX2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -176,12 +168,10 @@ can_status_t d_aq_can_upright_fr_gyro_data_pack(can_frame_t* dst, const d_aq_can
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_gyro_data_unpack(d_aq_can_upright_fr_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
     /** WheelRPM1; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm1;
     /** WheelRPM2; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
@@ -199,12 +189,10 @@ can_status_t d_aq_can_upright_fr_wheel_speed_data_pack(can_frame_t* dst, const d
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_wheel_speed_data_unpack(d_aq_can_upright_fr_wheel_speed_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
     /** AccelerationX1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x1;
     /** AccelerationX2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -238,12 +226,10 @@ can_status_t d_aq_can_upright_fl_acceleration_data_pack(can_frame_t* dst, const 
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_acceleration_data_unpack(d_aq_can_upright_fl_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
     /** GyroX1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x1;
     /** GyroX2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -277,12 +263,10 @@ can_status_t d_aq_can_upright_fl_gyro_data_pack(can_frame_t* dst, const d_aq_can
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_gyro_data_unpack(d_aq_can_upright_fl_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
     /** WheelRPM1; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm1;
     /** WheelRPM2; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
@@ -300,12 +284,10 @@ can_status_t d_aq_can_upright_fl_wheel_speed_data_pack(can_frame_t* dst, const d
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_wheel_speed_data_unpack(d_aq_can_upright_fl_wheel_speed_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
     /** AccelerationX1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x1;
     /** AccelerationX2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -339,12 +321,10 @@ can_status_t d_aq_can_upright_rear_acceleration_data_pack(can_frame_t* dst, cons
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_rear_acceleration_data_unpack(d_aq_can_upright_rear_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
     /** GyroX1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x1;
     /** GyroX2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -378,12 +358,10 @@ can_status_t d_aq_can_upright_rear_gyro_data_pack(can_frame_t* dst, const d_aq_c
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_rear_gyro_data_unpack(d_aq_can_upright_rear_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
     /** WheelRPM1; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm1;
     /** WheelRPM2; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
