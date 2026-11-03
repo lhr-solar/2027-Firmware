@@ -751,7 +751,7 @@ class DatabaseTests(unittest.TestCase):
             self.assertEqual(message.encode(decoded), frame)
 
     def test_measurement_batches_and_logical_ids(self):
-        groups = [(0x630, "Chassis", ("Acceleration", "Gyro", "Magnetometer"))]
+        groups = [(0x630, "Chassis", ("Acceleration", "Gyro"))]
         groups += [
             (base, board, ("Acceleration", "Gyro", "WheelSpeed"))
             for base, board in (

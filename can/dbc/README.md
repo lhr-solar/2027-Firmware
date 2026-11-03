@@ -17,7 +17,7 @@ not wire-compatible with the old vehicle's team-defined messages.
 | LightingCAN | Bottom-shell status from DEI; top-shell status from TopShellLighting | 2 | 0 |
 | ChargerCAN | BPS status/pack/cell data and ElconInterface status | 5 | 0 |
 | ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
-| DAqCAN | CM5 timestamp and sensor-board traffic | 20 | 5 |
+| DAqCAN | CM5 timestamp and sensor-board traffic | 19 | 5 |
 | TelemetryTCP | CM5 TCP-native telemetry and test messages | 6 | 0 |
 
 Every message has exactly one declared transmitter. `External` is the command
@@ -180,7 +180,7 @@ The user confirmed the same linpots/measuring scheme is in use this year.
 The calibrated definitions were found in the local Electron-v2 and Data Sandbox
 copies of Embedded-Sharepoint's `can/dbc/HighNoon/DAqCAN.dbc`; Photon contains an
 older unitless/raw copy. The calibrated copy also includes signed accel/gyro
-fields with real scales, unlike Photon's copy. The new IMU/gyro/magnetometer layouts are defined below.
+fields with real scales, unlike Photon's copy. The IMU and gyro layouts are defined below.
 
 Firmware sending ADC counts must use a **raw packing path**; the current public
 codegen API expects physical millimetres. Passing counts directly to that API
@@ -315,7 +315,7 @@ limitation. Python cantools can encode/decode all eight databases.
 
 | IDs | Measurements |
 |---|---|
-| 0x630–0x632 | Chassis acceleration, gyro, magnetometer |
+| 0x630–0x631 | Chassis acceleration and gyro |
 | 0x640–0x642 | Front-right upright acceleration, gyro, wheel speed |
 | 0x650–0x652 | Front-left upright acceleration, gyro, wheel speed |
 | 0x660–0x662 | Rear upright acceleration, gyro, wheel speed |
@@ -327,7 +327,7 @@ Other slots in 0x630–0x6DF remain unallocated. Infrastructure retains
 TimestampSync 0x620 on DAqCAN; TelemetryStatus 0x621, GPSData 0x622 and OnBoardWatchdog 0x623 are TCP-only.
 Bootloader node IDs are independent and unchanged.
 
-Acceleration, gyro, magnetometer and wheel-speed frames contain four consecutive
+Acceleration, gyro and wheel-speed frames contain four consecutive
 samples per axis/value. Number suffixes follow the quantity, for example
 `AccelerationX1` through `AccelerationX4`. Send only complete four-sample batches.
 
@@ -335,14 +335,13 @@ samples per axis/value. Number suffixes follow the quantity, for example
 between successive samples, using the same clock. Sample times are Timestamp,
 Timestamp + interval, +2 intervals, +3 intervals, modulo 65536. Tick duration
 remains unresolved. Corresponding acceleration/gyro batches from one board share
-timing; magnetometer batches can use their own cadence.
+timing.
 
 | Quantity | Encoding | Range |
 |---|---|---|
 | Chassis acceleration | signed 13-bit, 0.001 g | −4.096–4.095 g |
 | Upright acceleration | signed 15-bit, 0.001 g | −16.384–16.383 g |
 | Gyro | signed 16-bit, 0.02 deg/s | −655.36–655.34 deg/s |
-| Magnetometer | signed 12-bit, 0.15 uT | −307.2–307.05 uT |
 | Wheel speed | unsigned 12-bit, 0.5 rpm | 0–2047.5 rpm |
 
 Wheel speed deliberately uses finer resolution than fan tachometers (5 rpm).
@@ -486,7 +485,8 @@ forwards LightingCommand; GPS is produced directly for telemetry TCP.
 `TelemetryTCP.dbc` contains frames produced by CM5 directly for telemetry TCP,
 without DAqCAN transmission. `topology.yaml` associates this DBC with the TCP
 output; forwarded CarCAN and DAqCAN traffic is merged at that output. Native
-TCP messages count toward TCP bandwidth, not CAN bus loading.
+TCP messages count toward TCP bandwidth, not CAN bus loading. Chassis IMU
+acceleration and gyro remain on DAqCAN.
 
 On-demand test frames are `Sig_Wave` (0x7FD, two IEEE-754 binary32 values),
 `max_message_classical` (0x7FE, eight bytes) and `max_message_fd` (0x7FF,

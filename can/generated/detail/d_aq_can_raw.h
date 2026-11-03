@@ -48,7 +48,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_FRAME_ID (0x620u)
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_FRAME_ID (0x630u)
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_FRAME_ID (0x631u)
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_FRAME_ID (0x632u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_FRAME_ID (0x640u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_FRAME_ID (0x641u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_FRAME_ID (0x642u)
@@ -71,7 +70,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_LENGTH (2u)
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_LENGTH (24u)
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_LENGTH (32u)
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_LENGTH (24u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_LENGTH (12u)
@@ -94,7 +92,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_IS_EXTENDED (0)
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_IS_EXTENDED (0)
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_IS_EXTENDED (0)
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_IS_EXTENDED (0)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_IS_EXTENDED (0)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_IS_EXTENDED (0)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_IS_EXTENDED (0)
@@ -117,7 +114,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_CYCLE_TIME_MS (10u)
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_CYCLE_TIME_MS (20u)
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_CYCLE_TIME_MS (20u)
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_CYCLE_TIME_MS (40u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_CYCLE_TIME_MS (20u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_CYCLE_TIME_MS (20u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_CYCLE_TIME_MS (20u)
@@ -143,7 +139,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_NAME "TimestampSync"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_NAME "ChassisAccelerationData"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_NAME "ChassisGyroData"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_NAME "ChassisMagnetometerData"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_NAME "UprightFRAccelerationData"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_NAME "UprightFRGyroData"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_NAME "UprightFRWheelSpeedData"
@@ -192,20 +187,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z2_NAME "GyroZ2"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z3_NAME "GyroZ3"
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_GYRO_Z4_NAME "GyroZ4"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_TIMESTAMP_NAME "Timestamp"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_X1_NAME "MagneticFieldX1"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_X2_NAME "MagneticFieldX2"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_X3_NAME "MagneticFieldX3"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_X4_NAME "MagneticFieldX4"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Y1_NAME "MagneticFieldY1"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Y2_NAME "MagneticFieldY2"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Y3_NAME "MagneticFieldY3"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Y4_NAME "MagneticFieldY4"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z1_NAME "MagneticFieldZ1"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z2_NAME "MagneticFieldZ2"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z3_NAME "MagneticFieldZ3"
-#define D_AQ_CAN_RAW_CHASSIS_MAGNETOMETER_DATA_MAGNETIC_FIELD_Z4_NAME "MagneticFieldZ4"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_SAMPLE_INTERVAL_TICKS_NAME "SampleIntervalTicks"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
@@ -345,7 +326,7 @@ struct d_aq_can_raw_timestamp_sync_t {
 /**
  * Signals in message ChassisAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -480,7 +461,7 @@ struct d_aq_can_raw_chassis_acceleration_data_t {
 /**
  * Signals in message ChassisGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -613,144 +594,9 @@ struct d_aq_can_raw_chassis_gyro_data_t {
 };
 
 /**
- * Signals in message ChassisMagnetometerData.
- *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
- *
- * All signal values are as on the CAN bus.
- */
-struct d_aq_can_raw_chassis_magnetometer_data_t {
-    /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t timestamp;
-
-    /**
-     * Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t sample_interval_ticks;
-
-    /**
-     * Chronological sample 1 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_x1;
-
-    /**
-     * Chronological sample 2 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_x2;
-
-    /**
-     * Chronological sample 3 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_x3;
-
-    /**
-     * Chronological sample 4 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_x4;
-
-    /**
-     * Chronological sample 1 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_y1;
-
-    /**
-     * Chronological sample 2 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_y2;
-
-    /**
-     * Chronological sample 3 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_y3;
-
-    /**
-     * Chronological sample 4 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_y4;
-
-    /**
-     * Chronological sample 1 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_z1;
-
-    /**
-     * Chronological sample 2 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_z2;
-
-    /**
-     * Chronological sample 3 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_z3;
-
-    /**
-     * Chronological sample 4 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    int16_t magnetic_field_z4;
-};
-
-/**
  * Signals in message UprightFRAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -885,7 +731,7 @@ struct d_aq_can_raw_upright_fr_acceleration_data_t {
 /**
  * Signals in message UprightFRGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1020,7 +866,7 @@ struct d_aq_can_raw_upright_fr_gyro_data_t {
 /**
  * Signals in message UprightFRWheelSpeedData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1083,7 +929,7 @@ struct d_aq_can_raw_upright_fr_wheel_speed_data_t {
 /**
  * Signals in message UprightFLAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1218,7 +1064,7 @@ struct d_aq_can_raw_upright_fl_acceleration_data_t {
 /**
  * Signals in message UprightFLGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1353,7 +1199,7 @@ struct d_aq_can_raw_upright_fl_gyro_data_t {
 /**
  * Signals in message UprightFLWheelSpeedData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1416,7 +1262,7 @@ struct d_aq_can_raw_upright_fl_wheel_speed_data_t {
 /**
  * Signals in message UprightRearAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1551,7 +1397,7 @@ struct d_aq_can_raw_upright_rear_acceleration_data_t {
 /**
  * Signals in message UprightRearGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -1686,7 +1532,7 @@ struct d_aq_can_raw_upright_rear_gyro_data_t {
 /**
  * Signals in message UprightRearWheelSpeedData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.
+ * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.
  *
  * All signal values are as on the CAN bus.
  */
@@ -2349,169 +2195,6 @@ bool d_aq_can_raw_chassis_gyro_data_gyro_z3_is_in_range(int16_t value);
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_chassis_gyro_data_gyro_z4_is_in_range(int16_t value);
-
-/**
- * Pack message ChassisMagnetometerData.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int d_aq_can_raw_chassis_magnetometer_data_pack(
-    uint8_t *dst_p,
-    const struct d_aq_can_raw_chassis_magnetometer_data_t *src_p,
-    size_t size);
-
-/**
- * Unpack message ChassisMagnetometerData.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int d_aq_can_raw_chassis_magnetometer_data_unpack(
-    struct d_aq_can_raw_chassis_magnetometer_data_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from ChassisMagnetometerData.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int d_aq_can_raw_chassis_magnetometer_data_init(struct d_aq_can_raw_chassis_magnetometer_data_t *msg_p);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_timestamp_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_sample_interval_ticks_is_in_range(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_x1_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_x2_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_x3_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_x4_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_y1_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_y2_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_y3_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_y4_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_z1_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_z2_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_z3_is_in_range(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool d_aq_can_raw_chassis_magnetometer_data_magnetic_field_z4_is_in_range(int16_t value);
 
 /**
  * Pack message UprightFRAccelerationData.

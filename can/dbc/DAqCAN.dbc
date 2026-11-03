@@ -103,22 +103,6 @@ BO_ 1585 ChassisGyroData: 32 ChassisIMU
  SG_ GyroZ3 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
  SG_ GyroZ4 : 208|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
 
-BO_ 1586 ChassisMagnetometerData: 24 ChassisIMU
- SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
- SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
- SG_ MagneticFieldX1 : 32|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldX2 : 44|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldX3 : 56|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldX4 : 68|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldY1 : 80|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldY2 : 92|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldY3 : 104|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldY4 : 116|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldZ1 : 128|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldZ2 : 140|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldZ3 : 152|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
- SG_ MagneticFieldZ4 : 164|12@1- (0.15,0) [-307.2|307.05] "uT" Vector__XXX
-
 BO_ 1600 UprightFRAccelerationData: 32 UprightFR
  SG_ Timestamp : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ SampleIntervalTicks : 16|16@1+ (1,0) [1|65535.0] "" Vector__XXX
@@ -275,7 +259,7 @@ BO_ 1681 StrainGaugeRearData: 0 StrainGaugeRear
 
 CM_ BO_ 1568 "CM5 timestamp synchronization: legacy two-byte unsigned little-endian raw count. New allocation ID 0x620 and CAN-FD retained; time unit/epoch/period are not specified.";
 CM_ SG_ 1568 Timestamp "Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks.";
-CM_ BO_ 1584 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
+CM_ BO_ 1584 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1584 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
@@ -290,7 +274,7 @@ CM_ SG_ 1584 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1.
 CM_ SG_ 1584 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1584 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1584 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1585 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
+CM_ BO_ 1585 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1585 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
@@ -305,22 +289,7 @@ CM_ SG_ 1585 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across 
 CM_ SG_ 1585 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1585 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1585 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1586 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
-CM_ SG_ 1586 MagneticFieldZ4 "Chronological sample 4 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldZ3 "Chronological sample 3 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldZ2 "Chronological sample 2 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldZ1 "Chronological sample 1 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldY4 "Chronological sample 4 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldY3 "Chronological sample 3 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldY2 "Chronological sample 2 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldY1 "Chronological sample 1 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldX4 "Chronological sample 4 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldX3 "Chronological sample 3 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldX2 "Chronological sample 2 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 MagneticFieldX1 "Chronological sample 1 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT.";
-CM_ SG_ 1586 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
-CM_ SG_ 1586 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1600 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
+CM_ BO_ 1600 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1600 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
@@ -335,7 +304,7 @@ CM_ SG_ 1600 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1.
 CM_ SG_ 1600 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1600 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1600 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1601 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
+CM_ BO_ 1601 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1601 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
@@ -350,14 +319,14 @@ CM_ SG_ 1601 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across 
 CM_ SG_ 1601 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1601 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1601 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1602 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
+CM_ BO_ 1602 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1602 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1602 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1602 WheelRPM2 "Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1602 WheelRPM1 "Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1602 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1602 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1616 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
+CM_ BO_ 1616 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1616 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
@@ -372,7 +341,7 @@ CM_ SG_ 1616 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1.
 CM_ SG_ 1616 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1616 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1616 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1617 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
+CM_ BO_ 1617 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1617 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
@@ -387,14 +356,14 @@ CM_ SG_ 1617 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across 
 CM_ SG_ 1617 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1617 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1617 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1618 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
+CM_ BO_ 1618 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1618 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1618 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1618 WheelRPM2 "Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1618 WheelRPM1 "Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1618 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1618 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1632 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
+CM_ BO_ 1632 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1632 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
@@ -409,7 +378,7 @@ CM_ SG_ 1632 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1.
 CM_ SG_ 1632 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
 CM_ SG_ 1632 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1632 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1633 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
+CM_ BO_ 1633 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1633 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
@@ -424,7 +393,7 @@ CM_ SG_ 1633 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across 
 CM_ SG_ 1633 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
 CM_ SG_ 1633 SampleIntervalTicks "Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing.";
 CM_ SG_ 1633 Timestamp "Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.";
-CM_ BO_ 1634 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware.";
+CM_ BO_ 1634 "Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware.";
 CM_ SG_ 1634 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1634 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
 CM_ SG_ 1634 WheelRPM2 "Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
@@ -496,12 +465,6 @@ BA_ "VFrameFormat" BO_ 1585 14;
 BA_ "GenMsgSendType" BO_ 1585 0;
 BA_ "GenMsgCycleTime" BO_ 1585 20;
 BA_ "CANFD_BRS" BO_ 1585 0;
-BA_ "LayoutPending" BO_ 1586 0;
-BA_ "ProtocolSource" BO_ 1586 "2027 four-sample DAQ plan approved 2026-10-23";
-BA_ "VFrameFormat" BO_ 1586 14;
-BA_ "GenMsgSendType" BO_ 1586 0;
-BA_ "GenMsgCycleTime" BO_ 1586 40;
-BA_ "CANFD_BRS" BO_ 1586 0;
 BA_ "LayoutPending" BO_ 1600 0;
 BA_ "ProtocolSource" BO_ 1600 "2027 four-sample DAQ plan approved 2026-10-23";
 BA_ "VFrameFormat" BO_ 1600 14;

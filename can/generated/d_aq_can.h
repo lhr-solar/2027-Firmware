@@ -20,7 +20,7 @@ can_status_t d_aq_can_timestamp_sync_pack(can_frame_t* dst, const d_aq_can_times
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_timestamp_sync_unpack(d_aq_can_timestamp_sync_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -59,7 +59,7 @@ can_status_t d_aq_can_chassis_acceleration_data_pack(can_frame_t* dst, const d_a
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_chassis_acceleration_data_unpack(d_aq_can_chassis_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -98,46 +98,7 @@ can_status_t d_aq_can_chassis_gyro_data_pack(can_frame_t* dst, const d_aq_can_ch
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_chassis_gyro_data_unpack(d_aq_can_chassis_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
-typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
-    /** SampleIntervalTicks; unit=none; physical=raw*1+0; raw=[1,65535]. Uniform interval between samples 1..4, in the same unresolved ticks as Timestamp. Must be positive; send only complete four-sample batches. Matching accel/gyro batches from one board share timing. */
-    uint16_t sample_interval_ticks;
-    /** MagneticFieldX1; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 1 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_x1;
-    /** MagneticFieldX2; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 2 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_x2;
-    /** MagneticFieldX3; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 3 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_x3;
-    /** MagneticFieldX4; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 4 of MagneticFieldX; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_x4;
-    /** MagneticFieldY1; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 1 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_y1;
-    /** MagneticFieldY2; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 2 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_y2;
-    /** MagneticFieldY3; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 3 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_y3;
-    /** MagneticFieldY4; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 4 of MagneticFieldY; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_y4;
-    /** MagneticFieldZ1; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 1 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_z1;
-    /** MagneticFieldZ2; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 2 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_z2;
-    /** MagneticFieldZ3; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 3 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_z3;
-    /** MagneticFieldZ4; unit=uT; physical=raw*0.15+0; raw=[-2048,2047]. Chronological sample 4 of MagneticFieldZ; indices 1..4 align across axes within this batch. Physical unit uT. */
-    double magnetic_field_z4;
-} d_aq_can_chassis_magnetometer_data_t;
-
-/** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
- * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t d_aq_can_chassis_magnetometer_data_pack(can_frame_t* dst, const d_aq_can_chassis_magnetometer_data_t* src);
-/** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
- * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t d_aq_can_chassis_magnetometer_data_unpack(d_aq_can_chassis_magnetometer_data_t* dst, const can_frame_t* src);
-
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -176,7 +137,7 @@ can_status_t d_aq_can_upright_fr_acceleration_data_pack(can_frame_t* dst, const 
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_acceleration_data_unpack(d_aq_can_upright_fr_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -215,7 +176,7 @@ can_status_t d_aq_can_upright_fr_gyro_data_pack(can_frame_t* dst, const d_aq_can
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_gyro_data_unpack(d_aq_can_upright_fr_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -238,7 +199,7 @@ can_status_t d_aq_can_upright_fr_wheel_speed_data_pack(can_frame_t* dst, const d
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_wheel_speed_data_unpack(d_aq_can_upright_fr_wheel_speed_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -277,7 +238,7 @@ can_status_t d_aq_can_upright_fl_acceleration_data_pack(can_frame_t* dst, const 
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_acceleration_data_unpack(d_aq_can_upright_fl_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -316,7 +277,7 @@ can_status_t d_aq_can_upright_fl_gyro_data_pack(can_frame_t* dst, const d_aq_can
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_gyro_data_unpack(d_aq_can_upright_fl_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -339,7 +300,7 @@ can_status_t d_aq_can_upright_fl_wheel_speed_data_pack(can_frame_t* dst, const d
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_wheel_speed_data_unpack(d_aq_can_upright_fl_wheel_speed_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -378,7 +339,7 @@ can_status_t d_aq_can_upright_rear_acceleration_data_pack(can_frame_t* dst, cons
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_rear_acceleration_data_unpack(d_aq_can_upright_rear_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -417,7 +378,7 @@ can_status_t d_aq_can_upright_rear_gyro_data_pack(can_frame_t* dst, const d_aq_c
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_rear_gyro_data_unpack(d_aq_can_upright_rear_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval; magnetometer batches need not align with IMU batches. Sensor saturation must be handled by firmware. */
+/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp/interval tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Each sensor modality has its own sampling interval. Sensor saturation must be handled by firmware. */
 typedef struct {
     /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
     uint16_t timestamp;
@@ -582,7 +543,6 @@ typedef struct {
 typedef struct {
     d_aq_can_chassis_acceleration_data_t chassis_acceleration_data;
     d_aq_can_chassis_gyro_data_t chassis_gyro_data;
-    d_aq_can_chassis_magnetometer_data_t chassis_magnetometer_data;
 } d_aq_can_chassis_imu_t;
 
 typedef struct {
@@ -640,7 +600,6 @@ typedef struct {
     struct {
         can_message_info_t chassis_acceleration_data;
         can_message_info_t chassis_gyro_data;
-        can_message_info_t chassis_magnetometer_data;
     } chassis_imu;
     struct {
         can_message_info_t strain_gauge_front_data;
