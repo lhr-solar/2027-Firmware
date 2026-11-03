@@ -124,11 +124,11 @@ can_status_t lighting_can_lighting_command_pack(can_frame_t* dst, const lighting
     struct lighting_can_raw_lighting_command_t raw = {0};
     can_status_t status = CAN_OK;
     {
-        uint8_t value = src->sync;
+        uint8_t value = src->blink_phase;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.sync = (uint8_t)value;
+        raw.blink_phase = (uint8_t)value;
     }
     {
         uint8_t value = src->headlight;
@@ -194,8 +194,8 @@ can_status_t lighting_can_lighting_command_unpack(lighting_can_lighting_command_
     struct lighting_can_raw_lighting_command_t raw = {0};
     if (lighting_can_raw_lighting_command_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     lighting_can_lighting_command_t result = {0};
-    if (raw.sync > INT64_C(1)) return CAN_RANGE;
-    result.sync = (uint8_t)raw.sync;
+    if (raw.blink_phase > INT64_C(1)) return CAN_RANGE;
+    result.blink_phase = (uint8_t)raw.blink_phase;
     if (raw.headlight > INT64_C(1)) return CAN_RANGE;
     result.headlight = (uint8_t)raw.headlight;
     if (raw.left > INT64_C(1)) return CAN_RANGE;

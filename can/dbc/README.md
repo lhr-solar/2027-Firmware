@@ -467,7 +467,7 @@ messages grow from 12 to 16 bytes. Some other payloads shrink after removing gap
 MIKA sends `GPSData` on DAqCAN at 0x622 every 200 ms, containing GPS state,
 position, speed, heading, altitude, satellites and SampleAgeMs. Cellular
 connection and radio measurements remain in TelemetryStatus. LightingCAN uses
-classic CAN: DEI sends `LightingCommand` at 0x083 every 200 ms with Sync,
-Headlight, Left, Right, Brake, Strobe and three raw PWM commands (0-255). Sync
+classic CAN: DEI sends `LightingCommand` at 0x083 every 200 ms with BlinkPhase,
+Headlight, Left, Right, Brake, Strobe and three raw PWM commands (0-255). BlinkPhase
 moved from BottomShellLightingStatus. The existing LightingCAN-to-CarCAN route
 forwards LightingCommand; DAqCAN GPS reaches telemetry TCP through the DAq route.

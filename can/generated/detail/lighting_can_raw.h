@@ -83,8 +83,8 @@ extern "C" {
 #define LIGHTING_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_OFF_CHOICE (0u)
 #define LIGHTING_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_ON_CHOICE (1u)
 
-#define LIGHTING_CAN_RAW_LIGHTING_COMMAND_SYNC_OFF_CHOICE (0u)
-#define LIGHTING_CAN_RAW_LIGHTING_COMMAND_SYNC_ON_CHOICE (1u)
+#define LIGHTING_CAN_RAW_LIGHTING_COMMAND_BLINK_PHASE_OFF_CHOICE (0u)
+#define LIGHTING_CAN_RAW_LIGHTING_COMMAND_BLINK_PHASE_ON_CHOICE (1u)
 
 #define LIGHTING_CAN_RAW_LIGHTING_COMMAND_HEADLIGHT_OFF_CHOICE (0u)
 #define LIGHTING_CAN_RAW_LIGHTING_COMMAND_HEADLIGHT_ON_CHOICE (1u)
@@ -113,7 +113,7 @@ extern "C" {
 #define LIGHTING_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_BRAKE_ON_NAME "BrakeOn"
 #define LIGHTING_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_NAME "LeftSignalOn"
 #define LIGHTING_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_NAME "RightSignalOn"
-#define LIGHTING_CAN_RAW_LIGHTING_COMMAND_SYNC_NAME "Sync"
+#define LIGHTING_CAN_RAW_LIGHTING_COMMAND_BLINK_PHASE_NAME "BlinkPhase"
 #define LIGHTING_CAN_RAW_LIGHTING_COMMAND_HEADLIGHT_NAME "Headlight"
 #define LIGHTING_CAN_RAW_LIGHTING_COMMAND_LEFT_NAME "Left"
 #define LIGHTING_CAN_RAW_LIGHTING_COMMAND_RIGHT_NAME "Right"
@@ -204,13 +204,13 @@ struct lighting_can_raw_top_shell_lighting_status_t {
  */
 struct lighting_can_raw_lighting_command_t {
     /**
-     * Synchronization signal previously sent in BottomShellLightingStatus.
+     * Blink phase used to synchronize flashing lights.
      *
      * Range: -
      * Scale: 1
      * Offset: 0
      */
-    uint8_t sync;
+    uint8_t blink_phase;
 
     /**
      * Headlight lighting command.
@@ -457,7 +457,7 @@ int lighting_can_raw_lighting_command_init(struct lighting_can_raw_lighting_comm
  *
  * @return true if in range, false otherwise.
  */
-bool lighting_can_raw_lighting_command_sync_is_in_range(uint8_t value);
+bool lighting_can_raw_lighting_command_blink_phase_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.

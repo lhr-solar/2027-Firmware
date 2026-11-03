@@ -595,7 +595,7 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual((command.name, command.senders, command.cycle_time, command.length),
                          ("LightingCommand", ["DEI"], 200, 4))
         self.assertNotIn("Sync", {signal.name for signal in self.message("LightingCAN", 0x80).signals})
-        values = {"Sync": 1, "Headlight": 1, "Left": 0, "Right": 1, "Brake": 0,
+        values = {"BlinkPhase": 1, "Headlight": 1, "Left": 0, "Right": 1, "Brake": 0,
                   "Strobe": 1, "RearRightPWM": 0, "RearCenterPWM": 128, "RearLeftPWM": 255}
         frame = command.encode(values)
         self.assertEqual(int.from_bytes(frame, "little"), 0b101011 | (128 << 14) | (255 << 22))
@@ -643,6 +643,23 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(sync.encode({"Timestamp": 65535}), b"\xff\xff")
         self.assertFalse(sync.dbc.attributes["LayoutPending"].value)
         self.assertEqual(self.message("DAqCAN", 0x621).name, "TelemetryStatus")
+
+    def test_mika_server_connection_is_independent_of_internet(self):
+        for bus, identifier in (("CarCAN", 0x82), ("DAqCAN", 0x621)):
+            message = self.message(bus, identifier)
+            server = message.get_signal_by_name("ServerConnected")
+            internet = message.get_signal_by_name("InternetConnected")
+            self.assertEqual(server.length, 1)
+            self.assertNotEqual(server.start, internet.start)
+            self.assertEqual({key: str(value) for key, value in server.choices.items()},
+                             {0: "Disconnected/Retrying", 1: "Connected"})
+            values = {signal.name: 0 for signal in message.signals}
+            values["InternetConnected"] = 1
+            decoded = message.decode(message.encode(values), decode_choices=False)
+            self.assertEqual((decoded["InternetConnected"], decoded["ServerConnected"]), (1, 0))
+            values["ServerConnected"] = 1
+            decoded = message.decode(message.encode(values), decode_choices=False)
+            self.assertEqual((decoded["InternetConnected"], decoded["ServerConnected"]), (1, 1))
 
     def test_legacy_linpot_adc_calibration(self):
         for identifier in (0x670, 0x671, 0x672):

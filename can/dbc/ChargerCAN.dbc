@@ -41,6 +41,7 @@ VAL_TABLE_ WarningState 1 "Warning" 0 "NoWarning" ;
 VAL_TABLE_ DeviceStatus 2 "Waiting" 1 "Fault" 0 "OK" ;
 VAL_TABLE_ Permission 1 "Allowed" 0 "NotAllowed" ;
 VAL_TABLE_ Connection 1 "Connected" 0 "Disconnected" ;
+VAL_TABLE_ ServerConnection 1 "Connected" 0 "Disconnected/Retrying" ;
 VAL_TABLE_ Pressed 1 "Pressed" 0 "NotPressed" ;
 VAL_TABLE_ Validity 1 "Valid" 0 "Invalid" ;
 VAL_TABLE_ Watchdog 1 "TimedOut" 0 "Alive" ;

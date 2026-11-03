@@ -164,6 +164,9 @@ extern "C" {
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_INTERNET_CONNECTED_DISCONNECTED_CHOICE (0u)
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_INTERNET_CONNECTED_CONNECTED_CHOICE (1u)
 
+#define D_AQ_CAN_RAW_TELEMETRY_STATUS_SERVER_CONNECTED_DISCONNECTED__RETRYING_CHOICE (0u)
+#define D_AQ_CAN_RAW_TELEMETRY_STATUS_SERVER_CONNECTED_CONNECTED_CHOICE (1u)
+
 #define D_AQ_CAN_RAW_GPS_DATA_GPS_ANTENNA_STATE_OK_CHOICE (0u)
 #define D_AQ_CAN_RAW_GPS_DATA_GPS_ANTENNA_STATE_OPEN_CIRCUIT_CHOICE (1u)
 #define D_AQ_CAN_RAW_GPS_DATA_GPS_ANTENNA_STATE_SHORT_CIRCUIT_CHOICE (2u)
@@ -226,6 +229,7 @@ extern "C" {
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_CELLULAR_TECHNOLOGY_NAME "CellularTechnology"
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_ROAMING_NAME "Roaming"
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_INTERNET_CONNECTED_NAME "InternetConnected"
+#define D_AQ_CAN_RAW_TELEMETRY_STATUS_SERVER_CONNECTED_NAME "ServerConnected"
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_RSSI_NAME "RSSI"
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_RSRP_NAME "RSRP"
 #define D_AQ_CAN_RAW_TELEMETRY_STATUS_RSRQ_NAME "RSRQ"
@@ -516,6 +520,15 @@ struct d_aq_can_raw_telemetry_status_t {
      * Offset: 0
      */
     uint8_t internet_connected;
+
+    /**
+     * Connection to the telemetry server; independent of internet connectivity.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t server_connected;
 
     /**
      * RSSI
@@ -2911,6 +2924,15 @@ bool d_aq_can_raw_telemetry_status_roaming_is_in_range(uint8_t value);
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_telemetry_status_internet_connected_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool d_aq_can_raw_telemetry_status_server_connected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.

@@ -555,6 +555,9 @@ extern "C" {
 #define CAR_CAN_RAW_MIKA_STATUS_INTERNET_CONNECTED_DISCONNECTED_CHOICE (0u)
 #define CAR_CAN_RAW_MIKA_STATUS_INTERNET_CONNECTED_CONNECTED_CHOICE (1u)
 
+#define CAR_CAN_RAW_MIKA_STATUS_SERVER_CONNECTED_DISCONNECTED__RETRYING_CHOICE (0u)
+#define CAR_CAN_RAW_MIKA_STATUS_SERVER_CONNECTED_CONNECTED_CHOICE (1u)
+
 #define CAR_CAN_RAW_MIKA_STATUS_GPS_CONNECTED_DISCONNECTED_CHOICE (0u)
 #define CAR_CAN_RAW_MIKA_STATUS_GPS_CONNECTED_CONNECTED_CHOICE (1u)
 
@@ -1347,6 +1350,7 @@ extern "C" {
 #define CAR_CAN_RAW_MIKA_STATUS_WARNING_ROUTER_DISCONNECTED_NAME "WarningRouterDisconnected"
 #define CAR_CAN_RAW_MIKA_STATUS_CELLULAR_CONNECTED_NAME "CellularConnected"
 #define CAR_CAN_RAW_MIKA_STATUS_INTERNET_CONNECTED_NAME "InternetConnected"
+#define CAR_CAN_RAW_MIKA_STATUS_SERVER_CONNECTED_NAME "ServerConnected"
 #define CAR_CAN_RAW_MIKA_STATUS_GPS_CONNECTED_NAME "GPSConnected"
 #define CAR_CAN_RAW_MIKA_STATUS_DRIVER_CAMERA_CONNECTED_NAME "DriverCameraConnected"
 #define CAR_CAN_RAW_MIKA_STATUS_DISPLAY_FRAME_RATE_NAME "DisplayFrameRate"
@@ -4400,6 +4404,15 @@ struct car_can_raw_mika_status_t {
      * Offset: 0
      */
     uint8_t internet_connected;
+
+    /**
+     * Connection to the telemetry server; independent of internet connectivity.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t server_connected;
 
     /**
      * GPSConnected
@@ -10080,6 +10093,15 @@ bool car_can_raw_mika_status_cellular_connected_is_in_range(uint8_t value);
  * @return true if in range, false otherwise.
  */
 bool car_can_raw_mika_status_internet_connected_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_mika_status_server_connected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.

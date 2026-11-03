@@ -197,21 +197,22 @@ int d_aq_can_raw_telemetry_status_pack(
     dst_p[0] |= pack_left_shift_u8(src_p->cellular_technology, 1u, 0x0eu);
     dst_p[0] |= pack_left_shift_u8(src_p->roaming, 4u, 0x10u);
     dst_p[0] |= pack_left_shift_u8(src_p->internet_connected, 5u, 0x20u);
+    dst_p[0] |= pack_left_shift_u8(src_p->server_connected, 6u, 0x40u);
     rssi = (uint8_t)src_p->rssi;
-    dst_p[0] |= pack_left_shift_u8(rssi, 6u, 0xc0u);
-    dst_p[1] |= pack_right_shift_u8(rssi, 2u, 0x3fu);
+    dst_p[0] |= pack_left_shift_u8(rssi, 7u, 0x80u);
+    dst_p[1] |= pack_right_shift_u8(rssi, 1u, 0x7fu);
     rsrp = (uint8_t)src_p->rsrp;
-    dst_p[1] |= pack_left_shift_u8(rsrp, 6u, 0xc0u);
-    dst_p[2] |= pack_right_shift_u8(rsrp, 2u, 0x3fu);
+    dst_p[1] |= pack_left_shift_u8(rsrp, 7u, 0x80u);
+    dst_p[2] |= pack_right_shift_u8(rsrp, 1u, 0x7fu);
     rsrq = (uint8_t)src_p->rsrq;
-    dst_p[2] |= pack_left_shift_u8(rsrq, 6u, 0xc0u);
-    dst_p[3] |= pack_right_shift_u8(rsrq, 2u, 0x3fu);
+    dst_p[2] |= pack_left_shift_u8(rsrq, 7u, 0x80u);
+    dst_p[3] |= pack_right_shift_u8(rsrq, 1u, 0x7fu);
     sinr = (uint8_t)src_p->sinr;
-    dst_p[3] |= pack_left_shift_u8(sinr, 6u, 0xc0u);
-    dst_p[4] |= pack_right_shift_u8(sinr, 2u, 0x3fu);
-    dst_p[4] |= pack_left_shift_u16(src_p->sample_age_ms, 6u, 0xc0u);
-    dst_p[5] |= pack_right_shift_u16(src_p->sample_age_ms, 2u, 0xffu);
-    dst_p[6] |= pack_right_shift_u16(src_p->sample_age_ms, 10u, 0x3fu);
+    dst_p[3] |= pack_left_shift_u8(sinr, 7u, 0x80u);
+    dst_p[4] |= pack_right_shift_u8(sinr, 1u, 0x7fu);
+    dst_p[4] |= pack_left_shift_u16(src_p->sample_age_ms, 7u, 0x80u);
+    dst_p[5] |= pack_right_shift_u16(src_p->sample_age_ms, 1u, 0xffu);
+    dst_p[6] |= pack_right_shift_u16(src_p->sample_age_ms, 9u, 0x7fu);
 
     return (7);
 }
@@ -234,21 +235,22 @@ int d_aq_can_raw_telemetry_status_unpack(
     dst_p->cellular_technology = unpack_right_shift_u8(src_p[0], 1u, 0x0eu);
     dst_p->roaming = unpack_right_shift_u8(src_p[0], 4u, 0x10u);
     dst_p->internet_connected = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
-    rssi = unpack_right_shift_u8(src_p[0], 6u, 0xc0u);
-    rssi |= unpack_left_shift_u8(src_p[1], 2u, 0x3fu);
+    dst_p->server_connected = unpack_right_shift_u8(src_p[0], 6u, 0x40u);
+    rssi = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
+    rssi |= unpack_left_shift_u8(src_p[1], 1u, 0x7fu);
     dst_p->rssi = (int8_t)rssi;
-    rsrp = unpack_right_shift_u8(src_p[1], 6u, 0xc0u);
-    rsrp |= unpack_left_shift_u8(src_p[2], 2u, 0x3fu);
+    rsrp = unpack_right_shift_u8(src_p[1], 7u, 0x80u);
+    rsrp |= unpack_left_shift_u8(src_p[2], 1u, 0x7fu);
     dst_p->rsrp = (int8_t)rsrp;
-    rsrq = unpack_right_shift_u8(src_p[2], 6u, 0xc0u);
-    rsrq |= unpack_left_shift_u8(src_p[3], 2u, 0x3fu);
+    rsrq = unpack_right_shift_u8(src_p[2], 7u, 0x80u);
+    rsrq |= unpack_left_shift_u8(src_p[3], 1u, 0x7fu);
     dst_p->rsrq = (int8_t)rsrq;
-    sinr = unpack_right_shift_u8(src_p[3], 6u, 0xc0u);
-    sinr |= unpack_left_shift_u8(src_p[4], 2u, 0x3fu);
+    sinr = unpack_right_shift_u8(src_p[3], 7u, 0x80u);
+    sinr |= unpack_left_shift_u8(src_p[4], 1u, 0x7fu);
     dst_p->sinr = (int8_t)sinr;
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[4], 6u, 0xc0u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[5], 2u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[6], 10u, 0x3fu);
+    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[4], 7u, 0x80u);
+    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[5], 1u, 0xffu);
+    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[6], 9u, 0x7fu);
 
     return (0);
 }
@@ -278,6 +280,11 @@ bool d_aq_can_raw_telemetry_status_roaming_is_in_range(uint8_t value)
 }
 
 bool d_aq_can_raw_telemetry_status_internet_connected_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool d_aq_can_raw_telemetry_status_server_connected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }

@@ -41,6 +41,7 @@ VAL_TABLE_ WarningState 1 "Warning" 0 "NoWarning" ;
 VAL_TABLE_ DeviceStatus 2 "Waiting" 1 "Fault" 0 "OK" ;
 VAL_TABLE_ Permission 1 "Allowed" 0 "NotAllowed" ;
 VAL_TABLE_ Connection 1 "Connected" 0 "Disconnected" ;
+VAL_TABLE_ ServerConnection 1 "Connected" 0 "Disconnected/Retrying" ;
 VAL_TABLE_ Pressed 1 "Pressed" 0 "NotPressed" ;
 VAL_TABLE_ Validity 1 "Valid" 0 "Invalid" ;
 VAL_TABLE_ Watchdog 1 "TimedOut" 0 "Alive" ;
@@ -75,7 +76,7 @@ BO_ 129 TopShellLightingStatus: 1 TopShellLighting
  SG_ RightSignalOn : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 131 LightingCommand: 4 DEI
- SG_ Sync : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ BlinkPhase : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ Headlight : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ Left : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ Right : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -105,7 +106,7 @@ CM_ SG_ 131 Brake "Brake lighting command.";
 CM_ SG_ 131 Right "Right lighting command.";
 CM_ SG_ 131 Left "Left lighting command.";
 CM_ SG_ 131 Headlight "Headlight lighting command.";
-CM_ SG_ 131 Sync "Synchronization signal previously sent in BottomShellLightingStatus.";
+CM_ SG_ 131 BlinkPhase "Blink phase used to synchronize flashing lights.";
 BA_DEF_ SG_  "ValueTable" STRING ;
 BA_DEF_ BO_  "LayoutPending" INT 0 1;
 BA_DEF_ BO_  "ProtocolSource" STRING ;
@@ -160,7 +161,7 @@ BA_ "ValueTable" SG_ 131 Brake "OnOff";
 BA_ "ValueTable" SG_ 131 Right "OnOff";
 BA_ "ValueTable" SG_ 131 Left "OnOff";
 BA_ "ValueTable" SG_ 131 Headlight "OnOff";
-BA_ "ValueTable" SG_ 131 Sync "OnOff";
+BA_ "ValueTable" SG_ 131 BlinkPhase "OnOff";
 VAL_ 128 HeadlightsOn 0 "Off" 1 "On" ;
 VAL_ 128 RightSignalOn 0 "Off" 1 "On" ;
 VAL_ 128 LeftSignalOn 0 "Off" 1 "On" ;
@@ -172,4 +173,4 @@ VAL_ 131 Brake 0 "Off" 1 "On" ;
 VAL_ 131 Right 0 "Off" 1 "On" ;
 VAL_ 131 Left 0 "Off" 1 "On" ;
 VAL_ 131 Headlight 0 "Off" 1 "On" ;
-VAL_ 131 Sync 0 "Off" 1 "On" ;
+VAL_ 131 BlinkPhase 0 "Off" 1 "On" ;

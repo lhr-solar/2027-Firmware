@@ -151,5 +151,9 @@
     "3": "Page3",
     "4": "Page4",
     "5": "Page5"
+  },
+  "ServerConnection": {
+    "0": "Disconnected/Retrying",
+    "1": "Connected"
   }
 }

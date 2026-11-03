@@ -41,6 +41,7 @@ VAL_TABLE_ WarningState 1 "Warning" 0 "NoWarning" ;
 VAL_TABLE_ DeviceStatus 2 "Waiting" 1 "Fault" 0 "OK" ;
 VAL_TABLE_ Permission 1 "Allowed" 0 "NotAllowed" ;
 VAL_TABLE_ Connection 1 "Connected" 0 "Disconnected" ;
+VAL_TABLE_ ServerConnection 1 "Connected" 0 "Disconnected/Retrying" ;
 VAL_TABLE_ Pressed 1 "Pressed" 0 "NotPressed" ;
 VAL_TABLE_ Validity 1 "Valid" 0 "Invalid" ;
 VAL_TABLE_ Watchdog 1 "TimedOut" 0 "Alive" ;
@@ -391,12 +392,13 @@ BO_ 130 MIKAStatus: 7 MIKA
  SG_ WarningRouterDisconnected : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ CellularConnected : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ InternetConnected : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ GPSConnected : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ DriverCameraConnected : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ DisplayFrameRate : 9|6@1+ (1,0) [0|60] "FPS" Vector__XXX
- SG_ SoCTemperature : 15|8@1+ (0.5,-20) [-20|85] "degC" Vector__XXX
- SG_ CM5FanTach : 23|12@1+ (5,0) [0|20475] "rpm" Vector__XXX
- SG_ SampleAgeMs : 35|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+ SG_ ServerConnected : 7|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ GPSConnected : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ DriverCameraConnected : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ DisplayFrameRate : 10|6@1+ (1,0) [0|60] "FPS" Vector__XXX
+ SG_ SoCTemperature : 16|8@1+ (0.5,-20) [-20|85] "degC" Vector__XXX
+ SG_ CM5FanTach : 24|12@1+ (5,0) [0|20475] "rpm" Vector__XXX
+ SG_ SampleAgeMs : 36|16@1+ (1,0) [0|65535] "ms" Vector__XXX
 
 BO_ 144 LVCStatus: 2 LVC
  SG_ WarningHSSOverCurrent : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -980,6 +982,7 @@ CM_ SG_ 130 SoCTemperature "User-approved explicit exception: uint8, 0.5 degC/bi
 CM_ SG_ 130 DisplayFrameRate "DisplayFrameRate";
 CM_ SG_ 130 DriverCameraConnected "Driver camera connection state: 0 disconnected, 1 connected.";
 CM_ SG_ 130 GPSConnected "GPSConnected";
+CM_ SG_ 130 ServerConnected "Connection to the telemetry server; independent of internet connectivity.";
 CM_ SG_ 130 InternetConnected "InternetConnected";
 CM_ SG_ 130 CellularConnected "CellularConnected";
 CM_ SG_ 130 WarningRouterDisconnected "WarningRouterDisconnected";
@@ -1501,6 +1504,7 @@ BA_ "GenMsgCycleTime" BO_ 130 500;
 BA_ "CANFD_BRS" BO_ 130 0;
 BA_ "ValueTable" SG_ 130 DriverCameraConnected "Connection";
 BA_ "ValueTable" SG_ 130 GPSConnected "Connection";
+BA_ "ValueTable" SG_ 130 ServerConnected "ServerConnection";
 BA_ "ValueTable" SG_ 130 InternetConnected "Connection";
 BA_ "ValueTable" SG_ 130 CellularConnected "Connection";
 BA_ "ValueTable" SG_ 130 WarningRouterDisconnected "WarningState";
@@ -1849,6 +1853,7 @@ VAL_ 121 WarningMPPTAWatchdog 0 "NoWarning" 1 "Warning" ;
 VAL_ 121 WarningBPSWatchdog 0 "NoWarning" 1 "Warning" ;
 VAL_ 130 DriverCameraConnected 0 "Disconnected" 1 "Connected" ;
 VAL_ 130 GPSConnected 0 "Disconnected" 1 "Connected" ;
+VAL_ 130 ServerConnected 0 "Disconnected/Retrying" 1 "Connected" ;
 VAL_ 130 InternetConnected 0 "Disconnected" 1 "Connected" ;
 VAL_ 130 CellularConnected 0 "Disconnected" 1 "Connected" ;
 VAL_ 130 WarningRouterDisconnected 0 "NoWarning" 1 "Warning" ;

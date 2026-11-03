@@ -3476,6 +3476,13 @@ can_status_t car_can_mika_status_pack(can_frame_t* dst, const car_can_mika_statu
         raw.internet_connected = (uint8_t)value;
     }
     {
+        uint8_t value = src->server_connected;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.server_connected = (uint8_t)value;
+    }
+    {
         uint8_t value = src->gps_connected;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
@@ -3551,6 +3558,8 @@ can_status_t car_can_mika_status_unpack(car_can_mika_status_t* dst, const can_fr
     result.cellular_connected = (uint8_t)raw.cellular_connected;
     if (raw.internet_connected > INT64_C(1)) return CAN_RANGE;
     result.internet_connected = (uint8_t)raw.internet_connected;
+    if (raw.server_connected > INT64_C(1)) return CAN_RANGE;
+    result.server_connected = (uint8_t)raw.server_connected;
     if (raw.gps_connected > INT64_C(1)) return CAN_RANGE;
     result.gps_connected = (uint8_t)raw.gps_connected;
     if (raw.driver_camera_connected > INT64_C(1)) return CAN_RANGE;

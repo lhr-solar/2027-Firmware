@@ -43,6 +43,11 @@ typedef enum {
     D_AQ_CAN_TELEMETRY_STATUS_INTERNET_CONNECTED_DISCONNECTED = 0,
     D_AQ_CAN_TELEMETRY_STATUS_INTERNET_CONNECTED_CONNECTED = 1,
 } d_aq_can_telemetry_status_internet_connected_choice_t;
+/** Named raw values for ServerConnected; unknown values remain integers. */
+typedef enum {
+    D_AQ_CAN_TELEMETRY_STATUS_SERVER_CONNECTED_DISCONNECTED__RETRYING = 0,
+    D_AQ_CAN_TELEMETRY_STATUS_SERVER_CONNECTED_CONNECTED = 1,
+} d_aq_can_telemetry_status_server_connected_choice_t;
 /** 2027 team-defined layout; physical values use the shared scaling conventions. */
 typedef struct {
     /** CellularConnected; unit=none; physical=raw*1+0; raw=[0,1]. CellularConnected */
@@ -53,6 +58,8 @@ typedef struct {
     uint8_t roaming;
     /** InternetConnected; unit=none; physical=raw*1+0; raw=[0,1]. InternetConnected */
     uint8_t internet_connected;
+    /** ServerConnected; unit=none; physical=raw*1+0; raw=[0,1]. Connection to the telemetry server; independent of internet connectivity. */
+    uint8_t server_connected;
     /** RSSI; unit=dBm; physical=raw*1+0; raw=[-128,127]. RSSI */
     int8_t rssi;
     /** RSRP; unit=dBm; physical=raw*1+0; raw=[-128,127]. RSRP */

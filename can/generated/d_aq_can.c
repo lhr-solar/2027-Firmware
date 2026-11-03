@@ -121,6 +121,13 @@ can_status_t d_aq_can_telemetry_status_pack(can_frame_t* dst, const d_aq_can_tel
         raw.internet_connected = (uint8_t)value;
     }
     {
+        uint8_t value = src->server_connected;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.server_connected = (uint8_t)value;
+    }
+    {
         int8_t value = src->rssi;
         raw.rssi = (int8_t)value;
     }
@@ -177,6 +184,8 @@ can_status_t d_aq_can_telemetry_status_unpack(d_aq_can_telemetry_status_t* dst, 
     result.roaming = (uint8_t)raw.roaming;
     if (raw.internet_connected > INT64_C(1)) return CAN_RANGE;
     result.internet_connected = (uint8_t)raw.internet_connected;
+    if (raw.server_connected > INT64_C(1)) return CAN_RANGE;
+    result.server_connected = (uint8_t)raw.server_connected;
     result.rssi = (int8_t)raw.rssi;
     result.rsrp = (int8_t)raw.rsrp;
     result.rsrq = (double)((double)raw.rsrq * 0.5 + 0.0);

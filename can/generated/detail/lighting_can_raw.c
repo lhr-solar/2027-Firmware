@@ -192,7 +192,7 @@ int lighting_can_raw_lighting_command_pack(
 
     memset(&dst_p[0], 0, 4);
 
-    dst_p[0] |= pack_left_shift_u8(src_p->sync, 0u, 0x01u);
+    dst_p[0] |= pack_left_shift_u8(src_p->blink_phase, 0u, 0x01u);
     dst_p[0] |= pack_left_shift_u8(src_p->headlight, 1u, 0x02u);
     dst_p[0] |= pack_left_shift_u8(src_p->left, 2u, 0x04u);
     dst_p[0] |= pack_left_shift_u8(src_p->right, 3u, 0x08u);
@@ -217,7 +217,7 @@ int lighting_can_raw_lighting_command_unpack(
         return (-EINVAL);
     }
 
-    dst_p->sync = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
+    dst_p->blink_phase = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
     dst_p->headlight = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
     dst_p->left = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
     dst_p->right = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
@@ -242,7 +242,7 @@ int lighting_can_raw_lighting_command_init(struct lighting_can_raw_lighting_comm
     return 0;
 }
 
-bool lighting_can_raw_lighting_command_sync_is_in_range(uint8_t value)
+bool lighting_can_raw_lighting_command_blink_phase_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }

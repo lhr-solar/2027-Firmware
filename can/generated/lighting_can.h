@@ -71,11 +71,11 @@ can_status_t lighting_can_top_shell_lighting_status_pack(can_frame_t* dst, const
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t lighting_can_top_shell_lighting_status_unpack(lighting_can_top_shell_lighting_status_t* dst, const can_frame_t* src);
 
-/** Named raw values for Sync; unknown values remain integers. */
+/** Named raw values for BlinkPhase; unknown values remain integers. */
 typedef enum {
-    LIGHTING_CAN_LIGHTING_COMMAND_SYNC_OFF = 0,
-    LIGHTING_CAN_LIGHTING_COMMAND_SYNC_ON = 1,
-} lighting_can_lighting_command_sync_choice_t;
+    LIGHTING_CAN_LIGHTING_COMMAND_BLINK_PHASE_OFF = 0,
+    LIGHTING_CAN_LIGHTING_COMMAND_BLINK_PHASE_ON = 1,
+} lighting_can_lighting_command_blink_phase_choice_t;
 /** Named raw values for Headlight; unknown values remain integers. */
 typedef enum {
     LIGHTING_CAN_LIGHTING_COMMAND_HEADLIGHT_OFF = 0,
@@ -103,8 +103,8 @@ typedef enum {
 } lighting_can_lighting_command_strobe_choice_t;
 /** Cyclic lighting commands from DEI; rear PWM raw counts are 0-255. */
 typedef struct {
-    /** Sync; unit=none; physical=raw*1+0; raw=[0,1]. Synchronization signal previously sent in BottomShellLightingStatus. */
-    uint8_t sync;
+    /** BlinkPhase; unit=none; physical=raw*1+0; raw=[0,1]. Blink phase used to synchronize flashing lights. */
+    uint8_t blink_phase;
     /** Headlight; unit=none; physical=raw*1+0; raw=[0,1]. Headlight lighting command. */
     uint8_t headlight;
     /** Left; unit=none; physical=raw*1+0; raw=[0,1]. Left lighting command. */

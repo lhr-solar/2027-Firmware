@@ -57,14 +57,6 @@ static inline uint8_t pack_left_shift_u32(
     return (uint8_t)((uint8_t)(value << shift) & mask);
 }
 
-static inline uint8_t pack_right_shift_u8(
-    uint8_t value,
-    uint8_t shift,
-    uint8_t mask)
-{
-    return (uint8_t)((uint8_t)(value >> shift) & mask);
-}
-
 static inline uint8_t pack_right_shift_u16(
     uint16_t value,
     uint8_t shift,
@@ -79,14 +71,6 @@ static inline uint8_t pack_right_shift_u32(
     uint8_t mask)
 {
     return (uint8_t)((uint8_t)(value >> shift) & mask);
-}
-
-static inline uint8_t unpack_left_shift_u8(
-    uint8_t value,
-    uint8_t shift,
-    uint8_t mask)
-{
-    return (uint8_t)((uint8_t)(value & mask) << shift);
 }
 
 static inline uint16_t unpack_left_shift_u16(
@@ -3201,17 +3185,16 @@ int car_can_raw_mika_status_pack(
     dst_p[0] |= pack_left_shift_u8(src_p->warning_router_disconnected, 4u, 0x10u);
     dst_p[0] |= pack_left_shift_u8(src_p->cellular_connected, 5u, 0x20u);
     dst_p[0] |= pack_left_shift_u8(src_p->internet_connected, 6u, 0x40u);
-    dst_p[0] |= pack_left_shift_u8(src_p->gps_connected, 7u, 0x80u);
-    dst_p[1] |= pack_left_shift_u8(src_p->driver_camera_connected, 0u, 0x01u);
-    dst_p[1] |= pack_left_shift_u8(src_p->display_frame_rate, 1u, 0x7eu);
-    dst_p[1] |= pack_left_shift_u8(src_p->so_c_temperature, 7u, 0x80u);
-    dst_p[2] |= pack_right_shift_u8(src_p->so_c_temperature, 1u, 0x7fu);
-    dst_p[2] |= pack_left_shift_u16(src_p->cm5_fan_tach, 7u, 0x80u);
-    dst_p[3] |= pack_right_shift_u16(src_p->cm5_fan_tach, 1u, 0xffu);
-    dst_p[4] |= pack_right_shift_u16(src_p->cm5_fan_tach, 9u, 0x07u);
-    dst_p[4] |= pack_left_shift_u16(src_p->sample_age_ms, 3u, 0xf8u);
-    dst_p[5] |= pack_right_shift_u16(src_p->sample_age_ms, 5u, 0xffu);
-    dst_p[6] |= pack_right_shift_u16(src_p->sample_age_ms, 13u, 0x07u);
+    dst_p[0] |= pack_left_shift_u8(src_p->server_connected, 7u, 0x80u);
+    dst_p[1] |= pack_left_shift_u8(src_p->gps_connected, 0u, 0x01u);
+    dst_p[1] |= pack_left_shift_u8(src_p->driver_camera_connected, 1u, 0x02u);
+    dst_p[1] |= pack_left_shift_u8(src_p->display_frame_rate, 2u, 0xfcu);
+    dst_p[2] |= pack_left_shift_u8(src_p->so_c_temperature, 0u, 0xffu);
+    dst_p[3] |= pack_left_shift_u16(src_p->cm5_fan_tach, 0u, 0xffu);
+    dst_p[4] |= pack_right_shift_u16(src_p->cm5_fan_tach, 8u, 0x0fu);
+    dst_p[4] |= pack_left_shift_u16(src_p->sample_age_ms, 4u, 0xf0u);
+    dst_p[5] |= pack_right_shift_u16(src_p->sample_age_ms, 4u, 0xffu);
+    dst_p[6] |= pack_right_shift_u16(src_p->sample_age_ms, 12u, 0x0fu);
 
     return (7);
 }
@@ -3232,17 +3215,16 @@ int car_can_raw_mika_status_unpack(
     dst_p->warning_router_disconnected = unpack_right_shift_u8(src_p[0], 4u, 0x10u);
     dst_p->cellular_connected = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
     dst_p->internet_connected = unpack_right_shift_u8(src_p[0], 6u, 0x40u);
-    dst_p->gps_connected = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
-    dst_p->driver_camera_connected = unpack_right_shift_u8(src_p[1], 0u, 0x01u);
-    dst_p->display_frame_rate = unpack_right_shift_u8(src_p[1], 1u, 0x7eu);
-    dst_p->so_c_temperature = unpack_right_shift_u8(src_p[1], 7u, 0x80u);
-    dst_p->so_c_temperature |= unpack_left_shift_u8(src_p[2], 1u, 0x7fu);
-    dst_p->cm5_fan_tach = unpack_right_shift_u16(src_p[2], 7u, 0x80u);
-    dst_p->cm5_fan_tach |= unpack_left_shift_u16(src_p[3], 1u, 0xffu);
-    dst_p->cm5_fan_tach |= unpack_left_shift_u16(src_p[4], 9u, 0x07u);
-    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[4], 3u, 0xf8u);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[5], 5u, 0xffu);
-    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[6], 13u, 0x07u);
+    dst_p->server_connected = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
+    dst_p->gps_connected = unpack_right_shift_u8(src_p[1], 0u, 0x01u);
+    dst_p->driver_camera_connected = unpack_right_shift_u8(src_p[1], 1u, 0x02u);
+    dst_p->display_frame_rate = unpack_right_shift_u8(src_p[1], 2u, 0xfcu);
+    dst_p->so_c_temperature = unpack_right_shift_u8(src_p[2], 0u, 0xffu);
+    dst_p->cm5_fan_tach = unpack_right_shift_u16(src_p[3], 0u, 0xffu);
+    dst_p->cm5_fan_tach |= unpack_left_shift_u16(src_p[4], 8u, 0x0fu);
+    dst_p->sample_age_ms = unpack_right_shift_u16(src_p[4], 4u, 0xf0u);
+    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[5], 4u, 0xffu);
+    dst_p->sample_age_ms |= unpack_left_shift_u16(src_p[6], 12u, 0x0fu);
 
     return (0);
 }
@@ -3287,6 +3269,11 @@ bool car_can_raw_mika_status_cellular_connected_is_in_range(uint8_t value)
 }
 
 bool car_can_raw_mika_status_internet_connected_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_mika_status_server_connected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
