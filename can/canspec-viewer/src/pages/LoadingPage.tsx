@@ -116,7 +116,6 @@ export function LoadingPage() {
           })}
       </div>
       {Object.entries(topology.outputs)
-        .filter(([, output]) => output.transport === "tcp")
         .map(([name]) => {
           const rows = [...resolved.get(name)!.values()],
             payloadKbps = rows.reduce((sum, row) => sum + row.fps * row.message.dlc * 8 / 1000, 0);
@@ -124,7 +123,7 @@ export function LoadingPage() {
             <article className="network-card tcp-card" key={name}>
               <h2>{name}</h2>
               <div className="tcp-rate">
-                {payloadKbps.toFixed(2)} <small>kbps CAN payload</small>
+                {payloadKbps.toFixed(2)} <small>kbps message payload</small>
               </div>
               <p className="page-sub">
                 Message data only, including all permitted upstream forwarding paths.

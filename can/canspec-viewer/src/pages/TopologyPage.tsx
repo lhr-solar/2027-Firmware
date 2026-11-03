@@ -191,7 +191,7 @@ export function TopologyPage() {
           <i className="legend-dot classic" /> Classic CAN
         </span>
         <span>
-          <i className="legend-dot output" /> TCP output
+          <i className="legend-dot output" /> Telemetry output
         </span>
         <span className="muted-sm">
           Arrows show forwarding. Select a bus or route for details.
@@ -287,8 +287,7 @@ export function TopologyPage() {
               );
             })}
             {[...diagram.positions].map(([name, point]) => {
-              const spec = topology.buses[name],
-                sink = topology.outputs[name];
+              const spec = topology.buses[name];
               const kind = spec
                 ? spec.format === "can_fd"
                   ? "fd"
@@ -296,7 +295,7 @@ export function TopologyPage() {
                 : "output";
               const metadata = spec
                 ? `${spec.format === "can_fd" ? "CAN-FD" : "Classic CAN"} · ${rate(spec.bitrate)}`
-                : `${sink.transport.toUpperCase()} output`;
+                : "Telemetry output";
               return (
                 <g
                   key={name}
