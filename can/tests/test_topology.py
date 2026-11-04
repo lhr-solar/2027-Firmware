@@ -38,7 +38,7 @@ class TopologyTests(unittest.TestCase):
         self.assertTrue(selected({"mode": "include", "messages": ["0x620"]}, message))
         self.assertTrue(
             selected(
-                {"mode": "include", "messages": ["0x621"], "transmitters": ["CM5"]},
+                {"mode": "include", "messages": ["0x610"], "transmitters": ["CM5"]},
                 message,
             )
         )

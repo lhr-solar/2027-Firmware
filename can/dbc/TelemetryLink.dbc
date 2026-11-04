@@ -68,7 +68,7 @@ VAL_TABLE_ ElconControl 1 "Disable" 0 "Charge" ;
 VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 
 
-BO_ 1569 TelemetryStatus: 5 CM5
+BO_ 1552 TelemetryStatus: 5 CM5
  SG_ CellularConnected : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ CellularTechnology : 1|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
  SG_ Roaming : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -79,7 +79,7 @@ BO_ 1569 TelemetryStatus: 5 CM5
  SG_ RSRQ : 23|8@1- (0.5,0) [-64.0|63.5] "dB" Vector__XXX
  SG_ SINR : 31|8@1- (0.5,0) [-64.0|63.5] "dB" Vector__XXX
 
-BO_ 1570 GPSData: 16 CM5
+BO_ 1553 GPSData: 16 CM5
  SG_ GPSAntennaState : 0|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ GPSFix : 2|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ GPSLongitude : 4|32@1- (1e-06,0) [-180|180] "deg" Vector__XXX
@@ -89,7 +89,7 @@ BO_ 1570 GPSData: 16 CM5
  SG_ GPSAltitude : 100|16@1- (0.1,0) [-3276.8|3276.7] "m" Vector__XXX
  SG_ SatellitesInUse : 116|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
 
-BO_ 1571 OnBoardWatchdog: 1 CM5
+BO_ 1554 OnBoardWatchdog: 1 CM5
  SG_ BPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ VCUWatchdog : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ DEIWatchdog : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -181,33 +181,33 @@ BO_ 2047 max_message_fd: 64 CM5
 
 
 
-CM_ BO_ 1569 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 1569 SINR "SINR";
-CM_ SG_ 1569 RSRQ "RSRQ";
-CM_ SG_ 1569 RSRP "RSRP";
-CM_ SG_ 1569 RSSI "RSSI";
-CM_ SG_ 1569 ServerConnected "Connection to the telemetry server; independent of internet connectivity.";
-CM_ SG_ 1569 InternetConnected "InternetConnected";
-CM_ SG_ 1569 Roaming "Roaming";
-CM_ SG_ 1569 CellularTechnology "CellularTechnology";
-CM_ SG_ 1569 CellularConnected "CellularConnected";
-CM_ BO_ 1570 "GPS receiver state and measurements.";
-CM_ SG_ 1570 SatellitesInUse "SatellitesInUse";
-CM_ SG_ 1570 GPSAltitude "GPSAltitude";
-CM_ SG_ 1570 GPSHeading "GPSHeading";
-CM_ SG_ 1570 GPSSpeed "GPSSpeed";
-CM_ SG_ 1570 GPSLatitude "GPSLatitude";
-CM_ SG_ 1570 GPSLongitude "Longitude range corrected from swapped draft coordinates.";
-CM_ SG_ 1570 GPSFix "GPSFix";
-CM_ SG_ 1570 GPSAntennaState "GPSAntennaState";
-CM_ BO_ 1571 "CM5 reports watchdog state of other boards: 0 alive, 1 timed out. Former CM5 self-watchdog removed; bit 7 is reserved.";
-CM_ SG_ 1571 MSVWatchdog "MSVWatchdog";
-CM_ SG_ 1571 LVCWatchdog "LVCWatchdog";
-CM_ SG_ 1571 PDUWatchdog "PDUWatchdog";
-CM_ SG_ 1571 PedalsWatchdog "PedalsWatchdog";
-CM_ SG_ 1571 DEIWatchdog "DEIWatchdog";
-CM_ SG_ 1571 VCUWatchdog "VCUWatchdog";
-CM_ SG_ 1571 BPSWatchdog "BPSWatchdog";
+CM_ BO_ 1552 "2027 team-defined layout; physical values use the shared scaling conventions.";
+CM_ SG_ 1552 SINR "SINR";
+CM_ SG_ 1552 RSRQ "RSRQ";
+CM_ SG_ 1552 RSRP "RSRP";
+CM_ SG_ 1552 RSSI "RSSI";
+CM_ SG_ 1552 ServerConnected "Connection to the telemetry server; independent of internet connectivity.";
+CM_ SG_ 1552 InternetConnected "InternetConnected";
+CM_ SG_ 1552 Roaming "Roaming";
+CM_ SG_ 1552 CellularTechnology "CellularTechnology";
+CM_ SG_ 1552 CellularConnected "CellularConnected";
+CM_ BO_ 1553 "GPS receiver state and measurements.";
+CM_ SG_ 1553 SatellitesInUse "SatellitesInUse";
+CM_ SG_ 1553 GPSAltitude "GPSAltitude";
+CM_ SG_ 1553 GPSHeading "GPSHeading";
+CM_ SG_ 1553 GPSSpeed "GPSSpeed";
+CM_ SG_ 1553 GPSLatitude "GPSLatitude";
+CM_ SG_ 1553 GPSLongitude "Longitude range corrected from swapped draft coordinates.";
+CM_ SG_ 1553 GPSFix "GPSFix";
+CM_ SG_ 1553 GPSAntennaState "GPSAntennaState";
+CM_ BO_ 1554 "CM5 reports watchdog state of other boards: 0 alive, 1 timed out. Former CM5 self-watchdog removed; bit 7 is reserved.";
+CM_ SG_ 1554 MSVWatchdog "MSVWatchdog";
+CM_ SG_ 1554 LVCWatchdog "LVCWatchdog";
+CM_ SG_ 1554 PDUWatchdog "PDUWatchdog";
+CM_ SG_ 1554 PedalsWatchdog "PedalsWatchdog";
+CM_ SG_ 1554 DEIWatchdog "DEIWatchdog";
+CM_ SG_ 1554 VCUWatchdog "VCUWatchdog";
+CM_ SG_ 1554 BPSWatchdog "BPSWatchdog";
 CM_ BO_ 2045 "On-demand telemetry test frame; no assumed periodic rate.";
 CM_ BO_ 2046 "On-demand telemetry test frame; no assumed periodic rate.";
 CM_ BO_ 2047 "On-demand telemetry test frame; no assumed periodic rate.";
@@ -233,38 +233,38 @@ BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
 BA_DEF_DEF_  "GenMsgCycleTime" 0;
 BA_ "BusType" "TCP";
 BA_ "DBName" "TelemetryLink";
-BA_ "LayoutPending" BO_ 1569 0;
-BA_ "ProtocolSource" BO_ 1569 "2027 allocation draft";
-BA_ "VFrameFormat" BO_ 1569 14;
-BA_ "GenMsgSendType" BO_ 1569 0;
-BA_ "GenMsgCycleTime" BO_ 1569 500;
-BA_ "CANFD_BRS" BO_ 1569 0;
-BA_ "ValueTable" SG_ 1569 ServerConnected "ServerConnection";
-BA_ "ValueTable" SG_ 1569 InternetConnected "Connection";
-BA_ "ValueTable" SG_ 1569 Roaming "OnOff";
-BA_ "ValueTable" SG_ 1569 CellularTechnology "CellularTechnology";
-BA_ "ValueTable" SG_ 1569 CellularConnected "Connection";
-BA_ "LayoutPending" BO_ 1570 0;
-BA_ "ProtocolSource" BO_ 1570 "2027 allocation draft";
-BA_ "VFrameFormat" BO_ 1570 14;
-BA_ "GenMsgSendType" BO_ 1570 0;
-BA_ "GenMsgCycleTime" BO_ 1570 200;
-BA_ "CANFD_BRS" BO_ 1570 0;
-BA_ "ValueTable" SG_ 1570 GPSFix "GPSFix";
-BA_ "ValueTable" SG_ 1570 GPSAntennaState "GPSAntennaState";
-BA_ "LayoutPending" BO_ 1571 0;
-BA_ "ProtocolSource" BO_ 1571 "2027 allocation draft";
-BA_ "VFrameFormat" BO_ 1571 14;
-BA_ "GenMsgSendType" BO_ 1571 0;
-BA_ "GenMsgCycleTime" BO_ 1571 100;
-BA_ "CANFD_BRS" BO_ 1571 0;
-BA_ "ValueTable" SG_ 1571 MSVWatchdog "Watchdog";
-BA_ "ValueTable" SG_ 1571 LVCWatchdog "Watchdog";
-BA_ "ValueTable" SG_ 1571 PDUWatchdog "Watchdog";
-BA_ "ValueTable" SG_ 1571 PedalsWatchdog "Watchdog";
-BA_ "ValueTable" SG_ 1571 DEIWatchdog "Watchdog";
-BA_ "ValueTable" SG_ 1571 VCUWatchdog "Watchdog";
-BA_ "ValueTable" SG_ 1571 BPSWatchdog "Watchdog";
+BA_ "LayoutPending" BO_ 1552 0;
+BA_ "ProtocolSource" BO_ 1552 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1552 14;
+BA_ "GenMsgSendType" BO_ 1552 0;
+BA_ "GenMsgCycleTime" BO_ 1552 500;
+BA_ "CANFD_BRS" BO_ 1552 0;
+BA_ "ValueTable" SG_ 1552 ServerConnected "ServerConnection";
+BA_ "ValueTable" SG_ 1552 InternetConnected "Connection";
+BA_ "ValueTable" SG_ 1552 Roaming "OnOff";
+BA_ "ValueTable" SG_ 1552 CellularTechnology "CellularTechnology";
+BA_ "ValueTable" SG_ 1552 CellularConnected "Connection";
+BA_ "LayoutPending" BO_ 1553 0;
+BA_ "ProtocolSource" BO_ 1553 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1553 14;
+BA_ "GenMsgSendType" BO_ 1553 0;
+BA_ "GenMsgCycleTime" BO_ 1553 200;
+BA_ "CANFD_BRS" BO_ 1553 0;
+BA_ "ValueTable" SG_ 1553 GPSFix "GPSFix";
+BA_ "ValueTable" SG_ 1553 GPSAntennaState "GPSAntennaState";
+BA_ "LayoutPending" BO_ 1554 0;
+BA_ "ProtocolSource" BO_ 1554 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1554 14;
+BA_ "GenMsgSendType" BO_ 1554 0;
+BA_ "GenMsgCycleTime" BO_ 1554 100;
+BA_ "CANFD_BRS" BO_ 1554 0;
+BA_ "ValueTable" SG_ 1554 MSVWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 LVCWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 PDUWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 PedalsWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 DEIWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 VCUWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 BPSWatchdog "Watchdog";
 BA_ "LayoutPending" BO_ 2045 0;
 BA_ "ProtocolSource" BO_ 2045 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 2045 0;
@@ -280,19 +280,19 @@ BA_ "ProtocolSource" BO_ 2047 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 2047 14;
 BA_ "GenMsgSendType" BO_ 2047 1;
 BA_ "CANFD_BRS" BO_ 2047 0;
-VAL_ 1569 ServerConnected 0 "Disconnected/Retrying" 1 "Connected" ;
-VAL_ 1569 InternetConnected 0 "Disconnected" 1 "Connected" ;
-VAL_ 1569 Roaming 0 "Off" 1 "On" ;
-VAL_ 1569 CellularTechnology 0 "None" 1 "LTE" 2 "LTE_M" 3 "NB_IoT" 4 "Other" ;
-VAL_ 1569 CellularConnected 0 "Disconnected" 1 "Connected" ;
-VAL_ 1570 GPSFix 0 "NoFix" 1 "Fix2D" 2 "Fix3D" ;
-VAL_ 1570 GPSAntennaState 0 "OK" 1 "OpenCircuit" 2 "ShortCircuit" 3 "Unknown" ;
-VAL_ 1571 MSVWatchdog 0 "Alive" 1 "TimedOut" ;
-VAL_ 1571 LVCWatchdog 0 "Alive" 1 "TimedOut" ;
-VAL_ 1571 PDUWatchdog 0 "Alive" 1 "TimedOut" ;
-VAL_ 1571 PedalsWatchdog 0 "Alive" 1 "TimedOut" ;
-VAL_ 1571 DEIWatchdog 0 "Alive" 1 "TimedOut" ;
-VAL_ 1571 VCUWatchdog 0 "Alive" 1 "TimedOut" ;
-VAL_ 1571 BPSWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1552 ServerConnected 0 "Disconnected/Retrying" 1 "Connected" ;
+VAL_ 1552 InternetConnected 0 "Disconnected" 1 "Connected" ;
+VAL_ 1552 Roaming 0 "Off" 1 "On" ;
+VAL_ 1552 CellularTechnology 0 "None" 1 "LTE" 2 "LTE_M" 3 "NB_IoT" 4 "Other" ;
+VAL_ 1552 CellularConnected 0 "Disconnected" 1 "Connected" ;
+VAL_ 1553 GPSFix 0 "NoFix" 1 "Fix2D" 2 "Fix3D" ;
+VAL_ 1553 GPSAntennaState 0 "OK" 1 "OpenCircuit" 2 "ShortCircuit" 3 "Unknown" ;
+VAL_ 1554 MSVWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 LVCWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 PDUWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 PedalsWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 DEIWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 VCUWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 BPSWatchdog 0 "Alive" 1 "TimedOut" ;
 SIG_VALTYPE_ 2045 Sine : 1;
 SIG_VALTYPE_ 2045 Cosine : 1;

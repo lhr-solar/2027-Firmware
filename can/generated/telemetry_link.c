@@ -7,9 +7,9 @@ _Static_assert(sizeof(float) == 4 && FLT_RADIX == 2 && FLT_MANT_DIG == 24 && FLT
 
 const telemetry_link_metadata_t telemetry_link = {
     .cm5 = {
-        .telemetry_status = { .id = UINT32_C(1569), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
-        .gps_data = { .id = UINT32_C(1570), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
-        .on_board_watchdog = { .id = UINT32_C(1571), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
+        .telemetry_status = { .id = UINT32_C(1552), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
+        .gps_data = { .id = UINT32_C(1553), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
+        .on_board_watchdog = { .id = UINT32_C(1554), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
         .sig_wave = { .id = UINT32_C(2045), .payload_bytes = 8, .wire_bytes = 8, .dlc = 8, .is_extended = false, .is_fd = false },
         .max_message_classical = { .id = UINT32_C(2046), .payload_bytes = 8, .wire_bytes = 8, .dlc = 8, .is_extended = false, .is_fd = false },
         .max_message_fd = { .id = UINT32_C(2047), .payload_bytes = 64, .wire_bytes = 64, .dlc = 15, .is_extended = false, .is_fd = true },
@@ -83,7 +83,7 @@ can_status_t telemetry_link_telemetry_status_pack(can_frame_t* dst, const teleme
         if (encoded > 127.0) encoded = 127.0;
         raw.sinr = (int8_t)encoded;
     }
-    can_frame_t result = { .id = UINT32_C(1569),
+    can_frame_t result = { .id = UINT32_C(1552),
         .len = 5, .is_extended = false,
         .is_fd = true };
     if (telemetry_link_raw_telemetry_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
@@ -93,7 +93,7 @@ can_status_t telemetry_link_telemetry_status_pack(can_frame_t* dst, const teleme
 
 can_status_t telemetry_link_telemetry_status_unpack(telemetry_link_telemetry_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1569) || src->len != 5 ||
+    if (src->id != UINT32_C(1552) || src->len != 5 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -190,7 +190,7 @@ can_status_t telemetry_link_gps_data_pack(can_frame_t* dst, const telemetry_link
         uint8_t value = src->satellites_in_use;
         raw.satellites_in_use = (uint8_t)value;
     }
-    can_frame_t result = { .id = UINT32_C(1570),
+    can_frame_t result = { .id = UINT32_C(1553),
         .len = 16, .is_extended = false,
         .is_fd = true };
     if (telemetry_link_raw_gps_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
@@ -200,7 +200,7 @@ can_status_t telemetry_link_gps_data_pack(can_frame_t* dst, const telemetry_link
 
 can_status_t telemetry_link_gps_data_unpack(telemetry_link_gps_data_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1570) || src->len != 16 ||
+    if (src->id != UINT32_C(1553) || src->len != 16 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -279,7 +279,7 @@ can_status_t telemetry_link_on_board_watchdog_pack(can_frame_t* dst, const telem
         }
         raw.msv_watchdog = (uint8_t)value;
     }
-    can_frame_t result = { .id = UINT32_C(1571),
+    can_frame_t result = { .id = UINT32_C(1554),
         .len = 1, .is_extended = false,
         .is_fd = true };
     if (telemetry_link_raw_on_board_watchdog_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
@@ -289,7 +289,7 @@ can_status_t telemetry_link_on_board_watchdog_pack(can_frame_t* dst, const telem
 
 can_status_t telemetry_link_on_board_watchdog_unpack(telemetry_link_on_board_watchdog_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1571) || src->len != 1 ||
+    if (src->id != UINT32_C(1554) || src->len != 1 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;

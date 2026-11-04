@@ -331,7 +331,7 @@ limitation. Python cantools can encode/decode all eight databases.
 | 0x690–0x691 | Front and rear strain gauges |
 
 Other slots in 0x630–0x6DF remain unallocated. Infrastructure retains
-TimestampSync 0x620 on DAqCAN; TelemetryStatus 0x621, GPSData 0x622 and OnBoardWatchdog 0x623 are TCP-only.
+TimestampSync 0x620 on DAqCAN; TelemetryStatus 0x610, GPSData 0x611 and OnBoardWatchdog 0x612 are TCP-only.
 Bootloader node IDs are independent and unchanged.
 
 Chassis acceleration and gyro sample at 208 Hz and send four samples per axis
@@ -481,7 +481,7 @@ are unchanged. Some payloads shrink when their sample-age fields are removed.
 
 ## GPS and lighting commands
 
-CM5 sends `GPSData` over telemetry TCP at 0x622 every 200 ms, containing GPS state,
+CM5 sends `GPSData` over telemetry TCP at 0x611 every 200 ms, containing GPS state,
 position, speed, heading, altitude and satellites. Cellular
 connection and radio measurements remain in TelemetryStatus. LightingCAN uses
 classic CAN: DEI sends `LightingCommand` at 0x083 every 200 ms with BlinkPhase,

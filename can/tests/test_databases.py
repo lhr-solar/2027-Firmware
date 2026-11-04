@@ -241,7 +241,7 @@ class DatabaseTests(unittest.TestCase):
 
     def test_tcp_only_messages_and_test_frames(self):
         tcp = self.databases["TelemetryLink"]
-        self.assertEqual({m.frame_id for m in tcp.messages}, {0x621, 0x622, 0x623, 0x7fd, 0x7fe, 0x7ff})
+        self.assertEqual({m.frame_id for m in tcp.messages}, {0x610, 0x611, 0x612, 0x7fd, 0x7fe, 0x7ff})
         self.assertTrue(all(m.senders == ["CM5"] for m in tcp.messages))
         wave = tcp.get_message_by_name("Sig_Wave")
         self.assertEqual(wave.encode({"Sine": 0.5, "Cosine": -0.5}), struct.pack("<ff", 0.5, -0.5))
@@ -263,7 +263,7 @@ class DatabaseTests(unittest.TestCase):
             message.frame_id for message in self.databases["DAqCAN"].messages
         }
         self.assertFalse(identifiers.intersection(range(0x63C, 0x640)))
-        status = self.message("TelemetryLink", 0x622)
+        status = self.message("TelemetryLink", 0x611)
         self.assertEqual(status.name, "GPSData")
         self.assertEqual(status.cycle_time, 200)
         self.assertEqual(
@@ -599,10 +599,10 @@ class DatabaseTests(unittest.TestCase):
         hmi = self.message("CarCAN", 0x82)
         self.assertEqual(hmi.name, "CM5Status")
         self.assertEqual(hmi.senders, ["CM5"])
-        self.assertEqual(self.message("TelemetryLink", 0x621).senders, ["CM5"])
+        self.assertEqual(self.message("TelemetryLink", 0x610).senders, ["CM5"])
         self.assertNotIn(
             "CM5Watchdog",
-            {signal.name for signal in self.message("TelemetryLink", 0x623).signals},
+            {signal.name for signal in self.message("TelemetryLink", 0x612).signals},
         )
         allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
         boards = {board["name"]: board for board in allocation["boards"]}
@@ -696,7 +696,7 @@ class DatabaseTests(unittest.TestCase):
         frame = sync.encode(values, scaling=False)
         self.assertEqual(frame, expected.to_bytes(5, "little"))
         self.assertEqual(sync.decode(frame, scaling=False, decode_choices=False), values)
-        self.assertEqual(self.message("TelemetryLink", 0x621).name, "TelemetryStatus")
+        self.assertEqual(self.message("TelemetryLink", 0x610).name, "TelemetryStatus")
         for message in self.databases["DAqCAN"].messages:
             if message is sync:
                 continue
@@ -706,7 +706,7 @@ class DatabaseTests(unittest.TestCase):
                                      (16, 0.1, 0, "ms"))
 
     def test_mika_server_connection_is_independent_of_internet(self):
-        for bus, identifier in (("CarCAN", 0x82), ("TelemetryLink", 0x621)):
+        for bus, identifier in (("CarCAN", 0x82), ("TelemetryLink", 0x610)):
             message = self.message(bus, identifier)
             server = message.get_signal_by_name("ServerConnected")
             internet = message.get_signal_by_name("InternetConnected")
