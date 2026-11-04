@@ -151,22 +151,29 @@ until reset. The DBC does not implement voltage limits, fault recovery,
 contactor behavior, or consumer timeouts. Thresholds, comparison boundaries,
 hysteresis, delay, and reset behavior require BPS firmware review.
 
-## Legacy timestamp and linpot formats
+## Timestamp synchronization and linpot formats
 
-`TimestampSync` at **0x620**, TX CM5, now uses the calibrated HighNoon sync
-layout: **two bytes**, unsigned 16-bit `Timestamp` at bit 0, little-endian,
-scale 1, offset 0. TimestampSync broadcasts every 10 ms, following the reviewed
-timing CSV. The legacy sender increments its raw counter once per broadcast
-(10 ms/count); epoch/interpolation semantics for this year still need firmware
-agreement.
-The 16-bit raw counter wraps after 65536 counts; its DBC scale remains 1.
-The message remains CAN-FD under this year's bus convention. The status message
-at **0x621** is named `TelemetryStatus`, also transmitted by CM5.
+`TimestampSync` (DAqCAN 0x620, CM5) is cyclic at 10 ms and uses a five-byte,
+two-step layout: `Sequence` and `PreviousSequence` are 8-bit wrapping sequence
+numbers, `PreviousTimestampValid` marks whether the prior transmit timestamp
+is available, and `PreviousTxTimestamp` is the actual prior sync transmit SOF
+in 16-bit 0.1 ms ticks. A node pairs that timestamp with its hardware receive
+SOF for the indicated sequence. It uses that clock mapping to report the time
+of its first sample in each sensor message's 16-bit `Timestamp` field.
 
-Suspension FR/FL/Rear at **0x670/0x671/0x672** each contain an unsigned 16-bit
-raw timestamp and **four unsigned 12-bit ADC/linpot values** in eight bytes.
-Fields are named `LinpotPosition1` through `LinpotPosition4`. This year's wire order is uniformly little-endian. Each channel uses
-last year's calibrated conversion:
+Both timestamps have a 0.1 ms scale, wrap modulo 65536 (6553.6 ms), and zero
+is a valid time. Extend the wrap using a recent reference; signed modular
+ordering is unambiguous only within 3276.8 ms. Reject stale or mismatched
+sequence pairs and reacquire synchronization after a long interruption or a
+restart. Local sample and SOF timestamps need a common timebase or a known
+conversion. Firmware must capture actual SOF times, perform synchronization,
+handle loss and clock drift, and confirm that CM5's CAN hardware and driver
+provide transmit SOF timestamps. The DBC only describes the wire contract.
+
+Suspension FR/FL/Rear at **0x670/0x671/0x672** each contain an unsigned
+16-bit synchronized timestamp and five consecutive 12-bit ADC samples from one linpot,
+named `LinpotPosition1` through `LinpotPosition5`. Sampling at 500 Hz produces
+one 12-byte message every 10 ms. Each sample uses last year's calibrated conversion:
 
 ```text
 position_mm = raw_adc * 0.0188885 + 1
@@ -327,12 +334,17 @@ Other slots in 0x630–0x6DF remain unallocated. Infrastructure retains
 TimestampSync 0x620 on DAqCAN; TelemetryStatus 0x621, GPSData 0x622 and OnBoardWatchdog 0x623 are TCP-only.
 Bootloader node IDs are independent and unchanged.
 
-Acceleration, gyro and wheel-speed frames contain four consecutive
-samples per axis/value. Number suffixes follow the quantity, for example
-`AccelerationX1` through `AccelerationX4`. Send only complete four-sample batches.
+Chassis acceleration and gyro sample at 208 Hz and send four samples per axis
+per frame: 52 frames/s, or about 19.23 ms per frame. Upright acceleration and
+gyro sample at 416 Hz and send four samples per axis per frame: 104 frames/s,
+or about 9.62 ms per frame. Because DBC cycle times are whole milliseconds,
+they record 19 ms and 10 ms respectively as nominal estimates. Firmware sends
+when each four-sample batch is ready; enforcing those rounded periods would not
+preserve the stated sample rates. Wheel speed samples at 100 Hz and sends five
+samples per 50 ms frame (20 frames/s).
 
-`Timestamp` identifies sample 1; its tick duration remains unresolved. Sample spacing
-is not encoded in these frames.
+`Timestamp` identifies sample 1 at 0.1 ms per tick. Sample spacing is not
+encoded in these frames.
 
 | Quantity | Encoding | Range |
 |---|---|---|
@@ -373,7 +385,7 @@ contract; firmware must implement the condition and capture behavior.
 On the first no-fault → fault transition, freeze the fault flags, last valid
 battery current and last completed cell voltage/temperature scans before
 shutdown where possible. No snapshot ID is included. CaptureTimeMs is BPS monotonic uptime in milliseconds, independent of the
-legacy TimestampSync unit. Keep captured data unchanged for that fault episode;
+the DAqCAN sync clock. Keep captured data unchanged for that fault episode;
 rearm once all faults clear. Never replace it with post-shutdown readings.
 The frames have no explicit cross-frame capture identifier.
 Each scan has a 32-bit validity mask (bit 0 is

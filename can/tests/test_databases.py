@@ -680,30 +680,30 @@ class DatabaseTests(unittest.TestCase):
             self.assertEqual(status.senders, ["BPS"])
         self.assertEqual(boards["DEI"]["node_id"], 7)
 
-    def test_legacy_timestamp_sync_and_names(self):
+    def test_two_step_timestamp_sync(self):
         sync = self.message("DAqCAN", 0x620)
-        self.assertEqual(sync.name, "TimestampSync")
-        self.assertEqual(sync.senders, ["CM5"])
-        self.assertEqual(sync.length, 2)
+        self.assertEqual((sync.name, sync.senders, sync.length, sync.cycle_time),
+                         ("TimestampSync", ["CM5"], 5, 10))
         self.assertTrue(sync.is_fd)
-        self.assertEqual(len(sync.signals), 1)
-        timestamp = sync.get_signal_by_name("Timestamp")
-        self.assertEqual(
-            (
-                timestamp.start,
-                timestamp.length,
-                timestamp.byte_order,
-                timestamp.is_signed,
-            ),
-            (0, 16, "little_endian", False),
-        )
-        self.assertEqual((timestamp.scale, timestamp.offset), (1, 0))
-        self.assertFalse(timestamp.unit)
-        self.assertIn("unresolved", timestamp.comment)
-        self.assertEqual(sync.encode({"Timestamp": 0x1234}), b"\x34\x12")
-        self.assertEqual(sync.encode({"Timestamp": 65535}), b"\xff\xff")
-        self.assertFalse(sync.dbc.attributes["LayoutPending"].value)
+        self.assertEqual([signal.name for signal in sync.signals],
+                         ["Sequence", "PreviousSequence", "PreviousTimestampValid", "PreviousTxTimestamp"])
+        timestamp = sync.get_signal_by_name("PreviousTxTimestamp")
+        self.assertEqual((timestamp.start, timestamp.length, timestamp.scale, timestamp.offset, timestamp.unit),
+                         (17, 16, 0.1, 0, "ms"))
+        values = {"Sequence": 0, "PreviousSequence": 255,
+                  "PreviousTimestampValid": 1, "PreviousTxTimestamp": 65535}
+        expected = (255 << 8) | (1 << 16) | (65535 << 17)
+        frame = sync.encode(values, scaling=False)
+        self.assertEqual(frame, expected.to_bytes(5, "little"))
+        self.assertEqual(sync.decode(frame, scaling=False, decode_choices=False), values)
         self.assertEqual(self.message("TelemetryLink", 0x621).name, "TelemetryStatus")
+        for message in self.databases["DAqCAN"].messages:
+            if message is sync:
+                continue
+            for signal in message.signals:
+                if signal.name == "Timestamp":
+                    self.assertEqual((signal.length, signal.scale, signal.offset, signal.unit),
+                                     (16, 0.1, 0, "ms"))
 
     def test_mika_server_connection_is_independent_of_internet(self):
         for bus, identifier in (("CarCAN", 0x82), ("TelemetryLink", 0x621)):
@@ -725,12 +725,13 @@ class DatabaseTests(unittest.TestCase):
     def test_legacy_linpot_adc_calibration(self):
         for identifier in (0x670, 0x671, 0x672):
             message = self.message("DAqCAN", identifier)
-            self.assertEqual(message.length, 8)
+            self.assertEqual(message.length, 12)
             self.assertFalse(message.dbc.attributes["LayoutPending"].value)
-            self.assertEqual(len(message.signals), 5)
+            self.assertEqual(len(message.signals), 6)
+            self.assertEqual(message.cycle_time, 10)
             raw = {"Timestamp": 0x1234}
             packed = 0x1234
-            for channel, count in enumerate((0, 1, 2048, 4095), 1):
+            for channel, count in enumerate((0, 1, 2048, 4094, 4095), 1):
                 signal = message.get_signal_by_name(f"LinpotPosition{channel}")
                 self.assertEqual(
                     (signal.start, signal.length, signal.byte_order),
@@ -742,9 +743,9 @@ class DatabaseTests(unittest.TestCase):
                 raw[signal.name] = count
                 packed |= count << signal.start
             frame = message.encode(raw, scaling=False)
-            self.assertEqual(frame, packed.to_bytes(8, "little"))
+            self.assertEqual(frame, packed.to_bytes(12, "little"))
             decoded = message.decode(frame, decode_choices=False)
-            for channel, count in enumerate((0, 1, 2048, 4095), 1):
+            for channel, count in enumerate((0, 1, 2048, 4094, 4095), 1):
                 self.assertAlmostEqual(
                     decoded[f"LinpotPosition{channel}"], count * 0.0188885 + 1
                 )
@@ -764,6 +765,8 @@ class DatabaseTests(unittest.TestCase):
             for index, measurement in enumerate(measurements):
                 message = self.message("DAqCAN", base + index)
                 self.assertEqual(message.name, f"{board}{measurement}Data")
+                expected_period = 19 if board == "Chassis" else 50 if measurement == "WheelSpeed" else 10
+                self.assertEqual(message.cycle_time, expected_period)
                 self.assertLessEqual(message.length, 64)
                 self.assertNotIn("SampleIntervalTicks", {signal.name for signal in message.signals})
                 raw = {"Timestamp": 0x1234}
@@ -771,13 +774,13 @@ class DatabaseTests(unittest.TestCase):
                 samples = [
                     signal for signal in message.signals if signal.name not in raw
                 ]
-                self.assertEqual(len(samples), 4 if measurement == "WheelSpeed" else 12)
+                self.assertEqual(len(samples), 5 if measurement == "WheelSpeed" else 12)
                 for signal in samples:
                     sample = int(signal.name[-1]) - 1
                     value = (
                         (-6, -2, 4, 8)[sample]
                         if signal.is_signed
-                        else (0, 2, 4, 6)[sample]
+                        else (0, 2, 4, 6, 8)[sample]
                     )
                     raw[signal.name] = value
                     packed |= (value & ((1 << signal.length) - 1)) << signal.start

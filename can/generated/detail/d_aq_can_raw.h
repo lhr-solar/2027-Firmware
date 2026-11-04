@@ -67,21 +67,21 @@ extern "C" {
 #define D_AQ_CAN_RAW_STRAIN_GAUGE_REAR_DATA_FRAME_ID (0x691u)
 
 /* Frame lengths in bytes. */
-#define D_AQ_CAN_RAW_TIMESTAMP_SYNC_LENGTH (2u)
+#define D_AQ_CAN_RAW_TIMESTAMP_SYNC_LENGTH (5u)
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_LENGTH (24u)
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_LENGTH (32u)
-#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_LENGTH (8u)
+#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_LENGTH (12u)
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_LENGTH (32u)
-#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_LENGTH (8u)
+#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_LENGTH (12u)
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_LENGTH (32u)
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_LENGTH (32u)
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_LENGTH (8u)
-#define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LENGTH (8u)
-#define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LENGTH (8u)
-#define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LENGTH (8u)
+#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_LENGTH (12u)
+#define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LENGTH (12u)
+#define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LENGTH (12u)
+#define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LENGTH (12u)
 #define D_AQ_CAN_RAW_BLACKBODY1_DATA_LENGTH (0u)
 #define D_AQ_CAN_RAW_BLACKBODY2_DATA_LENGTH (0u)
 #define D_AQ_CAN_RAW_BLACKBODY3_DATA_LENGTH (0u)
@@ -112,17 +112,17 @@ extern "C" {
 
 /* Frame cycle times in milliseconds. */
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_CYCLE_TIME_MS (10u)
-#define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_CYCLE_TIME_MS (20u)
-#define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_CYCLE_TIME_MS (20u)
-#define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_CYCLE_TIME_MS (20u)
-#define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_CYCLE_TIME_MS (20u)
-#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_CYCLE_TIME_MS (20u)
-#define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_CYCLE_TIME_MS (20u)
-#define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_CYCLE_TIME_MS (20u)
-#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_CYCLE_TIME_MS (20u)
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_CYCLE_TIME_MS (20u)
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_CYCLE_TIME_MS (20u)
-#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_CYCLE_TIME_MS (20u)
+#define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_CYCLE_TIME_MS (19u)
+#define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_CYCLE_TIME_MS (19u)
+#define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_CYCLE_TIME_MS (10u)
+#define D_AQ_CAN_RAW_UPRIGHT_FR_GYRO_DATA_CYCLE_TIME_MS (10u)
+#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_CYCLE_TIME_MS (50u)
+#define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_CYCLE_TIME_MS (10u)
+#define D_AQ_CAN_RAW_UPRIGHT_FL_GYRO_DATA_CYCLE_TIME_MS (10u)
+#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_CYCLE_TIME_MS (50u)
+#define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_CYCLE_TIME_MS (10u)
+#define D_AQ_CAN_RAW_UPRIGHT_REAR_GYRO_DATA_CYCLE_TIME_MS (10u)
+#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_CYCLE_TIME_MS (50u)
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_CYCLE_TIME_MS (10u)
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_CYCLE_TIME_MS (10u)
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_CYCLE_TIME_MS (10u)
@@ -133,7 +133,8 @@ extern "C" {
 #define D_AQ_CAN_RAW_STRAIN_GAUGE_REAR_DATA_CYCLE_TIME_MS (10u)
 
 /* Signal choices. */
-
+#define D_AQ_CAN_RAW_TIMESTAMP_SYNC_PREVIOUS_TIMESTAMP_VALID_INVALID_CHOICE (0u)
+#define D_AQ_CAN_RAW_TIMESTAMP_SYNC_PREVIOUS_TIMESTAMP_VALID_VALID_CHOICE (1u)
 
 /* Frame Names. */
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_NAME "TimestampSync"
@@ -158,7 +159,10 @@ extern "C" {
 #define D_AQ_CAN_RAW_STRAIN_GAUGE_REAR_DATA_NAME "StrainGaugeRearData"
 
 /* Signal Names. */
-#define D_AQ_CAN_RAW_TIMESTAMP_SYNC_TIMESTAMP_NAME "Timestamp"
+#define D_AQ_CAN_RAW_TIMESTAMP_SYNC_SEQUENCE_NAME "Sequence"
+#define D_AQ_CAN_RAW_TIMESTAMP_SYNC_PREVIOUS_SEQUENCE_NAME "PreviousSequence"
+#define D_AQ_CAN_RAW_TIMESTAMP_SYNC_PREVIOUS_TIMESTAMP_VALID_NAME "PreviousTimestampValid"
+#define D_AQ_CAN_RAW_TIMESTAMP_SYNC_PREVIOUS_TX_TIMESTAMP_NAME "PreviousTxTimestamp"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_ACCELERATION_X2_NAME "AccelerationX2"
@@ -216,6 +220,7 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM2_NAME "WheelRPM2"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
 #define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM4_NAME "WheelRPM4"
+#define D_AQ_CAN_RAW_UPRIGHT_FR_WHEEL_SPEED_DATA_WHEEL_RPM5_NAME "WheelRPM5"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_ACCELERATION_DATA_ACCELERATION_X2_NAME "AccelerationX2"
@@ -247,6 +252,7 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM2_NAME "WheelRPM2"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
 #define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM4_NAME "WheelRPM4"
+#define D_AQ_CAN_RAW_UPRIGHT_FL_WHEEL_SPEED_DATA_WHEEL_RPM5_NAME "WheelRPM5"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_X1_NAME "AccelerationX1"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_ACCELERATION_DATA_ACCELERATION_X2_NAME "AccelerationX2"
@@ -278,50 +284,81 @@ extern "C" {
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM2_NAME "WheelRPM2"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM3_NAME "WheelRPM3"
 #define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM4_NAME "WheelRPM4"
+#define D_AQ_CAN_RAW_UPRIGHT_REAR_WHEEL_SPEED_DATA_WHEEL_RPM5_NAME "WheelRPM5"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION1_NAME "LinpotPosition1"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION2_NAME "LinpotPosition2"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION3_NAME "LinpotPosition3"
 #define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION4_NAME "LinpotPosition4"
+#define D_AQ_CAN_RAW_SUSPENSION_FR_DATA_LINPOT_POSITION5_NAME "LinpotPosition5"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION1_NAME "LinpotPosition1"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION2_NAME "LinpotPosition2"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION3_NAME "LinpotPosition3"
 #define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION4_NAME "LinpotPosition4"
+#define D_AQ_CAN_RAW_SUSPENSION_FL_DATA_LINPOT_POSITION5_NAME "LinpotPosition5"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_TIMESTAMP_NAME "Timestamp"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION1_NAME "LinpotPosition1"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION2_NAME "LinpotPosition2"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION3_NAME "LinpotPosition3"
 #define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION4_NAME "LinpotPosition4"
+#define D_AQ_CAN_RAW_SUSPENSION_REAR_DATA_LINPOT_POSITION5_NAME "LinpotPosition5"
 
 /**
  * Signals in message TimestampSync.
  *
- * CM5 timestamp synchronization: legacy two-byte unsigned little-endian raw count. New allocation ID 0x620 and CAN-FD retained; time unit/epoch/period are not specified.
+ * Two-step 100 Hz sync. CM5 sends the actual hardware transmit SOF timestamp of a previous sync. Nodes match PreviousSequence to a hardware receive SOF; timestamps use 0.1 ms ticks modulo 65536. A DBC does not implement the synchronization.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_timestamp_sync_t {
     /**
-     * Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks.
+     * Sequence number of this sync frame; wraps modulo 256.
      *
      * Range: -
      * Scale: 1
      * Offset: 0
      */
-    uint16_t timestamp;
+    uint8_t sequence;
+
+    /**
+     * Sequence identifying the frame whose transmit SOF is reported.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t previous_sequence;
+
+    /**
+     * Valid only when the preceding transmit SOF timestamp was captured; 0 at startup or capture failure.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t previous_timestamp_valid;
+
+    /**
+     * Actual leader transmit SOF time of PreviousSequence in 0.1 ms ticks; wraps every 6553.6 ms. Ignore when PreviousTimestampValid is invalid.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint16_t previous_tx_timestamp;
 };
 
 /**
  * Signals in message ChassisAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
+ * Four consecutive samples per axis at 208 Hz; one frame per four samples is 52 Hz (19.2308 ms). DBC 19 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_chassis_acceleration_data_t {
     /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -441,13 +478,13 @@ struct d_aq_can_raw_chassis_acceleration_data_t {
 /**
  * Signals in message ChassisGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
+ * Four consecutive samples per axis at 208 Hz; one frame per four samples is 52 Hz (19.2308 ms). DBC 19 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_chassis_gyro_data_t {
     /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -567,13 +604,13 @@ struct d_aq_can_raw_chassis_gyro_data_t {
 /**
  * Signals in message UprightFRAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
+ * Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_upright_fr_acceleration_data_t {
     /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -693,13 +730,13 @@ struct d_aq_can_raw_upright_fr_acceleration_data_t {
 /**
  * Signals in message UprightFRGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
+ * Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_upright_fr_gyro_data_t {
     /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -819,13 +856,13 @@ struct d_aq_can_raw_upright_fr_gyro_data_t {
 /**
  * Signals in message UprightFRWheelSpeedData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
+ * Five chronological wheel-speed samples per message at a 100 Hz sample rate (20 Hz message rate). Timestamp identifies the first sample.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_upright_fr_wheel_speed_data_t {
     /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -868,18 +905,27 @@ struct d_aq_can_raw_upright_fr_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t wheel_rpm4;
+
+    /**
+     * Chronological sample 5 of WheelRPM; 100 Hz sampling, five samples per message.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint16_t wheel_rpm5;
 };
 
 /**
  * Signals in message UprightFLAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
+ * Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_upright_fl_acceleration_data_t {
     /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -999,13 +1045,13 @@ struct d_aq_can_raw_upright_fl_acceleration_data_t {
 /**
  * Signals in message UprightFLGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
+ * Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_upright_fl_gyro_data_t {
     /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -1125,13 +1171,13 @@ struct d_aq_can_raw_upright_fl_gyro_data_t {
 /**
  * Signals in message UprightFLWheelSpeedData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
+ * Five chronological wheel-speed samples per message at a 100 Hz sample rate (20 Hz message rate). Timestamp identifies the first sample.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_upright_fl_wheel_speed_data_t {
     /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -1174,18 +1220,27 @@ struct d_aq_can_raw_upright_fl_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t wheel_rpm4;
+
+    /**
+     * Chronological sample 5 of WheelRPM; 100 Hz sampling, five samples per message.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint16_t wheel_rpm5;
 };
 
 /**
  * Signals in message UprightRearAccelerationData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
+ * Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_upright_rear_acceleration_data_t {
     /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -1305,13 +1360,13 @@ struct d_aq_can_raw_upright_rear_acceleration_data_t {
 /**
  * Signals in message UprightRearGyroData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
+ * Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_upright_rear_gyro_data_t {
     /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -1431,13 +1486,13 @@ struct d_aq_can_raw_upright_rear_gyro_data_t {
 /**
  * Signals in message UprightRearWheelSpeedData.
  *
- * Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware.
+ * Five chronological wheel-speed samples per message at a 100 Hz sample rate (20 Hz message rate). Timestamp identifies the first sample.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_upright_rear_wheel_speed_data_t {
     /**
-     * Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -1480,18 +1535,27 @@ struct d_aq_can_raw_upright_rear_wheel_speed_data_t {
      * Offset: 0
      */
     uint16_t wheel_rpm4;
+
+    /**
+     * Chronological sample 5 of WheelRPM; 100 Hz sampling, five samples per message.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint16_t wheel_rpm5;
 };
 
 /**
  * Signals in message SuspensionFRData.
  *
- * Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples.
+ * One linpot sampled at 500 Hz; five consecutive samples per frame at 100 Hz. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. Legacy 12-bit ADC calibration retained.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_suspension_fr_data_t {
     /**
-     * Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -1500,7 +1564,7 @@ struct d_aq_can_raw_suspension_fr_data_t {
     uint16_t timestamp;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 1 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
@@ -1509,7 +1573,7 @@ struct d_aq_can_raw_suspension_fr_data_t {
     uint16_t linpot_position1;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 2 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
@@ -1518,7 +1582,7 @@ struct d_aq_can_raw_suspension_fr_data_t {
     uint16_t linpot_position2;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 3 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
@@ -1527,25 +1591,34 @@ struct d_aq_can_raw_suspension_fr_data_t {
     uint16_t linpot_position3;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 4 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
      * Offset: 0
      */
     uint16_t linpot_position4;
+
+    /**
+     * Chronological sample 5 from the board linpot; legacy 12-bit ADC scale and offset.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint16_t linpot_position5;
 };
 
 /**
  * Signals in message SuspensionFLData.
  *
- * Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples.
+ * One linpot sampled at 500 Hz; five consecutive samples per frame at 100 Hz. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. Legacy 12-bit ADC calibration retained.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_suspension_fl_data_t {
     /**
-     * Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -1554,7 +1627,7 @@ struct d_aq_can_raw_suspension_fl_data_t {
     uint16_t timestamp;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 1 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
@@ -1563,7 +1636,7 @@ struct d_aq_can_raw_suspension_fl_data_t {
     uint16_t linpot_position1;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 2 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
@@ -1572,7 +1645,7 @@ struct d_aq_can_raw_suspension_fl_data_t {
     uint16_t linpot_position2;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 3 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
@@ -1581,25 +1654,34 @@ struct d_aq_can_raw_suspension_fl_data_t {
     uint16_t linpot_position3;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 4 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
      * Offset: 0
      */
     uint16_t linpot_position4;
+
+    /**
+     * Chronological sample 5 from the board linpot; legacy 12-bit ADC scale and offset.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint16_t linpot_position5;
 };
 
 /**
  * Signals in message SuspensionRearData.
  *
- * Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples.
+ * One linpot sampled at 500 Hz; five consecutive samples per frame at 100 Hz. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. Legacy 12-bit ADC calibration retained.
  *
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_suspension_rear_data_t {
     /**
-     * Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks.
+     * Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.
      *
      * Range: -
      * Scale: 1
@@ -1608,7 +1690,7 @@ struct d_aq_can_raw_suspension_rear_data_t {
     uint16_t timestamp;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 1 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
@@ -1617,7 +1699,7 @@ struct d_aq_can_raw_suspension_rear_data_t {
     uint16_t linpot_position1;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 2 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
@@ -1626,7 +1708,7 @@ struct d_aq_can_raw_suspension_rear_data_t {
     uint16_t linpot_position2;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 3 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
@@ -1635,13 +1717,22 @@ struct d_aq_can_raw_suspension_rear_data_t {
     uint16_t linpot_position3;
 
     /**
-     * Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year.
+     * Chronological sample 4 from the board linpot; legacy 12-bit ADC scale and offset.
      *
      * Range: -
      * Scale: 1
      * Offset: 0
      */
     uint16_t linpot_position4;
+
+    /**
+     * Chronological sample 5 from the board linpot; legacy 12-bit ADC scale and offset.
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint16_t linpot_position5;
 };
 
 /**
@@ -1758,7 +1849,34 @@ int d_aq_can_raw_timestamp_sync_init(struct d_aq_can_raw_timestamp_sync_t *msg_p
  *
  * @return true if in range, false otherwise.
  */
-bool d_aq_can_raw_timestamp_sync_timestamp_is_in_range(uint16_t value);
+bool d_aq_can_raw_timestamp_sync_sequence_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool d_aq_can_raw_timestamp_sync_previous_sequence_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool d_aq_can_raw_timestamp_sync_previous_timestamp_valid_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool d_aq_can_raw_timestamp_sync_previous_tx_timestamp_is_in_range(uint16_t value);
 
 /**
  * Pack message ChassisAccelerationData.
@@ -2459,6 +2577,15 @@ bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm3_is_in_range(uint16_t va
 bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t value);
 
 /**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm5_is_in_range(uint16_t value);
+
+/**
  * Pack message UprightFLAccelerationData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -2847,6 +2974,15 @@ bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm3_is_in_range(uint16_t va
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm5_is_in_range(uint16_t value);
 
 /**
  * Pack message UprightRearAccelerationData.
@@ -3239,6 +3375,15 @@ bool d_aq_can_raw_upright_rear_wheel_speed_data_wheel_rpm3_is_in_range(uint16_t 
 bool d_aq_can_raw_upright_rear_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t value);
 
 /**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool d_aq_can_raw_upright_rear_wheel_speed_data_wheel_rpm5_is_in_range(uint16_t value);
+
+/**
  * Pack message SuspensionFRData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -3319,6 +3464,15 @@ bool d_aq_can_raw_suspension_fr_data_linpot_position3_is_in_range(uint16_t value
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_suspension_fr_data_linpot_position4_is_in_range(uint16_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool d_aq_can_raw_suspension_fr_data_linpot_position5_is_in_range(uint16_t value);
 
 /**
  * Pack message SuspensionFLData.
@@ -3403,6 +3557,15 @@ bool d_aq_can_raw_suspension_fl_data_linpot_position3_is_in_range(uint16_t value
 bool d_aq_can_raw_suspension_fl_data_linpot_position4_is_in_range(uint16_t value);
 
 /**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool d_aq_can_raw_suspension_fl_data_linpot_position5_is_in_range(uint16_t value);
+
+/**
  * Pack message SuspensionRearData.
  *
  * @param[out] dst_p Buffer to pack the message into.
@@ -3483,6 +3646,15 @@ bool d_aq_can_raw_suspension_rear_data_linpot_position3_is_in_range(uint16_t val
  * @return true if in range, false otherwise.
  */
 bool d_aq_can_raw_suspension_rear_data_linpot_position4_is_in_range(uint16_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool d_aq_can_raw_suspension_rear_data_linpot_position5_is_in_range(uint16_t value);
 
 /**
  * Pack message Blackbody1Data.

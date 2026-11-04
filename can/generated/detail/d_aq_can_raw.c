@@ -33,6 +33,14 @@
 
 #include "d_aq_can_raw.h"
 
+static inline uint8_t pack_left_shift_u8(
+    uint8_t value,
+    uint8_t shift,
+    uint8_t mask)
+{
+    return (uint8_t)((uint8_t)(value << shift) & mask);
+}
+
 static inline uint8_t pack_left_shift_u16(
     uint16_t value,
     uint8_t shift,
@@ -57,6 +65,14 @@ static inline uint16_t unpack_left_shift_u16(
     return (uint16_t)((uint16_t)(value & mask) << shift);
 }
 
+static inline uint8_t unpack_right_shift_u8(
+    uint8_t value,
+    uint8_t shift,
+    uint8_t mask)
+{
+    return (uint8_t)((uint8_t)(value & mask) >> shift);
+}
+
 static inline uint16_t unpack_right_shift_u16(
     uint8_t value,
     uint8_t shift,
@@ -70,16 +86,20 @@ int d_aq_can_raw_timestamp_sync_pack(
     const struct d_aq_can_raw_timestamp_sync_t *src_p,
     size_t size)
 {
-    if (size < 2u) {
+    if (size < 5u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 2);
+    memset(&dst_p[0], 0, 5);
 
-    dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
-    dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
+    dst_p[0] |= pack_left_shift_u8(src_p->sequence, 0u, 0xffu);
+    dst_p[1] |= pack_left_shift_u8(src_p->previous_sequence, 0u, 0xffu);
+    dst_p[2] |= pack_left_shift_u8(src_p->previous_timestamp_valid, 0u, 0x01u);
+    dst_p[2] |= pack_left_shift_u16(src_p->previous_tx_timestamp, 1u, 0xfeu);
+    dst_p[3] |= pack_right_shift_u16(src_p->previous_tx_timestamp, 7u, 0xffu);
+    dst_p[4] |= pack_right_shift_u16(src_p->previous_tx_timestamp, 15u, 0x01u);
 
-    return (2);
+    return (5);
 }
 
 int d_aq_can_raw_timestamp_sync_unpack(
@@ -87,12 +107,16 @@ int d_aq_can_raw_timestamp_sync_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 2u) {
+    if (size < 5u) {
         return (-EINVAL);
     }
 
-    dst_p->timestamp = unpack_right_shift_u16(src_p[0], 0u, 0xffu);
-    dst_p->timestamp |= unpack_left_shift_u16(src_p[1], 8u, 0xffu);
+    dst_p->sequence = unpack_right_shift_u8(src_p[0], 0u, 0xffu);
+    dst_p->previous_sequence = unpack_right_shift_u8(src_p[1], 0u, 0xffu);
+    dst_p->previous_timestamp_valid = unpack_right_shift_u8(src_p[2], 0u, 0x01u);
+    dst_p->previous_tx_timestamp = unpack_right_shift_u16(src_p[2], 1u, 0xfeu);
+    dst_p->previous_tx_timestamp |= unpack_left_shift_u16(src_p[3], 7u, 0xffu);
+    dst_p->previous_tx_timestamp |= unpack_left_shift_u16(src_p[4], 15u, 0x01u);
 
     return (0);
 }
@@ -106,7 +130,26 @@ int d_aq_can_raw_timestamp_sync_init(struct d_aq_can_raw_timestamp_sync_t *msg_p
     return 0;
 }
 
-bool d_aq_can_raw_timestamp_sync_timestamp_is_in_range(uint16_t value)
+bool d_aq_can_raw_timestamp_sync_sequence_is_in_range(uint8_t value)
+{
+    (void)value;
+
+    return (true);
+}
+
+bool d_aq_can_raw_timestamp_sync_previous_sequence_is_in_range(uint8_t value)
+{
+    (void)value;
+
+    return (true);
+}
+
+bool d_aq_can_raw_timestamp_sync_previous_timestamp_valid_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool d_aq_can_raw_timestamp_sync_previous_tx_timestamp_is_in_range(uint16_t value)
 {
     (void)value;
 
@@ -1140,11 +1183,11 @@ int d_aq_can_raw_upright_fr_wheel_speed_data_pack(
     const struct d_aq_can_raw_upright_fr_wheel_speed_data_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 8);
+    memset(&dst_p[0], 0, 12);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
@@ -1156,8 +1199,10 @@ int d_aq_can_raw_upright_fr_wheel_speed_data_pack(
     dst_p[6] |= pack_right_shift_u16(src_p->wheel_rpm3, 8u, 0x0fu);
     dst_p[6] |= pack_left_shift_u16(src_p->wheel_rpm4, 4u, 0xf0u);
     dst_p[7] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
+    dst_p[8] |= pack_left_shift_u16(src_p->wheel_rpm5, 0u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(src_p->wheel_rpm5, 8u, 0x0fu);
 
-    return (8);
+    return (12);
 }
 
 int d_aq_can_raw_upright_fr_wheel_speed_data_unpack(
@@ -1165,7 +1210,7 @@ int d_aq_can_raw_upright_fr_wheel_speed_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
@@ -1179,6 +1224,8 @@ int d_aq_can_raw_upright_fr_wheel_speed_data_unpack(
     dst_p->wheel_rpm3 |= unpack_left_shift_u16(src_p[6], 8u, 0x0fu);
     dst_p->wheel_rpm4 = unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
     dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
+    dst_p->wheel_rpm5 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
+    dst_p->wheel_rpm5 |= unpack_left_shift_u16(src_p[9], 8u, 0x0fu);
 
     return (0);
 }
@@ -1215,6 +1262,11 @@ bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm3_is_in_range(uint16_t va
 }
 
 bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t value)
+{
+    return (value <= 4095u);
+}
+
+bool d_aq_can_raw_upright_fr_wheel_speed_data_wheel_rpm5_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
 }
@@ -1738,11 +1790,11 @@ int d_aq_can_raw_upright_fl_wheel_speed_data_pack(
     const struct d_aq_can_raw_upright_fl_wheel_speed_data_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 8);
+    memset(&dst_p[0], 0, 12);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
@@ -1754,8 +1806,10 @@ int d_aq_can_raw_upright_fl_wheel_speed_data_pack(
     dst_p[6] |= pack_right_shift_u16(src_p->wheel_rpm3, 8u, 0x0fu);
     dst_p[6] |= pack_left_shift_u16(src_p->wheel_rpm4, 4u, 0xf0u);
     dst_p[7] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
+    dst_p[8] |= pack_left_shift_u16(src_p->wheel_rpm5, 0u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(src_p->wheel_rpm5, 8u, 0x0fu);
 
-    return (8);
+    return (12);
 }
 
 int d_aq_can_raw_upright_fl_wheel_speed_data_unpack(
@@ -1763,7 +1817,7 @@ int d_aq_can_raw_upright_fl_wheel_speed_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
@@ -1777,6 +1831,8 @@ int d_aq_can_raw_upright_fl_wheel_speed_data_unpack(
     dst_p->wheel_rpm3 |= unpack_left_shift_u16(src_p[6], 8u, 0x0fu);
     dst_p->wheel_rpm4 = unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
     dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
+    dst_p->wheel_rpm5 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
+    dst_p->wheel_rpm5 |= unpack_left_shift_u16(src_p[9], 8u, 0x0fu);
 
     return (0);
 }
@@ -1813,6 +1869,11 @@ bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm3_is_in_range(uint16_t va
 }
 
 bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t value)
+{
+    return (value <= 4095u);
+}
+
+bool d_aq_can_raw_upright_fl_wheel_speed_data_wheel_rpm5_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
 }
@@ -2336,11 +2397,11 @@ int d_aq_can_raw_upright_rear_wheel_speed_data_pack(
     const struct d_aq_can_raw_upright_rear_wheel_speed_data_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 8);
+    memset(&dst_p[0], 0, 12);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
@@ -2352,8 +2413,10 @@ int d_aq_can_raw_upright_rear_wheel_speed_data_pack(
     dst_p[6] |= pack_right_shift_u16(src_p->wheel_rpm3, 8u, 0x0fu);
     dst_p[6] |= pack_left_shift_u16(src_p->wheel_rpm4, 4u, 0xf0u);
     dst_p[7] |= pack_right_shift_u16(src_p->wheel_rpm4, 4u, 0xffu);
+    dst_p[8] |= pack_left_shift_u16(src_p->wheel_rpm5, 0u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(src_p->wheel_rpm5, 8u, 0x0fu);
 
-    return (8);
+    return (12);
 }
 
 int d_aq_can_raw_upright_rear_wheel_speed_data_unpack(
@@ -2361,7 +2424,7 @@ int d_aq_can_raw_upright_rear_wheel_speed_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
@@ -2375,6 +2438,8 @@ int d_aq_can_raw_upright_rear_wheel_speed_data_unpack(
     dst_p->wheel_rpm3 |= unpack_left_shift_u16(src_p[6], 8u, 0x0fu);
     dst_p->wheel_rpm4 = unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
     dst_p->wheel_rpm4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
+    dst_p->wheel_rpm5 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
+    dst_p->wheel_rpm5 |= unpack_left_shift_u16(src_p[9], 8u, 0x0fu);
 
     return (0);
 }
@@ -2415,16 +2480,21 @@ bool d_aq_can_raw_upright_rear_wheel_speed_data_wheel_rpm4_is_in_range(uint16_t 
     return (value <= 4095u);
 }
 
+bool d_aq_can_raw_upright_rear_wheel_speed_data_wheel_rpm5_is_in_range(uint16_t value)
+{
+    return (value <= 4095u);
+}
+
 int d_aq_can_raw_suspension_fr_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_suspension_fr_data_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 8);
+    memset(&dst_p[0], 0, 12);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
@@ -2436,8 +2506,10 @@ int d_aq_can_raw_suspension_fr_data_pack(
     dst_p[6] |= pack_right_shift_u16(src_p->linpot_position3, 8u, 0x0fu);
     dst_p[6] |= pack_left_shift_u16(src_p->linpot_position4, 4u, 0xf0u);
     dst_p[7] |= pack_right_shift_u16(src_p->linpot_position4, 4u, 0xffu);
+    dst_p[8] |= pack_left_shift_u16(src_p->linpot_position5, 0u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(src_p->linpot_position5, 8u, 0x0fu);
 
-    return (8);
+    return (12);
 }
 
 int d_aq_can_raw_suspension_fr_data_unpack(
@@ -2445,7 +2517,7 @@ int d_aq_can_raw_suspension_fr_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
@@ -2459,6 +2531,8 @@ int d_aq_can_raw_suspension_fr_data_unpack(
     dst_p->linpot_position3 |= unpack_left_shift_u16(src_p[6], 8u, 0x0fu);
     dst_p->linpot_position4 = unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
     dst_p->linpot_position4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
+    dst_p->linpot_position5 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
+    dst_p->linpot_position5 |= unpack_left_shift_u16(src_p[9], 8u, 0x0fu);
 
     return (0);
 }
@@ -2499,16 +2573,21 @@ bool d_aq_can_raw_suspension_fr_data_linpot_position4_is_in_range(uint16_t value
     return (value <= 4095u);
 }
 
+bool d_aq_can_raw_suspension_fr_data_linpot_position5_is_in_range(uint16_t value)
+{
+    return (value <= 4095u);
+}
+
 int d_aq_can_raw_suspension_fl_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_suspension_fl_data_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 8);
+    memset(&dst_p[0], 0, 12);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
@@ -2520,8 +2599,10 @@ int d_aq_can_raw_suspension_fl_data_pack(
     dst_p[6] |= pack_right_shift_u16(src_p->linpot_position3, 8u, 0x0fu);
     dst_p[6] |= pack_left_shift_u16(src_p->linpot_position4, 4u, 0xf0u);
     dst_p[7] |= pack_right_shift_u16(src_p->linpot_position4, 4u, 0xffu);
+    dst_p[8] |= pack_left_shift_u16(src_p->linpot_position5, 0u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(src_p->linpot_position5, 8u, 0x0fu);
 
-    return (8);
+    return (12);
 }
 
 int d_aq_can_raw_suspension_fl_data_unpack(
@@ -2529,7 +2610,7 @@ int d_aq_can_raw_suspension_fl_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
@@ -2543,6 +2624,8 @@ int d_aq_can_raw_suspension_fl_data_unpack(
     dst_p->linpot_position3 |= unpack_left_shift_u16(src_p[6], 8u, 0x0fu);
     dst_p->linpot_position4 = unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
     dst_p->linpot_position4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
+    dst_p->linpot_position5 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
+    dst_p->linpot_position5 |= unpack_left_shift_u16(src_p[9], 8u, 0x0fu);
 
     return (0);
 }
@@ -2583,16 +2666,21 @@ bool d_aq_can_raw_suspension_fl_data_linpot_position4_is_in_range(uint16_t value
     return (value <= 4095u);
 }
 
+bool d_aq_can_raw_suspension_fl_data_linpot_position5_is_in_range(uint16_t value)
+{
+    return (value <= 4095u);
+}
+
 int d_aq_can_raw_suspension_rear_data_pack(
     uint8_t *dst_p,
     const struct d_aq_can_raw_suspension_rear_data_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 8);
+    memset(&dst_p[0], 0, 12);
 
     dst_p[0] |= pack_left_shift_u16(src_p->timestamp, 0u, 0xffu);
     dst_p[1] |= pack_right_shift_u16(src_p->timestamp, 8u, 0xffu);
@@ -2604,8 +2692,10 @@ int d_aq_can_raw_suspension_rear_data_pack(
     dst_p[6] |= pack_right_shift_u16(src_p->linpot_position3, 8u, 0x0fu);
     dst_p[6] |= pack_left_shift_u16(src_p->linpot_position4, 4u, 0xf0u);
     dst_p[7] |= pack_right_shift_u16(src_p->linpot_position4, 4u, 0xffu);
+    dst_p[8] |= pack_left_shift_u16(src_p->linpot_position5, 0u, 0xffu);
+    dst_p[9] |= pack_right_shift_u16(src_p->linpot_position5, 8u, 0x0fu);
 
-    return (8);
+    return (12);
 }
 
 int d_aq_can_raw_suspension_rear_data_unpack(
@@ -2613,7 +2703,7 @@ int d_aq_can_raw_suspension_rear_data_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 12u) {
         return (-EINVAL);
     }
 
@@ -2627,6 +2717,8 @@ int d_aq_can_raw_suspension_rear_data_unpack(
     dst_p->linpot_position3 |= unpack_left_shift_u16(src_p[6], 8u, 0x0fu);
     dst_p->linpot_position4 = unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
     dst_p->linpot_position4 |= unpack_left_shift_u16(src_p[7], 4u, 0xffu);
+    dst_p->linpot_position5 = unpack_right_shift_u16(src_p[8], 0u, 0xffu);
+    dst_p->linpot_position5 |= unpack_left_shift_u16(src_p[9], 8u, 0x0fu);
 
     return (0);
 }
@@ -2663,6 +2755,11 @@ bool d_aq_can_raw_suspension_rear_data_linpot_position3_is_in_range(uint16_t val
 }
 
 bool d_aq_can_raw_suspension_rear_data_linpot_position4_is_in_range(uint16_t value)
+{
+    return (value <= 4095u);
+}
+
+bool d_aq_can_raw_suspension_rear_data_linpot_position5_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
 }

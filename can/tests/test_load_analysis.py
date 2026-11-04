@@ -150,7 +150,7 @@ class LoadAnalysisTests(unittest.TestCase):
         # Car 116 + charger interface 10 + lighting 15 + motor 66 + steering 100
         # + MPPT power/status 9 + Elcon 3. Mirrored BPS frames add no second copy.
         self.assertEqual(report["car_can_with_forwarding"]["frames_per_second"], 319)
-        self.assertEqual(report["internet"]["frames_per_second"], 1186)
+        self.assertAlmostEqual(report["internet"]["frames_per_second"], 1401.2631578947369)
         self.assertEqual(
             report["buses_with_forwarding"]["ChargerCAN"]["frames_per_second"], 53
         )

@@ -7,10 +7,21 @@
 #pragma once
 #include "can_types.h"
 
-/** CM5 timestamp synchronization: legacy two-byte unsigned little-endian raw count. New allocation ID 0x620 and CAN-FD retained; time unit/epoch/period are not specified. */
+/** Named raw values for PreviousTimestampValid; unknown values remain integers. */
+typedef enum {
+    D_AQ_CAN_TIMESTAMP_SYNC_PREVIOUS_TIMESTAMP_VALID_INVALID = 0,
+    D_AQ_CAN_TIMESTAMP_SYNC_PREVIOUS_TIMESTAMP_VALID_VALID = 1,
+} d_aq_can_timestamp_sync_previous_timestamp_valid_choice_t;
+/** Two-step 100 Hz sync. CM5 sends the actual hardware transmit SOF timestamp of a previous sync. Nodes match PreviousSequence to a hardware receive SOF; timestamps use 0.1 ms ticks modulo 65536. A DBC does not implement the synchronization. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Sequence; unit=none; physical=raw*1+0; raw=[0,255]. Sequence number of this sync frame; wraps modulo 256. */
+    uint8_t sequence;
+    /** PreviousSequence; unit=none; physical=raw*1+0; raw=[0,255]. Sequence identifying the frame whose transmit SOF is reported. */
+    uint8_t previous_sequence;
+    /** PreviousTimestampValid; unit=none; physical=raw*1+0; raw=[0,1]. Valid only when the preceding transmit SOF timestamp was captured; 0 at startup or capture failure. */
+    uint8_t previous_timestamp_valid;
+    /** PreviousTxTimestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Actual leader transmit SOF time of PreviousSequence in 0.1 ms ticks; wraps every 6553.6 ms. Ignore when PreviousTimestampValid is invalid. */
+    double previous_tx_timestamp;
 } d_aq_can_timestamp_sync_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -20,10 +31,10 @@ can_status_t d_aq_can_timestamp_sync_pack(can_frame_t* dst, const d_aq_can_times
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_timestamp_sync_unpack(d_aq_can_timestamp_sync_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
+/** Four consecutive samples per axis at 208 Hz; one frame per four samples is 52 Hz (19.2308 ms). DBC 19 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
     /** AccelerationX1; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x1;
     /** AccelerationX2; unit=g; physical=raw*0.001+0; raw=[-4096,4095]. Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -57,10 +68,10 @@ can_status_t d_aq_can_chassis_acceleration_data_pack(can_frame_t* dst, const d_a
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_chassis_acceleration_data_unpack(d_aq_can_chassis_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
+/** Four consecutive samples per axis at 208 Hz; one frame per four samples is 52 Hz (19.2308 ms). DBC 19 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
     /** GyroX1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x1;
     /** GyroX2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -94,10 +105,10 @@ can_status_t d_aq_can_chassis_gyro_data_pack(can_frame_t* dst, const d_aq_can_ch
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_chassis_gyro_data_unpack(d_aq_can_chassis_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
+/** Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
     /** AccelerationX1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x1;
     /** AccelerationX2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -131,10 +142,10 @@ can_status_t d_aq_can_upright_fr_acceleration_data_pack(can_frame_t* dst, const 
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_acceleration_data_unpack(d_aq_can_upright_fr_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
+/** Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
     /** GyroX1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x1;
     /** GyroX2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -168,10 +179,10 @@ can_status_t d_aq_can_upright_fr_gyro_data_pack(can_frame_t* dst, const d_aq_can
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_gyro_data_unpack(d_aq_can_upright_fr_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
+/** Five chronological wheel-speed samples per message at a 100 Hz sample rate (20 Hz message rate). Timestamp identifies the first sample. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
     /** WheelRPM1; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm1;
     /** WheelRPM2; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
@@ -180,6 +191,8 @@ typedef struct {
     double wheel_rpm3;
     /** WheelRPM4; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm4;
+    /** WheelRPM5; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 5 of WheelRPM; 100 Hz sampling, five samples per message. */
+    double wheel_rpm5;
 } d_aq_can_upright_fr_wheel_speed_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -189,10 +202,10 @@ can_status_t d_aq_can_upright_fr_wheel_speed_data_pack(can_frame_t* dst, const d
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fr_wheel_speed_data_unpack(d_aq_can_upright_fr_wheel_speed_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
+/** Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
     /** AccelerationX1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x1;
     /** AccelerationX2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -226,10 +239,10 @@ can_status_t d_aq_can_upright_fl_acceleration_data_pack(can_frame_t* dst, const 
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_acceleration_data_unpack(d_aq_can_upright_fl_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
+/** Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
     /** GyroX1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x1;
     /** GyroX2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -263,10 +276,10 @@ can_status_t d_aq_can_upright_fl_gyro_data_pack(can_frame_t* dst, const d_aq_can
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_gyro_data_unpack(d_aq_can_upright_fl_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
+/** Five chronological wheel-speed samples per message at a 100 Hz sample rate (20 Hz message rate). Timestamp identifies the first sample. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
     /** WheelRPM1; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm1;
     /** WheelRPM2; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
@@ -275,6 +288,8 @@ typedef struct {
     double wheel_rpm3;
     /** WheelRPM4; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm4;
+    /** WheelRPM5; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 5 of WheelRPM; 100 Hz sampling, five samples per message. */
+    double wheel_rpm5;
 } d_aq_can_upright_fl_wheel_speed_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -284,10 +299,10 @@ can_status_t d_aq_can_upright_fl_wheel_speed_data_pack(can_frame_t* dst, const d
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_fl_wheel_speed_data_unpack(d_aq_can_upright_fl_wheel_speed_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
+/** Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
     /** AccelerationX1; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
     double acceleration_x1;
     /** AccelerationX2; unit=g; physical=raw*0.001+0; raw=[-16384,16383]. Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g. */
@@ -321,10 +336,10 @@ can_status_t d_aq_can_upright_rear_acceleration_data_pack(can_frame_t* dst, cons
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_rear_acceleration_data_unpack(d_aq_can_upright_rear_acceleration_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
+/** Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
     /** GyroX1; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
     double gyro_x1;
     /** GyroX2; unit=deg/s; physical=raw*0.02+0; raw=[-32768,32767]. Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s. */
@@ -358,10 +373,10 @@ can_status_t d_aq_can_upright_rear_gyro_data_pack(can_frame_t* dst, const d_aq_c
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_rear_gyro_data_unpack(d_aq_can_upright_rear_gyro_data_t* dst, const can_frame_t* src);
 
-/** Four chronological samples per axis/value. Little-endian CAN-FD; raw timestamp tick duration remains unresolved. Emit only four valid samples, do not substitute stale/invalid values. Sensor saturation must be handled by firmware. */
+/** Five chronological wheel-speed samples per message at a 100 Hz sample rate (20 Hz message rate). Timestamp identifies the first sample. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Time count of sample 1. Same unresolved raw tick timebase as TimestampSync; wraps modulo 65536 ticks. */
-    uint16_t timestamp;
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
     /** WheelRPM1; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm1;
     /** WheelRPM2; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
@@ -370,6 +385,8 @@ typedef struct {
     double wheel_rpm3;
     /** WheelRPM4; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm. */
     double wheel_rpm4;
+    /** WheelRPM5; unit=rpm; physical=raw*0.5+0; raw=[0,4095]. Chronological sample 5 of WheelRPM; 100 Hz sampling, five samples per message. */
+    double wheel_rpm5;
 } d_aq_can_upright_rear_wheel_speed_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -379,18 +396,20 @@ can_status_t d_aq_can_upright_rear_wheel_speed_data_pack(can_frame_t* dst, const
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_upright_rear_wheel_speed_data_unpack(d_aq_can_upright_rear_wheel_speed_data_t* dst, const can_frame_t* src);
 
-/** Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples. */
+/** One linpot sampled at 500 Hz; five consecutive samples per frame at 100 Hz. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. Legacy 12-bit ADC calibration retained. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks. */
-    uint16_t timestamp;
-    /** LinpotPosition1; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
+    /** LinpotPosition1; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 1 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position1;
-    /** LinpotPosition2; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** LinpotPosition2; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 2 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position2;
-    /** LinpotPosition3; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** LinpotPosition3; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 3 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position3;
-    /** LinpotPosition4; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** LinpotPosition4; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 4 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position4;
+    /** LinpotPosition5; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 5 from the board linpot; legacy 12-bit ADC scale and offset. */
+    double linpot_position5;
 } d_aq_can_suspension_fr_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -400,18 +419,20 @@ can_status_t d_aq_can_suspension_fr_data_pack(can_frame_t* dst, const d_aq_can_s
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_suspension_fr_data_unpack(d_aq_can_suspension_fr_data_t* dst, const can_frame_t* src);
 
-/** Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples. */
+/** One linpot sampled at 500 Hz; five consecutive samples per frame at 100 Hz. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. Legacy 12-bit ADC calibration retained. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks. */
-    uint16_t timestamp;
-    /** LinpotPosition1; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
+    /** LinpotPosition1; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 1 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position1;
-    /** LinpotPosition2; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** LinpotPosition2; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 2 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position2;
-    /** LinpotPosition3; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** LinpotPosition3; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 3 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position3;
-    /** LinpotPosition4; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** LinpotPosition4; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 4 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position4;
+    /** LinpotPosition5; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 5 from the board linpot; legacy 12-bit ADC scale and offset. */
+    double linpot_position5;
 } d_aq_can_suspension_fl_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
@@ -421,18 +442,20 @@ can_status_t d_aq_can_suspension_fl_data_pack(can_frame_t* dst, const d_aq_can_s
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_suspension_fl_data_unpack(d_aq_can_suspension_fl_data_t* dst, const can_frame_t* src);
 
-/** Four simultaneous physical linpot channels. Legacy 16-bit raw timestamp and 12-bit ADC calibration retained; all little-endian. The four channels are not chronological samples. */
+/** One linpot sampled at 500 Hz; five consecutive samples per frame at 100 Hz. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. Legacy 12-bit ADC calibration retained. */
 typedef struct {
-    /** Timestamp; unit=none; physical=raw*1+0; raw=[0,65535]. Legacy unsigned 16-bit raw time count. Tick period and epoch are unresolved; do not interpret as milliseconds or seconds. Wraps modulo 65536 ticks. */
-    uint16_t timestamp;
-    /** LinpotPosition1; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** Timestamp; unit=ms; physical=raw*0.1+0; raw=[0,65535]. Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities. */
+    double timestamp;
+    /** LinpotPosition1; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 1 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position1;
-    /** LinpotPosition2; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** LinpotPosition2; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 2 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position2;
-    /** LinpotPosition3; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** LinpotPosition3; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 3 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position3;
-    /** LinpotPosition4; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Legacy linpot calibration: wire raw is 12-bit ADC count (0..4095); physical mm = raw * 0.0188885 + 1. Same sensor/measuring scheme as last year. */
+    /** LinpotPosition4; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 4 from the board linpot; legacy 12-bit ADC scale and offset. */
     double linpot_position4;
+    /** LinpotPosition5; unit=mm; physical=raw*0.0188885+1; raw=[0,4095]. Chronological sample 5 from the board linpot; legacy 12-bit ADC scale and offset. */
+    double linpot_position5;
 } d_aq_can_suspension_rear_data_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
