@@ -11,7 +11,7 @@ root file within their directory:
 - [`can/AGENTS.md`](can/AGENTS.md) — CAN spec, DBCs, codegen, spec viewer
 - [`firmware/platform/AGENTS.md`](firmware/platform/AGENTS.md) — shared HAL/RTOS platform, vendored code boundaries
 - [`firmware/psys/AGENTS.md`](firmware/psys/AGENTS.md) — power systems (LV, HV, BPS)
-- [`firmware/controls/AGENTS.md`](firmware/controls/AGENTS.md) — controls (VCU, MIKA, Pedals)
+- [`firmware/controls/AGENTS.md`](firmware/controls/AGENTS.md) — controls (VCU, CM5, Pedals)
 - [`firmware/telemetry/AGENTS.md`](firmware/telemetry/AGENTS.md) — telemetry sensor board
 
 [`references/`](references/) holds the MCU pin/alternate-function tables for both

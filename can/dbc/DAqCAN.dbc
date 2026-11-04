@@ -1,0 +1,567 @@
+VERSION "2027-draft-2026-10-23"
+
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: Blackbody1 Blackbody2 Blackbody3 ChassisIMU CM5 StrainGaugeFront StrainGaugeRear SuspensionFL SuspensionFR SuspensionRear UprightFL UprightFR UprightRear
+VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
+VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
+VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
+VAL_TABLE_ WarningState 1 "Warning" 0 "NoWarning" ;
+VAL_TABLE_ DeviceStatus 2 "Waiting" 1 "Fault" 0 "OK" ;
+VAL_TABLE_ Permission 1 "Allowed" 0 "NotAllowed" ;
+VAL_TABLE_ Connection 1 "Connected" 0 "Disconnected" ;
+VAL_TABLE_ BalancingMode 2 "Manual" 1 "Automatic" 0 "Off" ;
+VAL_TABLE_ BalancingState 4 "BlockedOrFault" 3 "Complete" 2 "Paused" 1 "Balancing" 0 "Off" ;
+VAL_TABLE_ BalancingBlockReason 7 "Other" 6 "BPSFault" 5 "Communication" 4 "VehicleState" 3 "CellVoltage" 2 "ChipTemperature" 1 "CellTemperature" 0 "None" ;
+VAL_TABLE_ ServerConnection 1 "Connected" 0 "Disconnected/Retrying" ;
+VAL_TABLE_ Pressed 1 "Pressed" 0 "NotPressed" ;
+VAL_TABLE_ Validity 1 "Valid" 0 "Invalid" ;
+VAL_TABLE_ Watchdog 1 "TimedOut" 0 "Alive" ;
+VAL_TABLE_ NormalAdvanced 1 "Advanced" 0 "Normal" ;
+VAL_TABLE_ MotorCommandSource 1 "External" 0 "VCU" ;
+VAL_TABLE_ Gear 3 "Invalid" 2 "Reverse" 1 "Forward" 0 "Neutral" ;
+VAL_TABLE_ BPSFaultSummary 5 "SMBFault" 4 "PrechargeFault" 3 "ContactorRelayFault" 2 "EmergencyStop" 1 "SetpointFault" 0 "OK" ;
+VAL_TABLE_ VCUState 7 "VehicleNotReady" 6 "Disabled" 5 "CruiseControl" 4 "Regen" 3 "ReverseDrive" 2 "NeutralDrive" 1 "ForwardDrive" 0 "Init" ;
+VAL_TABLE_ ChargeState 2 "Charging" 1 "Standby" 0 "Disabled" ;
+VAL_TABLE_ EVSEState 5 "F_EVSEFault" 4 "E_Fault" 3 "D_VentilationRequired" 2 "C_ChargingReady" 1 "B_Connected" 0 "A_Disconnected" ;
+VAL_TABLE_ GPSAntennaState 3 "Unknown" 2 "ShortCircuit" 1 "OpenCircuit" 0 "OK" ;
+VAL_TABLE_ GPSFix 2 "Fix3D" 1 "Fix2D" 0 "NoFix" ;
+VAL_TABLE_ CellularTechnology 4 "Other" 3 "NB_IoT" 2 "LTE_M" 1 "LTE" 0 "None" ;
+VAL_TABLE_ TPEEControlMode 2 "ConstantInputVoltage" 1 "PerturbAndObserve" 0 "Disabled" ;
+VAL_TABLE_ TPEEOperatingMode 7 "Fault" 6 "MinimumInputVoltage" 5 "TemperatureDerating" 4 "ConstantOutputCurrent" 3 "ConstantOutputVoltage" 2 "MinimumInputCurrent" 1 "ConstantInputCurrent" 0 "ConstantInputVoltage" ;
+VAL_TABLE_ TPEEFault 8 "Fault" 7 "PhaseOverCurrent" 6 "InputUnderCurrent" 5 "InputOverCurrent" 4 "OutputOverCurrent" 3 "OutputOverVoltage" 2 "InputOverVoltage" 1 "ConfigurationError" 0 "OK" ;
+VAL_TABLE_ LWSCalibration 1 "Calibrated" 0 "NotCalibrated" ;
+VAL_TABLE_ LWSTrim 1 "Trimmed" 0 "NotTrimmed" ;
+VAL_TABLE_ LWSCommand 5 "ResetCalibration" 3 "SetAngleZero" ;
+VAL_TABLE_ ElconControl 1 "Disable" 0 "Charge" ;
+VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
+
+
+BO_ 1568 TimestampSync: 5 CM5
+ SG_ Sequence : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ PreviousSequence : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ PreviousTimestampValid : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ PreviousTxTimestamp : 17|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+
+BO_ 1584 ChassisAccelerationData: 24 ChassisIMU
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ AccelerationX1 : 16|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationX2 : 29|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationX3 : 42|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationX4 : 55|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationY1 : 68|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationY2 : 81|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationY3 : 94|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationY4 : 107|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationZ1 : 120|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationZ2 : 133|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationZ3 : 146|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+ SG_ AccelerationZ4 : 159|13@1- (0.001,0) [-4.096|4.095] "g" Vector__XXX
+
+BO_ 1585 ChassisGyroData: 32 ChassisIMU
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ GyroX1 : 16|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX2 : 32|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX3 : 48|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX4 : 64|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY1 : 80|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY2 : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY3 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY4 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ1 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ2 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ3 : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ4 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+
+BO_ 1600 UprightFRAccelerationData: 32 UprightFR
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ AccelerationX1 : 16|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationX2 : 31|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationX3 : 46|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationX4 : 61|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY1 : 76|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY2 : 91|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY3 : 106|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY4 : 121|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ1 : 136|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ2 : 151|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ3 : 166|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ4 : 181|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+
+BO_ 1601 UprightFRGyroData: 32 UprightFR
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ GyroX1 : 16|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX2 : 32|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX3 : 48|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX4 : 64|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY1 : 80|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY2 : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY3 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY4 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ1 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ2 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ3 : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ4 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+
+BO_ 1602 UprightFRWheelSpeedData: 12 UprightFR
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ WheelRPM1 : 16|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM2 : 28|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM3 : 40|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM4 : 52|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM5 : 64|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+
+BO_ 1616 UprightFLAccelerationData: 32 UprightFL
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ AccelerationX1 : 16|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationX2 : 31|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationX3 : 46|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationX4 : 61|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY1 : 76|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY2 : 91|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY3 : 106|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY4 : 121|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ1 : 136|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ2 : 151|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ3 : 166|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ4 : 181|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+
+BO_ 1617 UprightFLGyroData: 32 UprightFL
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ GyroX1 : 16|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX2 : 32|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX3 : 48|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX4 : 64|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY1 : 80|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY2 : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY3 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY4 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ1 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ2 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ3 : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ4 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+
+BO_ 1618 UprightFLWheelSpeedData: 12 UprightFL
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ WheelRPM1 : 16|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM2 : 28|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM3 : 40|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM4 : 52|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM5 : 64|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+
+BO_ 1632 UprightRearAccelerationData: 32 UprightRear
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ AccelerationX1 : 16|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationX2 : 31|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationX3 : 46|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationX4 : 61|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY1 : 76|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY2 : 91|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY3 : 106|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationY4 : 121|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ1 : 136|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ2 : 151|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ3 : 166|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+ SG_ AccelerationZ4 : 181|15@1- (0.001,0) [-16.384|16.383] "g" Vector__XXX
+
+BO_ 1633 UprightRearGyroData: 32 UprightRear
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ GyroX1 : 16|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX2 : 32|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX3 : 48|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroX4 : 64|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY1 : 80|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY2 : 96|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY3 : 112|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroY4 : 128|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ1 : 144|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ2 : 160|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ3 : 176|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+ SG_ GyroZ4 : 192|16@1- (0.02,0) [-655.36|655.34] "deg/s" Vector__XXX
+
+BO_ 1634 UprightRearWheelSpeedData: 12 UprightRear
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ WheelRPM1 : 16|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM2 : 28|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM3 : 40|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM4 : 52|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+ SG_ WheelRPM5 : 64|12@1+ (0.5,0) [0.0|2047.5] "rpm" Vector__XXX
+
+BO_ 1648 SuspensionFRData: 12 SuspensionFR
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ LinpotPosition1 : 16|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition2 : 28|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition3 : 40|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition4 : 52|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition5 : 64|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+
+BO_ 1649 SuspensionFLData: 12 SuspensionFL
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ LinpotPosition1 : 16|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition2 : 28|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition3 : 40|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition4 : 52|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition5 : 64|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+
+BO_ 1650 SuspensionRearData: 12 SuspensionRear
+ SG_ Timestamp : 0|16@1+ (0.1,0) [0|6553.5] "ms" Vector__XXX
+ SG_ LinpotPosition1 : 16|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition2 : 28|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition3 : 40|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition4 : 52|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+ SG_ LinpotPosition5 : 64|12@1+ (0.0188885,1) [1|78.3494075] "mm" Vector__XXX
+
+BO_ 1664 Blackbody1Data: 0 Blackbody1
+
+BO_ 1665 Blackbody2Data: 0 Blackbody2
+
+BO_ 1666 Blackbody3Data: 0 Blackbody3
+
+BO_ 1680 StrainGaugeFrontData: 0 StrainGaugeFront
+
+BO_ 1681 StrainGaugeRearData: 0 StrainGaugeRear
+
+
+
+
+CM_ BO_ 1568 "Two-step 100 Hz sync. CM5 sends the actual hardware transmit SOF timestamp of a previous sync. Nodes match PreviousSequence to a hardware receive SOF; timestamps use 0.1 ms ticks modulo 65536. A DBC does not implement the synchronization.";
+CM_ SG_ 1568 PreviousTxTimestamp "Actual leader transmit SOF time of PreviousSequence in 0.1 ms ticks; wraps every 6553.6 ms. Ignore when PreviousTimestampValid is invalid.";
+CM_ SG_ 1568 PreviousTimestampValid "Valid only when the preceding transmit SOF timestamp was captured; 0 at startup or capture failure.";
+CM_ SG_ 1568 PreviousSequence "Sequence identifying the frame whose transmit SOF is reported.";
+CM_ SG_ 1568 Sequence "Sequence number of this sync frame; wraps modulo 256.";
+CM_ BO_ 1584 "Four consecutive samples per axis at 208 Hz; one frame per four samples is 52 Hz (19.2308 ms). DBC 19 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.";
+CM_ SG_ 1584 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 AccelerationZ1 "Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 AccelerationY4 "Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 AccelerationY3 "Chronological sample 3 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 AccelerationY2 "Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 AccelerationY1 "Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 AccelerationX4 "Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 AccelerationX3 "Chronological sample 3 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1584 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1585 "Four consecutive samples per axis at 208 Hz; one frame per four samples is 52 Hz (19.2308 ms). DBC 19 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.";
+CM_ SG_ 1585 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 GyroZ1 "Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 GyroY4 "Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 GyroY3 "Chronological sample 3 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 GyroY2 "Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 GyroY1 "Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 GyroX4 "Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 GyroX3 "Chronological sample 3 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1585 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1600 "Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.";
+CM_ SG_ 1600 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 AccelerationZ1 "Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 AccelerationY4 "Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 AccelerationY3 "Chronological sample 3 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 AccelerationY2 "Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 AccelerationY1 "Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 AccelerationX4 "Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 AccelerationX3 "Chronological sample 3 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1600 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1601 "Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.";
+CM_ SG_ 1601 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 GyroZ1 "Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 GyroY4 "Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 GyroY3 "Chronological sample 3 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 GyroY2 "Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 GyroY1 "Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 GyroX4 "Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 GyroX3 "Chronological sample 3 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1601 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1602 "Five chronological wheel-speed samples per message at a 100 Hz sample rate (20 Hz message rate). Timestamp identifies the first sample.";
+CM_ SG_ 1602 WheelRPM5 "Chronological sample 5 of WheelRPM; 100 Hz sampling, five samples per message.";
+CM_ SG_ 1602 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1602 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1602 WheelRPM2 "Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1602 WheelRPM1 "Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1602 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1616 "Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.";
+CM_ SG_ 1616 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 AccelerationZ1 "Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 AccelerationY4 "Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 AccelerationY3 "Chronological sample 3 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 AccelerationY2 "Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 AccelerationY1 "Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 AccelerationX4 "Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 AccelerationX3 "Chronological sample 3 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1616 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1617 "Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.";
+CM_ SG_ 1617 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 GyroZ1 "Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 GyroY4 "Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 GyroY3 "Chronological sample 3 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 GyroY2 "Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 GyroY1 "Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 GyroX4 "Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 GyroX3 "Chronological sample 3 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1617 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1618 "Five chronological wheel-speed samples per message at a 100 Hz sample rate (20 Hz message rate). Timestamp identifies the first sample.";
+CM_ SG_ 1618 WheelRPM5 "Chronological sample 5 of WheelRPM; 100 Hz sampling, five samples per message.";
+CM_ SG_ 1618 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1618 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1618 WheelRPM2 "Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1618 WheelRPM1 "Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1618 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1632 "Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.";
+CM_ SG_ 1632 AccelerationZ4 "Chronological sample 4 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 AccelerationZ3 "Chronological sample 3 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 AccelerationZ2 "Chronological sample 2 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 AccelerationZ1 "Chronological sample 1 of AccelerationZ; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 AccelerationY4 "Chronological sample 4 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 AccelerationY3 "Chronological sample 3 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 AccelerationY2 "Chronological sample 2 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 AccelerationY1 "Chronological sample 1 of AccelerationY; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 AccelerationX4 "Chronological sample 4 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 AccelerationX3 "Chronological sample 3 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 AccelerationX2 "Chronological sample 2 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 AccelerationX1 "Chronological sample 1 of AccelerationX; indices 1..4 align across axes within this batch. Physical unit g.";
+CM_ SG_ 1632 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1633 "Four consecutive samples per axis at 416 Hz; one frame per four samples is 104 Hz (9.6154 ms). DBC 10 ms is a nominal integer-millisecond estimate. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536.";
+CM_ SG_ 1633 GyroZ4 "Chronological sample 4 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 GyroZ3 "Chronological sample 3 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 GyroZ2 "Chronological sample 2 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 GyroZ1 "Chronological sample 1 of GyroZ; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 GyroY4 "Chronological sample 4 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 GyroY3 "Chronological sample 3 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 GyroY2 "Chronological sample 2 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 GyroY1 "Chronological sample 1 of GyroY; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 GyroX4 "Chronological sample 4 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 GyroX3 "Chronological sample 3 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 GyroX2 "Chronological sample 2 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 GyroX1 "Chronological sample 1 of GyroX; indices 1..4 align across axes within this batch. Physical unit deg/s.";
+CM_ SG_ 1633 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1634 "Five chronological wheel-speed samples per message at a 100 Hz sample rate (20 Hz message rate). Timestamp identifies the first sample.";
+CM_ SG_ 1634 WheelRPM5 "Chronological sample 5 of WheelRPM; 100 Hz sampling, five samples per message.";
+CM_ SG_ 1634 WheelRPM4 "Chronological sample 4 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1634 WheelRPM3 "Chronological sample 3 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1634 WheelRPM2 "Chronological sample 2 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1634 WheelRPM1 "Chronological sample 1 of WheelRPM; indices 1..4 align across axes within this batch. Physical unit rpm.";
+CM_ SG_ 1634 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1648 "One linpot sampled at 500 Hz; five consecutive samples per frame at 100 Hz. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. Legacy 12-bit ADC calibration retained.";
+CM_ SG_ 1648 LinpotPosition5 "Chronological sample 5 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1648 LinpotPosition4 "Chronological sample 4 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1648 LinpotPosition3 "Chronological sample 3 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1648 LinpotPosition2 "Chronological sample 2 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1648 LinpotPosition1 "Chronological sample 1 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1648 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1649 "One linpot sampled at 500 Hz; five consecutive samples per frame at 100 Hz. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. Legacy 12-bit ADC calibration retained.";
+CM_ SG_ 1649 LinpotPosition5 "Chronological sample 5 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1649 LinpotPosition4 "Chronological sample 4 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1649 LinpotPosition3 "Chronological sample 3 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1649 LinpotPosition2 "Chronological sample 2 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1649 LinpotPosition1 "Chronological sample 1 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1649 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1650 "One linpot sampled at 500 Hz; five consecutive samples per frame at 100 Hz. Timestamp identifies sample 1; timestamp uses 0.1 ms ticks modulo 65536. Legacy 12-bit ADC calibration retained.";
+CM_ SG_ 1650 LinpotPosition5 "Chronological sample 5 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1650 LinpotPosition4 "Chronological sample 4 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1650 LinpotPosition3 "Chronological sample 3 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1650 LinpotPosition2 "Chronological sample 2 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1650 LinpotPosition1 "Chronological sample 1 from the board linpot; legacy 12-bit ADC scale and offset.";
+CM_ SG_ 1650 Timestamp "Corrected CM5 time of sample 1, in 0.1 ms ticks modulo 65536; 0 is a valid timestamp. Validity and stale-sync handling are firmware responsibilities.";
+CM_ BO_ 1664 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 1665 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 1666 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 1680 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+CM_ BO_ 1681 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
+BA_DEF_ SG_  "ValueTable" STRING ;
+BA_DEF_ BO_  "LayoutPending" INT 0 1;
+BA_DEF_ BO_  "ProtocolSource" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ BO_  "CANFD_BRS" ENUM  "0","1";
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","Triggered","None";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;
+BA_DEF_  "Baudrate" INT 1 10000000;
+BA_DEF_  "DataBaudrate" INT 1 10000000;
+BA_DEF_DEF_  "ValueTable" "";
+BA_DEF_DEF_  "LayoutPending" 0;
+BA_DEF_DEF_  "ProtocolSource" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
+BA_DEF_DEF_  "CANFD_BRS" "0";
+BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_ "BusType" "CAN FD";
+BA_ "DBName" "DAqCAN";
+BA_ "Baudrate" 1000000;
+BA_ "DataBaudrate" 1000000;
+BA_ "LayoutPending" BO_ 1568 0;
+BA_ "ProtocolSource" BO_ 1568 "Legacy calibrated HighNoon DAqCAN / TelemLeader_Center";
+BA_ "VFrameFormat" BO_ 1568 14;
+BA_ "GenMsgSendType" BO_ 1568 0;
+BA_ "GenMsgCycleTime" BO_ 1568 10;
+BA_ "CANFD_BRS" BO_ 1568 0;
+BA_ "ValueTable" SG_ 1568 PreviousTimestampValid "Validity";
+BA_ "LayoutPending" BO_ 1584 0;
+BA_ "ProtocolSource" BO_ 1584 "2027 four-sample DAQ plan approved 2026-10-23";
+BA_ "VFrameFormat" BO_ 1584 14;
+BA_ "GenMsgSendType" BO_ 1584 0;
+BA_ "GenMsgCycleTime" BO_ 1584 19;
+BA_ "CANFD_BRS" BO_ 1584 0;
+BA_ "LayoutPending" BO_ 1585 0;
+BA_ "ProtocolSource" BO_ 1585 "2027 four-sample DAQ plan approved 2026-10-23";
+BA_ "VFrameFormat" BO_ 1585 14;
+BA_ "GenMsgSendType" BO_ 1585 0;
+BA_ "GenMsgCycleTime" BO_ 1585 19;
+BA_ "CANFD_BRS" BO_ 1585 0;
+BA_ "LayoutPending" BO_ 1600 0;
+BA_ "ProtocolSource" BO_ 1600 "2027 four-sample DAQ plan approved 2026-10-23";
+BA_ "VFrameFormat" BO_ 1600 14;
+BA_ "GenMsgSendType" BO_ 1600 0;
+BA_ "GenMsgCycleTime" BO_ 1600 10;
+BA_ "CANFD_BRS" BO_ 1600 0;
+BA_ "LayoutPending" BO_ 1601 0;
+BA_ "ProtocolSource" BO_ 1601 "2027 four-sample DAQ plan approved 2026-10-23";
+BA_ "VFrameFormat" BO_ 1601 14;
+BA_ "GenMsgSendType" BO_ 1601 0;
+BA_ "GenMsgCycleTime" BO_ 1601 10;
+BA_ "CANFD_BRS" BO_ 1601 0;
+BA_ "LayoutPending" BO_ 1602 0;
+BA_ "ProtocolSource" BO_ 1602 "2027 four-sample DAQ plan approved 2026-10-23";
+BA_ "VFrameFormat" BO_ 1602 14;
+BA_ "GenMsgSendType" BO_ 1602 0;
+BA_ "GenMsgCycleTime" BO_ 1602 50;
+BA_ "CANFD_BRS" BO_ 1602 0;
+BA_ "LayoutPending" BO_ 1616 0;
+BA_ "ProtocolSource" BO_ 1616 "2027 four-sample DAQ plan approved 2026-10-23";
+BA_ "VFrameFormat" BO_ 1616 14;
+BA_ "GenMsgSendType" BO_ 1616 0;
+BA_ "GenMsgCycleTime" BO_ 1616 10;
+BA_ "CANFD_BRS" BO_ 1616 0;
+BA_ "LayoutPending" BO_ 1617 0;
+BA_ "ProtocolSource" BO_ 1617 "2027 four-sample DAQ plan approved 2026-10-23";
+BA_ "VFrameFormat" BO_ 1617 14;
+BA_ "GenMsgSendType" BO_ 1617 0;
+BA_ "GenMsgCycleTime" BO_ 1617 10;
+BA_ "CANFD_BRS" BO_ 1617 0;
+BA_ "LayoutPending" BO_ 1618 0;
+BA_ "ProtocolSource" BO_ 1618 "2027 four-sample DAQ plan approved 2026-10-23";
+BA_ "VFrameFormat" BO_ 1618 14;
+BA_ "GenMsgSendType" BO_ 1618 0;
+BA_ "GenMsgCycleTime" BO_ 1618 50;
+BA_ "CANFD_BRS" BO_ 1618 0;
+BA_ "LayoutPending" BO_ 1632 0;
+BA_ "ProtocolSource" BO_ 1632 "2027 four-sample DAQ plan approved 2026-10-23";
+BA_ "VFrameFormat" BO_ 1632 14;
+BA_ "GenMsgSendType" BO_ 1632 0;
+BA_ "GenMsgCycleTime" BO_ 1632 10;
+BA_ "CANFD_BRS" BO_ 1632 0;
+BA_ "LayoutPending" BO_ 1633 0;
+BA_ "ProtocolSource" BO_ 1633 "2027 four-sample DAQ plan approved 2026-10-23";
+BA_ "VFrameFormat" BO_ 1633 14;
+BA_ "GenMsgSendType" BO_ 1633 0;
+BA_ "GenMsgCycleTime" BO_ 1633 10;
+BA_ "CANFD_BRS" BO_ 1633 0;
+BA_ "LayoutPending" BO_ 1634 0;
+BA_ "ProtocolSource" BO_ 1634 "2027 four-sample DAQ plan approved 2026-10-23";
+BA_ "VFrameFormat" BO_ 1634 14;
+BA_ "GenMsgSendType" BO_ 1634 0;
+BA_ "GenMsgCycleTime" BO_ 1634 50;
+BA_ "CANFD_BRS" BO_ 1634 0;
+BA_ "LayoutPending" BO_ 1648 0;
+BA_ "ProtocolSource" BO_ 1648 "Legacy calibrated HighNoon DAqCAN / Suspension_FR, Suspension_FL, Suspension_Back";
+BA_ "VFrameFormat" BO_ 1648 14;
+BA_ "GenMsgSendType" BO_ 1648 0;
+BA_ "GenMsgCycleTime" BO_ 1648 10;
+BA_ "CANFD_BRS" BO_ 1648 0;
+BA_ "LayoutPending" BO_ 1649 0;
+BA_ "ProtocolSource" BO_ 1649 "Legacy calibrated HighNoon DAqCAN / Suspension_FR, Suspension_FL, Suspension_Back";
+BA_ "VFrameFormat" BO_ 1649 14;
+BA_ "GenMsgSendType" BO_ 1649 0;
+BA_ "GenMsgCycleTime" BO_ 1649 10;
+BA_ "CANFD_BRS" BO_ 1649 0;
+BA_ "LayoutPending" BO_ 1650 0;
+BA_ "ProtocolSource" BO_ 1650 "Legacy calibrated HighNoon DAqCAN / Suspension_FR, Suspension_FL, Suspension_Back";
+BA_ "VFrameFormat" BO_ 1650 14;
+BA_ "GenMsgSendType" BO_ 1650 0;
+BA_ "GenMsgCycleTime" BO_ 1650 10;
+BA_ "CANFD_BRS" BO_ 1650 0;
+BA_ "LayoutPending" BO_ 1664 1;
+BA_ "ProtocolSource" BO_ 1664 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1664 14;
+BA_ "GenMsgSendType" BO_ 1664 0;
+BA_ "GenMsgCycleTime" BO_ 1664 100;
+BA_ "CANFD_BRS" BO_ 1664 0;
+BA_ "LayoutPending" BO_ 1665 1;
+BA_ "ProtocolSource" BO_ 1665 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1665 14;
+BA_ "GenMsgSendType" BO_ 1665 0;
+BA_ "GenMsgCycleTime" BO_ 1665 100;
+BA_ "CANFD_BRS" BO_ 1665 0;
+BA_ "LayoutPending" BO_ 1666 1;
+BA_ "ProtocolSource" BO_ 1666 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1666 14;
+BA_ "GenMsgSendType" BO_ 1666 0;
+BA_ "GenMsgCycleTime" BO_ 1666 100;
+BA_ "CANFD_BRS" BO_ 1666 0;
+BA_ "LayoutPending" BO_ 1680 1;
+BA_ "ProtocolSource" BO_ 1680 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1680 14;
+BA_ "GenMsgSendType" BO_ 1680 0;
+BA_ "GenMsgCycleTime" BO_ 1680 10;
+BA_ "CANFD_BRS" BO_ 1680 0;
+BA_ "LayoutPending" BO_ 1681 1;
+BA_ "ProtocolSource" BO_ 1681 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1681 14;
+BA_ "GenMsgSendType" BO_ 1681 0;
+BA_ "GenMsgCycleTime" BO_ 1681 10;
+BA_ "CANFD_BRS" BO_ 1681 0;
+VAL_ 1568 PreviousTimestampValid 0 "Invalid" 1 "Valid" ;

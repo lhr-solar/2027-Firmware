@@ -22,7 +22,7 @@ Docs (including CANspec) are published by **`build-docs`** → **`gh-pages`**. N
 3. Generate JSON next to that HTML (exact filename the UI loads):
 
 ```bash
-pip install -r can/canspec-viewer/requirements.txt
+uv sync --locked
 python3 can/canspec-viewer/export_canspec_json.py -o ./canspec-data.json
 ```
 
