@@ -288,6 +288,7 @@ int main(void) {
     // internal loopback shorts the CAN RX and TX internally.
     // In production, this should be set to FDCAN_MODE_NORMAL
     hfdcan1->Init.Mode = FDCAN_MODE_NORMAL;
+    hfdcan1->Init.Mode = FDCAN_MODE_NORMAL;
     hfdcan1->Init.AutoRetransmission = ENABLE;
     hfdcan1->Init.TransmitPause = DISABLE;
     hfdcan1->Init.ProtocolException = DISABLE;
