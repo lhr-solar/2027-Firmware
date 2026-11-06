@@ -43,7 +43,7 @@ for an interrupt
 
 // LSOM has heartbeat pin defined as PC3
 // Most other nucleos have a heartbeat for A5
-#define LED_PIN  GPIO_PIN_5
+#define LED_PIN  GPIO_PIN_4
 #define LED_PORT GPIOD
 
 // Scope pins toggled from the CAN callbacks
@@ -212,7 +212,7 @@ void G473_SystemClockConfig(void) {
 
 void Error_Handler() {
     while (1) {
-        HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
+        // HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
         HAL_Delay(700);
     }
 }
