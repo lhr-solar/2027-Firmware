@@ -175,7 +175,7 @@ void G473_SystemClockConfig(void) {
 
 void Error_Handler() {
     while (1) {
-        // HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
+        HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
         HAL_Delay(700);
     }
 }
@@ -210,8 +210,8 @@ static void task(void* pvParameters) {
     tx_data[6] = 0xDE;
     tx_data[7] = 0xFF;
 
-    FDCAN_RxHeaderTypeDef fdcan1_rx_header = {0};
-    uint8_t fdcan1_rx_data[8] = {0};
+    // FDCAN_RxHeaderTypeDef fdcan1_rx_header = {0};
+    // uint8_t fdcan1_rx_data[8] = {0};
 
     FDCAN_RxHeaderTypeDef fdcan2_rx_header = {0};
     uint8_t fdcan2_rx_data[8] = {0};
@@ -220,25 +220,17 @@ static void task(void* pvParameters) {
     uint8_t fdcan3_rx_data[8] = {0};
 
     while (1) {
+while (1) {
         #ifdef FDCAN1
-        if (can_fd_send(hfdcan1, &tx_header, tx_data, portMAX_DELAY) == CAN_ERR) {
-            Error_Handler();
-        }
-
-        // note that for can_fd_recv to work, the ID used must be added the
-        // can1_recv_entires.h file
-        if (can_fd_recv(hfdcan1, test_id, &fdcan1_rx_header, fdcan1_rx_data, portMAX_DELAY) !=
-            CAN_OK) {
-            Error_Handler();
-        }
-
-        for (uint8_t i = 0; i < 8; i++) {
-            if (fdcan1_rx_data[i] != tx_data[i]) {
+            if (can_fd_send(hfdcan1, &tx_header, tx_data,
+                            pdMS_TO_TICKS(100)) == CAN_ERR) {
                 Error_Handler();
             }
-        }
-
         #endif
+
+            HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
+            vTaskDelay(pdMS_TO_TICKS(500));
+        }
 
         #ifdef FDCAN2
         if (can_fd_send(hfdcan2, &tx_header, tx_data, portMAX_DELAY) == CAN_ERR) {
@@ -321,7 +313,7 @@ int main(void) {
 
     // internal loopback shorts the CAN RX and TX internally.
     // In production, this should be set to FDCAN_MODE_NORMAL
-    hfdcan1->Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
+    hfdcan1->Init.Mode = FDCAN_MODE_NORMAL;
     hfdcan1->Init.AutoRetransmission = ENABLE;
     hfdcan1->Init.TransmitPause = DISABLE;
     hfdcan1->Init.ProtocolException = DISABLE;
