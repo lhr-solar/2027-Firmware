@@ -41,6 +41,7 @@ add_executable(VCU
     ${PSP_SOURCES}
     ${UTILS_SOURCES}
     ${DRIVERS_SOURCES}
+    ${TINYUSB_SOURCES}
 )
 target_include_directories(VCU PUBLIC ${PLATFORM_INCLUDE_DIRS} ${BOARD_INCLUDE_DIRS})
 
