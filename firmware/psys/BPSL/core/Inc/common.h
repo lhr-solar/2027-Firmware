@@ -19,7 +19,8 @@
 void Error_Handler(void);
 
 /**
- * @brief Configures the system clock: 8 MHz crystal (HSE) -> 80 MHz.
+ * @brief Configures the system clock: 8 MHz crystal (HSE) -> 96 MHz, with the
+ *        PLL's Q output at 48 MHz for USB.
  * @note  Call after HAL_Init(), which enables the PWR clock this needs.
  */
 void SystemClock_Config(void);

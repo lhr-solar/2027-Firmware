@@ -31,9 +31,9 @@ void Error_Handler(void) {
     }
 }
 
-// TODO: Fix clock once Aarav makes changes
-// 8 MHz crystal (HSE) -> 80 MHz system clock
-// SYSCLK = HSE / PLLM * PLLN / PLLR = 8 MHz / 1 * 20 / 2 = 80 MHz
+// 8 MHz crystal (HSE) -> 96 MHz system clock and 48 MHz USB clock, as in the platform's default
+// SYSCLK = HSE / PLLM * PLLN / PLLR = 8 MHz / 1 * 24 / 2 = 96 MHz (PLL VCO 192 MHz)
+// USB    = HSE / PLLM * PLLN / PLLQ = 8 MHz / 1 * 24 / 4 = 48 MHz (USB needs exactly 48 MHz)
 void SystemClock_Config(void) {
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -51,16 +51,16 @@ void SystemClock_Config(void) {
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
     RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
-    RCC_OscInitStruct.PLL.PLLN = 20;
+    RCC_OscInitStruct.PLL.PLLN = 24;
     RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2; // system clock output
-    // P and Q outputs aren't used yet, but must still hold valid values
+    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV4; // USB clock output, selected in HAL_PCD_MspInit()
+    // P output isn't used yet, but must still hold a valid value
     RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
         Error_Handler();
     }
 
-    /** Run the CPU and buses from the PLL at 80 MHz
+    /** Run the CPU and buses from the PLL at 96 MHz
      */
     RCC_ClkInitStruct.ClockType =
         RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
@@ -69,8 +69,8 @@ void SystemClock_Config(void) {
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-    // 2 flash wait states are correct for 80 MHz
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
+    // 3 flash wait states are correct for 96 MHz (range 1, normal mode: up to 120 MHz)
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK) {
         Error_Handler();
     }
 }

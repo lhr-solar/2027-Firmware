@@ -29,3 +29,25 @@ typedef struct {
 // RGB LED Green    -- PA2, LQFP100 pin 22
 #define RGB_LED_GREEN_PIN  GPIO_PIN_2
 #define RGB_LED_GREEN_PORT GPIOA
+
+// BQ79600 bridge, on USART3. The BQ79616 driver needs TX and RX on one port.
+// BQ79600 UART TX  -- PC10, LQFP100 pin 79, AF7 USART3_TX
+#define BQ79600_UART_TX_PIN GPIO_PIN_10
+// BQ79600 UART RX  -- PC11, LQFP100 pin 80, AF7 USART3_RX
+#define BQ79600_UART_RX_PIN GPIO_PIN_11
+#define BQ79600_UART_PORT   GPIOC
+#define BQ79600_UART_AF     GPIO_AF7_USART3
+// BQ79600 WAKE ping -- PC10, AF4 TIM8_CH1N, the complementary output of TIM8
+// channel 1. The driver switches TX to it while it sends the ping.
+#define BQ79600_WAKE_TIM               TIM8
+#define BQ79600_WAKE_TIM_CHANNEL       TIM_CHANNEL_1
+#define BQ79600_WAKE_TIM_AF            GPIO_AF4_TIM8
+#define BQ79600_WAKE_TIM_COMPLEMENTARY true
+
+// USB (printf over USB serial) -- PA11 USB_DM, LQFP100 pin 72; PA12 USB_DP, pin 73.
+// Fixed USB pins with no AF to set (not in the references/ AF tables): the USB
+// peripheral takes them over when it's enabled, so there's nothing to define.
+
+// BQ79600 NFAULT   -- PA3, LQFP100 pin 25, plain GPIO input, no AF
+#define BQ79600_NFAULT_PIN  GPIO_PIN_3
+#define BQ79600_NFAULT_PORT GPIOA
