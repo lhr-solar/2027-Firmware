@@ -24,8 +24,9 @@ static void vContactorTask(void* pvParameters) {
         // HAL_GPIO_WritePin(HV_MINUS_CTRL_PORT, HV_MINUS_CTRL_PIN, GPIO_PIN_SET);
 
 
-        Contactors_Set(HV_MINUS_CONTACTOR, contactor_state_next, CONTACTOR_CALLBACK_BLOCKING_TIME_MS, true);
-        
+        Contactors_Set(HV_MINUS_CONTACTOR, contactor_state_next,
+                       CONTACTOR_CALLBACK_BLOCKING_TIME_MS, true);
+
         StatusLEDs_SetHeartbeat(Contactors_Get(HV_MINUS_CONTACTOR) == CONTACTOR_CLOSED);
 
 
@@ -46,11 +47,10 @@ static void vContactorTask(void* pvParameters) {
         } else {
             // error state, do nothing
             StatusLEDs_SetHeartbeat(false);
-
         }
         contactor_state = contactor_state_next;
-        
-        vTaskDelay(CONTACTOR_CHECK_PERIOD*5);
+
+        vTaskDelay(CONTACTOR_CHECK_PERIOD * 5);
 
         // move to the next color, wrapping back to red after blue
         // color = (color + 1) % RGB_NUM_COLORS;
@@ -69,8 +69,9 @@ int main(void) {
     }
     Contactors_Init();
 
-    TaskHandle_t handle = xTaskCreateStatic(vContactorTask, "Contactor", CONTACTOR_TASK_STACK_SIZE, NULL,
-                                            CONTACTOR_TASK_PRIORITY, xContactorStack, &xContactorTaskBuffer);
+    TaskHandle_t handle =
+        xTaskCreateStatic(vContactorTask, "Contactor", CONTACTOR_TASK_STACK_SIZE, NULL,
+                          CONTACTOR_TASK_PRIORITY, xContactorStack, &xContactorTaskBuffer);
     configASSERT(handle != NULL);
     (void)handle;
 

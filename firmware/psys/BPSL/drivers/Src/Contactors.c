@@ -23,8 +23,9 @@ contactor_state_t Contactors_Get(contactor_num_t contactor_num) {
     }
 
     contactor_t* contactor = &contactors[contactor_num];
-    return (HAL_GPIO_ReadPin(contactor->sense_pin.port, contactor->sense_pin.pin) ? CONTACTOR_CLOSED
-                                                                                  : CONTACTOR_OPEN);
+    return (HAL_GPIO_ReadPin(contactor->sense_pin.port, contactor->sense_pin.pin) ?
+                CONTACTOR_CLOSED :
+                CONTACTOR_OPEN);
 }
 
 // determines if the contactor physical state matches the expected state

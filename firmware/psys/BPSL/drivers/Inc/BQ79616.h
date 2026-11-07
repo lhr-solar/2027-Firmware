@@ -64,36 +64,36 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "stm32xx_hal.h"   // GPIO_TypeDef, TIM_TypeDef, UART_HandleTypeDef
-#include "UART.h"          // psp UART handles (husart3, ...)
+#include "stm32xx_hal.h" // GPIO_TypeDef, TIM_TypeDef, UART_HandleTypeDef
+#include "UART.h"        // psp UART handles (husart3, ...)
 #include "BQ79616_regs.h"
 
-#define BQ_UART_BAUD        1000000U    /* BQ79600 UART default, BQ79600 §7.3.2.1.2.1 p18 */
+#define BQ_UART_BAUD 1000000U /* BQ79600 UART default, BQ79600 §7.3.2.1.2.1 p18 */
 
-#define BQ_WAKE_TIM_HZ      1000000U    /* wake timer counts in 1 us ticks */
-#define BQ_WAKE_PING_US     2750U       /* middle of tHLD_WAKE = 2.5-3 ms, BQ79600 §6.6 p7 */
-#define BQ_WAKE_SETTLE_MS   5U          /* covers tSU(WAKE_SHUT) = 3.5 ms max, BQ79600 §6.6 p7 */
-#define BQ_WAKE_PER_DEV_MS  10U         /* BQ79616 tSU(WAKE_SHUT) max, per stack device, BQ79616 §5.6 p13 */
+#define BQ_WAKE_TIM_HZ     1000000U /* wake timer counts in 1 us ticks */
+#define BQ_WAKE_PING_US    2750U    /* middle of tHLD_WAKE = 2.5-3 ms, BQ79600 §6.6 p7 */
+#define BQ_WAKE_SETTLE_MS  5U       /* covers tSU(WAKE_SHUT) = 3.5 ms max, BQ79600 §6.6 p7 */
+#define BQ_WAKE_PER_DEV_MS 10U /* BQ79616 tSU(WAKE_SHUT) max, per stack device, BQ79616 §5.6 p13 */
 
 /* Sized for our current battery pack architecture, not limits of the chips */
-#define BQ_MAX_DEVICES      4U          /* BQ79616s in the stack, not counting the BQ79600 bridge */
-#define BQ_NUM_CELLS        8U          /* cells in series on each BQ79616 (the chip supports 6-16) */
-#define BQ_NUM_GPIO         8U          /* GPIO1-8 on each BQ79616, one thermistor each (BQ79616 6.3.2.1.2.2 p25) */
+#define BQ_MAX_DEVICES 4U /* BQ79616s in the stack, not counting the BQ79600 bridge */
+#define BQ_NUM_CELLS   8U /* cells in series on each BQ79616 (the chip supports 6-16) */
+#define BQ_NUM_GPIO 8U /* GPIO1-8 on each BQ79616, one thermistor each (BQ79616 6.3.2.1.2.2 p25) */
 
 _Static_assert(BQ_NUM_CELLS >= 6U && BQ_NUM_CELLS <= 16U, "BQ79616 supports 6S to 16S");
 
 /* Frame limits, BQ79600 §7.3.2.1.1 p15-16 */
-#define BQ_MAX_WRITE_LEN    8U          /* write DATA is 1-8 bytes (DATA_SIZE field is 3 bits) */
-#define BQ_MAX_DATA_LEN     128U        /* read returns 1-128 bytes (RESPONSE_BYTE field is 7 bits) */
-#define BQ_MAX_DEV_ADDR     0x3FU       /* device addresses are 6 bits */
-#define BQ_FRAME_OVERHEAD   6U          /* INIT + DEV ADR + REG ADR (2) + CRC (2) */
-#define BQ_MAX_FRAME_LEN    (BQ_FRAME_OVERHEAD + BQ_MAX_DATA_LEN)   /* longest response frame */
-#define BQ_MAX_CMD_LEN      (BQ_FRAME_OVERHEAD + BQ_MAX_WRITE_LEN)  /* longest command frame */
+#define BQ_MAX_WRITE_LEN  8U    /* write DATA is 1-8 bytes (DATA_SIZE field is 3 bits) */
+#define BQ_MAX_DATA_LEN   128U  /* read returns 1-128 bytes (RESPONSE_BYTE field is 7 bits) */
+#define BQ_MAX_DEV_ADDR   0x3FU /* device addresses are 6 bits */
+#define BQ_FRAME_OVERHEAD 6U    /* INIT + DEV ADR + REG ADR (2) + CRC (2) */
+#define BQ_MAX_FRAME_LEN  (BQ_FRAME_OVERHEAD + BQ_MAX_DATA_LEN)  /* longest response frame */
+#define BQ_MAX_CMD_LEN    (BQ_FRAME_OVERHEAD + BQ_MAX_WRITE_LEN) /* longest command frame */
 
 /* Thermistor divider on each GPIO, BQ79616 Figure 6-6 p24: TSREF -> R1 -> GPIO -> (NTC || R2) -> GND.
  * These describe our board, not the chip. */
-#define BQ_GPIO_PULLUP_OHMS     (3200U)     /* R1 */
-#define BQ_GPIO_PULLDOWN_OHMS   (15000U)    /* R2, the board's own pull-down, in parallel with the NTC */
+#define BQ_GPIO_PULLUP_OHMS   (3200U)  /* R1 */
+#define BQ_GPIO_PULLDOWN_OHMS (15000U) /* R2, the board's own pull-down, in parallel with the NTC */
 /* The thermistor is a Vishay NTCLE413E2103F520L: 10 k at 25 C (+-1 %), B25/85 = 3435 K. Its R-T
  * curve is the lookup table in BQ79616.c, from ntcle413.pdf (Vishay 29078) Table 3 p4. */
 
@@ -102,27 +102,27 @@ _Static_assert(BQ_NUM_CELLS >= 6U && BQ_NUM_CELLS <= 16U, "BQ79616 supports 6S t
  * ADC rounding and R1/R2 tolerance leave the computed value just under "infinite" rather than at it;
  * this still catches that with up to ~2.5 % R1/R2 error. Beyond that, a missing thermistor reads as
  * very cold and clamps to -40 C instead, which still trips an under-temperature limit. */
-#define BQ_NTC_OPEN_OHMS        (250000U)
+#define BQ_NTC_OPEN_OHMS (250000U)
 
 /* Stored for a GPIO whose reading can't be a thermistor: TSREF off, GPIO shorted to ground, or no
  * thermistor fitted (the node sits at R2's divider voltage) */
-#define BQ_TEMP_INVALID_MC      INT32_MIN
+#define BQ_TEMP_INVALID_MC INT32_MIN
 
-#define BQ_RESP_TIMEOUT_MS  10U         /* max wait between response bytes (driver choice) */
+#define BQ_RESP_TIMEOUT_MS 10U /* max wait between response bytes (driver choice) */
 
 // Result of every driver call. Anything other than BQ_OK says why it failed; bq_status_str() names it.
 typedef enum {
     BQ_OK = 0,
-    BQ_ERR_PARAM,       // invalid argument or request (NULL, bad length or type, no such device)
-    BQ_ERR_NOT_INIT,    // bq_init() hasn't succeeded yet
-    BQ_ERR_HAL,         // a peripheral (CRC, timer, UART) failed to start
-    BQ_ERR_BUSY,        // the UART is still sending a frame
-    BQ_ERR_UART,        // a command frame couldn't be queued for sending
-    BQ_ERR_TIMEOUT,     // a response frame didn't arrive in time
-    BQ_ERR_CRC,         // a response frame failed its CRC check
-    BQ_ERR_FRAME,       // a response frame didn't match the command (length, device, register)
-    BQ_ERR_VERIFY,      // a value read back isn't what was written or expected
-    BQ_ERR_ADC,         // a cell result has never been converted
+    BQ_ERR_PARAM,    // invalid argument or request (NULL, bad length or type, no such device)
+    BQ_ERR_NOT_INIT, // bq_init() hasn't succeeded yet
+    BQ_ERR_HAL,      // a peripheral (CRC, timer, UART) failed to start
+    BQ_ERR_BUSY,     // the UART is still sending a frame
+    BQ_ERR_UART,     // a command frame couldn't be queued for sending
+    BQ_ERR_TIMEOUT,  // a response frame didn't arrive in time
+    BQ_ERR_CRC,      // a response frame failed its CRC check
+    BQ_ERR_FRAME,    // a response frame didn't match the command (length, device, register)
+    BQ_ERR_VERIFY,   // a value read back isn't what was written or expected
+    BQ_ERR_ADC,      // a cell result has never been converted
 } bq_status_t;
 
 typedef struct bq_init_struct_t {
@@ -132,20 +132,20 @@ typedef struct bq_init_struct_t {
     uint16_t fault_pin;
     GPIO_TypeDef* fault_port;
 
-    UART_HandleTypeDef* huart;      // psp UART handle wired to the BQ79600, e.g. husart3
-    uint8_t uart_af;                // AF that routes tx/rx to huart, e.g. GPIO_AF7_USART3
+    UART_HandleTypeDef* huart; // psp UART handle wired to the BQ79600, e.g. husart3
+    uint8_t uart_af;           // AF that routes tx/rx to huart, e.g. GPIO_AF7_USART3
 
     // The WAKE ping is generated by a timer channel output on tx_pin, so tx_pin
     // must have one of TIM2..TIM5's or TIM8's channels, or one of TIM8's
     // complementary (CHxN) outputs, as an alternate function.
     // e.g. PB10: TIM2, TIM_CHANNEL_3, GPIO_AF1_TIM2, wake_tim_complementary = false
     //      PC10: TIM8, TIM_CHANNEL_1, GPIO_AF4_TIM8, wake_tim_complementary = true (TIM8_CH1N)
-    TIM_TypeDef* wake_tim;          // TIM2..TIM5 or TIM8
-    uint32_t wake_tim_channel;      // TIM_CHANNEL_1..TIM_CHANNEL_4
+    TIM_TypeDef* wake_tim;     // TIM2..TIM5 or TIM8
+    uint32_t wake_tim_channel; // TIM_CHANNEL_1..TIM_CHANNEL_4
     uint8_t wake_tim_af;
-    bool wake_tim_complementary;    // tx_pin carries the channel's CHxN output, not CHx (TIM8 only)
+    bool wake_tim_complementary; // tx_pin carries the channel's CHxN output, not CHx (TIM8 only)
 
-    uint8_t num_devices;            // BQ79616s in the stack (0..BQ_MAX_DEVICES), not counting the bridge
+    uint8_t num_devices; // BQ79616s in the stack (0..BQ_MAX_DEVICES), not counting the bridge
 } bq_init_struct_t;
 
 /* Command frame REQ_TYPE (INIT byte bits 6:4), BQ79600 §7.3.2.1.1 p16 */
@@ -167,42 +167,43 @@ typedef struct bq_response_frame_t {
 
 // Internal structure to store measurements
 typedef struct bq_measurements_t {
-    int32_t temp_mc[BQ_NUM_GPIO];       // milli-degC, signed (below 0 C is negative), or BQ_TEMP_INVALID_MC
-    uint32_t timestamp_ms; 
+    int32_t
+        temp_mc[BQ_NUM_GPIO]; // milli-degC, signed (below 0 C is negative), or BQ_TEMP_INVALID_MC
+    uint32_t timestamp_ms;
     uint16_t volt_mv[BQ_NUM_CELLS];
     uint8_t dev_addr;
-} bq_measurements_t; 
+} bq_measurements_t;
 
 // A command to the BQ chain, passed to bq_write() and bq_read()
 typedef struct bq_msg_frame_t {
     bq_req_t req;
-    uint8_t dev_addr;               // only used for single read/write
-    uint16_t reg_addr;              // first register
-    const uint8_t *data;            // write: the bytes to write. read: unused, may be NULL
-    uint8_t len;                    // write: bytes in data (1-8). read: bytes to read per device (1-128)
+    uint8_t dev_addr;    // only used for single read/write
+    uint16_t reg_addr;   // first register
+    const uint8_t* data; // write: the bytes to write. read: unused, may be NULL
+    uint8_t len;         // write: bytes in data (1-8). read: bytes to read per device (1-128)
 } bq_msg_frame_t;
 
 /* Long comm timeout: how long the BQ79616s wait without valid communication before they shut
  * down. The values are COMM_TIMEOUT_CONF[CTL_TIME] codes, BQ79616 §6.5.4.3.6 p124. */
 typedef enum {
-    BQ_COMM_TIMEOUT_DISABLED = 0,   // never: the stack stays awake if the MCU stops talking
-    BQ_COMM_TIMEOUT_100MS    = 1,
-    BQ_COMM_TIMEOUT_2S       = 2,
-    BQ_COMM_TIMEOUT_10S      = 3,
-    BQ_COMM_TIMEOUT_1MIN     = 4,
-    BQ_COMM_TIMEOUT_10MIN    = 5,
-    BQ_COMM_TIMEOUT_30MIN    = 6,
-    BQ_COMM_TIMEOUT_1HR      = 7,
+    BQ_COMM_TIMEOUT_DISABLED = 0, // never: the stack stays awake if the MCU stops talking
+    BQ_COMM_TIMEOUT_100MS = 1,
+    BQ_COMM_TIMEOUT_2S = 2,
+    BQ_COMM_TIMEOUT_10S = 3,
+    BQ_COMM_TIMEOUT_1MIN = 4,
+    BQ_COMM_TIMEOUT_10MIN = 5,
+    BQ_COMM_TIMEOUT_30MIN = 6,
+    BQ_COMM_TIMEOUT_1HR = 7,
 } bq_comm_timeout_t;
 
 // Largest number of frames a read can return: a broadcast read gets one from every BQ79616 plus the bridge
-#define BQ_MAX_RESPONSE_FRAMES  (BQ_MAX_DEVICES + 1U)
+#define BQ_MAX_RESPONSE_FRAMES (BQ_MAX_DEVICES + 1U)
 
 /**
  * @brief Name of a status code, e.g. "BQ_ERR_TIMEOUT", for logs and prints.
  * @return A string constant; "BQ_ERR_UNKNOWN" for a value outside bq_status_t.
  */
-const char *bq_status_str(bq_status_t status);
+const char* bq_status_str(bq_status_t status);
 
 /**
  * @brief Sets up the CRC unit, wake timer, pins and UART for the BQ chain. Does not wake the chips.
@@ -232,7 +233,7 @@ bq_status_t bq_wake(void);
  * @return BQ_OK once the frame is queued for sending; BQ_ERR_NOT_INIT; BQ_ERR_PARAM if msg is
  *         invalid; BQ_ERR_UART if the frame can't be queued.
  */
-bq_status_t bq_write(const bq_msg_frame_t *msg);
+bq_status_t bq_write(const bq_msg_frame_t* msg);
 
 /**
  * @brief Sends a read command and collects the replies.
@@ -247,7 +248,7 @@ bq_status_t bq_write(const bq_msg_frame_t *msg);
  *         BQ_ERR_TIMEOUT, BQ_ERR_CRC or BQ_ERR_FRAME for a bad reply. On an error the contents
  *         of frames are undefined.
  */
-bq_status_t bq_read(const bq_msg_frame_t *msg, bq_response_frame_t *frames, uint8_t max_frames);
+bq_status_t bq_read(const bq_msg_frame_t* msg, bq_response_frame_t* frames, uint8_t max_frames);
 
 /**
  * @brief Auto-addresses the chain: address 0 for the BQ79600 and 1..num_devices for the BQ79616s,
