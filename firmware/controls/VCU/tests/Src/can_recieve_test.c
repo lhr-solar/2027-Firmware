@@ -4,11 +4,16 @@
 #include "projdefs.h"
 #include "printf.h"
 #include "UART.h"
-
+#include "task.h"
+#include "tusb_port.h"
 
 
 StaticTask_t task_buffer;
 StackType_t task_stack[512];
+
+/* tusb polling task */
+StaticTask_t pollEventsTaskBuffer;
+StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
 
 /*
 configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY is the maximum FreeRTOS priority
@@ -26,10 +31,10 @@ for an interrupt
 
 // Some pins broken out by LSOM
 #define CAN_TX_PROFILE_PORT GPIOA
-#define CAN_TX_PROFILE_PIN  GPIO_PIN_10
+#define CAN_TX_PROFILE_PIN  GPIO_PIN_4
 
 #define CAN_RX_PROFILE_PORT GPIOA
-#define CAN_RX_PROFILE_PIN  GPIO_PIN_11
+#define CAN_RX_PROFILE_PIN  GPIO_PIN_5
 
 void can_profile_pins_init() {
     GPIO_InitTypeDef tx_pin_config = {
@@ -159,7 +164,7 @@ void G473_SystemClockConfig(void) {
     RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
     RCC_OscInitStruct.PLL.PLLN = 12;
     RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV4;
     RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
         Error_Handler();
@@ -188,6 +193,13 @@ void Error_Handler() {
 
 void Success_Handler() {
     HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET);
+}
+
+static void poll_events(void* argument) {
+    while (1) {
+        // polls event queue
+        tud_task();
+    }
 }
 
 
@@ -239,6 +251,7 @@ static void task(void* pvParameters) {
             fdcan1_rx_data[4], fdcan1_rx_data[5], fdcan1_rx_data[6], fdcan1_rx_data[7]);
         }
         #endif
+    }
 
 
         #ifdef FDCAN2
@@ -283,7 +296,7 @@ static void task(void* pvParameters) {
 
         vTaskDelay(pdMS_TO_TICKS(500));
     }
-}
+
 
 void can_fd_tx_callback_hook(FDCAN_HandleTypeDef* hfdcan, const can_tx_payload_t* payload) {
     HAL_GPIO_TogglePin(CAN_TX_PROFILE_PORT, CAN_TX_PROFILE_PIN);
@@ -465,6 +478,14 @@ int main(void) {
     }
 
     #endif
+
+    MX_USB_PCD_Init();
+        if (!printf_init()) {
+            Error_Handler();
+        }
+
+    xTaskCreateStatic(poll_events, "Poll Event Queue", configMINIMAL_STACK_SIZE, NULL,
+                      tskIDLE_PRIORITY + 3, pollEventsStack, &pollEventsTaskBuffer);
 
     // you can only send CAN messages within a FreeRTOS task
     // clang-format off
