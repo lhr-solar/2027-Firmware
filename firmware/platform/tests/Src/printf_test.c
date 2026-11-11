@@ -9,6 +9,9 @@ StackType_t txTaskStack[configMINIMAL_STACK_SIZE];
 StaticTask_t pollEventsTaskBuffer;
 StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
 
+#define SERIAL_PORT_A  0
+#define SERIAL_PORT_B  1
+
 static void poll_events(void* argument) {
     while (1) {
         // polls event queue
@@ -18,8 +21,10 @@ static void poll_events(void* argument) {
 
 void TxTask(void* argument) {
     while (1) {
-        printf("touch ravi for me!\r\n");
-        vTaskDelay(pdMS_TO_TICKS(100));
+        printf_port(SERIAL_PORT_A, "touch ravi for me!\r\n");
+        vTaskDelay(pdMS_TO_TICKS(500));
+        printf_port(SERIAL_PORT_B, "again!\r\n");
+        vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
 

@@ -11,7 +11,7 @@
 #include <stdbool.h>
 #include "UART.h"
 
-int printf(const char* fmt, ...);
+int printf_port(uint8_t port, const char* fmt, ...);
 int snprintf(char* buffer, size_t bufsz, char const* fmt, ...);
 // char* uart_fgets(char* buffer, size_t maxsz);
 

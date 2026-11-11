@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "platform",
+            "compileCommands": "${workspaceFolder}/firmware/platform/build/compile_commands.json",
+            "intelliSenseMode": "linux-gcc-arm"
+        },
+        {
+            "name": "LVC",
+            "compileCommands": "${workspaceFolder}/firmware/psys/LVC/build/build1/compile_commands.json",
+            "intelliSenseMode": "linux-gcc-arm"
+        }
+    ],
+    "version": 4
+}

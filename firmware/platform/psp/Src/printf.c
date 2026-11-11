@@ -66,8 +66,11 @@ int snprintf(char* buffer, size_t bufsz, char const* fmt, ...) {
     return rv;
 }
 
-// Regular old printf
-int printf(const char* fmt, ...) {
+// printf but on a port :P
+int printf_port(uint8_t port, const char* fmt, ...) {
+    // exit early if port specified greater than num cdc ports
+    if (port > CFG_TUD_CDC - 1) return -1;
+
     printf_buffer_t* pbuf = pvTaskGetThreadLocalStoragePointer(xTaskGetCurrentTaskHandle(), 0);
     if (pbuf == NULL) {
         // only if this task is not assigned a buffer, assign it a buffer
@@ -84,7 +87,6 @@ int printf(const char* fmt, ...) {
 
     va_list val;
     va_start(val, fmt);
-
     // Lock on the specific buffer's mutex (if it's shared between threads)
     if (xSemaphoreTake(pbuf->buffer_mtx, PRINTF_MTX_DELAY) != pdTRUE) {
         va_end(val);
@@ -93,7 +95,6 @@ int printf(const char* fmt, ...) {
 
     int const rv = npf_vsnprintf(pbuf->buffer, MAX_PRINTF_SIZE, fmt, val);
     va_end(val);
-
     if (rv <= 0) {
         xSemaphoreGive(pbuf->buffer_mtx);
         return rv;
@@ -103,49 +104,20 @@ int printf(const char* fmt, ...) {
     // "-1" for null char space
     uint32_t count = (rv >= MAX_PRINTF_SIZE) ? MAX_PRINTF_SIZE - 1 : rv;
     TickType_t start = xTaskGetTickCount();
-    // 2 ports from config
-    for (uint8_t itf = 0; itf < CFG_TUD_CDC; itf++) {
-        // cdc_n_connected checks if a DTR bit was sent
-        // happens for any serial terminals that claim a COM port
-        if (tud_cdc_n_connected(itf)) {
 
-            while (tud_cdc_n_write_available(itf) < count &&
-                   xTaskGetTickCount() - start < PRINTF_TX_TIMEOUT) {
-                vTaskDelay(1);
-            }
-
-            tud_cdc_n_write(itf, buf, count);
-            tud_cdc_n_write_flush(itf);
+    // cdc_n_connected checks if a DTR bit was sent
+    // happens for any serial terminals that claim a COM port
+    if (tud_cdc_n_connected(port)) {
+        while (tud_cdc_n_write_available(port) < count &&
+                xTaskGetTickCount() - start < PRINTF_TX_TIMEOUT) {
+            vTaskDelay(1);
         }
+        // write buff into tx fifo
+        tud_cdc_n_write(port, buf, count);
+        // force fifo -> endpoint xfer is possible
+        tud_cdc_n_write_flush(port);
     }
-
+    
     xSemaphoreGive(pbuf->buffer_mtx);
     return rv;
 }
-
-// char* uart_fgets(char* buffer, size_t maxsz) {
-//     if (maxsz == 0 || buffer == NULL)
-//         return NULL;
-
-//     char c;
-//     size_t i = 0;
-//     while (i < maxsz - 1) {
-//         uart_status_t status = uart_recv(printf_huart, (uint8_t*)&c, 1, portMAX_DELAY);
-//         if (status == UART_ERR)
-//             return NULL;
-
-//         // We check for \r instead of \n because that's what picocom and putty output on hitting enter key
-//         if (c == '\r') {
-//             buffer[i] = 0;
-//             return buffer;
-//         } else if (c == '\b' || c == 0x7F) { // handle backspace and DEL
-//             if (i > 0)
-//                 i--; // just move index back, will be overwritten
-//         } else {
-//             buffer[i++] = c;
-//         }
-//     }
-
-//     buffer[maxsz - 1] = 0;
-//     return buffer;
-// }
