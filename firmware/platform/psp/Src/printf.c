@@ -23,7 +23,7 @@
 
 // Max time to wait for room in the USB TX buffer, what doesn't fit after this is dropped
 #ifndef PRINTF_TX_TIMEOUT
-    #define PRINTF_TX_TIMEOUT (pdMS_TO_TICKS(2))
+    #define PRINTF_TX_TIMEOUT (pdMS_TO_TICKS(250))
 #endif
 
 typedef struct {
