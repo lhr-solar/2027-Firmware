@@ -2,13 +2,14 @@
 #include "UART.h"
 #include "portmacro.h"
 #include "stm32xx_hal.h"
+#include "tusb_port.h"
 #include <string.h>
 
 #define NANOPRINTF_IMPLEMENTATION
 #include "nanoprintf.h"
 
 #ifndef MAX_PRINTF_SIZE
-    #define MAX_PRINTF_SIZE (256)
+    #define MAX_PRINTF_SIZE (512)
 #endif
 
 #ifndef NUM_PRINTF_BUFFERS
@@ -18,6 +19,11 @@
 // How long to wait for a printf buffer to open up
 #ifndef PRINTF_MTX_DELAY
     #define PRINTF_MTX_DELAY (pdMS_TO_TICKS(100))
+#endif
+
+// Max time to wait for room in the USB TX buffer, what doesn't fit after this is dropped
+#ifndef PRINTF_TX_TIMEOUT
+    #define PRINTF_TX_TIMEOUT (pdMS_TO_TICKS(250))
 #endif
 
 typedef struct {
@@ -32,22 +38,43 @@ uint8_t printf_pool_next = 0;
 SemaphoreHandle_t printf_pool_mtx;
 StaticSemaphore_t printf_pool_mtx_buf;
 
-UART_HandleTypeDef* printf_huart = NULL;
+// mutex on calling tusb write to FIFO, per CDC port
+SemaphoreHandle_t cdc_port_mtx[CFG_TUD_CDC];
+StaticSemaphore_t cdc_port_mtx_buf[CFG_TUD_CDC];
+
+// semaphore given on tx complete callback, per CDC port
+SemaphoreHandle_t cdc_tx_sem[CFG_TUD_CDC];
+StaticSemaphore_t cdc_tx_sem_buf[CFG_TUD_CDC];
 
 /**
  * @brief Initializes printf
  * @param huart pointer to the UART handle
  * @return bool true if success
  */
-bool printf_init(UART_HandleTypeDef* huart) {
-    printf_huart = huart;
-
+bool printf_init(void) {
     printf_pool_mtx = xSemaphoreCreateMutexStatic(&printf_pool_mtx_buf);
 
     for (int i = 0; i < NUM_PRINTF_BUFFERS; i++) {
         printf_pool[i].buffer_mtx = xSemaphoreCreateMutexStatic(&printf_pool[i].buffer_mtx_buffer);
     }
-    return uart_init(huart) == UART_OK;
+
+    for (int i = 0; i < CFG_TUD_CDC; i++) {
+        cdc_port_mtx[i] = xSemaphoreCreateMutexStatic(&cdc_port_mtx_buf[i]);
+        cdc_tx_sem[i] = xSemaphoreCreateBinaryStatic(&cdc_tx_sem_buf[i]);
+    }
+
+    tusb_rhport_init_t dev_init = {
+        .role = TUSB_ROLE_DEVICE,
+        .speed = TUSB_SPEED_AUTO,
+    };
+    return tusb_init(BOARD_TUD_RHPORT, &dev_init);
+}
+
+// callback after endpoint -> hw xfer is complete
+void tud_cdc_tx_complete_cb(uint8_t itf) {
+    // give sem for that specific CDC port (itf)
+    if (cdc_tx_sem[itf] != NULL)
+        xSemaphoreGive(cdc_tx_sem[itf]);
 }
 
 // Print to a buffer
@@ -59,8 +86,12 @@ int snprintf(char* buffer, size_t bufsz, char const* fmt, ...) {
     return rv;
 }
 
-// Regular old printf
-int printf(const char* fmt, ...) {
+// printf but on a port :P
+int printf_port(uint8_t port, const char* fmt, ...) {
+    // exit early if port specified greater than num cdc ports
+    if (port > CFG_TUD_CDC - 1)
+        return -1;
+
     printf_buffer_t* pbuf = pvTaskGetThreadLocalStoragePointer(xTaskGetCurrentTaskHandle(), 0);
     if (pbuf == NULL) {
         // only if this task is not assigned a buffer, assign it a buffer
@@ -77,50 +108,47 @@ int printf(const char* fmt, ...) {
 
     va_list val;
     va_start(val, fmt);
-
     // Lock on the specific buffer's mutex (if it's shared between threads)
     if (xSemaphoreTake(pbuf->buffer_mtx, PRINTF_MTX_DELAY) != pdTRUE) {
         va_end(val);
         return -1;
     }
-
+    // format
     int const rv = npf_vsnprintf(pbuf->buffer, MAX_PRINTF_SIZE, fmt, val);
     va_end(val);
-
     if (rv <= 0) {
         xSemaphoreGive(pbuf->buffer_mtx);
         return rv;
     }
 
-    uart_status_t status = uart_send(printf_huart, (const uint8_t*)pbuf->buffer,
-                                     (rv > MAX_PRINTF_SIZE) ? MAX_PRINTF_SIZE : rv, portMAX_DELAY);
-    xSemaphoreGive(pbuf->buffer_mtx);
-    return (status == UART_OK) ? rv : -1;
-}
-
-char* uart_fgets(char* buffer, size_t maxsz) {
-    if (maxsz == 0 || buffer == NULL)
-        return NULL;
-
-    char c;
-    size_t i = 0;
-    while (i < maxsz - 1) {
-        uart_status_t status = uart_recv(printf_huart, (uint8_t*)&c, 1, portMAX_DELAY);
-        if (status == UART_ERR)
-            return NULL;
-
-        // We check for \r instead of \n because that's what picocom and putty output on hitting enter key
-        if (c == '\r') {
-            buffer[i] = 0;
-            return buffer;
-        } else if (c == '\b' || c == 0x7F) { // handle backspace and DEL
-            if (i > 0)
-                i--; // just move index back, will be overwritten
-        } else {
-            buffer[i++] = c;
-        }
+    // claim access to port hw
+    if (xSemaphoreTake(cdc_port_mtx[port], portMAX_DELAY) != pdTRUE) {
+        xSemaphoreGive(pbuf->buffer_mtx);
+        return -1;
     }
 
-    buffer[maxsz - 1] = 0;
-    return buffer;
+    uint8_t* buf = (uint8_t*)pbuf->buffer;
+    // "-1" for null char space
+    uint32_t count = (rv >= MAX_PRINTF_SIZE) ? MAX_PRINTF_SIZE - 1 : rv;
+    TickType_t start = xTaskGetTickCount();
+
+    // cdc_n_connected checks if a DTR bit was sent
+    // happens for any serial terminals that claim a COM port
+    if (tud_cdc_n_connected(port)) {
+        // pend on available space in FIFO
+        while (tud_cdc_n_write_available(port) < count) {
+            TickType_t elapsed = xTaskGetTickCount() - start;
+            if (elapsed >= PRINTF_TX_TIMEOUT)
+                break;
+            xSemaphoreTake(cdc_tx_sem[port], PRINTF_TX_TIMEOUT - elapsed);
+        }
+        // write buff into tx fifo
+        tud_cdc_n_write(port, buf, count);
+        // force fifo -> endpoint xfer if possible
+        tud_cdc_n_write_flush(port);
+    }
+
+    xSemaphoreGive(pbuf->buffer_mtx);
+    xSemaphoreGive(cdc_port_mtx[port]);
+    return rv;
 }
