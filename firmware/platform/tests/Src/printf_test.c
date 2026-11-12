@@ -9,6 +9,7 @@ StackType_t txTaskStack[configMINIMAL_STACK_SIZE];
 StaticTask_t pollEventsTaskBuffer;
 StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
 
+// assign macros to CDC ports
 #define SERIAL_PORT_A  0
 #define SERIAL_PORT_B  1
 
@@ -21,9 +22,9 @@ static void poll_events(void* argument) {
 
 void TxTask(void* argument) {
     while (1) {
-        printf_port(SERIAL_PORT_A, "touch ravi for me!\r\n");
+        LOG(SERIAL_PORT_A, "touch ravi for me!\r\n");
         vTaskDelay(pdMS_TO_TICKS(500));
-        printf_port(SERIAL_PORT_B, "again!\r\n");
+        LOG(SERIAL_PORT_B, "again!\r\n");
         vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
@@ -33,7 +34,7 @@ int main(void) {
     SystemClock_Config();
     MX_USB_PCD_Init();
     // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
-    printf_init();
+    log_init();
 
     xTaskCreateStatic(poll_events, "Poll Event Queue", configMINIMAL_STACK_SIZE, NULL,
                       tskIDLE_PRIORITY + 3, pollEventsStack, &pollEventsTaskBuffer);

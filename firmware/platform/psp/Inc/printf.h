@@ -11,6 +11,10 @@
 #include <stdbool.h>
 #include "UART.h"
 
+// delete later if we only want logging funcs
+#define LOG(port, fmt, ...) printf_port(port, fmt, ##__VA_ARGS__)
+#define log_init()          printf_init()
+
 int printf_port(uint8_t port, const char* fmt, ...);
 int snprintf(char* buffer, size_t bufsz, char const* fmt, ...);
 // char* uart_fgets(char* buffer, size_t maxsz);
