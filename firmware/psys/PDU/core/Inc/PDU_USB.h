@@ -3,9 +3,10 @@
 #include "stm32xx_hal.h"
 
 /**
- * Brings up the USB FS peripheral clock and CRS (HSI48 trimmed to USB SOF).
+ * Brings up USB FS and starts the TinyUSB device stack: CRS (HSI48 trimmed to
+ * USB SOF), USB clock, USB IRQs, tusb_init.
  * Requires PDU_Clock_Init() first (HSI48 on, USB kernel clock = HSI48).
- * Does not start a device stack -- that is TinyUSB's job (see TODO in .c).
+ * TinyUSB only runs once a task calls tud_task() in a loop (see app.c).
+ * Returns HAL_ERROR if tusb_init fails.
  */
-void PDU_USB_Init(void);
-
+HAL_StatusTypeDef PDU_USB_Init(void);

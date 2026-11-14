@@ -13,6 +13,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/../../platform/cmake/platform.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../../platform/cmake/stm32.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../../platform/cmake/post_build.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../../platform/cmake/custom_commands.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../../platform/cmake/lint.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/Board.cmake)
 
 # set test to default to build prod
@@ -37,6 +38,7 @@ add_executable(PDU
     ${HAL_SOURCES}
     ${FREERTOS_SOURCES}
     ${FATFS_SOURCES}
+    ${TINYUSB_SOURCES}
     ${PSP_SOURCES}
     ${UTILS_SOURCES}
     ${DRIVERS_SOURCES}
@@ -45,12 +47,15 @@ target_include_directories(PDU PUBLIC ${PLATFORM_INCLUDE_DIRS} ${BOARD_INCLUDE_D
 
 build_firmware(PDU)
 post_build(PDU)
+lint(PDU)
 
 # external commands
 add_flash_target(PDU)
+add_flash_usb_target(PDU)
 add_dump_symbols_target(PDU)
 add_dump_size_target(PDU)
 add_erase_target()
+add_format_targets(${CMAKE_CURRENT_SOURCE_DIR})
 
 # must have jolly good message
 string(ASCII 27 Esc)

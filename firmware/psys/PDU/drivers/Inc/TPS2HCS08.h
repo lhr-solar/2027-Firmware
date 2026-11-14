@@ -11,7 +11,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "stm32g4xx_hal_conf.h"
+#include "stm32xx_hal.h"
 #include "TPS2HCS08_Regs.h"
 
 // SPI frame format (SLVSHR0 §8.3.3, Figure 8-8)

@@ -1,12 +1,8 @@
 #include "stm32xx_hal.h"
+#include "gpio_helpers.h"
 
 #define LED_PIN GPIO_PIN_0
 #define LED_PORT GPIOA
-
-// Initialize clock for heartbeat LED port
-// HAL_StatusTypeDef enable_gpio_clock(const GPIO_TypeDef* port) {
-// PR #53
-// }
 
 int main(){
     HAL_Init();

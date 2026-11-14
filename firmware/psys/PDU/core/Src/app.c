@@ -21,7 +21,12 @@ int main(void) {
         // are deasserted and LIMP_HOME/DI held low by PDU_GPIO_Init.
         // TODO: report the fault (LED / USB / CAN) and skip all HSS commands
     }
-    PDU_USB_Init();
+    if (PDU_USB_Init() != HAL_OK) {
+        // USB is debug/flash only; HSS control doesn't depend on it, so keep running.
+        // TODO: report the fault (LED / CAN)
+    }
+    // TODO: once the scheduler is started, add a task that calls tud_task() in a
+    // loop (see platform/tests/Src/tusb_cdc_test.c, poll_events)
 
     while (1) {
     }
