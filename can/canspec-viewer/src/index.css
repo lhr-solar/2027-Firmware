@@ -1675,7 +1675,11 @@ table.data tbody tr.selected {
 .timing-disabled { color: #9a9aa4; }
 .summary-table-wrap { overflow-x: auto; }
 
-.loading-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr)); gap:16px; margin-top:20px; }
+.loading-section { margin-top:20px; }
+.loading-section + .loading-section { border-top:1px solid var(--border); padding-top:16px; }
+.loading-section-title { margin:0; font-size:15px; color:var(--text-muted); }
+.loading-card-aux { background:#1d2129; }
+.loading-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr)); gap:16px; margin-top:10px; }
 .loading-grid h2, .tcp-card h2 { margin:0 0 8px; font-size:18px; }
 .load-chart { margin:20px 0; }
 .load-row { display:grid; grid-template-columns:65px minmax(50px,1fr) 110px; gap:10px; align-items:center; height:24px; margin:12px 0; font-size:12px; }

@@ -63,16 +63,23 @@ export function LoadingPage() {
         Identical mirrored IDs count once per bus/output. Triggered messages and
         pending layouts are excluded; errors and retries are additional.
       </p>
-      <div className="loading-grid">
-        {Object.entries(topology.buses)
-          .filter(([name]) => name.toLowerCase().includes(q.toLowerCase()))
+      {(["normal", "aux"] as const).map((category) => {
+        const buses = Object.entries(topology.buses).filter(([name, bus]) =>
+          (bus.category ?? "normal") === category && name.toLowerCase().includes(q.toLowerCase())
+        );
+        if (!buses.length && category === "aux") return null;
+        return (
+          <section className={`loading-section ${category}`} key={category}>
+            <h2 className="loading-section-title">{category === "normal" ? "On-Car" : "Aux"}</h2>
+            <div className="loading-grid">
+        {buses
           .map(([name, bus]) => {
             const rows = [...resolved.get(name)!.values()];
             const rates = [
               ...new Set([125000, 250000, 500000, 1000000, bus.bitrate]),
             ].sort((a, b) => a - b);
             return (
-              <article className="network-card" key={name}>
+              <article className={`network-card${category === "aux" ? " loading-card-aux" : ""}`} key={name}>
                 <h2>{name}</h2>
                 <p className="page-sub">
                   {bus.format === "can_fd" ? "CAN FD · BRS off" : "Classic CAN"}{" "}
@@ -114,7 +121,10 @@ export function LoadingPage() {
               </article>
             );
           })}
-      </div>
+            </div>
+          </section>
+        );
+      })}
       {Object.entries(topology.outputs)
         .map(([name]) => {
           const rows = [...resolved.get(name)!.values()],

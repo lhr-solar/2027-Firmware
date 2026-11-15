@@ -102,6 +102,7 @@ export interface TopologyBus {
   dbc: string;
   format: "can_fd" | "classic";
   bitrate: number;
+  category?: "normal" | "aux";
   brs?: boolean;
   data_bitrate?: number;
   forwards?: ForwardRoute[];
