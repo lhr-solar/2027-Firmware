@@ -1681,14 +1681,13 @@ table.data tbody tr.selected {
 .loading-card-aux { background:#1d2129; }
 .loading-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr)); gap:16px; margin-top:10px; }
 .loading-grid h2, .tcp-card h2 { margin:0 0 8px; font-size:18px; }
-.load-chart { margin:20px 0; }
-.load-row { display:grid; grid-template-columns:65px minmax(50px,1fr) 110px; gap:10px; align-items:center; height:24px; margin:12px 0; font-size:12px; }
+.load-chart { margin:12px 0; }
+.load-row { display:grid; grid-template-columns:65px minmax(50px,1fr) 110px; gap:10px; align-items:center; height:24px; margin:7px 0; font-size:12px; }
 .load-track { background:#1b2535; height:20px; border-radius:3px; overflow:hidden; }
 .load-bar { height:100%; background:#4b9df5; min-width:1px; }
 .load-row.assigned .load-bar { background:#f39b37; }
 .load-row.assigned > span { color:#f39b37; font-weight:700; }
 .load-row strong { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; padding:0; border:0; background:none; line-height:20px; }
-.load-axis { text-align:right; color:var(--text-muted); font-size:11px; }
 .tcp-card { margin:20px 0; }
 .tcp-rate { font-size:32px; color:#4b9df5; font-variant-numeric:tabular-nums; }
 .tcp-rate small { font-size:14px; color:var(--text-muted); }

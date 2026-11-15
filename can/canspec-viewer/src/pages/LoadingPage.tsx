@@ -113,9 +113,6 @@ export function LoadingPage() {
                       </div>
                     );
                   })}
-                  <div className="load-axis">
-                    Shared scale: 0–100% · stripes = over capacity
-                  </div>
                 </div>
                 <Inventory rows={rows} />
               </article>
