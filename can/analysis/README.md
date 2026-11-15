@@ -29,10 +29,8 @@ the configured/intended traffic; the DBC cannot reconfigure a COTS device.
 | CarCAN | CAN-FD + classic frames | 500 kbit/s | Off |
 | DAqCAN | CAN-FD | 500 kbit/s | Off |
 | ChargerCAN | CAN-FD | 500 kbit/s | Off |
-| MotorCAN | Classic CAN | 500 kbit/s | — |
-| SteeringCAN | Classic CAN | 500 kbit/s | — |
+| COTSCAN | Classic CAN | 500 kbit/s | — |
 | ElconCAN | Classic CAN | 250 kbit/s | — |
-| MPPTCAN | Classic CAN | 500 kbit/s | — |
 
 DBC globals `Baudrate`/`DataBaudrate` use bits/second. `VFrameFormat` describes
 each frame and `CANFD_BRS=0` explicitly disables BRS. With BRS off the entire FD
@@ -65,9 +63,7 @@ Confirmed paths:
 
 | Source | Destination | Bridge | Filter |
 |---|---|---|---|
-| MotorCAN | CarCAN | VCU | All |
-| MPPTCAN | CarCAN | MSV | Exclude MSV-origin commands |
-| SteeringCAN | CarCAN | DEI | All |
+| COTSCAN | CarCAN | VCU | Exclude MPPT command IDs; forward motor, steering, and MPPT telemetry |
 | ElconCAN | ChargerCAN | ElconInterface | All |
 | CarCAN | ChargerCAN | BPS | Include `"0x060"`, `"0x070"`, `"0x071"`, `"0x072"` |
 | ChargerCAN | CarCAN | BPS | Exclude those four BPS IDs to prevent echo |
@@ -78,7 +74,7 @@ The calculator follows every hop, so forwarded Elcon traffic contributes to
 ChargerCAN occupancy as well as CarCAN. No DAqCAN-to-CarCAN route exists. The
 internet stream contains CarCAN after forwarding, filtered DAqCAN, and TCP-native
 messages defined by the output DBC; excluded
-MPPT commands never bypass CarCAN through a direct TCP route. JSON output keeps
+MPPT commands stay on COTSCAN and do not reach the telemetry output. JSON output keeps
 native and routed bus totals separate and lists CarCAN/TCP message inventories.
 
 Edit topology bus settings, then synchronize their DBC metadata:
@@ -103,8 +99,8 @@ A trigger has no intrinsic frequency. Supply expected events/second using JSON:
   "CarCAN/BPSCommand": 0.1,
   "CarCAN/PDUCommand": 0,
   "CarCAN/SweepMPPTs": 0.01,
-  "MPPTCAN/MPPTAPerformSweep": 0.01,
-  "MPPTCAN/MPPTASweepData": 1.28
+  "COTSCAN/MPPTAPerformSweep": 0.01,
+  "COTSCAN/MPPTASweepData": 1.28
 }
 ```
 

@@ -272,13 +272,6 @@ can_status_t telemetry_link_on_board_watchdog_pack(can_frame_t* dst, const telem
         }
         raw.lvc_watchdog = (uint8_t)value;
     }
-    {
-        uint8_t value = src->msv_watchdog;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.msv_watchdog = (uint8_t)value;
-    }
     can_frame_t result = { .id = UINT32_C(1554),
         .len = 1, .is_extended = false,
         .is_fd = true };
@@ -308,8 +301,6 @@ can_status_t telemetry_link_on_board_watchdog_unpack(telemetry_link_on_board_wat
     result.pdu_watchdog = (uint8_t)raw.pdu_watchdog;
     if (raw.lvc_watchdog > INT64_C(1)) return CAN_RANGE;
     result.lvc_watchdog = (uint8_t)raw.lvc_watchdog;
-    if (raw.msv_watchdog > INT64_C(1)) return CAN_RANGE;
-    result.msv_watchdog = (uint8_t)raw.msv_watchdog;
     *dst = result;
     return CAN_OK;
 }

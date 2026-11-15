@@ -26,9 +26,11 @@
     "Bottom-shell lighting is integrated on DEI; it is not a separate programmable board.",
     "ElconInterface is intentionally excluded from this bootloader allocation; its DBC node and application traffic remain.",
     "CM5 and TelemetryLeader are one physical node, named CM5 in the DBCs; both names are excluded from this bootloader allocation.",
-    "Removed node IDs 5, 9, 11 and 12 remain reserved; all remaining board node/RX/TX IDs are unchanged."
+    "Removed node IDs 4, 5, 9, 11 and 12 remain reserved; all remaining board node/RX/TX IDs are unchanged.",
+    "MSV was merged into VCU; node ID 4 stays reserved, and VCU retains node ID 6."
   ],
   "reserved_node_ids": [
+    4,
     5,
     9,
     11,
@@ -83,17 +85,6 @@
       ]
     },
     {
-      "name": "MSV",
-      "subteam": "power",
-      "node_id": 4,
-      "rx_can_id": "0x004",
-      "tx_can_id": "0x02C",
-      "can_buses": [
-        "CarCAN",
-        "MPPTCAN"
-      ]
-    },
-    {
       "name": "VCU",
       "subteam": "controls",
       "node_id": 6,
@@ -101,7 +92,7 @@
       "tx_can_id": "0x02E",
       "can_buses": [
         "CarCAN",
-        "MotorCAN"
+        "COTSCAN"
       ]
     },
     {
@@ -112,7 +103,7 @@
       "tx_can_id": "0x02F",
       "can_buses": [
         "CarCAN",
-        "SteeringCAN"
+        "COTSCAN"
       ]
     },
     {

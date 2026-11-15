@@ -40,9 +40,6 @@ const car_can_metadata_t car_can = {
         .lvc_temperature_data = { .id = UINT32_C(147), .payload_bytes = 2, .wire_bytes = 2, .dlc = 2, .is_extended = false, .is_fd = true },
         .lvc_over_current_snapshot = { .id = UINT32_C(148), .payload_bytes = 7, .wire_bytes = 7, .dlc = 7, .is_extended = false, .is_fd = true },
     },
-    .msv = {
-        .msv_status = { .id = UINT32_C(121), .payload_bytes = 3, .wire_bytes = 3, .dlc = 3, .is_extended = false, .is_fd = true },
-    },
     .pdu = {
         .pdu_status = { .id = UINT32_C(160), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
         .pdu_current_data = { .id = UINT32_C(161), .payload_bytes = 20, .wire_bytes = 20, .dlc = 11, .is_extended = false, .is_fd = true },
@@ -57,7 +54,7 @@ const car_can_metadata_t car_can = {
         .top_shell_lighting_status = { .id = UINT32_C(129), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = false },
     },
     .vcu = {
-        .vcu_status = { .id = UINT32_C(99), .payload_bytes = 6, .wire_bytes = 6, .dlc = 6, .is_extended = false, .is_fd = true },
+        .vcu_status = { .id = UINT32_C(99), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
     },
 };
 
@@ -1068,6 +1065,55 @@ can_status_t car_can_vcu_status_pack(can_frame_t* dst, const car_can_vcu_status_
         raw.warning_motor_fan = (uint8_t)value;
     }
     {
+        uint8_t value = src->warning_bps_watchdog;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.warning_bps_watchdog = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->warning_mppta_watchdog;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.warning_mppta_watchdog = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->warning_mpptb_watchdog;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.warning_mpptb_watchdog = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->warning_mpptc_watchdog;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.warning_mpptc_watchdog = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->warning_mppt_fan;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.warning_mppt_fan = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->warning_lws_watchdog;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.warning_lws_watchdog = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->warning_lws_fault;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.warning_lws_fault = (uint8_t)value;
+    }
+    {
         uint8_t value = src->regen_enabled;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
@@ -1131,6 +1177,20 @@ can_status_t car_can_vcu_status_pack(can_frame_t* dst, const car_can_vcu_status_
         raw.motor_command_source = (uint8_t)value;
     }
     {
+        uint8_t value = src->mppt_set_mode;
+        if (value > INT64_C(3)) {
+            value = (uint8_t)INT64_C(3); status = CAN_CLAMPED;
+        }
+        raw.mppt_set_mode = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->sweeping_active;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.sweeping_active = (uint8_t)value;
+    }
+    {
         double value = (double)src->motor_controller_fan_tach;
         if (!isfinite(value)) return CAN_INVALID;
         if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
@@ -1150,8 +1210,18 @@ can_status_t car_can_vcu_status_pack(can_frame_t* dst, const car_can_vcu_status_
         if (encoded > 4095.0) encoded = 4095.0;
         raw.motor_fan_tach = (uint16_t)encoded;
     }
+    {
+        double value = (double)src->mppt_fan_tach;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
+        if (value > 20475.0) { value = 20475.0; status = CAN_CLAMPED; }
+        double encoded = round((value - 0.0) / 5.0);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 4095.0) encoded = 4095.0;
+        raw.mppt_fan_tach = (uint16_t)encoded;
+    }
     can_frame_t result = { .id = UINT32_C(99),
-        .len = 6, .is_extended = false,
+        .len = 12, .is_extended = false,
         .is_fd = true };
     if (car_can_raw_vcu_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
@@ -1160,7 +1230,7 @@ can_status_t car_can_vcu_status_pack(can_frame_t* dst, const car_can_vcu_status_
 
 can_status_t car_can_vcu_status_unpack(car_can_vcu_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(99) || src->len != 6 ||
+    if (src->id != UINT32_C(99) || src->len != 12 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
@@ -1191,6 +1261,20 @@ can_status_t car_can_vcu_status_unpack(car_can_vcu_status_t* dst, const can_fram
     result.warning_motor_controller_fan = (uint8_t)raw.warning_motor_controller_fan;
     if (raw.warning_motor_fan > INT64_C(1)) return CAN_RANGE;
     result.warning_motor_fan = (uint8_t)raw.warning_motor_fan;
+    if (raw.warning_bps_watchdog > INT64_C(1)) return CAN_RANGE;
+    result.warning_bps_watchdog = (uint8_t)raw.warning_bps_watchdog;
+    if (raw.warning_mppta_watchdog > INT64_C(1)) return CAN_RANGE;
+    result.warning_mppta_watchdog = (uint8_t)raw.warning_mppta_watchdog;
+    if (raw.warning_mpptb_watchdog > INT64_C(1)) return CAN_RANGE;
+    result.warning_mpptb_watchdog = (uint8_t)raw.warning_mpptb_watchdog;
+    if (raw.warning_mpptc_watchdog > INT64_C(1)) return CAN_RANGE;
+    result.warning_mpptc_watchdog = (uint8_t)raw.warning_mpptc_watchdog;
+    if (raw.warning_mppt_fan > INT64_C(1)) return CAN_RANGE;
+    result.warning_mppt_fan = (uint8_t)raw.warning_mppt_fan;
+    if (raw.warning_lws_watchdog > INT64_C(1)) return CAN_RANGE;
+    result.warning_lws_watchdog = (uint8_t)raw.warning_lws_watchdog;
+    if (raw.warning_lws_fault > INT64_C(1)) return CAN_RANGE;
+    result.warning_lws_fault = (uint8_t)raw.warning_lws_fault;
     if (raw.regen_enabled > INT64_C(1)) return CAN_RANGE;
     result.regen_enabled = (uint8_t)raw.regen_enabled;
     if (raw.state > INT64_C(7)) return CAN_RANGE;
@@ -1209,10 +1293,16 @@ can_status_t car_can_vcu_status_unpack(car_can_vcu_status_t* dst, const can_fram
     result.fsm_gear = (uint8_t)raw.fsm_gear;
     if (raw.motor_command_source > INT64_C(1)) return CAN_RANGE;
     result.motor_command_source = (uint8_t)raw.motor_command_source;
+    if (raw.mppt_set_mode > INT64_C(3)) return CAN_RANGE;
+    result.mppt_set_mode = (uint8_t)raw.mppt_set_mode;
+    if (raw.sweeping_active > INT64_C(1)) return CAN_RANGE;
+    result.sweeping_active = (uint8_t)raw.sweeping_active;
     if (raw.motor_controller_fan_tach > INT64_C(4095)) return CAN_RANGE;
     result.motor_controller_fan_tach = (uint16_t)((double)raw.motor_controller_fan_tach * 5.0 + 0.0);
     if (raw.motor_fan_tach > INT64_C(4095)) return CAN_RANGE;
     result.motor_fan_tach = (uint16_t)((double)raw.motor_fan_tach * 5.0 + 0.0);
+    if (raw.mppt_fan_tach > INT64_C(4095)) return CAN_RANGE;
+    result.mppt_fan_tach = (uint16_t)((double)raw.mppt_fan_tach * 5.0 + 0.0);
     *dst = result;
     return CAN_OK;
 }
@@ -3518,106 +3608,6 @@ can_status_t car_can_bps_balancing_status_unpack(car_can_bps_balancing_status_t*
     result.paused_chip_mask = (uint8_t)raw.paused_chip_mask;
     if (raw.block_reason > INT64_C(7)) return CAN_RANGE;
     result.block_reason = (uint8_t)raw.block_reason;
-    *dst = result;
-    return CAN_OK;
-}
-
-can_status_t car_can_msv_status_pack(can_frame_t* dst, const car_can_msv_status_t* src) {
-    if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct car_can_raw_msv_status_t raw = {0};
-    can_status_t status = CAN_OK;
-    {
-        uint8_t value = src->warning_bps_watchdog;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.warning_bps_watchdog = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->warning_mppta_watchdog;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.warning_mppta_watchdog = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->warning_mpptb_watchdog;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.warning_mpptb_watchdog = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->warning_mpptc_watchdog;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.warning_mpptc_watchdog = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->warning_fan;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.warning_fan = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->mppt_set_mode;
-        if (value > INT64_C(3)) {
-            value = (uint8_t)INT64_C(3); status = CAN_CLAMPED;
-        }
-        raw.mppt_set_mode = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->sweeping_active;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.sweeping_active = (uint8_t)value;
-    }
-    {
-        double value = (double)src->fan_tach;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 20475.0) { value = 20475.0; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 5.0);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 4095.0) encoded = 4095.0;
-        raw.fan_tach = (uint16_t)encoded;
-    }
-    can_frame_t result = { .id = UINT32_C(121),
-        .len = 3, .is_extended = false,
-        .is_fd = true };
-    if (car_can_raw_msv_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
-    *dst = result;
-    return status;
-}
-
-can_status_t car_can_msv_status_unpack(car_can_msv_status_t* dst, const can_frame_t* src) {
-    if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(121) || src->len != 3 ||
-        src->is_extended != false ||
-        src->is_fd != true ||
-        (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct car_can_raw_msv_status_t raw = {0};
-    if (car_can_raw_msv_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    car_can_msv_status_t result = {0};
-    if (raw.warning_bps_watchdog > INT64_C(1)) return CAN_RANGE;
-    result.warning_bps_watchdog = (uint8_t)raw.warning_bps_watchdog;
-    if (raw.warning_mppta_watchdog > INT64_C(1)) return CAN_RANGE;
-    result.warning_mppta_watchdog = (uint8_t)raw.warning_mppta_watchdog;
-    if (raw.warning_mpptb_watchdog > INT64_C(1)) return CAN_RANGE;
-    result.warning_mpptb_watchdog = (uint8_t)raw.warning_mpptb_watchdog;
-    if (raw.warning_mpptc_watchdog > INT64_C(1)) return CAN_RANGE;
-    result.warning_mpptc_watchdog = (uint8_t)raw.warning_mpptc_watchdog;
-    if (raw.warning_fan > INT64_C(1)) return CAN_RANGE;
-    result.warning_fan = (uint8_t)raw.warning_fan;
-    if (raw.mppt_set_mode > INT64_C(3)) return CAN_RANGE;
-    result.mppt_set_mode = (uint8_t)raw.mppt_set_mode;
-    if (raw.sweeping_active > INT64_C(1)) return CAN_RANGE;
-    result.sweeping_active = (uint8_t)raw.sweeping_active;
-    if (raw.fan_tach > INT64_C(4095)) return CAN_RANGE;
-    result.fan_tach = (uint16_t)((double)raw.fan_tach * 5.0 + 0.0);
     *dst = result;
     return CAN_OK;
 }

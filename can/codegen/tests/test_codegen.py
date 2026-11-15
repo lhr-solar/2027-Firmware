@@ -97,37 +97,37 @@ class CodegenTests(unittest.TestCase):
 
     def test_vendor_float_api_matches_wire_bytes(self):
         """WS22 binary32 payloads round-trip and reject invalid inputs atomically."""
-        dbc = ROOT.parent / "dbc" / "MotorCAN.dbc"
+        dbc = ROOT.parent / "dbc" / "COTSCAN.dbc"
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory)
             generate(load_buses([dbc]), output)
             source = output / "float_test.c"
             source.write_text(r"""
-#include "motor_can.h"
+#include "cotscan.h"
 #include <assert.h>
 #include <math.h>
 #include <string.h>
 int main(void) {
-    motor_can_mc_drive_command_t input = {.mc_motor_velocity_setpoint = -20000.0f, .mc_motor_current_setpoint = 0.5f};
+    cotscan_mc_drive_command_t input = {.mc_motor_velocity_setpoint = -20000.0f, .mc_motor_current_setpoint = 0.5f};
     const unsigned char expected[8] = {0x00, 0x40, 0x9c, 0xc6, 0x00, 0x00, 0x00, 0x3f};
     can_frame_t frame = {0};
-    assert(motor_can_mc_drive_command_pack(&frame, &input) == CAN_OK);
+    assert(cotscan_mc_drive_command_pack(&frame, &input) == CAN_OK);
     assert(memcmp(frame.data, expected, 8) == 0);
-    motor_can_mc_drive_command_t output = {0};
-    assert(motor_can_mc_drive_command_unpack(&output, &frame) == CAN_OK);
+    cotscan_mc_drive_command_t output = {0};
+    assert(cotscan_mc_drive_command_unpack(&output, &frame) == CAN_OK);
     assert(output.mc_motor_velocity_setpoint == -20000.0f && output.mc_motor_current_setpoint == 0.5f);
     input.mc_motor_current_setpoint = 2.0f;
-    assert(motor_can_mc_drive_command_pack(&frame, &input) == CAN_CLAMPED);
-    assert(motor_can_mc_drive_command_unpack(&output, &frame) == CAN_OK && output.mc_motor_current_setpoint == 1.0f);
+    assert(cotscan_mc_drive_command_pack(&frame, &input) == CAN_CLAMPED);
+    assert(cotscan_mc_drive_command_unpack(&output, &frame) == CAN_OK && output.mc_motor_current_setpoint == 1.0f);
     can_frame_t saved = frame;
     input.mc_motor_current_setpoint = NAN;
-    assert(motor_can_mc_drive_command_pack(&frame, &input) == CAN_INVALID);
+    assert(cotscan_mc_drive_command_pack(&frame, &input) == CAN_INVALID);
     assert(memcmp(&frame, &saved, sizeof(frame)) == 0);
     return 0;
 }
 """)
             executable = output / "float_test"
-            subprocess.run([os.environ.get("CC", "cc"), "-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I", str(output), str(source), str(output / "motor_can.c"), str(output / "detail/motor_can_raw.c"), "-lm", "-o", str(executable)], check=True)
+            subprocess.run([os.environ.get("CC", "cc"), "-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I", str(output), str(source), str(output / "cotscan.c"), str(output / "detail/cotscan_raw.c"), "-lm", "-o", str(executable)], check=True)
             subprocess.run([str(executable)], check=True)
 
     def test_freshness_rejects_stale_missing_and_extra_files(self):

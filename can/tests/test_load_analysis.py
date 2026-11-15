@@ -44,9 +44,7 @@ class LoadAnalysisTests(unittest.TestCase):
             "DAqCAN": 500000,
             "ChargerCAN": 500000,
             "ElconCAN": 250000,
-            "MotorCAN": 500000,
-            "MPPTCAN": 500000,
-            "SteeringCAN": 500000,
+            "COTSCAN": 500000,
         }
         for bus in rates:
             db = self.databases[bus]
@@ -87,7 +85,7 @@ class LoadAnalysisTests(unittest.TestCase):
                 ("SetOutputCurrentLimit", 200),
             ):
                 self.assertEqual(
-                    self.databases["MPPTCAN"]
+                    self.databases["COTSCAN"]
                     .get_message_by_name(prefix + suffix)
                     .cycle_time,
                     period,
@@ -99,7 +97,7 @@ class LoadAnalysisTests(unittest.TestCase):
             validate_timing(snapshot)
         for name in ("WS22Reserved0A", "WS22Reserved0D"):
             self.assertEqual(
-                send_type(self.databases["MotorCAN"].get_message_by_name(name)), "None"
+                send_type(self.databases["COTSCAN"].get_message_by_name(name)), "None"
             )
 
     def test_charger_four_identical_bps_contracts(self):
@@ -147,16 +145,19 @@ class LoadAnalysisTests(unittest.TestCase):
 
     def test_car_forwarding_and_filtered_daq_tcp(self):
         report = calculate(self.databases, self.topology, {}, options())
-        # Car 116 + charger interface 10 + lighting 15 + motor 66 + steering 100
+        # Car 114 + charger interface 10 + lighting 15 + motor 66 + steering 100
         # + MPPT power/status 9 + Elcon 3. Mirrored BPS frames add no second copy.
-        self.assertEqual(report["car_can_with_forwarding"]["frames_per_second"], 319)
-        self.assertAlmostEqual(report["internet"]["frames_per_second"], 1401.2631578947369)
+        self.assertEqual(report["car_can_with_forwarding"]["frames_per_second"], 317)
+        self.assertAlmostEqual(report["internet"]["frames_per_second"], 1399.2631578947369)
         self.assertEqual(
             report["buses_with_forwarding"]["ChargerCAN"]["frames_per_second"], 53
         )
         car = report["car_can_messages"]
         tcp = report["internet_messages"]
         self.assertFalse(any(row["source_network"] == "DAqCAN" for row in car))
+        self.assertIn("MC_DriveCommand", {row["name"] for row in car})
+        self.assertIn("LWS_Standard", {row["name"] for row in car})
+        self.assertIn("MPPTAStatus", {row["name"] for row in car})
         self.assertFalse(any(row["name"] == "TimestampSync" for row in tcp))
         for name in ("TelemetryStatus", "GPSData", "OnBoardWatchdog"):
             self.assertIn(name, {row["name"] for row in tcp})
@@ -187,7 +188,7 @@ class LoadAnalysisTests(unittest.TestCase):
         )
         for key, rate in (
             (("CarCAN", "SMDStatus"), 1),
-            (("MotorCAN", "WS22Reserved0A"), 1),
+            (("COTSCAN", "WS22Reserved0A"), 1),
             (("CarCAN", "BPSStatus"), 1),
             (("CarCAN", "typo"), 1),
             (("CarCAN", "SweepMPPTs"), -1),

@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: BPS DEI External LVC CM5 MSV PDU Pedals VCU TopShellLighting
+BU_: BPS DEI External LVC CM5 PDU Pedals VCU TopShellLighting
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
@@ -163,7 +163,7 @@ BO_ 98 DEIStatus: 2 DEI
  SG_ PushToTalk : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ Headlights : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 99 VCUStatus: 6 VCU
+BO_ 99 VCUStatus: 12 VCU
  SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultMotor : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultBPS : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -176,17 +176,27 @@ BO_ 99 VCUStatus: 6 VCU
  SG_ WarningDirectionChangeLockout : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningMotorControllerFan : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningMotorFan : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ RegenEnabled : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ State : 13|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
- SG_ FSMBrake : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FSMBPSDriveOK : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FSMBPSRegenOK : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FSMDriverRegenEnable : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FSMDriverRegenRequest : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FSMGear : 21|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ MotorCommandSource : 23|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ MotorControllerFanTach : 24|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
- SG_ MotorFanTach : 36|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ WarningBPSWatchdog : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMPPTAWatchdog : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMPPTBWatchdog : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMPPTCWatchdog : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMPPTFan : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningLWSWatchdog : 17|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ WarningLWSFault : 18|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ RegenEnabled : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ State : 20|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
+ SG_ FSMBrake : 23|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMBPSDriveOK : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMBPSRegenOK : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMDriverRegenEnable : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMDriverRegenRequest : 27|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMGear : 28|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ MotorCommandSource : 30|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MPPTSetMode : 31|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ SweepingActive : 33|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MotorControllerFanTach : 34|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ MotorFanTach : 46|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ MPPTFanTach : 58|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
 
 BO_ 100 LightingCommand: 4 DEI
  SG_ BlinkPhase : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -393,16 +403,6 @@ BO_ 120 BPSBalancingStatus: 6 BPS
  SG_ SelectedCellMask : 7|32@1+ (1,0) [0|4294967295] "" Vector__XXX
  SG_ PausedChipMask : 39|4@1+ (1,0) [0|15] "" Vector__XXX
  SG_ BlockReason : 43|3@1+ (1,0) [0|7] "" Vector__XXX
-
-BO_ 121 MSVStatus: 3 MSV
- SG_ WarningBPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningMPPTAWatchdog : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningMPPTBWatchdog : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningMPPTCWatchdog : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningFan : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ MPPTSetMode : 5|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ SweepingActive : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FanTach : 8|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
 
 BO_ 128 BottomShellLightingStatus: 1 DEI
  SG_ LeftSignalOn : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -637,7 +637,7 @@ CM_ SG_ 82 Enable "Enable";
 CM_ SG_ 82 ChannelIndex "Zero-based channel index: 0 selects Channel0; 11 selects Channel11.";
 CM_ BO_ 83 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 83 CommandSource "CommandSource";
-CM_ BO_ 84 "Defined empty trigger: request a sweep from all MPPTs through MSV. Zero-byte CAN-FD payload.";
+CM_ BO_ 84 "Defined empty trigger: request a sweep from all MPPTs through VCU. Zero-byte CAN-FD payload.";
 CM_ BO_ 85 "Triggered balancing request. BPS evaluates safety conditions independently; manual selection does not bypass protection.";
 CM_ SG_ 85 ManualCellMask "Manual mode only: bit 0 selects cell 00; bit 31 selects cell 31.";
 CM_ SG_ 85 BalancingMode "Off, automatic selection by BPS, or manual selection by mask.";
@@ -714,8 +714,11 @@ CM_ SG_ 98 IgnitionDrive "IgnitionDrive";
 CM_ SG_ 98 IgnitionCharge "IgnitionCharge";
 CM_ SG_ 98 IgnitionLV "IgnitionLV";
 CM_ BO_ 99 "2027 team-defined layout; physical values use the shared scaling conventions.";
+CM_ SG_ 99 MPPTFanTach "FanTach";
 CM_ SG_ 99 MotorFanTach "MotorFanTach";
 CM_ SG_ 99 MotorControllerFanTach "MotorControllerFanTach";
+CM_ SG_ 99 SweepingActive "SweepingActive";
+CM_ SG_ 99 MPPTSetMode "MPPTSetMode";
 CM_ SG_ 99 MotorCommandSource "MotorCommandSource";
 CM_ SG_ 99 FSMGear "FSMGear";
 CM_ SG_ 99 FSMDriverRegenRequest "FSMDriverRegenRequest";
@@ -725,6 +728,13 @@ CM_ SG_ 99 FSMBPSDriveOK "FSMBPSDriveOK";
 CM_ SG_ 99 FSMBrake "FSMBrake";
 CM_ SG_ 99 State "State";
 CM_ SG_ 99 RegenEnabled "RegenEnabled";
+CM_ SG_ 99 WarningLWSFault "Steering wheel sensor fault warning";
+CM_ SG_ 99 WarningLWSWatchdog "Steering wheel sensor watchdog warning";
+CM_ SG_ 99 WarningMPPTFan "WarningFan";
+CM_ SG_ 99 WarningMPPTCWatchdog "WarningMPPTCWatchdog";
+CM_ SG_ 99 WarningMPPTBWatchdog "WarningMPPTBWatchdog";
+CM_ SG_ 99 WarningMPPTAWatchdog "WarningMPPTAWatchdog";
+CM_ SG_ 99 WarningBPSWatchdog "WarningBPSWatchdog";
 CM_ SG_ 99 WarningMotorFan "WarningMotorFan";
 CM_ SG_ 99 WarningMotorControllerFan "WarningMotorControllerFan";
 CM_ SG_ 99 WarningDirectionChangeLockout "WarningDirectionChangeLockout";
@@ -932,15 +942,6 @@ CM_ SG_ 120 BlockReason "Primary BPS-reported reason for a block or pause; addit
 CM_ SG_ 120 PausedChipMask "Bit 0 through bit 3 represent BQ79616 chips 0 through 3 reporting a balancing pause.";
 CM_ SG_ 120 SelectedCellMask "Selected cell groups: bit 0 is cell 00 and bit 31 is cell 31. Selection does not imply active bleed.";
 CM_ SG_ 120 FaultChipMask "Bit 0 through bit 3 represent BQ79616 chips 0 through 3 reporting balancing fault or abort.";
-CM_ BO_ 121 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 121 FanTach "FanTach";
-CM_ SG_ 121 SweepingActive "SweepingActive";
-CM_ SG_ 121 MPPTSetMode "MPPTSetMode";
-CM_ SG_ 121 WarningFan "WarningFan";
-CM_ SG_ 121 WarningMPPTCWatchdog "WarningMPPTCWatchdog";
-CM_ SG_ 121 WarningMPPTBWatchdog "WarningMPPTBWatchdog";
-CM_ SG_ 121 WarningMPPTAWatchdog "WarningMPPTAWatchdog";
-CM_ SG_ 121 WarningBPSWatchdog "WarningBPSWatchdog";
 CM_ BO_ 128 "Bottom-shell lighting circuitry is integrated on DEI; DEI transmits this status. No separate BottomShellLighting CAN node.";
 CM_ SG_ 128 HeadlightsOn "HeadlightsOn";
 CM_ SG_ 128 RightSignalOn "RightSignalOn";
@@ -1292,6 +1293,8 @@ BA_ "VFrameFormat" BO_ 99 14;
 BA_ "GenMsgSendType" BO_ 99 0;
 BA_ "GenMsgCycleTime" BO_ 99 200;
 BA_ "CANFD_BRS" BO_ 99 0;
+BA_ "ValueTable" SG_ 99 SweepingActive "OnOff";
+BA_ "ValueTable" SG_ 99 MPPTSetMode "TPEEControlMode";
 BA_ "ValueTable" SG_ 99 MotorCommandSource "MotorCommandSource";
 BA_ "ValueTable" SG_ 99 FSMGear "Gear";
 BA_ "ValueTable" SG_ 99 FSMDriverRegenRequest "OnOff";
@@ -1301,6 +1304,13 @@ BA_ "ValueTable" SG_ 99 FSMBPSDriveOK "Permission";
 BA_ "ValueTable" SG_ 99 FSMBrake "OnOff";
 BA_ "ValueTable" SG_ 99 State "VCUState";
 BA_ "ValueTable" SG_ 99 RegenEnabled "EnableDisable";
+BA_ "ValueTable" SG_ 99 WarningLWSFault "WarningState";
+BA_ "ValueTable" SG_ 99 WarningLWSWatchdog "WarningState";
+BA_ "ValueTable" SG_ 99 WarningMPPTFan "WarningState";
+BA_ "ValueTable" SG_ 99 WarningMPPTCWatchdog "WarningState";
+BA_ "ValueTable" SG_ 99 WarningMPPTBWatchdog "WarningState";
+BA_ "ValueTable" SG_ 99 WarningMPPTAWatchdog "WarningState";
+BA_ "ValueTable" SG_ 99 WarningBPSWatchdog "WarningState";
 BA_ "ValueTable" SG_ 99 WarningMotorFan "WarningState";
 BA_ "ValueTable" SG_ 99 WarningMotorControllerFan "WarningState";
 BA_ "ValueTable" SG_ 99 WarningDirectionChangeLockout "WarningState";
@@ -1410,19 +1420,6 @@ BA_ "CANFD_BRS" BO_ 120 0;
 BA_ "GenMsgSendCondition" BO_ 120 "BalancingActive";
 BA_ "ValueTable" SG_ 120 BlockReason "BalancingBlockReason";
 BA_ "ValueTable" SG_ 120 BalancingState "BalancingState";
-BA_ "LayoutPending" BO_ 121 0;
-BA_ "ProtocolSource" BO_ 121 "2027 allocation draft";
-BA_ "VFrameFormat" BO_ 121 14;
-BA_ "GenMsgSendType" BO_ 121 0;
-BA_ "GenMsgCycleTime" BO_ 121 500;
-BA_ "CANFD_BRS" BO_ 121 0;
-BA_ "ValueTable" SG_ 121 SweepingActive "OnOff";
-BA_ "ValueTable" SG_ 121 MPPTSetMode "TPEEControlMode";
-BA_ "ValueTable" SG_ 121 WarningFan "WarningState";
-BA_ "ValueTable" SG_ 121 WarningMPPTCWatchdog "WarningState";
-BA_ "ValueTable" SG_ 121 WarningMPPTBWatchdog "WarningState";
-BA_ "ValueTable" SG_ 121 WarningMPPTAWatchdog "WarningState";
-BA_ "ValueTable" SG_ 121 WarningBPSWatchdog "WarningState";
 BA_ "LayoutPending" BO_ 128 0;
 BA_ "ProtocolSource" BO_ 128 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 128 0;
@@ -1706,6 +1703,8 @@ VAL_ 98 Gear 0 "Neutral" 1 "Forward" 2 "Reverse" 3 "Invalid" ;
 VAL_ 98 IgnitionDrive 0 "Off" 1 "On" ;
 VAL_ 98 IgnitionCharge 0 "Off" 1 "On" ;
 VAL_ 98 IgnitionLV 0 "Off" 1 "On" ;
+VAL_ 99 SweepingActive 0 "Off" 1 "On" ;
+VAL_ 99 MPPTSetMode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;
 VAL_ 99 MotorCommandSource 0 "VCU" 1 "External" ;
 VAL_ 99 FSMGear 0 "Neutral" 1 "Forward" 2 "Reverse" 3 "Invalid" ;
 VAL_ 99 FSMDriverRegenRequest 0 "Off" 1 "On" ;
@@ -1715,6 +1714,13 @@ VAL_ 99 FSMBPSDriveOK 0 "NotAllowed" 1 "Allowed" ;
 VAL_ 99 FSMBrake 0 "Off" 1 "On" ;
 VAL_ 99 State 0 "Init" 1 "ForwardDrive" 2 "NeutralDrive" 3 "ReverseDrive" 4 "Regen" 5 "CruiseControl" 6 "Disabled" 7 "VehicleNotReady" ;
 VAL_ 99 RegenEnabled 0 "Disabled" 1 "Enabled" ;
+VAL_ 99 WarningLWSFault 0 "NoWarning" 1 "Warning" ;
+VAL_ 99 WarningLWSWatchdog 0 "NoWarning" 1 "Warning" ;
+VAL_ 99 WarningMPPTFan 0 "NoWarning" 1 "Warning" ;
+VAL_ 99 WarningMPPTCWatchdog 0 "NoWarning" 1 "Warning" ;
+VAL_ 99 WarningMPPTBWatchdog 0 "NoWarning" 1 "Warning" ;
+VAL_ 99 WarningMPPTAWatchdog 0 "NoWarning" 1 "Warning" ;
+VAL_ 99 WarningBPSWatchdog 0 "NoWarning" 1 "Warning" ;
 VAL_ 99 WarningMotorFan 0 "NoWarning" 1 "Warning" ;
 VAL_ 99 WarningMotorControllerFan 0 "NoWarning" 1 "Warning" ;
 VAL_ 99 WarningDirectionChangeLockout 0 "NoWarning" 1 "Warning" ;
@@ -1760,13 +1766,6 @@ VAL_ 117 FaultOverTemperature 0 "OK" 1 "Fault" ;
 VAL_ 117 FaultSummary 0 "OK" 1 "SetpointFault" 2 "EmergencyStop" 3 "ContactorRelayFault" 4 "PrechargeFault" 5 "SMBFault" ;
 VAL_ 120 BlockReason 0 "None" 1 "CellTemperature" 2 "ChipTemperature" 3 "CellVoltage" 4 "VehicleState" 5 "Communication" 6 "BPSFault" 7 "Other" ;
 VAL_ 120 BalancingState 0 "Off" 1 "Balancing" 2 "Paused" 3 "Complete" 4 "BlockedOrFault" ;
-VAL_ 121 SweepingActive 0 "Off" 1 "On" ;
-VAL_ 121 MPPTSetMode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;
-VAL_ 121 WarningFan 0 "NoWarning" 1 "Warning" ;
-VAL_ 121 WarningMPPTCWatchdog 0 "NoWarning" 1 "Warning" ;
-VAL_ 121 WarningMPPTBWatchdog 0 "NoWarning" 1 "Warning" ;
-VAL_ 121 WarningMPPTAWatchdog 0 "NoWarning" 1 "Warning" ;
-VAL_ 121 WarningBPSWatchdog 0 "NoWarning" 1 "Warning" ;
 VAL_ 128 HeadlightsOn 0 "Off" 1 "On" ;
 VAL_ 128 RightSignalOn 0 "Off" 1 "On" ;
 VAL_ 128 LeftSignalOn 0 "Off" 1 "On" ;

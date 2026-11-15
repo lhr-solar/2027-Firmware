@@ -64,7 +64,6 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_FRAME_ID (0x76u)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_FRAME_ID (0x77u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_FRAME_ID (0x78u)
-#define CAR_CAN_RAW_MSV_STATUS_FRAME_ID (0x79u)
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_FRAME_ID (0x80u)
 #define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_FRAME_ID (0x81u)
 #define CAR_CAN_RAW_CM5_STATUS_FRAME_ID (0x82u)
@@ -88,7 +87,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_STATUS_LENGTH (16u)
 #define CAR_CAN_RAW_PEDALS_STATUS_LENGTH (6u)
 #define CAR_CAN_RAW_DEI_STATUS_LENGTH (2u)
-#define CAR_CAN_RAW_VCU_STATUS_LENGTH (6u)
+#define CAR_CAN_RAW_VCU_STATUS_LENGTH (12u)
 #define CAR_CAN_RAW_LIGHTING_COMMAND_LENGTH (4u)
 #define CAR_CAN_RAW_BPS_PACK_DATA_LENGTH (12u)
 #define CAR_CAN_RAW_BPS_VOLTAGE_DATA_LENGTH (64u)
@@ -99,7 +98,6 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_LENGTH (64u)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_LENGTH (48u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_LENGTH (6u)
-#define CAR_CAN_RAW_MSV_STATUS_LENGTH (3u)
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_LENGTH (1u)
 #define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_LENGTH (1u)
 #define CAR_CAN_RAW_CM5_STATUS_LENGTH (5u)
@@ -134,7 +132,6 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_IS_EXTENDED (0)
-#define CAR_CAN_RAW_MSV_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_CM5_STATUS_IS_EXTENDED (0)
@@ -164,7 +161,6 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_CYCLE_TIME_MS (1000u)
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_CYCLE_TIME_MS (1000u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_CYCLE_TIME_MS (1000u)
-#define CAR_CAN_RAW_MSV_STATUS_CYCLE_TIME_MS (500u)
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_CYCLE_TIME_MS (200u)
 #define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_CYCLE_TIME_MS (200u)
 #define CAR_CAN_RAW_CM5_STATUS_CYCLE_TIME_MS (500u)
@@ -423,6 +419,27 @@ extern "C" {
 #define CAR_CAN_RAW_VCU_STATUS_WARNING_MOTOR_FAN_NO_WARNING_CHOICE (0u)
 #define CAR_CAN_RAW_VCU_STATUS_WARNING_MOTOR_FAN_WARNING_CHOICE (1u)
 
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_BPS_WATCHDOG_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_BPS_WATCHDOG_WARNING_CHOICE (1u)
+
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPTA_WATCHDOG_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPTA_WATCHDOG_WARNING_CHOICE (1u)
+
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPTB_WATCHDOG_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPTB_WATCHDOG_WARNING_CHOICE (1u)
+
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPTC_WATCHDOG_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPTC_WATCHDOG_WARNING_CHOICE (1u)
+
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPT_FAN_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPT_FAN_WARNING_CHOICE (1u)
+
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_LWS_WATCHDOG_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_LWS_WATCHDOG_WARNING_CHOICE (1u)
+
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_LWS_FAULT_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_LWS_FAULT_WARNING_CHOICE (1u)
+
 #define CAR_CAN_RAW_VCU_STATUS_REGEN_ENABLED_DISABLED_CHOICE (0u)
 #define CAR_CAN_RAW_VCU_STATUS_REGEN_ENABLED_ENABLED_CHOICE (1u)
 
@@ -457,6 +474,13 @@ extern "C" {
 
 #define CAR_CAN_RAW_VCU_STATUS_MOTOR_COMMAND_SOURCE_VCU_CHOICE (0u)
 #define CAR_CAN_RAW_VCU_STATUS_MOTOR_COMMAND_SOURCE_EXTERNAL_CHOICE (1u)
+
+#define CAR_CAN_RAW_VCU_STATUS_MPPT_SET_MODE_DISABLED_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_STATUS_MPPT_SET_MODE_PERTURB_AND_OBSERVE_CHOICE (1u)
+#define CAR_CAN_RAW_VCU_STATUS_MPPT_SET_MODE_CONSTANT_INPUT_VOLTAGE_CHOICE (2u)
+
+#define CAR_CAN_RAW_VCU_STATUS_SWEEPING_ACTIVE_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_STATUS_SWEEPING_ACTIVE_ON_CHOICE (1u)
 
 #define CAR_CAN_RAW_LIGHTING_COMMAND_BLINK_PHASE_OFF_CHOICE (0u)
 #define CAR_CAN_RAW_LIGHTING_COMMAND_BLINK_PHASE_ON_CHOICE (1u)
@@ -569,28 +593,6 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_COMMUNICATION_CHOICE (5u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_BPS_FAULT_CHOICE (6u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_OTHER_CHOICE (7u)
-
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_BPS_WATCHDOG_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_BPS_WATCHDOG_WARNING_CHOICE (1u)
-
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTA_WATCHDOG_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTA_WATCHDOG_WARNING_CHOICE (1u)
-
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTB_WATCHDOG_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTB_WATCHDOG_WARNING_CHOICE (1u)
-
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTC_WATCHDOG_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTC_WATCHDOG_WARNING_CHOICE (1u)
-
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_FAN_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_FAN_WARNING_CHOICE (1u)
-
-#define CAR_CAN_RAW_MSV_STATUS_MPPT_SET_MODE_DISABLED_CHOICE (0u)
-#define CAR_CAN_RAW_MSV_STATUS_MPPT_SET_MODE_PERTURB_AND_OBSERVE_CHOICE (1u)
-#define CAR_CAN_RAW_MSV_STATUS_MPPT_SET_MODE_CONSTANT_INPUT_VOLTAGE_CHOICE (2u)
-
-#define CAR_CAN_RAW_MSV_STATUS_SWEEPING_ACTIVE_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_MSV_STATUS_SWEEPING_ACTIVE_ON_CHOICE (1u)
 
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_OFF_CHOICE (0u)
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_ON_CHOICE (1u)
@@ -1023,7 +1025,6 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_VOLTAGE_SNAPSHOT_NAME "BPSFaultVoltageSnapshot"
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_NAME "BPSFaultTemperatureSnapshot"
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_NAME "BPSBalancingStatus"
-#define CAR_CAN_RAW_MSV_STATUS_NAME "MSVStatus"
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_NAME "BottomShellLightingStatus"
 #define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_NAME "TopShellLightingStatus"
 #define CAR_CAN_RAW_CM5_STATUS_NAME "CM5Status"
@@ -1130,6 +1131,13 @@ extern "C" {
 #define CAR_CAN_RAW_VCU_STATUS_WARNING_DIRECTION_CHANGE_LOCKOUT_NAME "WarningDirectionChangeLockout"
 #define CAR_CAN_RAW_VCU_STATUS_WARNING_MOTOR_CONTROLLER_FAN_NAME "WarningMotorControllerFan"
 #define CAR_CAN_RAW_VCU_STATUS_WARNING_MOTOR_FAN_NAME "WarningMotorFan"
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_BPS_WATCHDOG_NAME "WarningBPSWatchdog"
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPTA_WATCHDOG_NAME "WarningMPPTAWatchdog"
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPTB_WATCHDOG_NAME "WarningMPPTBWatchdog"
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPTC_WATCHDOG_NAME "WarningMPPTCWatchdog"
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_MPPT_FAN_NAME "WarningMPPTFan"
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_LWS_WATCHDOG_NAME "WarningLWSWatchdog"
+#define CAR_CAN_RAW_VCU_STATUS_WARNING_LWS_FAULT_NAME "WarningLWSFault"
 #define CAR_CAN_RAW_VCU_STATUS_REGEN_ENABLED_NAME "RegenEnabled"
 #define CAR_CAN_RAW_VCU_STATUS_STATE_NAME "State"
 #define CAR_CAN_RAW_VCU_STATUS_FSM_BRAKE_NAME "FSMBrake"
@@ -1139,8 +1147,11 @@ extern "C" {
 #define CAR_CAN_RAW_VCU_STATUS_FSM_DRIVER_REGEN_REQUEST_NAME "FSMDriverRegenRequest"
 #define CAR_CAN_RAW_VCU_STATUS_FSM_GEAR_NAME "FSMGear"
 #define CAR_CAN_RAW_VCU_STATUS_MOTOR_COMMAND_SOURCE_NAME "MotorCommandSource"
+#define CAR_CAN_RAW_VCU_STATUS_MPPT_SET_MODE_NAME "MPPTSetMode"
+#define CAR_CAN_RAW_VCU_STATUS_SWEEPING_ACTIVE_NAME "SweepingActive"
 #define CAR_CAN_RAW_VCU_STATUS_MOTOR_CONTROLLER_FAN_TACH_NAME "MotorControllerFanTach"
 #define CAR_CAN_RAW_VCU_STATUS_MOTOR_FAN_TACH_NAME "MotorFanTach"
+#define CAR_CAN_RAW_VCU_STATUS_MPPT_FAN_TACH_NAME "MPPTFanTach"
 #define CAR_CAN_RAW_LIGHTING_COMMAND_BLINK_PHASE_NAME "BlinkPhase"
 #define CAR_CAN_RAW_LIGHTING_COMMAND_HEADLIGHT_NAME "Headlight"
 #define CAR_CAN_RAW_LIGHTING_COMMAND_LEFT_NAME "Left"
@@ -1327,14 +1338,6 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_SELECTED_CELL_MASK_NAME "SelectedCellMask"
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_PAUSED_CHIP_MASK_NAME "PausedChipMask"
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_BLOCK_REASON_NAME "BlockReason"
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_BPS_WATCHDOG_NAME "WarningBPSWatchdog"
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTA_WATCHDOG_NAME "WarningMPPTAWatchdog"
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTB_WATCHDOG_NAME "WarningMPPTBWatchdog"
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_MPPTC_WATCHDOG_NAME "WarningMPPTCWatchdog"
-#define CAR_CAN_RAW_MSV_STATUS_WARNING_FAN_NAME "WarningFan"
-#define CAR_CAN_RAW_MSV_STATUS_MPPT_SET_MODE_NAME "MPPTSetMode"
-#define CAR_CAN_RAW_MSV_STATUS_SWEEPING_ACTIVE_NAME "SweepingActive"
-#define CAR_CAN_RAW_MSV_STATUS_FAN_TACH_NAME "FanTach"
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_NAME "LeftSignalOn"
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_NAME "RightSignalOn"
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_HEADLIGHTS_ON_NAME "HeadlightsOn"
@@ -1631,7 +1634,7 @@ struct car_can_raw_motor_controller_command_t {
 /**
  * Signals in message SweepMPPTs.
  *
- * Defined empty trigger: request a sweep from all MPPTs through MSV. Zero-byte CAN-FD payload.
+ * Defined empty trigger: request a sweep from all MPPTs through VCU. Zero-byte CAN-FD payload.
  *
  * All signal values are as on the CAN bus.
  */
@@ -2434,6 +2437,69 @@ struct car_can_raw_vcu_status_t {
     uint8_t warning_motor_fan;
 
     /**
+     * WarningBPSWatchdog
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t warning_bps_watchdog;
+
+    /**
+     * WarningMPPTAWatchdog
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t warning_mppta_watchdog;
+
+    /**
+     * WarningMPPTBWatchdog
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t warning_mpptb_watchdog;
+
+    /**
+     * WarningMPPTCWatchdog
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t warning_mpptc_watchdog;
+
+    /**
+     * WarningFan
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t warning_mppt_fan;
+
+    /**
+     * Steering wheel sensor watchdog warning
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t warning_lws_watchdog;
+
+    /**
+     * Steering wheel sensor fault warning
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t warning_lws_fault;
+
+    /**
      * RegenEnabled
      *
      * Range: -
@@ -2515,6 +2581,24 @@ struct car_can_raw_vcu_status_t {
     uint8_t motor_command_source;
 
     /**
+     * MPPTSetMode
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t mppt_set_mode;
+
+    /**
+     * SweepingActive
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t sweeping_active;
+
+    /**
      * MotorControllerFanTach
      *
      * Range: -
@@ -2531,6 +2615,15 @@ struct car_can_raw_vcu_status_t {
      * Offset: 0
      */
     uint16_t motor_fan_tach;
+
+    /**
+     * FanTach
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint16_t mppt_fan_tach;
 };
 
 /**
@@ -4298,87 +4391,6 @@ struct car_can_raw_bps_balancing_status_t {
      * Offset: 0
      */
     uint8_t block_reason;
-};
-
-/**
- * Signals in message MSVStatus.
- *
- * 2027 team-defined layout; physical values use the shared scaling conventions.
- *
- * All signal values are as on the CAN bus.
- */
-struct car_can_raw_msv_status_t {
-    /**
-     * WarningBPSWatchdog
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t warning_bps_watchdog;
-
-    /**
-     * WarningMPPTAWatchdog
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t warning_mppta_watchdog;
-
-    /**
-     * WarningMPPTBWatchdog
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t warning_mpptb_watchdog;
-
-    /**
-     * WarningMPPTCWatchdog
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t warning_mpptc_watchdog;
-
-    /**
-     * WarningFan
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t warning_fan;
-
-    /**
-     * MPPTSetMode
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t mppt_set_mode;
-
-    /**
-     * SweepingActive
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t sweeping_active;
-
-    /**
-     * FanTach
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t fan_tach;
 };
 
 /**
@@ -7394,6 +7406,69 @@ bool car_can_raw_vcu_status_warning_motor_fan_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
+bool car_can_raw_vcu_status_warning_bps_watchdog_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_vcu_status_warning_mppta_watchdog_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_vcu_status_warning_mpptb_watchdog_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_vcu_status_warning_mpptc_watchdog_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_vcu_status_warning_mppt_fan_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_vcu_status_warning_lws_watchdog_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_vcu_status_warning_lws_fault_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
 bool car_can_raw_vcu_status_regen_enabled_is_in_range(uint8_t value);
 
 /**
@@ -7475,6 +7550,24 @@ bool car_can_raw_vcu_status_motor_command_source_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
+bool car_can_raw_vcu_status_mppt_set_mode_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_vcu_status_sweeping_active_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
 bool car_can_raw_vcu_status_motor_controller_fan_tach_is_in_range(uint16_t value);
 
 /**
@@ -7485,6 +7578,15 @@ bool car_can_raw_vcu_status_motor_controller_fan_tach_is_in_range(uint16_t value
  * @return true if in range, false otherwise.
  */
 bool car_can_raw_vcu_status_motor_fan_tach_is_in_range(uint16_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_vcu_status_mppt_fan_tach_is_in_range(uint16_t value);
 
 /**
  * Pack message LightingCommand.
@@ -9529,115 +9631,6 @@ bool car_can_raw_bps_balancing_status_paused_chip_mask_is_in_range(uint8_t value
  * @return true if in range, false otherwise.
  */
 bool car_can_raw_bps_balancing_status_block_reason_is_in_range(uint8_t value);
-
-/**
- * Pack message MSVStatus.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int car_can_raw_msv_status_pack(
-    uint8_t *dst_p,
-    const struct car_can_raw_msv_status_t *src_p,
-    size_t size);
-
-/**
- * Unpack message MSVStatus.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int car_can_raw_msv_status_unpack(
-    struct car_can_raw_msv_status_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from MSVStatus.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int car_can_raw_msv_status_init(struct car_can_raw_msv_status_t *msg_p);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool car_can_raw_msv_status_warning_bps_watchdog_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool car_can_raw_msv_status_warning_mppta_watchdog_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool car_can_raw_msv_status_warning_mpptb_watchdog_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool car_can_raw_msv_status_warning_mpptc_watchdog_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool car_can_raw_msv_status_warning_fan_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool car_can_raw_msv_status_mppt_set_mode_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool car_can_raw_msv_status_sweeping_active_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool car_can_raw_msv_status_fan_tach_is_in_range(uint16_t value);
 
 /**
  * Pack message BottomShellLightingStatus.

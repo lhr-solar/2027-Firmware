@@ -19,7 +19,7 @@ By default this reads every `can/dbc/*.dbc`. To select buses explicitly:
 
 ```sh
 uv run --locked python can/codegen/generate_can_headers.py \
-  can/dbc/CarCAN.dbc can/dbc/MotorCAN.dbc -o build/generated/can
+  can/dbc/CarCAN.dbc can/dbc/COTSCAN.dbc -o build/generated/can
 ```
 
 Each DBC describes one physical bus. Empty scaffold files generate valid empty
@@ -32,7 +32,7 @@ Output:
 can/generated/
   can_types.h              Shared frame, status and metadata types
   car_can.h / car_can.c     Physical fields, sender groups, pack/unpack
-  motor_can.h / motor_can.c
+  cotscan.h / cotscan.c
   detail/*_raw.h / *.c      Private raw-bit codecs
   .can-codegen-files       Manifest for removing obsolete generated files
 ```
@@ -47,8 +47,8 @@ above and committing the result. On a mismatch, CI also uploads a
 
 Add `can/` as a CMake subdirectory and link the physical buses a board uses:
 `target_link_libraries(board PRIVATE can_car can_charger)`. Available targets:
-`can_car`, `can_charger`, `can_daq`, `can_elcon`, `can_motor`,
-`can_mppt`, `can_steering`, `can_telemetry_link`. Each includes its public and private codecs and math
+`can_car`, `can_charger`, `can_daq`, `can_elcon`, `can_cots`,
+`can_telemetry_link`. Each includes its public and private codecs and math
 library. Include the bus header (or `can.h` for all declarations). CI checks the
 shared package for every board PR; a board must opt into the buses it uses.
 

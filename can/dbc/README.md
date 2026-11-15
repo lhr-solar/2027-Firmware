@@ -10,19 +10,17 @@ not wire-compatible with the old vehicle's team-defined messages.
 
 | Database | Contents | Frames | Empty placeholders |
 |---|---|---:|---:|
-| CarCAN | Team critical/control, power, battery, HMI and lighting | 33 | 2 |
-| MotorCAN | VCU drive/power/reset commands and WS22 telemetry | 19 | 3 |
-| MPPTCAN | Three SEC-B175-7A MPPTs; commands from MSV | 33 | 12 |
-| SteeringCAN | LWS measurements; configuration sent by DEI | 2 | 0 |
+| CarCAN | Team critical/control, power, battery, HMI and lighting | 32 | 2 |
+| COTSCAN | WS22, LWS, and three SEC-B175-7A MPPTs; VCU and DEI commands | 54 | 12 |
 | ChargerCAN | BPS status/pack/cell data and ElconInterface status | 5 | 0 |
 | ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
 | DAqCAN | CM5 timestamp and sensor-board traffic | 19 | 5 |
 | TelemetryLink | CM5 TCP-native telemetry and test messages | 6 | 0 |
 
 Every message has exactly one declared transmitter. `External` is the command
-injection tool/node for IDs 0x051–0x054. MSV receives BPSStatus
-on **CarCAN** and produces MPPT commands on **MPPTCAN**; BPS is not a transmitter
-on the private MPPT bus. DEI transmits all LWS configuration traffic; LWS remains
+injection tool/node for IDs 0x051–0x055. VCU receives BPSStatus
+on **CarCAN** and produces MPPT commands on **COTSCAN**; BPS is not a transmitter
+on that bus. DEI transmits all LWS configuration traffic; LWS remains
 the transmitter of its own measurements.
 
 BPSStatus (0x060), BPSPackData (0x070), BPSVoltageData (0x071), and
@@ -33,8 +31,7 @@ any actual gateway implementation must match this routing assumption.
 
 CarCAN, ChargerCAN and DAqCAN support CAN-FD. The three lighting messages
 remain classic CAN frames on CarCAN; every node on that physical bus must
-tolerate its CAN-FD traffic. MotorCAN remains separate pending WS22 CAN-FD
-tolerance confirmation.
+tolerate its CAN-FD traffic. WS22 remains on classic COTSCAN, isolated from CarCAN FD frames by VCU.
 The WS22, TPEE, Bosch and Elcon protocols remain **classic CAN**. Payloads use
 legal CAN-FD wire lengths, with unused bits/bytes reserved as zero. Bus bitrates are explicitly assigned using Baudrate (bits/second): all physical
 buses are 500000 except ElconCAN, which remains 250000. BRS is explicitly off. See
@@ -47,7 +44,7 @@ messages live on **CarCAN**: DEI transmits BottomShellLightingStatus at
 **0x080**, and TopShellLighting transmits TopShellLightingStatus at **0x081**.
 Their IDs and payload layouts are retained. Bottom-shell circuitry is on DEI,
 not a separate CAN node. TopShellLighting is attached to CarCAN. DEI is attached to
-CarCAN and SteeringCAN. CM5 is the combined HMI
+CarCAN and COTSCAN. CM5 is the combined HMI
 and telemetry board: it transmits CM5Status (0x082) on CarCAN and
 TimestampSync on DAqCAN; TelemetryStatus, GPSData, and OnBoardWatchdog are TCP-only. Its former
 self-watchdog bit is reserved rather than monitoring a second board identity.
@@ -74,9 +71,9 @@ fields is removed to standardize bulk voltage encoding. LV voltages now use
 10 bits at 0.05 V/bit, including zero for disabled outputs (0–51.15 V). EVSE available current uses 12 bits
 at 0.01 A/bit to retain 0–25.5 A with the standard current resolution.
 
-BPS MPPT limits use the team voltage/current resolutions; MSV converts
+BPS MPPT limits use the team voltage/current resolutions; VCU converts
 them to the vendor command resolutions. This conversion does not replace device
-limits or battery protection checks. BPS MPPTSetMode and MSV MPPTSetMode
+limits or battery protection checks. BPS MPPTSetMode and VCU MPPTSetMode
 use two bits to represent the vendor's Disabled/PO/ConstantInputVoltage modes.
 
 **Vendor encodings are deliberate exceptions.** Changing a DBC cannot change a
@@ -462,8 +459,7 @@ Measurement messages do not include a frame-level sample-age field. The selected
 All team-defined signal layouts are contiguous from bit zero, including commands,
 status messages and snapshots. There are no reserved internal alignment gaps.
 Payloads are the smallest legal frame length containing all signals; CAN-FD DLC
-rounding can still require trailing padding. Vendor-defined MotorCAN, MPPTCAN,
-SteeringCAN and ElconCAN wire formats are untouched: adding age fields or packing
+rounding can still require trailing padding. Vendor-defined COTSCAN and ElconCAN wire formats are untouched: adding age fields or packing
 their reserved bits would break compatibility. Age for vendor traffic would need
 separate team-defined wrapper/sidecar messages, which are not added here.
 

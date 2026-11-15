@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: MPPTA MPPTB MPPTC MSV
+BU_: MPPTA MPPTB MPPTC VCU WS22 DEI LWS
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
@@ -86,26 +86,26 @@ BO_ 514 MPPTASweepData: 5 MPPTA
  SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
  SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 517 MPPTAFillRXBuffer: 0 MSV
+BO_ 517 MPPTAFillRXBuffer: 0 VCU
 
-BO_ 518 MPPTAFillRXBufferLong: 0 MSV
+BO_ 518 MPPTAFillRXBufferLong: 0 VCU
 
-BO_ 519 MPPTAProcessRXBuffer: 0 MSV
+BO_ 519 MPPTAProcessRXBuffer: 0 VCU
 
-BO_ 520 MPPTAProcessShortBuffer: 0 MSV
+BO_ 520 MPPTAProcessShortBuffer: 0 VCU
 
-BO_ 521 MPPTASetMode: 1 MSV
+BO_ 521 MPPTASetMode: 1 VCU
  SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
 
-BO_ 522 MPPTAPerformSweep: 5 MSV
+BO_ 522 MPPTAPerformSweep: 5 VCU
  SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
 
-BO_ 523 MPPTASetOutputVoltageLimit: 2 MSV
+BO_ 523 MPPTASetOutputVoltageLimit: 2 VCU
  SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 524 MPPTASetOutputCurrentLimit: 2 MSV
+BO_ 524 MPPTASetOutputCurrentLimit: 2 VCU
  SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
 
 BO_ 544 MPPTBPowerMeasurements: 8 MPPTB
@@ -126,26 +126,26 @@ BO_ 546 MPPTBSweepData: 5 MPPTB
  SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
  SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 549 MPPTBFillRXBuffer: 0 MSV
+BO_ 549 MPPTBFillRXBuffer: 0 VCU
 
-BO_ 550 MPPTBFillRXBufferLong: 0 MSV
+BO_ 550 MPPTBFillRXBufferLong: 0 VCU
 
-BO_ 551 MPPTBProcessRXBuffer: 0 MSV
+BO_ 551 MPPTBProcessRXBuffer: 0 VCU
 
-BO_ 552 MPPTBProcessShortBuffer: 0 MSV
+BO_ 552 MPPTBProcessShortBuffer: 0 VCU
 
-BO_ 553 MPPTBSetMode: 1 MSV
+BO_ 553 MPPTBSetMode: 1 VCU
  SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
 
-BO_ 554 MPPTBPerformSweep: 5 MSV
+BO_ 554 MPPTBPerformSweep: 5 VCU
  SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
 
-BO_ 555 MPPTBSetOutputVoltageLimit: 2 MSV
+BO_ 555 MPPTBSetOutputVoltageLimit: 2 VCU
  SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 556 MPPTBSetOutputCurrentLimit: 2 MSV
+BO_ 556 MPPTBSetOutputCurrentLimit: 2 VCU
  SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
 
 BO_ 576 MPPTCPowerMeasurements: 8 MPPTC
@@ -166,27 +166,122 @@ BO_ 578 MPPTCSweepData: 5 MPPTC
  SG_ Current : 15|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
  SG_ Voltage : 31|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 581 MPPTCFillRXBuffer: 0 MSV
+BO_ 581 MPPTCFillRXBuffer: 0 VCU
 
-BO_ 582 MPPTCFillRXBufferLong: 0 MSV
+BO_ 582 MPPTCFillRXBufferLong: 0 VCU
 
-BO_ 583 MPPTCProcessRXBuffer: 0 MSV
+BO_ 583 MPPTCProcessRXBuffer: 0 VCU
 
-BO_ 584 MPPTCProcessShortBuffer: 0 MSV
+BO_ 584 MPPTCProcessShortBuffer: 0 VCU
 
-BO_ 585 MPPTCSetMode: 1 MSV
+BO_ 585 MPPTCSetMode: 1 VCU
  SG_ Mode : 0|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
 
-BO_ 586 MPPTCPerformSweep: 5 MSV
+BO_ 586 MPPTCPerformSweep: 5 VCU
  SG_ StartVoltage : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ EndVoltage : 23|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
  SG_ SampleCount : 32|8@1+ (1,0) [4|128] "" Vector__XXX
 
-BO_ 587 MPPTCSetOutputVoltageLimit: 2 MSV
+BO_ 587 MPPTCSetOutputVoltageLimit: 2 VCU
  SG_ VoltageLimit : 7|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
-BO_ 588 MPPTCSetOutputCurrentLimit: 2 MSV
+BO_ 588 MPPTCSetOutputCurrentLimit: 2 VCU
  SG_ CurrentLimit : 7|16@0- (0.0005,0) [-16.384|16.3835] "A" Vector__XXX
+
+BO_ 688 LWS_Standard: 5 LWS
+ SG_ Angle : 0|16@1- (0.1,0) [-3276.8|3276.7] "deg" Vector__XXX
+ SG_ AngularSpeed : 16|8@1+ (4,0) [0.0|1020.0] "deg/s" Vector__XXX
+ SG_ OK : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Calibrated : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Trimmed : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+
+BO_ 1025 MC_DriveCommand: 8 VCU
+ SG_ MC_MotorVelocitySetpoint : 0|32@1- (1,0) [0|0] "rpm" Vector__XXX
+ SG_ MC_MotorCurrentSetpoint : 32|32@1- (1,0) [0|1] "ratio" Vector__XXX
+
+BO_ 1026 MC_PowerCommand: 8 VCU
+ SG_ MC_MotorPowerSetpoint : 32|32@1- (1,0) [0|1] "ratio" Vector__XXX
+
+BO_ 1027 MC_ResetCommand: 8 VCU
+
+BO_ 1056 MC_Info: 8 WS22
+ SG_ MC_TritiumID : 0|32@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MC_SerialNumber : 32|32@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1057 MC_Status: 8 WS22
+ SG_ MC_LIMIT_OutputVoltagePWM : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_MotorCurrent : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_Velocity : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_BusCurrent : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_BusVoltageUpper : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_BusVoltageLower : 5|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_MotorTemp : 6|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_LIMIT_Reserved : 7|9@1+ (1,0) [0|511] "" Vector__XXX
+ SG_ MC_FAULT_HardwareOverCurrent : 16|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_SoftwareOverCurrent : 17|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_DcBusOverVoltage : 18|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_BadMotorPositionHallSeq : 19|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_WatchdogCausedLastReset : 20|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_ConfigRead : 21|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_15vRailUnderVoltage : 22|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_DesaturationFault : 23|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_MotorOverSpeed : 24|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ MC_FAULT_Reserved : 25|7@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MC_ActiveMotor : 32|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MC_TxErrorCount : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MC_RxErrorCount : 56|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1058 MC_BusMeasurement: 8 WS22
+ SG_ MC_BusVoltage : 0|32@1- (1,0) [0|0] "V" Vector__XXX
+ SG_ MC_BusCurrent : 32|32@1- (1,0) [0|0] "A" Vector__XXX
+
+BO_ 1059 MC_VelocityMeasurement: 8 WS22
+ SG_ MC_MotorVelocity : 0|32@1- (1,0) [0|0] "rpm" Vector__XXX
+ SG_ MC_VehicleVelocity : 32|32@1- (1,0) [0|0] "m/s" Vector__XXX
+
+BO_ 1060 MC_PhaseCurrentMeasurement: 8 WS22
+ SG_ MC_PhaseCurrentB : 0|32@1- (1,0) [0|0] "A" Vector__XXX
+ SG_ MC_PhaseCurrentC : 32|32@1- (1,0) [0|0] "A" Vector__XXX
+
+BO_ 1061 MC_MotorVoltageVectorMeasurement: 8 WS22
+ SG_ MC_Vq : 0|32@1- (1,0) [0|0] "V" Vector__XXX
+ SG_ MC_Vd : 32|32@1- (1,0) [0|0] "V" Vector__XXX
+
+BO_ 1062 MC_MotorCurrentVectorMeasurement: 8 WS22
+ SG_ MC_Iq : 0|32@1- (1,0) [0|0] "A" Vector__XXX
+ SG_ MC_Id : 32|32@1- (1,0) [0|0] "A" Vector__XXX
+
+BO_ 1063 MC_BackEMFMeasurementPrediction: 8 WS22
+ SG_ MC_BEMFq : 0|32@1- (1,0) [0|0] "V" Vector__XXX
+ SG_ MC_BEMFd : 32|32@1- (1,0) [0|0] "V" Vector__XXX
+
+BO_ 1064 MC_15V_RailMeasurement: 8 WS22
+ SG_ MC_Supply15V : 32|32@1- (1,0) [0|0] "V" Vector__XXX
+
+BO_ 1065 MC_3V3_19V_RailMeasurement: 8 WS22
+ SG_ MC_Supply1V9 : 0|32@1- (1,0) [0|0] "V" Vector__XXX
+ SG_ MC_Supply3V3 : 32|32@1- (1,0) [0|0] "V" Vector__XXX
+
+BO_ 1066 WS22Reserved0A: 8 WS22
+
+BO_ 1067 MC_Motor_TempMeasurement: 8 WS22
+ SG_ MC_MotorTemp : 0|32@1- (1,0) [0|0] "degC" Vector__XXX
+ SG_ MC_HeatsinkTemp : 32|32@1- (1,0) [0|0] "degC" Vector__XXX
+
+BO_ 1068 MC_DspBoardTempMeasurement: 8 WS22
+ SG_ MC_DspBoardTemp : 0|32@1- (1,0) [0|0] "degC" Vector__XXX
+
+BO_ 1069 WS22Reserved0D: 8 WS22
+
+BO_ 1070 MC_OdometerBusAhMeasurement: 8 WS22
+ SG_ MC_TripOdometer : 0|32@1- (1,0) [0|0] "m" Vector__XXX
+ SG_ MC_DCBusAh : 32|32@1- (1,0) [0|0] "Ah" Vector__XXX
+
+BO_ 1079 MC_SlipSpeedMeasurement: 8 WS22
+ SG_ MC_SlipSpeed : 0|32@1- (1,0) [0|0] "Hz" Vector__XXX
+
+BO_ 1984 LWS_Config: 2 DEI
+ SG_ Command : 0|4@1+ (1,0) [0.0|15.0] "" Vector__XXX
 
 
 
@@ -278,6 +373,64 @@ CM_ BO_ 587 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05
 CM_ SG_ 587 VoltageLimit "VoltageLimit";
 CM_ BO_ 588 "TPEE SEC-B175-7A / Open-SEC. Source: can.h/can.c at 11bb2abe40cfa05160a197a04c03e1566eb88c51. Fixed classic CAN vendor format; retain signed big-endian fixed-point values.";
 CM_ SG_ 588 CurrentLimit "CurrentLimit";
+CM_ BO_ 688 "Bosch Motorsport LWS fixed classic CAN format; Intel little-endian. DEI is the only configuration transmitter.";
+CM_ SG_ 688 Trimmed "Trimmed";
+CM_ SG_ 688 Calibrated "Calibrated";
+CM_ SG_ 688 OK "OK";
+CM_ SG_ 688 AngularSpeed "0xFF is invalid sentinel; valid measurement range is 0..1016 deg/s.";
+CM_ SG_ 688 Angle "0x7FFF is invalid/not-calibrated sentinel; validate OK/CAL/TRIM before using angle.";
+CM_ BO_ 1025 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1025 MC_MotorCurrentSetpoint "Vendor current fraction: 0.0 to 1.0, never 0 to 100.";
+CM_ SG_ 1025 MC_MotorVelocitySetpoint "Signed velocity setpoint; reverse requires negative rpm. Operational limits are controller settings, not wire limits.";
+CM_ BO_ 1026 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1026 MC_MotorPowerSetpoint "Vendor current fraction: 0.0 to 1.0, never 0 to 100.";
+CM_ BO_ 1027 "Defined WS22 reset trigger: eight unused data bytes, transmitted as zeros.";
+CM_ BO_ 1056 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1056 MC_SerialNumber "Device serial number, allocated at manufacture.";
+CM_ SG_ 1056 MC_TritiumID "Device identifier. 0x00004003";
+CM_ BO_ 1057 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1057 MC_RxErrorCount "The DSP CAN receive error counter (CAN 2.0)";
+CM_ SG_ 1057 MC_TxErrorCount "The DSP CAN transmission error counter (CAN 2.0)";
+CM_ SG_ 1057 MC_ActiveMotor "The index of the active motor currently being used.";
+CM_ SG_ 1057 MC_FAULT_Reserved "Vendor-reserved bits; no enum semantics assigned.";
+CM_ SG_ 1057 MC_LIMIT_Reserved "Vendor-reserved bits; no enum semantics assigned.";
+CM_ BO_ 1058 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1058 MC_BusCurrent "Current drawn from the DC bus by the controller.";
+CM_ SG_ 1058 MC_BusVoltage "DC bus voltage at the controller.";
+CM_ BO_ 1059 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1059 MC_VehicleVelocity "Vehicle velocity in metres / second.";
+CM_ SG_ 1059 MC_MotorVelocity "Motor angular frequency in revolutions per minute.";
+CM_ BO_ 1060 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1060 MC_PhaseCurrentC "RMS current in motor Phase C.";
+CM_ SG_ 1060 MC_PhaseCurrentB "RMS current in motor Phase B.";
+CM_ BO_ 1061 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1061 MC_Vd "Real component of the applied non-rotating voltage vector to the motor.";
+CM_ SG_ 1061 MC_Vq "Imaginary component of the applied non-rotating voltage vector to the motor.";
+CM_ BO_ 1062 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1062 MC_Id "Real component of the applied non-rotating current vector to the motor. This vector represents the field current of the motor.";
+CM_ SG_ 1062 MC_Iq "Imaginary component of the applied non-rotating current vector to the motor. This current produces torque in the motor and should be in phase with the back-EMF of the motor";
+CM_ BO_ 1063 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1063 MC_BEMFd "By definition this value is always 0V.";
+CM_ SG_ 1063 MC_BEMFq "The peak of the phase to neutral motor voltage.";
+CM_ BO_ 1064 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1064 MC_Supply15V "Actual voltage level of the 15V power rail.";
+CM_ BO_ 1065 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1065 MC_Supply3V3 "Actual voltage level of the 3.3V power rail.";
+CM_ SG_ 1065 MC_Supply1V9 "Actual voltage level of the 1.9V DSP power rail.";
+CM_ BO_ 1066 "Vendor-defined reserved frame; fixed eight-byte payload, no signals assigned.";
+CM_ BO_ 1067 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1067 MC_HeatsinkTemp "Internal temperature of Heat-sink (case).";
+CM_ SG_ 1067 MC_MotorTemp "Internal temperature of the motor";
+CM_ BO_ 1068 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1068 MC_DspBoardTemp "Temperature of the DSP board.";
+CM_ BO_ 1069 "Vendor-defined reserved frame; fixed eight-byte payload, no signals assigned.";
+CM_ BO_ 1070 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1070 MC_DCBusAh "Charge flow into the controller DC bus from the time of reset.";
+CM_ SG_ 1070 MC_TripOdometer "Distance the vehicle has travelled since reset.";
+CM_ BO_ 1079 "Fixed WS22 classic CAN: little-endian IEEE-754 floats; vendor units and wire layout are exempt from team scaling. All WS22 frames have eight data bytes.";
+CM_ SG_ 1079 MC_SlipSpeed "Slip speed when driving an induction motor.";
+CM_ BO_ 1984 "Bosch Motorsport LWS fixed classic CAN format; Intel little-endian. DEI is the only configuration transmitter.";
+CM_ SG_ 1984 Command "Command";
 BA_DEF_ SG_  "ValueTable" STRING ;
 BA_DEF_ BO_  "LayoutPending" INT 0 1;
 BA_DEF_ BO_  "ProtocolSource" STRING ;
@@ -299,7 +452,7 @@ BA_DEF_DEF_  "GenMsgCycleTime" 0;
 BA_DEF_DEF_  "CANFD_BRS" "0";
 BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
 BA_ "BusType" "CAN";
-BA_ "DBName" "MPPTCAN";
+BA_ "DBName" "COTSCAN";
 BA_ "Baudrate" 500000;
 BA_ "LayoutPending" BO_ 512 0;
 BA_ "ProtocolSource" BO_ 512 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
@@ -493,6 +646,148 @@ BA_ "GenMsgSendType" BO_ 588 0;
 BA_ "GenMsgCycleTime" BO_ 588 200;
 BA_ "VFrameFormat" BO_ 588 0;
 BA_ "CANFD_BRS" BO_ 588 0;
+BA_ "LayoutPending" BO_ 688 0;
+BA_ "ProtocolSource" BO_ 688 "Bosch Motorsport LWS datasheet 2021";
+BA_ "GenMsgSendType" BO_ 688 0;
+BA_ "GenMsgCycleTime" BO_ 688 10;
+BA_ "VFrameFormat" BO_ 688 0;
+BA_ "CANFD_BRS" BO_ 688 0;
+BA_ "ValueTable" SG_ 688 Trimmed "LWSTrim";
+BA_ "ValueTable" SG_ 688 Calibrated "LWSCalibration";
+BA_ "ValueTable" SG_ 688 OK "Validity";
+BA_ "LayoutPending" BO_ 1025 0;
+BA_ "ProtocolSource" BO_ 1025 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1025 0;
+BA_ "GenMsgCycleTime" BO_ 1025 100;
+BA_ "VFrameFormat" BO_ 1025 0;
+BA_ "CANFD_BRS" BO_ 1025 0;
+BA_ "LayoutPending" BO_ 1026 0;
+BA_ "ProtocolSource" BO_ 1026 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1026 0;
+BA_ "GenMsgCycleTime" BO_ 1026 100;
+BA_ "VFrameFormat" BO_ 1026 0;
+BA_ "CANFD_BRS" BO_ 1026 0;
+BA_ "LayoutPending" BO_ 1027 0;
+BA_ "ProtocolSource" BO_ 1027 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1027 1;
+BA_ "VFrameFormat" BO_ 1027 0;
+BA_ "CANFD_BRS" BO_ 1027 0;
+BA_ "LayoutPending" BO_ 1056 0;
+BA_ "ProtocolSource" BO_ 1056 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1056 0;
+BA_ "GenMsgCycleTime" BO_ 1056 1000;
+BA_ "VFrameFormat" BO_ 1056 0;
+BA_ "CANFD_BRS" BO_ 1056 0;
+BA_ "LayoutPending" BO_ 1057 0;
+BA_ "ProtocolSource" BO_ 1057 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1057 0;
+BA_ "GenMsgCycleTime" BO_ 1057 200;
+BA_ "VFrameFormat" BO_ 1057 0;
+BA_ "CANFD_BRS" BO_ 1057 0;
+BA_ "ValueTable" SG_ 1057 MC_FAULT_MotorOverSpeed "FaultState";
+BA_ "ValueTable" SG_ 1057 MC_FAULT_DesaturationFault "FaultState";
+BA_ "ValueTable" SG_ 1057 MC_FAULT_15vRailUnderVoltage "FaultState";
+BA_ "ValueTable" SG_ 1057 MC_FAULT_ConfigRead "FaultState";
+BA_ "ValueTable" SG_ 1057 MC_FAULT_WatchdogCausedLastReset "FaultState";
+BA_ "ValueTable" SG_ 1057 MC_FAULT_BadMotorPositionHallSeq "FaultState";
+BA_ "ValueTable" SG_ 1057 MC_FAULT_DcBusOverVoltage "FaultState";
+BA_ "ValueTable" SG_ 1057 MC_FAULT_SoftwareOverCurrent "FaultState";
+BA_ "ValueTable" SG_ 1057 MC_FAULT_HardwareOverCurrent "FaultState";
+BA_ "ValueTable" SG_ 1057 MC_LIMIT_MotorTemp "OnOff";
+BA_ "ValueTable" SG_ 1057 MC_LIMIT_BusVoltageLower "OnOff";
+BA_ "ValueTable" SG_ 1057 MC_LIMIT_BusVoltageUpper "OnOff";
+BA_ "ValueTable" SG_ 1057 MC_LIMIT_BusCurrent "OnOff";
+BA_ "ValueTable" SG_ 1057 MC_LIMIT_Velocity "OnOff";
+BA_ "ValueTable" SG_ 1057 MC_LIMIT_MotorCurrent "OnOff";
+BA_ "ValueTable" SG_ 1057 MC_LIMIT_OutputVoltagePWM "OnOff";
+BA_ "LayoutPending" BO_ 1058 0;
+BA_ "ProtocolSource" BO_ 1058 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1058 0;
+BA_ "GenMsgCycleTime" BO_ 1058 200;
+BA_ "VFrameFormat" BO_ 1058 0;
+BA_ "CANFD_BRS" BO_ 1058 0;
+BA_ "LayoutPending" BO_ 1059 0;
+BA_ "ProtocolSource" BO_ 1059 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1059 0;
+BA_ "GenMsgCycleTime" BO_ 1059 200;
+BA_ "VFrameFormat" BO_ 1059 0;
+BA_ "CANFD_BRS" BO_ 1059 0;
+BA_ "LayoutPending" BO_ 1060 0;
+BA_ "ProtocolSource" BO_ 1060 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1060 0;
+BA_ "GenMsgCycleTime" BO_ 1060 200;
+BA_ "VFrameFormat" BO_ 1060 0;
+BA_ "CANFD_BRS" BO_ 1060 0;
+BA_ "LayoutPending" BO_ 1061 0;
+BA_ "ProtocolSource" BO_ 1061 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1061 0;
+BA_ "GenMsgCycleTime" BO_ 1061 200;
+BA_ "VFrameFormat" BO_ 1061 0;
+BA_ "CANFD_BRS" BO_ 1061 0;
+BA_ "LayoutPending" BO_ 1062 0;
+BA_ "ProtocolSource" BO_ 1062 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1062 0;
+BA_ "GenMsgCycleTime" BO_ 1062 200;
+BA_ "VFrameFormat" BO_ 1062 0;
+BA_ "CANFD_BRS" BO_ 1062 0;
+BA_ "LayoutPending" BO_ 1063 0;
+BA_ "ProtocolSource" BO_ 1063 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1063 0;
+BA_ "GenMsgCycleTime" BO_ 1063 200;
+BA_ "VFrameFormat" BO_ 1063 0;
+BA_ "CANFD_BRS" BO_ 1063 0;
+BA_ "LayoutPending" BO_ 1064 0;
+BA_ "ProtocolSource" BO_ 1064 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1064 0;
+BA_ "GenMsgCycleTime" BO_ 1064 1000;
+BA_ "VFrameFormat" BO_ 1064 0;
+BA_ "CANFD_BRS" BO_ 1064 0;
+BA_ "LayoutPending" BO_ 1065 0;
+BA_ "ProtocolSource" BO_ 1065 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1065 0;
+BA_ "GenMsgCycleTime" BO_ 1065 1000;
+BA_ "VFrameFormat" BO_ 1065 0;
+BA_ "CANFD_BRS" BO_ 1065 0;
+BA_ "LayoutPending" BO_ 1066 0;
+BA_ "ProtocolSource" BO_ 1066 "2027 allocation draft";
+BA_ "GenMsgSendType" BO_ 1066 2;
+BA_ "VFrameFormat" BO_ 1066 0;
+BA_ "CANFD_BRS" BO_ 1066 0;
+BA_ "LayoutPending" BO_ 1067 0;
+BA_ "ProtocolSource" BO_ 1067 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1067 0;
+BA_ "GenMsgCycleTime" BO_ 1067 1000;
+BA_ "VFrameFormat" BO_ 1067 0;
+BA_ "CANFD_BRS" BO_ 1067 0;
+BA_ "LayoutPending" BO_ 1068 0;
+BA_ "ProtocolSource" BO_ 1068 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1068 0;
+BA_ "GenMsgCycleTime" BO_ 1068 1000;
+BA_ "VFrameFormat" BO_ 1068 0;
+BA_ "CANFD_BRS" BO_ 1068 0;
+BA_ "LayoutPending" BO_ 1069 0;
+BA_ "ProtocolSource" BO_ 1069 "2027 allocation draft";
+BA_ "GenMsgSendType" BO_ 1069 2;
+BA_ "VFrameFormat" BO_ 1069 0;
+BA_ "CANFD_BRS" BO_ 1069 0;
+BA_ "LayoutPending" BO_ 1070 0;
+BA_ "ProtocolSource" BO_ 1070 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1070 0;
+BA_ "GenMsgCycleTime" BO_ 1070 1000;
+BA_ "VFrameFormat" BO_ 1070 0;
+BA_ "CANFD_BRS" BO_ 1070 0;
+BA_ "LayoutPending" BO_ 1079 0;
+BA_ "ProtocolSource" BO_ 1079 "Prohelion WS22 Appendix C; legacy HighNoon MotorCAN";
+BA_ "GenMsgSendType" BO_ 1079 0;
+BA_ "GenMsgCycleTime" BO_ 1079 200;
+BA_ "VFrameFormat" BO_ 1079 0;
+BA_ "CANFD_BRS" BO_ 1079 0;
+BA_ "LayoutPending" BO_ 1984 0;
+BA_ "ProtocolSource" BO_ 1984 "Bosch Motorsport LWS datasheet 2021";
+BA_ "GenMsgSendType" BO_ 1984 1;
+BA_ "VFrameFormat" BO_ 1984 0;
+BA_ "CANFD_BRS" BO_ 1984 0;
+BA_ "ValueTable" SG_ 1984 Command "LWSCommand";
 VAL_ 513 Enabled 0 "Disabled" 1 "Enabled" ;
 VAL_ 513 Fault 0 "OK" 1 "ConfigurationError" 2 "InputOverVoltage" 3 "OutputOverVoltage" 4 "OutputOverCurrent" 5 "InputOverCurrent" 6 "InputUnderCurrent" 7 "PhaseOverCurrent" 8 "Fault" ;
 VAL_ 513 OperatingMode 0 "ConstantInputVoltage" 1 "ConstantInputCurrent" 2 "MinimumInputCurrent" 3 "ConstantOutputVoltage" 4 "ConstantOutputCurrent" 5 "TemperatureDerating" 6 "MinimumInputVoltage" 7 "Fault" ;
@@ -505,3 +800,47 @@ VAL_ 577 Enabled 0 "Disabled" 1 "Enabled" ;
 VAL_ 577 Fault 0 "OK" 1 "ConfigurationError" 2 "InputOverVoltage" 3 "OutputOverVoltage" 4 "OutputOverCurrent" 5 "InputOverCurrent" 6 "InputUnderCurrent" 7 "PhaseOverCurrent" 8 "Fault" ;
 VAL_ 577 OperatingMode 0 "ConstantInputVoltage" 1 "ConstantInputCurrent" 2 "MinimumInputCurrent" 3 "ConstantOutputVoltage" 4 "ConstantOutputCurrent" 5 "TemperatureDerating" 6 "MinimumInputVoltage" 7 "Fault" ;
 VAL_ 585 Mode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;
+VAL_ 688 Trimmed 0 "NotTrimmed" 1 "Trimmed" ;
+VAL_ 688 Calibrated 0 "NotCalibrated" 1 "Calibrated" ;
+VAL_ 688 OK 0 "Invalid" 1 "Valid" ;
+VAL_ 1057 MC_FAULT_MotorOverSpeed 0 "OK" 1 "Fault" ;
+VAL_ 1057 MC_FAULT_DesaturationFault 0 "OK" 1 "Fault" ;
+VAL_ 1057 MC_FAULT_15vRailUnderVoltage 0 "OK" 1 "Fault" ;
+VAL_ 1057 MC_FAULT_ConfigRead 0 "OK" 1 "Fault" ;
+VAL_ 1057 MC_FAULT_WatchdogCausedLastReset 0 "OK" 1 "Fault" ;
+VAL_ 1057 MC_FAULT_BadMotorPositionHallSeq 0 "OK" 1 "Fault" ;
+VAL_ 1057 MC_FAULT_DcBusOverVoltage 0 "OK" 1 "Fault" ;
+VAL_ 1057 MC_FAULT_SoftwareOverCurrent 0 "OK" 1 "Fault" ;
+VAL_ 1057 MC_FAULT_HardwareOverCurrent 0 "OK" 1 "Fault" ;
+VAL_ 1057 MC_LIMIT_MotorTemp 0 "Off" 1 "On" ;
+VAL_ 1057 MC_LIMIT_BusVoltageLower 0 "Off" 1 "On" ;
+VAL_ 1057 MC_LIMIT_BusVoltageUpper 0 "Off" 1 "On" ;
+VAL_ 1057 MC_LIMIT_BusCurrent 0 "Off" 1 "On" ;
+VAL_ 1057 MC_LIMIT_Velocity 0 "Off" 1 "On" ;
+VAL_ 1057 MC_LIMIT_MotorCurrent 0 "Off" 1 "On" ;
+VAL_ 1057 MC_LIMIT_OutputVoltagePWM 0 "Off" 1 "On" ;
+VAL_ 1984 Command 3 "SetAngleZero" 5 "ResetCalibration" ;
+SIG_VALTYPE_ 1025 MC_MotorVelocitySetpoint : 1;
+SIG_VALTYPE_ 1025 MC_MotorCurrentSetpoint : 1;
+SIG_VALTYPE_ 1026 MC_MotorPowerSetpoint : 1;
+SIG_VALTYPE_ 1058 MC_BusVoltage : 1;
+SIG_VALTYPE_ 1058 MC_BusCurrent : 1;
+SIG_VALTYPE_ 1059 MC_MotorVelocity : 1;
+SIG_VALTYPE_ 1059 MC_VehicleVelocity : 1;
+SIG_VALTYPE_ 1060 MC_PhaseCurrentB : 1;
+SIG_VALTYPE_ 1060 MC_PhaseCurrentC : 1;
+SIG_VALTYPE_ 1061 MC_Vq : 1;
+SIG_VALTYPE_ 1061 MC_Vd : 1;
+SIG_VALTYPE_ 1062 MC_Iq : 1;
+SIG_VALTYPE_ 1062 MC_Id : 1;
+SIG_VALTYPE_ 1063 MC_BEMFq : 1;
+SIG_VALTYPE_ 1063 MC_BEMFd : 1;
+SIG_VALTYPE_ 1064 MC_Supply15V : 1;
+SIG_VALTYPE_ 1065 MC_Supply1V9 : 1;
+SIG_VALTYPE_ 1065 MC_Supply3V3 : 1;
+SIG_VALTYPE_ 1067 MC_MotorTemp : 1;
+SIG_VALTYPE_ 1067 MC_HeatsinkTemp : 1;
+SIG_VALTYPE_ 1068 MC_DspBoardTemp : 1;
+SIG_VALTYPE_ 1070 MC_TripOdometer : 1;
+SIG_VALTYPE_ 1070 MC_DCBusAh : 1;
+SIG_VALTYPE_ 1079 MC_SlipSpeed : 1;

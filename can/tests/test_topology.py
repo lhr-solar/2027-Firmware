@@ -60,13 +60,22 @@ class TopologyTests(unittest.TestCase):
 
     def test_bad_bridge_and_cycles(self):
         config = deepcopy(self.config)
-        config["buses"]["MotorCAN"]["forwards"][0]["via"] = "CM5"
+        config["buses"]["COTSCAN"]["forwards"][0]["via"] = "CM5"
         with self.assertRaisesRegex(ValueError, "connect both"):
             validate(config, self.databases)
         config = deepcopy(self.config)
-        config["buses"]["CarCAN"]["forwards"].append({"to": "MotorCAN", "via": "VCU"})
+        config["buses"]["CarCAN"]["forwards"].append({"to": "COTSCAN", "via": "VCU"})
         with self.assertRaisesRegex(ValueError, "loop"):
             validate(config, self.databases)
+
+    def test_cots_forwarding_excludes_only_mppt_commands(self):
+        route = self.config["buses"]["COTSCAN"]["forwards"][0]
+        self.assertEqual((route["to"], route["via"]), ("CarCAN", "VCU"))
+        for base in (0x200, 0x220, 0x240):
+            for offset in range(5, 13):
+                self.assertFalse(selected(route["filter"], self.databases["COTSCAN"].get_message_by_frame_id(base + offset)))
+        for name in ("MC_DriveCommand", "MC_Status", "LWS_Standard", "LWS_Config", "MPPTAStatus"):
+            self.assertTrue(selected(route["filter"], self.databases["COTSCAN"].get_message_by_name(name)))
 
     def test_bps_forwarding_is_bidirectional_without_echo(self):
         forward = next(
@@ -96,15 +105,15 @@ class TopologyTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "bitrate differs"):
             validate(config, self.databases)
         config = deepcopy(self.config)
-        config["buses"]["MotorCAN"]["forwards"] *= 2
+        config["buses"]["COTSCAN"]["forwards"] *= 2
         with self.assertRaisesRegex(ValueError, "duplicate route"):
             validate(config, self.databases)
 
     def test_fd_cannot_forward_to_classic(self):
         config = deepcopy(self.config)
         # Replace, rather than add, a route so there is no cycle.
-        config["buses"]["MotorCAN"]["forwards"] = []
-        config["buses"]["CarCAN"]["forwards"] = [{"to": "MotorCAN", "via": "VCU"}]
+        config["buses"]["COTSCAN"]["forwards"] = []
+        config["buses"]["CarCAN"]["forwards"] = [{"to": "COTSCAN", "via": "VCU"}]
         with self.assertRaisesRegex(ValueError, "onto classic CAN"):
             validate(config, self.databases)
 

@@ -38,7 +38,7 @@ same discipline as `psys/`:
 
 Building on `firmware/platform/` — see
 [`firmware/platform/AGENTS.md`](../platform/AGENTS.md). Motor commands go out
-over `MotorCAN`, driver interface over `SteeringCAN`, vehicle-wide state over
+over `COTSCAN`, driver interface over `COTSCAN`, vehicle-wide state over
 `CarCAN`; the DBCs are empty today, so message definitions must be added in
 `can/dbc/` first — see [`can/AGENTS.md`](../../can/AGENTS.md) for the CAN ID
 collision rule.

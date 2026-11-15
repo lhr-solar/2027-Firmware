@@ -10,9 +10,7 @@ import cantools
 ROOT = Path(__file__).resolve().parents[1] / "dbc"
 BUSES = (
     "CarCAN",
-    "MotorCAN",
-    "MPPTCAN",
-    "SteeringCAN",
+    "COTSCAN",
     "ChargerCAN",
     "ElconCAN",
     "DAqCAN",
@@ -163,9 +161,9 @@ class DatabaseTests(unittest.TestCase):
         """SEC-B175-7A commands use offsets 9/A/B/C and signed big-endian fixed point."""
         for label, base in [("A", 0x200), ("B", 0x220), ("C", 0x240)]:
             self.assertEqual(
-                self.message("MPPTCAN", base + 9).encode({"Mode": 1}), b"\x01"
+                self.message("COTSCAN", base + 9).encode({"Mode": 1}), b"\x01"
             )
-            sweep = self.message("MPPTCAN", base + 0xA)
+            sweep = self.message("COTSCAN", base + 0xA)
             self.assertEqual(
                 sweep.encode(
                     {"StartVoltage": 30, "EndVoltage": 150, "SampleCount": 128}
@@ -173,14 +171,14 @@ class DatabaseTests(unittest.TestCase):
                 struct.pack(">hhB", 3000, 15000, 128),
             )
             self.assertEqual(
-                self.message("MPPTCAN", base + 0xB).encode({"VoltageLimit": 175}),
+                self.message("COTSCAN", base + 0xB).encode({"VoltageLimit": 175}),
                 struct.pack(">h", 17500),
             )
             self.assertEqual(
-                self.message("MPPTCAN", base + 0xC).encode({"CurrentLimit": 7}),
+                self.message("COTSCAN", base + 0xC).encode({"CurrentLimit": 7}),
                 struct.pack(">h", 14000),
             )
-            data = self.message("MPPTCAN", base + 2)
+            data = self.message("COTSCAN", base + 2)
             self.assertEqual(data.length, 5)
             self.assertEqual(
                 data.encode({"SampleIndex": 3, "Current": 2.5, "Voltage": 100}),
@@ -188,32 +186,32 @@ class DatabaseTests(unittest.TestCase):
             )
             for offset in (5, 6, 7, 8, 9, 10, 11, 12):
                 self.assertEqual(
-                    self.message("MPPTCAN", base + offset).senders, ["MSV"]
+                    self.message("COTSCAN", base + offset).senders, ["VCU"]
                 )
-            self.assertEqual(self.message("MPPTCAN", base).senders, ["MPPT" + label])
+            self.assertEqual(self.message("COTSCAN", base).senders, ["MPPT" + label])
 
     def test_ws22_vendor_bytes(self):
-        drive = self.message("MotorCAN", 0x401)
+        drive = self.message("COTSCAN", 0x401)
         self.assertEqual(
             drive.encode(
                 {"MC_MotorVelocitySetpoint": -20000, "MC_MotorCurrentSetpoint": 0.5}
             ),
             struct.pack("<ff", -20000, 0.5),
         )
-        power = self.message("MotorCAN", 0x402)
+        power = self.message("COTSCAN", 0x402)
         self.assertEqual(
             power.encode({"MC_MotorPowerSetpoint": 0.75}), struct.pack("<ff", 0, 0.75)
         )
-        self.assertEqual(self.message("MotorCAN", 0x403).encode({}), bytes(8))
+        self.assertEqual(self.message("COTSCAN", 0x403).encode({}), bytes(8))
         self.assertTrue(drive.get_signal_by_name("MC_MotorVelocitySetpoint").is_float)
         self.assertFalse(drive.is_fd)
 
     def test_lws_and_elcon_vendor_bytes(self):
-        self.assertEqual(self.message("SteeringCAN", 0x7C0).senders, ["DEI"])
+        self.assertEqual(self.message("COTSCAN", 0x7C0).senders, ["DEI"])
         self.assertEqual(
-            self.message("SteeringCAN", 0x7C0).encode({"Command": 3}), b"\x03\x00"
+            self.message("COTSCAN", 0x7C0).encode({"Command": 3}), b"\x03\x00"
         )
-        lws = self.message("SteeringCAN", 0x2B0)
+        lws = self.message("COTSCAN", 0x2B0)
         self.assertEqual(lws.senders, ["LWS"])
         self.assertEqual(
             lws.encode(
@@ -536,7 +534,7 @@ class DatabaseTests(unittest.TestCase):
     def test_bootloader_board_coverage_and_addressing(self):
         allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
         boards = allocation["boards"]
-        self.assertEqual(len(boards), 20)
+        self.assertEqual(len(boards), 19)
         self.assertEqual(allocation["schema_version"], 1)
         self.assertEqual(int(allocation["addressing"]["host_can_id"], 0), 0)
         excluded = {
@@ -603,13 +601,21 @@ class DatabaseTests(unittest.TestCase):
             "CM5Watchdog",
             {signal.name for signal in self.message("TelemetryLink", 0x612).signals},
         )
+        watchdog = self.message("TelemetryLink", 0x612)
+        self.assertIn("VCUWatchdog", {signal.name for signal in watchdog.signals})
+        self.assertNotIn("MSVWatchdog", {signal.name for signal in watchdog.signals})
+        vcu = self.message("CarCAN", 0x63)
+        self.assertEqual(vcu.name, "VCUStatus")
+        self.assertEqual(vcu.senders, ["VCU"])
+        self.assertTrue({"WarningLWSWatchdog", "WarningLWSFault", "WarningMPPTAWatchdog", "WarningMPPTBWatchdog", "WarningMPPTCWatchdog", "MPPTSetMode", "SweepingActive", "MPPTFanTach"}.issubset({signal.name for signal in vcu.signals}))
+        self.assertFalse(any(message.frame_id == 0x79 for message in self.databases["CarCAN"].messages))
         allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
         boards = {board["name"]: board for board in allocation["boards"]}
         self.assertFalse(
             set(boards)
             & {"CM5", "TelemetryLeader", "BottomShellLighting", "ElconInterface"}
         )
-        self.assertTrue({5, 9, 11, 12}.issubset(allocation["reserved_node_ids"]))
+        self.assertTrue({4, 5, 9, 11, 12}.issubset(allocation["reserved_node_ids"]))
         self.assertEqual(boards["BPS"]["node_id"], 1)
         self.assertEqual(boards["BPS"]["rx_can_id"], "0x001")
         self.assertEqual(boards["BPS"]["tx_can_id"], "0x029")
@@ -658,7 +664,7 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(boards["TopShellLighting"]["can_buses"], ["CarCAN"])
         self.assertEqual(boards["TopShellLighting"]["node_id"], 10)
         self.assertEqual(
-            boards["DEI"]["can_buses"], ["CarCAN", "SteeringCAN"]
+            boards["DEI"]["can_buses"], ["CarCAN", "COTSCAN"]
         )
         self.assertEqual(boards["BPS"]["node_id"], 1)
         self.assertEqual(boards["BPS"]["rx_can_id"], "0x001")

@@ -59,8 +59,8 @@ buses:
           mode: exclude
           messages: []
 
-  MotorCAN:
-    dbc: dbc/MotorCAN.dbc
+  COTSCAN:
+    dbc: dbc/COTSCAN.dbc
     format: classic
     bitrate: 500000
     forwards:
@@ -68,30 +68,12 @@ buses:
         via: VCU
         filter:
           mode: exclude
-          messages: []
-
-  SteeringCAN:
-    dbc: dbc/SteeringCAN.dbc
-    format: classic
-    bitrate: 500000
-    forwards:
-      - to: CarCAN
-        via: DEI
-        filter:
-          mode: exclude
-          messages: []
-
-  MPPTCAN:
-    dbc: dbc/MPPTCAN.dbc
-    format: classic
-    bitrate: 500000
-    forwards:
-      - to: CarCAN
-        via: MSV
-        filter:
-          mode: exclude
-          # All commands sent by MSV stay on this bus.
-          transmitters: [MSV]
+          # All VCU-to-MPPT commands stay on COTSCAN; other COTS traffic is forwarded.
+          messages: [
+            "0x205", "0x206", "0x207", "0x208", "0x209", "0x20A", "0x20B", "0x20C",
+            "0x225", "0x226", "0x227", "0x228", "0x229", "0x22A", "0x22B", "0x22C",
+            "0x245", "0x246", "0x247", "0x248", "0x249", "0x24A", "0x24B", "0x24C"
+          ]
 
 outputs:
   TelemetryLink:

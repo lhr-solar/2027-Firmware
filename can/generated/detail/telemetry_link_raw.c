@@ -429,7 +429,6 @@ int telemetry_link_raw_on_board_watchdog_pack(
     dst_p[0] |= pack_left_shift_u8(src_p->pedals_watchdog, 3u, 0x08u);
     dst_p[0] |= pack_left_shift_u8(src_p->pdu_watchdog, 4u, 0x10u);
     dst_p[0] |= pack_left_shift_u8(src_p->lvc_watchdog, 5u, 0x20u);
-    dst_p[0] |= pack_left_shift_u8(src_p->msv_watchdog, 6u, 0x40u);
 
     return (1);
 }
@@ -449,7 +448,6 @@ int telemetry_link_raw_on_board_watchdog_unpack(
     dst_p->pedals_watchdog = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
     dst_p->pdu_watchdog = unpack_right_shift_u8(src_p[0], 4u, 0x10u);
     dst_p->lvc_watchdog = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
-    dst_p->msv_watchdog = unpack_right_shift_u8(src_p[0], 6u, 0x40u);
 
     return (0);
 }
@@ -489,11 +487,6 @@ bool telemetry_link_raw_on_board_watchdog_pdu_watchdog_is_in_range(uint8_t value
 }
 
 bool telemetry_link_raw_on_board_watchdog_lvc_watchdog_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool telemetry_link_raw_on_board_watchdog_msv_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }

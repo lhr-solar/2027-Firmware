@@ -119,9 +119,6 @@ extern "C" {
 #define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_LVC_WATCHDOG_ALIVE_CHOICE (0u)
 #define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_LVC_WATCHDOG_TIMED_OUT_CHOICE (1u)
 
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_MSV_WATCHDOG_ALIVE_CHOICE (0u)
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_MSV_WATCHDOG_TIMED_OUT_CHOICE (1u)
-
 /* Frame Names. */
 #define TELEMETRY_LINK_RAW_TELEMETRY_STATUS_NAME "TelemetryStatus"
 #define TELEMETRY_LINK_RAW_GPS_DATA_NAME "GPSData"
@@ -154,7 +151,6 @@ extern "C" {
 #define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_NAME "PedalsWatchdog"
 #define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_PDU_WATCHDOG_NAME "PDUWatchdog"
 #define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_LVC_WATCHDOG_NAME "LVCWatchdog"
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_MSV_WATCHDOG_NAME "MSVWatchdog"
 #define TELEMETRY_LINK_RAW_SIG_WAVE_SINE_NAME "Sine"
 #define TELEMETRY_LINK_RAW_SIG_WAVE_COSINE_NAME "Cosine"
 #define TELEMETRY_LINK_RAW_MAX_MESSAGE_CLASSICAL_SG0_NAME "sg0"
@@ -462,15 +458,6 @@ struct telemetry_link_raw_on_board_watchdog_t {
      * Offset: 0
      */
     uint8_t lvc_watchdog;
-
-    /**
-     * MSVWatchdog
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t msv_watchdog;
 };
 
 /**
@@ -1335,15 +1322,6 @@ bool telemetry_link_raw_on_board_watchdog_pdu_watchdog_is_in_range(uint8_t value
  * @return true if in range, false otherwise.
  */
 bool telemetry_link_raw_on_board_watchdog_lvc_watchdog_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool telemetry_link_raw_on_board_watchdog_msv_watchdog_is_in_range(uint8_t value);
 
 /**
  * Pack message Sig_Wave.
