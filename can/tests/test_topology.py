@@ -84,13 +84,19 @@ class TopologyTests(unittest.TestCase):
             if route["to"] == "ChargerCAN"
         )
         backward = self.config["buses"]["ChargerCAN"]["forwards"][0]
-        for identifier in (0x60, 0x70, 0x71, 0x72):
+        for identifier in (0x60,):
             message = self.databases["CarCAN"].get_message_by_frame_id(identifier)
             self.assertTrue(selected(forward["filter"], message))
             self.assertFalse(selected(backward["filter"], message))
             resolved = resolve(self.config, {"CarCAN": [message]}, merge_messages)
             self.assertEqual(resolved["ChargerCAN"], [message])
             self.assertEqual(resolved["TelemetryLink"], [message])
+        for name in ("BPSPackData", "BPSVoltageData", "BPSTemperatureData"):
+            self.assertFalse(selected(forward["filter"], self.databases["CarCAN"].get_message_by_name(name)))
+        charge = self.databases["ChargerCAN"].get_message_by_name("BPSChargeData")
+        resolved = resolve(self.config, {"ChargerCAN": [charge]}, merge_messages)
+        self.assertEqual(resolved["CarCAN"], [charge])
+        self.assertEqual(resolved["TelemetryLink"], [charge])
         command = self.databases["CarCAN"].get_message_by_name("BPSCommand")
         self.assertFalse(selected(forward["filter"], command))
         # Removing the reverse exclusion must expose the real frame-level loop.
@@ -114,6 +120,7 @@ class TopologyTests(unittest.TestCase):
         # Replace, rather than add, a route so there is no cycle.
         config["buses"]["COTSCAN"]["forwards"] = []
         config["buses"]["CarCAN"]["forwards"] = [{"to": "COTSCAN", "via": "VCU"}]
+        config["buses"]["ChargerCAN"]["forwards"][0]["filter"]["messages"] = []
         with self.assertRaisesRegex(ValueError, "onto classic CAN"):
             validate(config, self.databases)
 

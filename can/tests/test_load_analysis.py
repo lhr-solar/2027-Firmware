@@ -100,28 +100,17 @@ class LoadAnalysisTests(unittest.TestCase):
                 send_type(self.databases["COTSCAN"].get_message_by_name(name)), "None"
             )
 
-    def test_charger_four_identical_bps_contracts(self):
-        for name in (
-            "BPSStatus",
-            "BPSPackData",
-            "BPSVoltageData",
-            "BPSTemperatureData",
-        ):
-            source = self.databases["CarCAN"].get_message_by_name(name)
-            mirror = self.databases["ChargerCAN"].get_message_by_name(name)
-            self.assertEqual(mirror.frame_id, source.frame_id)
-            self.assertEqual(mirror.length, source.length)
-            self.assertEqual(mirror.cycle_time, source.cycle_time)
-            self.assertEqual(
-                [
-                    (s.name, s.start, s.length, s.scale, s.offset)
-                    for s in mirror.signals
-                ],
-                [
-                    (s.name, s.start, s.length, s.scale, s.offset)
-                    for s in source.signals
-                ],
-            )
+    def test_charger_uses_forwarded_status_and_compact_data(self):
+        charger = self.databases["ChargerCAN"]
+        self.assertEqual({m.name for m in charger.messages}, {"BPSChargeData", "ElconInterfaceStatus"})
+        message = charger.get_message_by_name("BPSChargeData")
+        self.assertEqual((message.frame_id, message.length, message.cycle_time, message.senders),
+                         (0x79, 12, 100, ["BPS"]))
+        values = {"CellSumVoltage": 134.4, "MainBatteryVoltage": 130.0,
+                  "MainVoltage": 129.0, "MinCellVoltage": 3100, "MaxCellVoltage": 4200,
+                  "MaxBatteryTemperature": 40, "AverageBatteryTemperature": 30,
+                  "BatteryCurrent": -10}
+        self.assertEqual(message.decode(message.encode(values), decode_choices=False), values)
 
     def test_reference_frame_occupancy(self):
         classic = frame_time(8, False, False, 1000000)
@@ -147,10 +136,10 @@ class LoadAnalysisTests(unittest.TestCase):
         report = calculate(self.databases, self.topology, {}, options())
         # Car 114 + charger interface 10 + lighting 15 + motor 66 + steering 100
         # + MPPT power/status 9 + Elcon 3. Mirrored BPS frames add no second copy.
-        self.assertEqual(report["car_can_with_forwarding"]["frames_per_second"], 317)
-        self.assertAlmostEqual(report["internet"]["frames_per_second"], 1399.2631578947369)
+        self.assertEqual(report["car_can_with_forwarding"]["frames_per_second"], 327)
+        self.assertAlmostEqual(report["internet"]["frames_per_second"], 1409.2631578947369)
         self.assertEqual(
-            report["buses_with_forwarding"]["ChargerCAN"]["frames_per_second"], 53
+            report["buses_with_forwarding"]["ChargerCAN"]["frames_per_second"], 28
         )
         car = report["car_can_messages"]
         tcp = report["internet_messages"]

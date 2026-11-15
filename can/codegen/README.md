@@ -184,3 +184,8 @@ sanitizers, then execute API assertions and 200 deterministic byte vectors from
 Python cantools. They also check empty production scaffolds, CLI diagnostics,
 name collisions, unsupported contracts, reproducibility and stale-file cleanup.
 These are host codec tests, not on-hardware CAN transmission tests.
+
+Forwarded messages are defined and generated only for their source DBC. For
+example, a ChargerCAN consumer decoding forwarded BPSStatus must link `can_car`
+and use its BPSStatus codec, alongside `can_charger` for BPSChargeData. Routing
+is defined in topology.yaml; it does not implement forwarding in firmware.

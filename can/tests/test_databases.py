@@ -319,7 +319,7 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(
             (int.from_bytes(frame, "little") >> signal.start) & 0xFFF, 2688
         )
-        charger = self.message("ChargerCAN", 0x70).get_signal_by_name("CellSumVoltage")
+        charger = self.message("ChargerCAN", 0x79).get_signal_by_name("CellSumVoltage")
         self.assertEqual(
             (charger.start, charger.length, charger.scale), (signal.start, 12, 0.05)
         )
@@ -333,7 +333,7 @@ class DatabaseTests(unittest.TestCase):
             "MotorVoltage",
             "BatteryCurrent",
         }
-        for bus in ("CarCAN", "ChargerCAN"):
+        for bus in ("CarCAN",):
             status = self.message(bus, 0x60)
             pack = self.message(bus, 0x70)
             self.assertEqual(pack.name, "BPSPackData")
@@ -407,8 +407,6 @@ class DatabaseTests(unittest.TestCase):
             frame = message.encode(raw, scaling=False)
             self.assertEqual(frame, expected.to_bytes(length, "little"))
             self.assertEqual(message.decode(frame, decode_choices=False, scaling=False), raw)
-            charger = self.message("ChargerCAN", identifier)
-            self.assertEqual(charger.encode(raw, scaling=False), frame)
 
     def test_bps_balancing_messages(self):
         command = self.message("CarCAN", 0x55)
@@ -431,7 +429,7 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(str(status.get_signal_by_name("BlockReason").choices[2]), "ChipTemperature")
 
     def test_bps_safety_permissions_are_independent(self):
-        for bus in ("CarCAN", "ChargerCAN"):
+        for bus in ("CarCAN",):
             message = self.message(bus, 0x60)
             for name in ("ChargeSafe", "RegenSafe", "DischargeSafe"):
                 signal = message.get_signal_by_name(name)
@@ -621,7 +619,6 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(boards["BPS"]["tx_can_id"], "0x029")
         for bus, identifier, name in (
             ("CarCAN", 0x60, "BPSStatus"),
-            ("ChargerCAN", 0x60, "BPSStatus"),
         ):
             status = self.message(bus, identifier)
             self.assertEqual(status.name, name)
@@ -671,7 +668,6 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(boards["BPS"]["tx_can_id"], "0x029")
         for bus, identifier, name in (
             ("CarCAN", 0x60, "BPSStatus"),
-            ("ChargerCAN", 0x60, "BPSStatus"),
         ):
             status = self.message(bus, identifier)
             self.assertEqual(status.name, name)
@@ -821,7 +817,7 @@ class DatabaseTests(unittest.TestCase):
                 self.assertFalse(any("Valid" in signal.name for signal in message.signals))
 
     def test_battery_cell_indexes_are_zero_based(self):
-        for bus in ("CarCAN", "ChargerCAN"):
+        for bus in ("CarCAN",):
             for name, prefix, width in (("BPSVoltageData", "CellVoltage", 12),
                                         ("BPSTemperatureData", "CellTemperature", 11)):
                 message = self.databases[bus].get_message_by_name(name)
@@ -905,7 +901,7 @@ class DatabaseTests(unittest.TestCase):
         self.assertIn("sampled current", lvc.comment)
 
     def test_bps_fault_snapshots_and_voltage_faults(self):
-        for bus in ("CarCAN", "ChargerCAN"):
+        for bus in ("CarCAN",):
             status = self.databases[bus].get_message_by_name("BPSStatus")
             names = {signal.name for signal in status.signals}
             self.assertFalse(any("VoltageNotPresent" in name for name in names))

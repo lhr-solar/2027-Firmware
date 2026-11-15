@@ -16,7 +16,7 @@ buses:
         via: BPS
         filter:
           mode: include
-          messages: ["0x060", "0x070", "0x071", "0x072"]
+          messages: ["0x060"]
       - to: TelemetryLink
         via: CM5
         filter:
@@ -46,7 +46,7 @@ buses:
         filter:
           mode: exclude
           # Do not echo the BPS frames received from CarCAN.
-          messages: ["0x060", "0x070", "0x071", "0x072"]
+          messages: ["0x060"]
 
   ElconCAN:
     dbc: dbc/ElconCAN.dbc

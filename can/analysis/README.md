@@ -36,9 +36,8 @@ DBC globals `Baudrate`/`DataBaudrate` use bits/second. `VFrameFormat` describes
 each frame and `CANFD_BRS=0` explicitly disables BRS. With BRS off the entire FD
 frame runs at nominal bitrate. A CAN-FD-capable bus may also carry native or forwarded classic frames; forwarding preserves the source frame's format and payload.
 
-ChargerCAN mirrors BPSStatus, BPSPackData, BPSVoltageData, and BPSTemperatureData
-from CarCAN, with identical IDs, layouts and periods. ElconInterfaceStatus also
-uses FD on ChargerCAN; Elcon's private bus remains classic.
+ChargerCAN receives BPSStatus forwarded from CarCAN and carries its own 10 Hz
+BPSChargeData. ElconInterfaceStatus also uses FD on ChargerCAN; Elcon's private bus remains classic.
 
 ## Forwarding policy
 
@@ -65,8 +64,8 @@ Confirmed paths:
 |---|---|---|---|
 | COTSCAN | CarCAN | VCU | Exclude MPPT command IDs; forward motor, steering, and MPPT telemetry |
 | ElconCAN | ChargerCAN | ElconInterface | All |
-| CarCAN | ChargerCAN | BPS | Include `"0x060"`, `"0x070"`, `"0x071"`, `"0x072"` |
-| ChargerCAN | CarCAN | BPS | Exclude those four BPS IDs to prevent echo |
+| CarCAN | ChargerCAN | BPS | Include `"0x060"` |
+| ChargerCAN | CarCAN | BPS | Exclude `"0x060"` to prevent echo |
 | CarCAN | TelemetryLink | CM5 | All |
 | DAqCAN | TelemetryLink | CM5 | Exclude `"0x620"` (TimestampSync) |
 

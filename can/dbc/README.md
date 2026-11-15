@@ -12,7 +12,7 @@ not wire-compatible with the old vehicle's team-defined messages.
 |---|---|---:|---:|
 | CarCAN | Team critical/control, power, battery, HMI and lighting | 32 | 2 |
 | COTSCAN | WS22, LWS, and three SEC-B175-7A MPPTs; VCU and DEI commands | 54 | 12 |
-| ChargerCAN | BPS status/pack/cell data and ElconInterface status | 5 | 0 |
+| ChargerCAN | BPSChargeData and ElconInterface status | 2 | 0 |
 | ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
 | DAqCAN | CM5 timestamp and sensor-board traffic | 19 | 5 |
 | TelemetryLink | CM5 TCP-native telemetry and test messages | 6 | 0 |
@@ -23,11 +23,10 @@ on **CarCAN** and produces MPPT commands on **COTSCAN**; BPS is not a transmitte
 on that bus. DEI transmits all LWS configuration traffic; LWS remains
 the transmitter of its own measurements.
 
-BPSStatus (0x060), BPSPackData (0x070), BPSVoltageData (0x071), and
-BPSTemperatureData (0x072) are intentionally present on both CarCAN and ChargerCAN
-with identical layouts, periods, and transmitter. These are the only repeated
-numeric IDs across the eight files. BPS transmits these on both networks;
-any actual gateway implementation must match this routing assumption.
+BPSStatus (0x060) is defined only on CarCAN and forwarded to ChargerCAN by
+BPS according to topology.yaml. ChargerCAN defines BPSChargeData (0x079) at
+10 Hz; it carries the charge-relevant pack and cell summaries. It forwards to
+CarCAN and TelemetryLink under the normal routing rules.
 
 CarCAN, ChargerCAN and DAqCAN support CAN-FD. The three lighting messages
 remain classic CAN frames on CarCAN; every node on that physical bus must
@@ -94,7 +93,7 @@ consumers together rather than mixing versions.
 - BPSPackData includes `CellSumVoltage` **before** all pre/post-precharge
   voltage measurements. It uses unsigned 12-bit bulk encoding (0.05 V/bit,
   offset 0; 0–204.75 V), covering the sum of all 32 representable cell taps.
-  BPSPackData is 12 bytes on both CarCAN and ChargerCAN. It contains these five voltages, battery current,
+  BPSPackData is 12 bytes on CarCAN. It contains these five voltages, battery current,
   with no sample-age field. Min/max cell voltage follow the 32 cell voltages
   in BPSVoltageData (64 bytes). Max/average battery temperature follow the 32
   cell temperatures in BPSTemperatureData (48 bytes). Minimum and maximum cell voltage
@@ -104,9 +103,8 @@ consumers together rather than mixing versions.
   BPSStatus is now 16 bytes and retains faults, warnings, discrete state,
   permissions, MPPT limits, and all three fan tachometers.
   The CarCAN BPS data block is 0x070 BPSPackData, 0x071 BPSVoltageData,
-  0x072 BPSTemperatureData, and 0x073 SMDStatus. The new pack frame is shared across
-  CarCAN/ChargerCAN; the individual-cell frames and their summaries are mirrored
-  on both networks. Send types and periods now follow the reviewed timing CSV.
+  0x072 BPSTemperatureData, and 0x073 SMDStatus. ChargerCAN instead receives
+  the compact BPSChargeData summary and forwarded BPSStatus.
 - `BPSCommandEcho` at **0x074** on CarCAN is transmitted by BPS and mirrors the
   12-byte `BPSCommand` (0x051) payload exactly, including shared enum tables.
   It cyclically reports the command values held by BPS; it is not a per-request
@@ -389,8 +387,7 @@ Each scan has a 32-bit validity mask (bit 0 is
 cell 00); ignore readings with clear bits. The current frame has CurrentValid.
 This captures the latest available samples, not a guaranteed analog trip peak.
 
-Snapshot frames remain on CarCAN and its existing TCP output; the four-message
-ChargerCAN include list is unchanged. Both BPSStatus mirrors rename
+Snapshot frames remain on CarCAN and its existing telemetry output. BPSStatus signals rename
 FaultMainVoltageNotPresent/FaultMotorVoltageNotPresent to FaultMainVoltage/
 FaultMotorVoltage and add FaultMainPrechargeVoltage/FaultMotorPrechargeVoltage
 immediately after FaultMainVoltage/FaultMotorVoltage. Status leads the packed layout;
@@ -471,8 +468,7 @@ and BPSLVEnabled. All warning fields use the shared WarningState table;
 none of the LVCStatus signals use fault severity.
 
 These changes are wire-incompatible with earlier team DBCs: regenerate and update
-all producers, consumers and decoders together. CarCAN/ChargerCAN BPS mirrors
-remain identical. IDs, timing, sensor scaling and ChargerCAN snapshot exclusions
+all producers, consumers and decoders together. BPSStatus is forwarded to ChargerCAN from its CarCAN definition. IDs, timing, sensor scaling and ChargerCAN snapshot exclusions
 are unchanged. Some payloads shrink when their sample-age fields are removed.
 
 ## GPS and lighting commands
