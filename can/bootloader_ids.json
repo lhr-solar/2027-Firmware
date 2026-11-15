@@ -112,7 +112,6 @@
       "tx_can_id": "0x02F",
       "can_buses": [
         "CarCAN",
-        "LightingCAN",
         "SteeringCAN"
       ]
     },
@@ -133,7 +132,7 @@
       "rx_can_id": "0x00A",
       "tx_can_id": "0x032",
       "can_buses": [
-        "LightingCAN"
+        "CarCAN"
       ]
     },
     {

@@ -114,10 +114,9 @@ Each `.dbc` in `can/dbc/` is one physical bus, not one board:
 
 | DBC | Bus |
 |---|---|
-| `CarCAN.dbc` | Primary vehicle bus |
+| `CarCAN.dbc` | Primary vehicle bus, including lighting |
 | `MotorCAN.dbc` | Motor controller bus |
 | `SteeringCAN.dbc` | Steering wheel / driver interface |
-| `LightingCAN.dbc` | Lighting |
 | `DAqCAN.dbc` | Data acquisition |
 | `ElconCAN.dbc` | Elcon charger (vendor-defined IDs — follow the charger datasheet, not our conventions) |
 | `TelemetryLink.dbc` | Telemetry debug |

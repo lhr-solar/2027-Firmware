@@ -9,7 +9,7 @@ buses:
   CarCAN:
     dbc: dbc/CarCAN.dbc
     format: can_fd
-    bitrate: 1000000
+    bitrate: 500000
     brs: false
     forwards:
       - to: ChargerCAN
@@ -26,7 +26,7 @@ buses:
   DAqCAN:
     dbc: dbc/DAqCAN.dbc
     format: can_fd
-    bitrate: 1000000
+    bitrate: 500000
     brs: false
     forwards:
       - to: TelemetryLink
@@ -38,7 +38,7 @@ buses:
   ChargerCAN:
     dbc: dbc/ChargerCAN.dbc
     format: can_fd
-    bitrate: 250000
+    bitrate: 500000
     brs: false
     forwards:
       - to: CarCAN
@@ -59,21 +59,10 @@ buses:
           mode: exclude
           messages: []
 
-  LightingCAN:
-    dbc: dbc/LightingCAN.dbc
-    format: classic
-    bitrate: 250000
-    forwards:
-      - to: CarCAN
-        via: DEI
-        filter:
-          mode: exclude
-          messages: []
-
   MotorCAN:
     dbc: dbc/MotorCAN.dbc
     format: classic
-    bitrate: 250000
+    bitrate: 500000
     forwards:
       - to: CarCAN
         via: VCU
@@ -95,7 +84,7 @@ buses:
   MPPTCAN:
     dbc: dbc/MPPTCAN.dbc
     format: classic
-    bitrate: 1000000
+    bitrate: 500000
     forwards:
       - to: CarCAN
         via: MSV

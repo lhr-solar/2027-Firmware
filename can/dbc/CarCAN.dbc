@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: BPS DEI External LVC CM5 MSV PDU Pedals VCU
+BU_: BPS DEI External LVC CM5 MSV PDU Pedals VCU TopShellLighting
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
@@ -187,6 +187,17 @@ BO_ 99 VCUStatus: 6 VCU
  SG_ MotorCommandSource : 23|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ MotorControllerFanTach : 24|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
  SG_ MotorFanTach : 36|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+
+BO_ 100 LightingCommand: 4 DEI
+ SG_ BlinkPhase : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Headlight : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Left : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Right : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Brake : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Strobe : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RearRightPWM : 6|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RearCenterPWM : 14|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RearLeftPWM : 22|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 112 BPSPackData: 12 BPS
  SG_ CellSumVoltage : 0|12@1+ (0.05,0) [0.0|204.75] "V" Vector__XXX
@@ -392,6 +403,16 @@ BO_ 121 MSVStatus: 3 MSV
  SG_ MPPTSetMode : 5|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ SweepingActive : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FanTach : 8|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+
+BO_ 128 BottomShellLightingStatus: 1 DEI
+ SG_ LeftSignalOn : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RightSignalOn : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ HeadlightsOn : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+
+BO_ 129 TopShellLightingStatus: 1 TopShellLighting
+ SG_ BrakeOn : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ LeftSignalOn : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RightSignalOn : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 130 CM5Status: 5 CM5
  SG_ WarningTemperature : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -716,6 +737,16 @@ CM_ SG_ 99 FaultPedals "FaultPedals";
 CM_ SG_ 99 FaultBPS "FaultBPS";
 CM_ SG_ 99 FaultMotor "FaultMotor";
 CM_ SG_ 99 Status "Status";
+CM_ BO_ 100 "Cyclic lighting commands from DEI; rear PWM raw counts are 0-255.";
+CM_ SG_ 100 RearLeftPWM "PWM command: 0 = off, 255 = full duty.";
+CM_ SG_ 100 RearCenterPWM "PWM command: 0 = off, 255 = full duty.";
+CM_ SG_ 100 RearRightPWM "PWM command: 0 = off, 255 = full duty.";
+CM_ SG_ 100 Strobe "Strobe lighting command.";
+CM_ SG_ 100 Brake "Brake lighting command.";
+CM_ SG_ 100 Right "Right lighting command.";
+CM_ SG_ 100 Left "Left lighting command.";
+CM_ SG_ 100 Headlight "Headlight lighting command.";
+CM_ SG_ 100 BlinkPhase "Blink phase used to synchronize flashing lights.";
 CM_ BO_ 112 "BPS pack electrical measurements: cell-sum and main/motor battery and precharge voltages, then battery current. Cell-voltage extrema are in BPSVoltageData; temperature summaries are in BPSTemperatureData. Signal encodings unchanged; no transmit period assigned yet.";
 CM_ SG_ 112 BatteryCurrent "BatteryCurrent";
 CM_ SG_ 112 MotorVoltage "MotorVoltage";
@@ -910,6 +941,14 @@ CM_ SG_ 121 WarningMPPTCWatchdog "WarningMPPTCWatchdog";
 CM_ SG_ 121 WarningMPPTBWatchdog "WarningMPPTBWatchdog";
 CM_ SG_ 121 WarningMPPTAWatchdog "WarningMPPTAWatchdog";
 CM_ SG_ 121 WarningBPSWatchdog "WarningBPSWatchdog";
+CM_ BO_ 128 "Bottom-shell lighting circuitry is integrated on DEI; DEI transmits this status. No separate BottomShellLighting CAN node.";
+CM_ SG_ 128 HeadlightsOn "HeadlightsOn";
+CM_ SG_ 128 RightSignalOn "RightSignalOn";
+CM_ SG_ 128 LeftSignalOn "LeftSignalOn";
+CM_ BO_ 129 "2027 team-defined layout; physical values use the shared scaling conventions.";
+CM_ SG_ 129 RightSignalOn "RightSignalOn";
+CM_ SG_ 129 LeftSignalOn "LeftSignalOn";
+CM_ SG_ 129 BrakeOn "BrakeOn";
 CM_ BO_ 130 "HMI and CM5 status from CM5 (combined HMI and telemetry board). Application ID 0x082 and signal layout retained.";
 CM_ SG_ 130 CM5FanTach "CM5 cooling fan tachometer: unsigned 12 bits, 5 rpm/bit, offset 0 rpm.";
 CM_ SG_ 130 SoCTemperature "User-approved explicit exception: uint8, 0.5 degC/bit, -20 degC offset.";
@@ -1134,8 +1173,8 @@ BA_DEF_DEF_  "GenMsgCycleTime" 0;
 BA_DEF_DEF_  "GenMsgSendCondition" "";
 BA_ "BusType" "CAN FD";
 BA_ "DBName" "CarCAN";
-BA_ "Baudrate" 1000000;
-BA_ "DataBaudrate" 1000000;
+BA_ "Baudrate" 500000;
+BA_ "DataBaudrate" 500000;
 BA_ "LayoutPending" BO_ 81 0;
 BA_ "ProtocolSource" BO_ 81 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 81 14;
@@ -1274,6 +1313,18 @@ BA_ "ValueTable" SG_ 99 FaultPedals "FaultState";
 BA_ "ValueTable" SG_ 99 FaultBPS "FaultState";
 BA_ "ValueTable" SG_ 99 FaultMotor "FaultState";
 BA_ "ValueTable" SG_ 99 Status "FaultState";
+BA_ "LayoutPending" BO_ 100 0;
+BA_ "ProtocolSource" BO_ 100 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 100 0;
+BA_ "GenMsgSendType" BO_ 100 0;
+BA_ "GenMsgCycleTime" BO_ 100 200;
+BA_ "CANFD_BRS" BO_ 100 0;
+BA_ "ValueTable" SG_ 100 Strobe "OnOff";
+BA_ "ValueTable" SG_ 100 Brake "OnOff";
+BA_ "ValueTable" SG_ 100 Right "OnOff";
+BA_ "ValueTable" SG_ 100 Left "OnOff";
+BA_ "ValueTable" SG_ 100 Headlight "OnOff";
+BA_ "ValueTable" SG_ 100 BlinkPhase "OnOff";
 BA_ "LayoutPending" BO_ 112 0;
 BA_ "ProtocolSource" BO_ 112 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 112 14;
@@ -1372,6 +1423,24 @@ BA_ "ValueTable" SG_ 121 WarningMPPTCWatchdog "WarningState";
 BA_ "ValueTable" SG_ 121 WarningMPPTBWatchdog "WarningState";
 BA_ "ValueTable" SG_ 121 WarningMPPTAWatchdog "WarningState";
 BA_ "ValueTable" SG_ 121 WarningBPSWatchdog "WarningState";
+BA_ "LayoutPending" BO_ 128 0;
+BA_ "ProtocolSource" BO_ 128 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 128 0;
+BA_ "GenMsgSendType" BO_ 128 0;
+BA_ "GenMsgCycleTime" BO_ 128 200;
+BA_ "CANFD_BRS" BO_ 128 0;
+BA_ "ValueTable" SG_ 128 HeadlightsOn "OnOff";
+BA_ "ValueTable" SG_ 128 RightSignalOn "OnOff";
+BA_ "ValueTable" SG_ 128 LeftSignalOn "OnOff";
+BA_ "LayoutPending" BO_ 129 0;
+BA_ "ProtocolSource" BO_ 129 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 129 0;
+BA_ "GenMsgSendType" BO_ 129 0;
+BA_ "GenMsgCycleTime" BO_ 129 200;
+BA_ "CANFD_BRS" BO_ 129 0;
+BA_ "ValueTable" SG_ 129 RightSignalOn "OnOff";
+BA_ "ValueTable" SG_ 129 LeftSignalOn "OnOff";
+BA_ "ValueTable" SG_ 129 BrakeOn "OnOff";
 BA_ "LayoutPending" BO_ 130 0;
 BA_ "ProtocolSource" BO_ 130 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 130 14;
@@ -1658,6 +1727,12 @@ VAL_ 99 FaultPedals 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultBPS 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultMotor 0 "OK" 1 "Fault" ;
 VAL_ 99 Status 0 "OK" 1 "Fault" ;
+VAL_ 100 Strobe 0 "Off" 1 "On" ;
+VAL_ 100 Brake 0 "Off" 1 "On" ;
+VAL_ 100 Right 0 "Off" 1 "On" ;
+VAL_ 100 Left 0 "Off" 1 "On" ;
+VAL_ 100 Headlight 0 "Off" 1 "On" ;
+VAL_ 100 BlinkPhase 0 "Off" 1 "On" ;
 VAL_ 116 CurrentOverride 0 "Disabled" 1 "Enabled" ;
 VAL_ 116 MPPTChargeScheme 0 "Normal" 1 "Advanced" ;
 VAL_ 116 Mode 0 "Normal" 1 "Advanced" ;
@@ -1692,6 +1767,12 @@ VAL_ 121 WarningMPPTCWatchdog 0 "NoWarning" 1 "Warning" ;
 VAL_ 121 WarningMPPTBWatchdog 0 "NoWarning" 1 "Warning" ;
 VAL_ 121 WarningMPPTAWatchdog 0 "NoWarning" 1 "Warning" ;
 VAL_ 121 WarningBPSWatchdog 0 "NoWarning" 1 "Warning" ;
+VAL_ 128 HeadlightsOn 0 "Off" 1 "On" ;
+VAL_ 128 RightSignalOn 0 "Off" 1 "On" ;
+VAL_ 128 LeftSignalOn 0 "Off" 1 "On" ;
+VAL_ 129 RightSignalOn 0 "Off" 1 "On" ;
+VAL_ 129 LeftSignalOn 0 "Off" 1 "On" ;
+VAL_ 129 BrakeOn 0 "Off" 1 "On" ;
 VAL_ 130 DriverCameraConnected 0 "Disconnected" 1 "Connected" ;
 VAL_ 130 GPSConnected 0 "Disconnected" 1 "Connected" ;
 VAL_ 130 ServerConnected 0 "Disconnected/Retrying" 1 "Connected" ;

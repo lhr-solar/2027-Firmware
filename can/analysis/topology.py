@@ -134,9 +134,10 @@ def validate(config, databases):
         ) != spec.get("data_bitrate", spec["bitrate"]):
             raise ValueError(f"{bus}: DBC data bitrate differs from topology")
         for message in database.messages:
-            if message.is_fd != (spec["format"] == "can_fd") or (
-                attribute(message, "CANFD_BRS", "0") == "1"
-            ) != spec.get("brs", False):
+            if (message.is_fd and spec["format"] != "can_fd") or (
+                (attribute(message, "CANFD_BRS", "0") == "1")
+                != (spec.get("brs", False) if message.is_fd else False)
+            ):
                 raise ValueError(
                     f"{bus}/{message.name}: native frame format/BRS differs from topology"
                 )

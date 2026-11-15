@@ -1223,6 +1223,118 @@ bool car_can_raw_vcu_status_motor_fan_tach_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
+int car_can_raw_lighting_command_pack(
+    uint8_t *dst_p,
+    const struct car_can_raw_lighting_command_t *src_p,
+    size_t size)
+{
+    if (size < 4u) {
+        return (-EINVAL);
+    }
+
+    memset(&dst_p[0], 0, 4);
+
+    dst_p[0] |= pack_left_shift_u8(src_p->blink_phase, 0u, 0x01u);
+    dst_p[0] |= pack_left_shift_u8(src_p->headlight, 1u, 0x02u);
+    dst_p[0] |= pack_left_shift_u8(src_p->left, 2u, 0x04u);
+    dst_p[0] |= pack_left_shift_u8(src_p->right, 3u, 0x08u);
+    dst_p[0] |= pack_left_shift_u8(src_p->brake, 4u, 0x10u);
+    dst_p[0] |= pack_left_shift_u8(src_p->strobe, 5u, 0x20u);
+    dst_p[0] |= pack_left_shift_u8(src_p->rear_right_pwm, 6u, 0xc0u);
+    dst_p[1] |= pack_right_shift_u8(src_p->rear_right_pwm, 2u, 0x3fu);
+    dst_p[1] |= pack_left_shift_u8(src_p->rear_center_pwm, 6u, 0xc0u);
+    dst_p[2] |= pack_right_shift_u8(src_p->rear_center_pwm, 2u, 0x3fu);
+    dst_p[2] |= pack_left_shift_u8(src_p->rear_left_pwm, 6u, 0xc0u);
+    dst_p[3] |= pack_right_shift_u8(src_p->rear_left_pwm, 2u, 0x3fu);
+
+    return (4);
+}
+
+int car_can_raw_lighting_command_unpack(
+    struct car_can_raw_lighting_command_t *dst_p,
+    const uint8_t *src_p,
+    size_t size)
+{
+    if (size < 4u) {
+        return (-EINVAL);
+    }
+
+    dst_p->blink_phase = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
+    dst_p->headlight = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
+    dst_p->left = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
+    dst_p->right = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
+    dst_p->brake = unpack_right_shift_u8(src_p[0], 4u, 0x10u);
+    dst_p->strobe = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
+    dst_p->rear_right_pwm = unpack_right_shift_u8(src_p[0], 6u, 0xc0u);
+    dst_p->rear_right_pwm |= unpack_left_shift_u8(src_p[1], 2u, 0x3fu);
+    dst_p->rear_center_pwm = unpack_right_shift_u8(src_p[1], 6u, 0xc0u);
+    dst_p->rear_center_pwm |= unpack_left_shift_u8(src_p[2], 2u, 0x3fu);
+    dst_p->rear_left_pwm = unpack_right_shift_u8(src_p[2], 6u, 0xc0u);
+    dst_p->rear_left_pwm |= unpack_left_shift_u8(src_p[3], 2u, 0x3fu);
+
+    return (0);
+}
+
+int car_can_raw_lighting_command_init(struct car_can_raw_lighting_command_t *msg_p)
+{
+    if (msg_p == NULL) return -1;
+
+    memset(msg_p, 0, sizeof(struct car_can_raw_lighting_command_t));
+
+    return 0;
+}
+
+bool car_can_raw_lighting_command_blink_phase_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_lighting_command_headlight_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_lighting_command_left_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_lighting_command_right_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_lighting_command_brake_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_lighting_command_strobe_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_lighting_command_rear_right_pwm_is_in_range(uint8_t value)
+{
+    (void)value;
+
+    return (true);
+}
+
+bool car_can_raw_lighting_command_rear_center_pwm_is_in_range(uint8_t value)
+{
+    (void)value;
+
+    return (true);
+}
+
+bool car_can_raw_lighting_command_rear_left_pwm_is_in_range(uint8_t value)
+{
+    (void)value;
+
+    return (true);
+}
+
 int car_can_raw_bps_pack_data_pack(
     uint8_t *dst_p,
     const struct car_can_raw_bps_pack_data_t *src_p,
@@ -3279,6 +3391,122 @@ bool car_can_raw_msv_status_sweeping_active_is_in_range(uint8_t value)
 bool car_can_raw_msv_status_fan_tach_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
+}
+
+int car_can_raw_bottom_shell_lighting_status_pack(
+    uint8_t *dst_p,
+    const struct car_can_raw_bottom_shell_lighting_status_t *src_p,
+    size_t size)
+{
+    if (size < 1u) {
+        return (-EINVAL);
+    }
+
+    memset(&dst_p[0], 0, 1);
+
+    dst_p[0] |= pack_left_shift_u8(src_p->left_signal_on, 0u, 0x01u);
+    dst_p[0] |= pack_left_shift_u8(src_p->right_signal_on, 1u, 0x02u);
+    dst_p[0] |= pack_left_shift_u8(src_p->headlights_on, 2u, 0x04u);
+
+    return (1);
+}
+
+int car_can_raw_bottom_shell_lighting_status_unpack(
+    struct car_can_raw_bottom_shell_lighting_status_t *dst_p,
+    const uint8_t *src_p,
+    size_t size)
+{
+    if (size < 1u) {
+        return (-EINVAL);
+    }
+
+    dst_p->left_signal_on = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
+    dst_p->right_signal_on = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
+    dst_p->headlights_on = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
+
+    return (0);
+}
+
+int car_can_raw_bottom_shell_lighting_status_init(struct car_can_raw_bottom_shell_lighting_status_t *msg_p)
+{
+    if (msg_p == NULL) return -1;
+
+    memset(msg_p, 0, sizeof(struct car_can_raw_bottom_shell_lighting_status_t));
+
+    return 0;
+}
+
+bool car_can_raw_bottom_shell_lighting_status_left_signal_on_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_bottom_shell_lighting_status_right_signal_on_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_bottom_shell_lighting_status_headlights_on_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+int car_can_raw_top_shell_lighting_status_pack(
+    uint8_t *dst_p,
+    const struct car_can_raw_top_shell_lighting_status_t *src_p,
+    size_t size)
+{
+    if (size < 1u) {
+        return (-EINVAL);
+    }
+
+    memset(&dst_p[0], 0, 1);
+
+    dst_p[0] |= pack_left_shift_u8(src_p->brake_on, 0u, 0x01u);
+    dst_p[0] |= pack_left_shift_u8(src_p->left_signal_on, 1u, 0x02u);
+    dst_p[0] |= pack_left_shift_u8(src_p->right_signal_on, 2u, 0x04u);
+
+    return (1);
+}
+
+int car_can_raw_top_shell_lighting_status_unpack(
+    struct car_can_raw_top_shell_lighting_status_t *dst_p,
+    const uint8_t *src_p,
+    size_t size)
+{
+    if (size < 1u) {
+        return (-EINVAL);
+    }
+
+    dst_p->brake_on = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
+    dst_p->left_signal_on = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
+    dst_p->right_signal_on = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
+
+    return (0);
+}
+
+int car_can_raw_top_shell_lighting_status_init(struct car_can_raw_top_shell_lighting_status_t *msg_p)
+{
+    if (msg_p == NULL) return -1;
+
+    memset(msg_p, 0, sizeof(struct car_can_raw_top_shell_lighting_status_t));
+
+    return 0;
+}
+
+bool car_can_raw_top_shell_lighting_status_brake_on_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_top_shell_lighting_status_left_signal_on_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_top_shell_lighting_status_right_signal_on_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
 }
 
 int car_can_raw_cm5_status_pack(

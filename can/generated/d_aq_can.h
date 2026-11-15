@@ -12,7 +12,7 @@ typedef enum {
     D_AQ_CAN_TIMESTAMP_SYNC_PREVIOUS_TIMESTAMP_VALID_INVALID = 0,
     D_AQ_CAN_TIMESTAMP_SYNC_PREVIOUS_TIMESTAMP_VALID_VALID = 1,
 } d_aq_can_timestamp_sync_previous_timestamp_valid_choice_t;
-/** Two-step 100 Hz sync. CM5 sends the actual hardware transmit SOF timestamp of a previous sync. Nodes match PreviousSequence to a hardware receive SOF; timestamps use 0.1 ms ticks modulo 65536. A DBC does not implement the synchronization. */
+/** Two-step 10 Hz sync. CM5 sends the actual hardware transmit SOF timestamp of a previous sync. Nodes match PreviousSequence to a hardware receive SOF; timestamps use 0.1 ms ticks modulo 65536. A DBC does not implement the synchronization. */
 typedef struct {
     /** Sequence; unit=none; physical=raw*1+0; raw=[0,255]. Sequence number of this sync frame; wraps modulo 256. */
     uint8_t sequence;

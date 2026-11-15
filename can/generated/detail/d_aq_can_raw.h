@@ -111,7 +111,7 @@ extern "C" {
 #define D_AQ_CAN_RAW_STRAIN_GAUGE_REAR_DATA_IS_EXTENDED (0)
 
 /* Frame cycle times in milliseconds. */
-#define D_AQ_CAN_RAW_TIMESTAMP_SYNC_CYCLE_TIME_MS (10u)
+#define D_AQ_CAN_RAW_TIMESTAMP_SYNC_CYCLE_TIME_MS (100u)
 #define D_AQ_CAN_RAW_CHASSIS_ACCELERATION_DATA_CYCLE_TIME_MS (19u)
 #define D_AQ_CAN_RAW_CHASSIS_GYRO_DATA_CYCLE_TIME_MS (19u)
 #define D_AQ_CAN_RAW_UPRIGHT_FR_ACCELERATION_DATA_CYCLE_TIME_MS (10u)
@@ -307,7 +307,7 @@ extern "C" {
 /**
  * Signals in message TimestampSync.
  *
- * Two-step 100 Hz sync. CM5 sends the actual hardware transmit SOF timestamp of a previous sync. Nodes match PreviousSequence to a hardware receive SOF; timestamps use 0.1 ms ticks modulo 65536. A DBC does not implement the synchronization.
+ * Two-step 10 Hz sync. CM5 sends the actual hardware transmit SOF timestamp of a previous sync. Nodes match PreviousSequence to a hardware receive SOF; timestamps use 0.1 ms ticks modulo 65536. A DBC does not implement the synchronization.
  *
  * All signal values are as on the CAN bus.
  */

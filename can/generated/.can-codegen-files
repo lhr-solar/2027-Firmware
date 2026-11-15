@@ -18,8 +18,6 @@ detail/d_aq_can_raw.c
 detail/d_aq_can_raw.h
 detail/elcon_can_raw.c
 detail/elcon_can_raw.h
-detail/lighting_can_raw.c
-detail/lighting_can_raw.h
 detail/motor_can_raw.c
 detail/motor_can_raw.h
 detail/mpptcan_raw.c
@@ -30,8 +28,6 @@ detail/telemetry_link_raw.c
 detail/telemetry_link_raw.h
 elcon_can.c
 elcon_can.h
-lighting_can.c
-lighting_can.h
 motor_can.c
 motor_can.h
 mpptcan.c

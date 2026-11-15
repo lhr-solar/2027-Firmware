@@ -19,26 +19,24 @@ implement a firmware scheduler or choose receiver watchdog timeouts.
 
 The edited review CSV was applied, including its instruction to match MPPT B/C
 to A: power measurements 500 ms, status 1000 ms, SetMode 100 ms, and output
-voltage/current limits 200 ms. TimestampSync is 10 ms. Vendor periods describe
+voltage/current limits 200 ms. TimestampSync is 100 ms. Vendor periods describe
 the configured/intended traffic; the DBC cannot reconfigure a COTS device.
 
 ## Physical buses
 
 | Bus | Format capability | Nominal bitrate | BRS |
 |---|---|---:|---|
-| CarCAN | CAN-FD | 1 Mbit/s | Off |
-| DAqCAN | CAN-FD | 1 Mbit/s | Off |
-| ChargerCAN | CAN-FD | 250 kbit/s | Off |
-| LightingCAN | Classic CAN | 250 kbit/s | — |
-| MotorCAN | Classic CAN | 250 kbit/s | — |
+| CarCAN | CAN-FD + classic frames | 500 kbit/s | Off |
+| DAqCAN | CAN-FD | 500 kbit/s | Off |
+| ChargerCAN | CAN-FD | 500 kbit/s | Off |
+| MotorCAN | Classic CAN | 500 kbit/s | — |
 | SteeringCAN | Classic CAN | 500 kbit/s | — |
 | ElconCAN | Classic CAN | 250 kbit/s | — |
-| MPPTCAN | Classic CAN | 1 Mbit/s | — |
+| MPPTCAN | Classic CAN | 500 kbit/s | — |
 
 DBC globals `Baudrate`/`DataBaudrate` use bits/second. `VFrameFormat` describes
 each frame and `CANFD_BRS=0` explicitly disables BRS. With BRS off the entire FD
-frame runs at nominal bitrate. A CAN-FD-capable bus may also carry forwarded
-classic frames; forwarding preserves the source frame's format and payload.
+frame runs at nominal bitrate. A CAN-FD-capable bus may also carry native or forwarded classic frames; forwarding preserves the source frame's format and payload.
 
 ChargerCAN mirrors BPSStatus, BPSPackData, BPSVoltageData, and BPSTemperatureData
 from CarCAN, with identical IDs, layouts and periods. ElconInterfaceStatus also
@@ -70,7 +68,6 @@ Confirmed paths:
 | MotorCAN | CarCAN | VCU | All |
 | MPPTCAN | CarCAN | MSV | Exclude MSV-origin commands |
 | SteeringCAN | CarCAN | DEI | All |
-| LightingCAN | CarCAN | DEI | All |
 | ElconCAN | ChargerCAN | ElconInterface | All |
 | CarCAN | ChargerCAN | BPS | Include `"0x060"`, `"0x070"`, `"0x071"`, `"0x072"` |
 | ChargerCAN | CarCAN | BPS | Exclude those four BPS IDs to prevent echo |

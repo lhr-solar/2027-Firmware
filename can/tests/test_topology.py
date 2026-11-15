@@ -92,7 +92,7 @@ class TopologyTests(unittest.TestCase):
 
     def test_dbc_setting_drift_and_duplicate_targets(self):
         config = deepcopy(self.config)
-        config["buses"]["CarCAN"]["bitrate"] = 500000
+        config["buses"]["CarCAN"]["bitrate"] = 1000000
         with self.assertRaisesRegex(ValueError, "bitrate differs"):
             validate(config, self.databases)
         config = deepcopy(self.config)
@@ -119,6 +119,9 @@ class TopologyTests(unittest.TestCase):
             path.write_text(text)
             self.assertTrue(synchronize(path))
             self.assertEqual(synchronize(path), [])
+            car = load_databases(root / "dbc")["CarCAN"]
+            self.assertFalse(car.get_message_by_name("LightingCommand").is_fd)
+            self.assertTrue(car.get_message_by_name("BPSStatus").is_fd)
             snapshots = {p: p.read_bytes() for p in (root / "dbc").glob("*.dbc")}
             path.write_text(text.replace("format: can_fd", "format: classic"))
             with self.assertRaises(ValueError):

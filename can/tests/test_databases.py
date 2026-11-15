@@ -16,7 +16,6 @@ BUSES = (
     "ChargerCAN",
     "ElconCAN",
     "DAqCAN",
-    "LightingCAN",
     "TelemetryLink",
 )
 
@@ -83,7 +82,7 @@ class DatabaseTests(unittest.TestCase):
 
     def test_team_resolution_and_explicit_exceptions(self):
         """Standardize physical steps while preserving the user's two compact encodings."""
-        for bus in ("CarCAN", "ChargerCAN", "DAqCAN", "LightingCAN"):
+        for bus in ("CarCAN", "ChargerCAN", "DAqCAN"):
             for message in self.databases[bus].messages:
                 for signal in message.signals:
                     if signal.unit in ("V", "A", "rpm"):
@@ -523,7 +522,7 @@ class DatabaseTests(unittest.TestCase):
                 return 2
             return 3
 
-        for bus in ("CarCAN", "ChargerCAN", "DAqCAN", "LightingCAN"):
+        for bus in ("CarCAN", "ChargerCAN", "DAqCAN"):
             for message in self.databases[bus].messages:
                 sequence = [
                     group(signal)
@@ -595,7 +594,7 @@ class DatabaseTests(unittest.TestCase):
                     self.assertEqual(len(signal.receivers), len(set(signal.receivers)))
                     self.assertNotIn("TelemetryLeader", signal.receivers)
                     self.assertNotIn("BottomShellLighting", signal.receivers)
-        self.assertEqual(self.message("LightingCAN", 0x80).senders, ["DEI"])
+        self.assertEqual(self.message("CarCAN", 0x80).senders, ["DEI"])
         hmi = self.message("CarCAN", 0x82)
         self.assertEqual(hmi.name, "CM5Status")
         self.assertEqual(hmi.senders, ["CM5"])
@@ -628,34 +627,27 @@ class DatabaseTests(unittest.TestCase):
 
     def test_lighting_bus_ownership(self):
         car = self.databases["CarCAN"]
-        lighting = self.databases["LightingCAN"]
-        self.assertFalse({message.frame_id for message in car.messages} & {0x80, 0x81})
-        self.assertNotIn("TopShellLighting", {node.name for node in car.nodes})
+        self.assertIn("TopShellLighting", {node.name for node in car.nodes})
+        self.assertTrue({0x80, 0x81, 0x64}.issubset({message.frame_id for message in car.messages}))
+        self.assertEqual(self.message("CarCAN", 0x80).senders, ["DEI"])
+        self.assertEqual(self.message("CarCAN", 0x81).senders, ["TopShellLighting"])
+        self.assertTrue(all(not self.message("CarCAN", identifier).is_fd for identifier in (0x80, 0x81, 0x64)))
         self.assertEqual(
-            {message.frame_id for message in lighting.messages}, {0x80, 0x81, 0x83}
-        )
-        self.assertEqual(lighting.dbc.attributes["DBName"].value, "LightingCAN")
-        self.assertEqual(self.message("LightingCAN", 0x80).senders, ["DEI"])
-        self.assertEqual(
-            self.message("LightingCAN", 0x81).senders, ["TopShellLighting"]
-        )
-        self.assertTrue(all(not message.is_fd for message in lighting.messages))
-        self.assertEqual(
-            self.message("LightingCAN", 0x80).encode(
+            self.message("CarCAN", 0x80).encode(
                 {"LeftSignalOn": 1, "RightSignalOn": 0, "HeadlightsOn": 1}
             ),
             b"\x05",
         )
         self.assertEqual(
-            self.message("LightingCAN", 0x81).encode(
+            self.message("CarCAN", 0x81).encode(
                 {"BrakeOn": 1, "LeftSignalOn": 0, "RightSignalOn": 1}
             ),
             b"\x05",
         )
-        command = self.message("LightingCAN", 0x83)
+        command = self.message("CarCAN", 0x64)
         self.assertEqual((command.name, command.senders, command.cycle_time, command.length),
                          ("LightingCommand", ["DEI"], 200, 4))
-        self.assertNotIn("Sync", {signal.name for signal in self.message("LightingCAN", 0x80).signals})
+        self.assertNotIn("Sync", {signal.name for signal in self.message("CarCAN", 0x80).signals})
         values = {"BlinkPhase": 1, "Headlight": 1, "Left": 0, "Right": 1, "Brake": 0,
                   "Strobe": 1, "RearRightPWM": 0, "RearCenterPWM": 128, "RearLeftPWM": 255}
         frame = command.encode(values)
@@ -663,10 +655,10 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(command.decode(frame, decode_choices=False), values)
         allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
         boards = {board["name"]: board for board in allocation["boards"]}
-        self.assertEqual(boards["TopShellLighting"]["can_buses"], ["LightingCAN"])
+        self.assertEqual(boards["TopShellLighting"]["can_buses"], ["CarCAN"])
         self.assertEqual(boards["TopShellLighting"]["node_id"], 10)
         self.assertEqual(
-            boards["DEI"]["can_buses"], ["CarCAN", "LightingCAN", "SteeringCAN"]
+            boards["DEI"]["can_buses"], ["CarCAN", "SteeringCAN"]
         )
         self.assertEqual(boards["BPS"]["node_id"], 1)
         self.assertEqual(boards["BPS"]["rx_can_id"], "0x001")
@@ -683,7 +675,7 @@ class DatabaseTests(unittest.TestCase):
     def test_two_step_timestamp_sync(self):
         sync = self.message("DAqCAN", 0x620)
         self.assertEqual((sync.name, sync.senders, sync.length, sync.cycle_time),
-                         ("TimestampSync", ["CM5"], 5, 10))
+                         ("TimestampSync", ["CM5"], 5, 100))
         self.assertTrue(sync.is_fd)
         self.assertEqual([signal.name for signal in sync.signals],
                          ["Sequence", "PreviousSequence", "PreviousTimestampValid", "PreviousTxTimestamp"])
@@ -947,7 +939,7 @@ class DatabaseTests(unittest.TestCase):
 
     def test_team_gapless_layouts(self):
         lengths = (0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 16, 20, 24, 32, 48, 64)
-        for bus in ("CarCAN", "ChargerCAN", "DAqCAN", "LightingCAN"):
+        for bus in ("CarCAN", "ChargerCAN", "DAqCAN"):
             for message in self.databases[bus].messages:
                 signals = sorted(message.signals, key=lambda signal: signal.start)
                 bit = 0

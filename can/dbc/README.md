@@ -10,11 +10,10 @@ not wire-compatible with the old vehicle's team-defined messages.
 
 | Database | Contents | Frames | Empty placeholders |
 |---|---|---:|---:|
-| CarCAN | Team critical/control, power, battery and HMI status | 29 | 2 |
+| CarCAN | Team critical/control, power, battery, HMI and lighting | 33 | 2 |
 | MotorCAN | VCU drive/power/reset commands and WS22 telemetry | 19 | 3 |
 | MPPTCAN | Three SEC-B175-7A MPPTs; commands from MSV | 33 | 12 |
 | SteeringCAN | LWS measurements; configuration sent by DEI | 2 | 0 |
-| LightingCAN | Bottom-shell status from DEI; top-shell status from TopShellLighting | 2 | 0 |
 | ChargerCAN | BPS status/pack/cell data and ElconInterface status | 5 | 0 |
 | ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
 | DAqCAN | CM5 timestamp and sensor-board traffic | 19 | 5 |
@@ -32,23 +31,23 @@ with identical layouts, periods, and transmitter. These are the only repeated
 numeric IDs across the eight files. BPS transmits these on both networks;
 any actual gateway implementation must match this routing assumption.
 
-CarCAN, ChargerCAN and DAqCAN use CAN-FD, including short team frames.
-LightingCAN uses classic CAN.
+CarCAN, ChargerCAN and DAqCAN support CAN-FD. The three lighting messages
+remain classic CAN frames on CarCAN; every node on that physical bus must
+tolerate its CAN-FD traffic. MotorCAN remains separate pending WS22 CAN-FD
+tolerance confirmation.
 The WS22, TPEE, Bosch and Elcon protocols remain **classic CAN**. Payloads use
-legal CAN-FD wire lengths, with unused bits/bytes reserved as zero. Bus bitrates are explicitly assigned using Baudrate (bits/second): CarCAN and
-DAqCAN 1000000, ChargerCAN/ElconCAN/MotorCAN/LightingCAN 250000, SteeringCAN
-500000, and MPPTCAN 1000000. BRS is explicitly off. See
+legal CAN-FD wire lengths, with unused bits/bytes reserved as zero. Bus bitrates are explicitly assigned using Baudrate (bits/second): all physical
+buses are 500000 except ElconCAN, which remains 250000. BRS is explicitly off. See
 [traffic analysis](../analysis/README.md) for timing, forwarding, and load calculations.
 
 The telemetry/sensor bus is **DAqCAN**, using the formerly empty DAqCAN.dbc
 scaffold. TelemetryCAN.dbc is removed at the user's request. The empty
-bootloading.dbc scaffold remains. TCP-only definitions use TelemetryLink.dbc. Both lighting
-messages live on **LightingCAN**: DEI transmits BottomShellLightingStatus at
+bootloading.dbc scaffold remains. TCP-only definitions use TelemetryLink.dbc. Lighting
+messages live on **CarCAN**: DEI transmits BottomShellLightingStatus at
 **0x080**, and TopShellLighting transmits TopShellLightingStatus at **0x081**.
 Their IDs and payload layouts are retained. Bottom-shell circuitry is on DEI,
-not a separate CAN node. TopShellLighting is attached only to LightingCAN; its
-former direct CarCAN DEI-status subscription is removed. DEI is attached to
-CarCAN, SteeringCAN and LightingCAN. CM5 is the combined HMI
+not a separate CAN node. TopShellLighting is attached to CarCAN. DEI is attached to
+CarCAN and SteeringCAN. CM5 is the combined HMI
 and telemetry board: it transmits CM5Status (0x082) on CarCAN and
 TimestampSync on DAqCAN; TelemetryStatus, GPSData, and OnBoardWatchdog are TCP-only. Its former
 self-watchdog bit is reserved rather than monitoring a second board identity.
@@ -153,7 +152,7 @@ hysteresis, delay, and reset behavior require BPS firmware review.
 
 ## Timestamp synchronization and linpot formats
 
-`TimestampSync` (DAqCAN 0x620, CM5) is cyclic at 10 ms and uses a five-byte,
+`TimestampSync` (DAqCAN 0x620, CM5) is cyclic at 100 ms and uses a five-byte,
 two-step layout: `Sequence` and `PreviousSequence` are 8-bit wrapping sequence
 numbers, `PreviousTimestampValid` marks whether the prior transmit timestamp
 is available, and `PreviousTxTimestamp` is the actual prior sync transmit SOF
@@ -168,7 +167,10 @@ sequence pairs and reacquire synchronization after a long interruption or a
 restart. Local sample and SOF timestamps need a common timebase or a known
 conversion. Firmware must capture actual SOF times, perform synchronization,
 handle loss and clock drift, and confirm that CM5's CAN hardware and driver
-provide transmit SOF timestamps. The DBC only describes the wire contract.
+provide transmit SOF timestamps. At 10 Hz the prior-SOF correction arrives roughly
+100 ms later; buffer samples or use an established clock mapping, and extend
+local hardware timestamp counters across wraps as needed. The DBC only describes
+the wire contract.
 
 Suspension FR/FL/Rear at **0x670/0x671/0x672** each contain an unsigned
 16-bit synchronized timestamp and five consecutive 12-bit ADC samples from one linpot,
@@ -313,10 +315,8 @@ ID uniqueness, shared value tables, scaling exceptions, placeholders, vendor
 byte vectors, each Elcon multiplexed page, GPS bounds and corrected strain IDs.
 These are protocol tests, not hardware transmission tests.
 
-The current custom codegen handles the seven non-IEEE buses, but **MotorCAN's
-required IEEE-754 signals are not yet supported by that generator**. Preserve
-those signals in the DBC; do not convert WS22 floats into integers to bypass the
-limitation. Python cantools can encode/decode all eight databases.
+The code generator supports the WS22 IEEE-754 binary32 signals and preserves
+their vendor-defined layouts.
 
 ## Telemetry allocation and sample batches
 
@@ -483,11 +483,10 @@ are unchanged. Some payloads shrink when their sample-age fields are removed.
 
 CM5 sends `GPSData` over telemetry TCP at 0x611 every 200 ms, containing GPS state,
 position, speed, heading, altitude and satellites. Cellular
-connection and radio measurements remain in TelemetryStatus. LightingCAN uses
-classic CAN: DEI sends `LightingCommand` at 0x083 every 200 ms with BlinkPhase,
+connection and radio measurements remain in TelemetryStatus. On CarCAN, DEI sends `LightingCommand` at 0x064 every 200 ms with BlinkPhase,
 Headlight, Left, Right, Brake, Strobe and three raw PWM commands (0-255). BlinkPhase
-moved from BottomShellLightingStatus. The existing LightingCAN-to-CarCAN route
-forwards LightingCommand; GPS is produced directly for telemetry TCP.
+moved from BottomShellLightingStatus. Lighting messages use classic CAN frames;
+GPS is produced directly for telemetry TCP.
 
 ## TCP-only telemetry definitions
 

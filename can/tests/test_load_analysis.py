@@ -40,13 +40,12 @@ class LoadAnalysisTests(unittest.TestCase):
 
     def test_physical_buses(self):
         rates = {
-            "CarCAN": 1000000,
-            "DAqCAN": 1000000,
-            "ChargerCAN": 250000,
+            "CarCAN": 500000,
+            "DAqCAN": 500000,
+            "ChargerCAN": 500000,
             "ElconCAN": 250000,
-            "LightingCAN": 250000,
-            "MotorCAN": 250000,
-            "MPPTCAN": 1000000,
+            "MotorCAN": 500000,
+            "MPPTCAN": 500000,
             "SteeringCAN": 500000,
         }
         for bus in rates:
@@ -55,7 +54,8 @@ class LoadAnalysisTests(unittest.TestCase):
             fd = bus in ("CarCAN", "DAqCAN", "ChargerCAN")
             self.assertEqual(attribute(db, "BusType"), "CAN FD" if fd else "CAN")
             for message in db.messages:
-                self.assertEqual(message.is_fd, fd, (bus, message.name))
+                if not fd:
+                    self.assertFalse(message.is_fd, (bus, message.name))
                 self.assertEqual(attribute(message, "CANFD_BRS"), "0")
                 self.assertLessEqual(message.length, 64 if fd else 8)
 
@@ -65,7 +65,7 @@ class LoadAnalysisTests(unittest.TestCase):
         self.assertEqual(car.get_message_by_name("PedalsStatus").cycle_time, 100)
         self.assertEqual(car.get_message_by_name("BPSPackData").cycle_time, 50)
         self.assertEqual(
-            self.databases["DAqCAN"].get_message_by_name("TimestampSync").cycle_time, 10
+            self.databases["DAqCAN"].get_message_by_name("TimestampSync").cycle_time, 100
         )
         for message in car.messages:
             validate_timing(message)

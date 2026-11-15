@@ -43,19 +43,18 @@ def synchronize(path=ROOT / "topology.yaml"):
             database.dbc.attributes.pop("DataBaudrate", None)
         database.dbc.attribute_definitions["CANFD_BRS"].default_value = "0"
         for message in database.messages:
-            if message.length > (64 if fd else 8):
+            if (message.is_fd and not fd) or message.length > (64 if message.is_fd else 8):
                 raise ValueError(
                     f"{bus}/{message.name}: cannot fit selected frame format"
                 )
-            message.is_fd = fd
             for key, value in (
                 (
                     "VFrameFormat",
                     (15 if message.is_extended_frame else 14)
-                    if fd
+                    if message.is_fd
                     else (1 if message.is_extended_frame else 0),
                 ),
-                ("CANFD_BRS", int(spec.get("brs", False))),
+                ("CANFD_BRS", int(spec.get("brs", False)) if message.is_fd else 0),
             ):
                 message.dbc.attributes[key] = Attribute(
                     value, database.dbc.attribute_definitions[key]

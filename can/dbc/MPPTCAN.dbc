@@ -300,7 +300,7 @@ BA_DEF_DEF_  "CANFD_BRS" "0";
 BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
 BA_ "BusType" "CAN";
 BA_ "DBName" "MPPTCAN";
-BA_ "Baudrate" 1000000;
+BA_ "Baudrate" 500000;
 BA_ "LayoutPending" BO_ 512 0;
 BA_ "ProtocolSource" BO_ 512 "TPEE Open-SEC 11bb2abe40cfa05160a197a04c03e1566eb88c51";
 BA_ "GenMsgSendType" BO_ 512 0;
