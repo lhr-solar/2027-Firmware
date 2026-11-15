@@ -41,7 +41,8 @@ BPSChargeData. ElconInterfaceStatus also uses FD on ChargerCAN; Elcon's private 
 
 ## Forwarding policy
 
-`../topology.yaml` is the only routing configuration. Message selectors are
+`../topology.yaml` is the only routing configuration. Buses default to the normal
+operation group; `category: aux` groups a bus under Aux in the loading view. Message selectors are
 quoted hex IDs scoped to their source bus; transmitter selectors are DBC node
 names. Multiple selector lists are ORed.
 

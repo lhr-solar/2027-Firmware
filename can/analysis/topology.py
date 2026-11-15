@@ -104,7 +104,7 @@ def validate(config, databases):
     for bus, spec in config["buses"].items():
         fields(
             spec,
-            ("dbc", "format", "bitrate", "brs", "data_bitrate", "forwards"),
+            ("dbc", "format", "bitrate", "brs", "data_bitrate", "forwards", "category"),
             ("dbc", "format", "bitrate"),
             bus,
         )
@@ -114,6 +114,8 @@ def validate(config, databases):
             or spec["bitrate"] <= 0
         ):
             raise ValueError(f"{bus}: invalid format/bitrate")
+        if spec.get("category", "normal") not in ("normal", "aux"):
+            raise ValueError(f"{bus}: category must be normal or aux")
         if type(spec.get("brs", False)) is not bool:
             raise ValueError(f"{bus}: brs must be true/false")
         if spec["format"] == "classic" and (spec.get("brs") or "data_bitrate" in spec):
@@ -222,7 +224,7 @@ def load_topology(path: Path, databases):
     for bus, spec in config["buses"].items():
         fields(
             spec,
-            ("dbc", "format", "bitrate", "brs", "data_bitrate", "forwards"),
+            ("dbc", "format", "bitrate", "brs", "data_bitrate", "forwards", "category"),
             ("dbc", "format", "bitrate"),
             bus,
         )

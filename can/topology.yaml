@@ -36,6 +36,7 @@ buses:
           messages: ["0x620"]
 
   ChargerCAN:
+    category: aux
     dbc: dbc/ChargerCAN.dbc
     format: can_fd
     bitrate: 500000
@@ -49,6 +50,7 @@ buses:
           messages: ["0x060"]
 
   ElconCAN:
+    category: aux
     dbc: dbc/ElconCAN.dbc
     format: classic
     bitrate: 250000
