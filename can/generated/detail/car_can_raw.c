@@ -771,9 +771,9 @@ bool car_can_raw_bps_status_bps_fan_tach_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
-int car_can_raw_pps_status_pack(
+int car_can_raw_pedal_box_status_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_pps_status_t *src_p,
+    const struct car_can_raw_pedal_box_status_t *src_p,
     size_t size)
 {
     if (size < 6u) {
@@ -800,8 +800,8 @@ int car_can_raw_pps_status_pack(
     return (6);
 }
 
-int car_can_raw_pps_status_unpack(
-    struct car_can_raw_pps_status_t *dst_p,
+int car_can_raw_pedal_box_status_unpack(
+    struct car_can_raw_pedal_box_status_t *dst_p,
     const uint8_t *src_p,
     size_t size)
 {
@@ -827,75 +827,75 @@ int car_can_raw_pps_status_unpack(
     return (0);
 }
 
-int car_can_raw_pps_status_init(struct car_can_raw_pps_status_t *msg_p)
+int car_can_raw_pedal_box_status_init(struct car_can_raw_pedal_box_status_t *msg_p)
 {
     if (msg_p == NULL) return -1;
 
-    memset(msg_p, 0, sizeof(struct car_can_raw_pps_status_t));
+    memset(msg_p, 0, sizeof(struct car_can_raw_pedal_box_status_t));
 
     return 0;
 }
 
-bool car_can_raw_pps_status_status_is_in_range(uint8_t value)
+bool car_can_raw_pedal_box_status_status_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pps_status_fault_no_accelerator_is_in_range(uint8_t value)
+bool car_can_raw_pedal_box_status_fault_no_accelerator_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pps_status_warning_main_accelerator_disconnected_is_in_range(uint8_t value)
+bool car_can_raw_pedal_box_status_warning_main_accelerator_disconnected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pps_status_warning_redundant_accelerator_disconnected_is_in_range(uint8_t value)
+bool car_can_raw_pedal_box_status_warning_redundant_accelerator_disconnected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pps_status_warning_pressure_switch_mismatch_is_in_range(uint8_t value)
+bool car_can_raw_pedal_box_status_warning_pressure_switch_mismatch_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pps_status_brake_active_is_in_range(uint8_t value)
+bool car_can_raw_pedal_box_status_brake_active_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pps_status_front_pressure_switch_is_in_range(uint8_t value)
+bool car_can_raw_pedal_box_status_front_pressure_switch_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pps_status_handbrake_pressure_switch_is_in_range(uint8_t value)
+bool car_can_raw_pedal_box_status_handbrake_pressure_switch_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pps_status_accelerator_main_position_is_in_range(uint8_t value)
+bool car_can_raw_pedal_box_status_accelerator_main_position_is_in_range(uint8_t value)
 {
     (void)value;
 
     return (true);
 }
 
-bool car_can_raw_pps_status_accelerator_redundant_position_is_in_range(uint8_t value)
+bool car_can_raw_pedal_box_status_accelerator_redundant_position_is_in_range(uint8_t value)
 {
     (void)value;
 
     return (true);
 }
 
-bool car_can_raw_pps_status_front_pressure_is_in_range(uint16_t value)
+bool car_can_raw_pedal_box_status_front_pressure_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
 }
 
-bool car_can_raw_pps_status_rear_pressure_is_in_range(uint16_t value)
+bool car_can_raw_pedal_box_status_rear_pressure_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
 }
@@ -3432,9 +3432,9 @@ bool car_can_raw_bottom_shell_lighting_status_headlights_on_is_in_range(uint8_t 
     return (value <= 1u);
 }
 
-int car_can_raw_clc_status_pack(
+int car_can_raw_top_shell_lighting_status_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_clc_status_t *src_p,
+    const struct car_can_raw_top_shell_lighting_status_t *src_p,
     size_t size)
 {
     if (size < 1u) {
@@ -3450,8 +3450,8 @@ int car_can_raw_clc_status_pack(
     return (1);
 }
 
-int car_can_raw_clc_status_unpack(
-    struct car_can_raw_clc_status_t *dst_p,
+int car_can_raw_top_shell_lighting_status_unpack(
+    struct car_can_raw_top_shell_lighting_status_t *dst_p,
     const uint8_t *src_p,
     size_t size)
 {
@@ -3466,26 +3466,26 @@ int car_can_raw_clc_status_unpack(
     return (0);
 }
 
-int car_can_raw_clc_status_init(struct car_can_raw_clc_status_t *msg_p)
+int car_can_raw_top_shell_lighting_status_init(struct car_can_raw_top_shell_lighting_status_t *msg_p)
 {
     if (msg_p == NULL) return -1;
 
-    memset(msg_p, 0, sizeof(struct car_can_raw_clc_status_t));
+    memset(msg_p, 0, sizeof(struct car_can_raw_top_shell_lighting_status_t));
 
     return 0;
 }
 
-bool car_can_raw_clc_status_brake_on_is_in_range(uint8_t value)
+bool car_can_raw_top_shell_lighting_status_brake_on_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_clc_status_left_signal_on_is_in_range(uint8_t value)
+bool car_can_raw_top_shell_lighting_status_left_signal_on_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_clc_status_right_signal_on_is_in_range(uint8_t value)
+bool car_can_raw_top_shell_lighting_status_right_signal_on_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }

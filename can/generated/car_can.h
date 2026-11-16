@@ -423,44 +423,44 @@ can_status_t car_can_bps_status_unpack(car_can_bps_status_t* dst, const can_fram
 
 /** Named raw values for Status; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PPS_STATUS_STATUS_OK = 0,
-    CAR_CAN_PPS_STATUS_STATUS_FAULT = 1,
-} car_can_pps_status_status_choice_t;
+    CAR_CAN_PEDAL_BOX_STATUS_STATUS_OK = 0,
+    CAR_CAN_PEDAL_BOX_STATUS_STATUS_FAULT = 1,
+} car_can_pedal_box_status_status_choice_t;
 /** Named raw values for FaultNoAccelerator; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PPS_STATUS_FAULT_NO_ACCELERATOR_OK = 0,
-    CAR_CAN_PPS_STATUS_FAULT_NO_ACCELERATOR_FAULT = 1,
-} car_can_pps_status_fault_no_accelerator_choice_t;
+    CAR_CAN_PEDAL_BOX_STATUS_FAULT_NO_ACCELERATOR_OK = 0,
+    CAR_CAN_PEDAL_BOX_STATUS_FAULT_NO_ACCELERATOR_FAULT = 1,
+} car_can_pedal_box_status_fault_no_accelerator_choice_t;
 /** Named raw values for WarningMainAcceleratorDisconnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PPS_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_NO_WARNING = 0,
-    CAR_CAN_PPS_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_WARNING = 1,
-} car_can_pps_status_warning_main_accelerator_disconnected_choice_t;
+    CAR_CAN_PEDAL_BOX_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_NO_WARNING = 0,
+    CAR_CAN_PEDAL_BOX_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_WARNING = 1,
+} car_can_pedal_box_status_warning_main_accelerator_disconnected_choice_t;
 /** Named raw values for WarningRedundantAcceleratorDisconnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PPS_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_NO_WARNING = 0,
-    CAR_CAN_PPS_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_WARNING = 1,
-} car_can_pps_status_warning_redundant_accelerator_disconnected_choice_t;
+    CAR_CAN_PEDAL_BOX_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_NO_WARNING = 0,
+    CAR_CAN_PEDAL_BOX_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_WARNING = 1,
+} car_can_pedal_box_status_warning_redundant_accelerator_disconnected_choice_t;
 /** Named raw values for WarningPressureSwitchMismatch; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PPS_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_NO_WARNING = 0,
-    CAR_CAN_PPS_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_WARNING = 1,
-} car_can_pps_status_warning_pressure_switch_mismatch_choice_t;
+    CAR_CAN_PEDAL_BOX_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_NO_WARNING = 0,
+    CAR_CAN_PEDAL_BOX_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_WARNING = 1,
+} car_can_pedal_box_status_warning_pressure_switch_mismatch_choice_t;
 /** Named raw values for BrakeActive; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PPS_STATUS_BRAKE_ACTIVE_OFF = 0,
-    CAR_CAN_PPS_STATUS_BRAKE_ACTIVE_ON = 1,
-} car_can_pps_status_brake_active_choice_t;
+    CAR_CAN_PEDAL_BOX_STATUS_BRAKE_ACTIVE_OFF = 0,
+    CAR_CAN_PEDAL_BOX_STATUS_BRAKE_ACTIVE_ON = 1,
+} car_can_pedal_box_status_brake_active_choice_t;
 /** Named raw values for FrontPressureSwitch; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PPS_STATUS_FRONT_PRESSURE_SWITCH_OFF = 0,
-    CAR_CAN_PPS_STATUS_FRONT_PRESSURE_SWITCH_ON = 1,
-} car_can_pps_status_front_pressure_switch_choice_t;
+    CAR_CAN_PEDAL_BOX_STATUS_FRONT_PRESSURE_SWITCH_OFF = 0,
+    CAR_CAN_PEDAL_BOX_STATUS_FRONT_PRESSURE_SWITCH_ON = 1,
+} car_can_pedal_box_status_front_pressure_switch_choice_t;
 /** Named raw values for HandbrakePressureSwitch; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PPS_STATUS_HANDBRAKE_PRESSURE_SWITCH_OFF = 0,
-    CAR_CAN_PPS_STATUS_HANDBRAKE_PRESSURE_SWITCH_ON = 1,
-} car_can_pps_status_handbrake_pressure_switch_choice_t;
+    CAR_CAN_PEDAL_BOX_STATUS_HANDBRAKE_PRESSURE_SWITCH_OFF = 0,
+    CAR_CAN_PEDAL_BOX_STATUS_HANDBRAKE_PRESSURE_SWITCH_ON = 1,
+} car_can_pedal_box_status_handbrake_pressure_switch_choice_t;
 /** 2027 team-defined layout; physical values use the shared scaling conventions. */
 typedef struct {
     /** Status; unit=none; physical=raw*1+0; raw=[0,1]. Status */
@@ -487,14 +487,14 @@ typedef struct {
     uint16_t front_pressure;
     /** RearPressure; unit=PSI; physical=raw*1+0; raw=[0,3000]. RearPressure */
     uint16_t rear_pressure;
-} car_can_pps_status_t;
+} car_can_pedal_box_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t car_can_pps_status_pack(can_frame_t* dst, const car_can_pps_status_t* src);
+can_status_t car_can_pedal_box_status_pack(can_frame_t* dst, const car_can_pedal_box_status_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t car_can_pps_status_unpack(car_can_pps_status_t* dst, const can_frame_t* src);
+can_status_t car_can_pedal_box_status_unpack(car_can_pedal_box_status_t* dst, const can_frame_t* src);
 
 /** Named raw values for IgnitionLV; unknown values remain integers. */
 typedef enum {
@@ -1524,19 +1524,19 @@ can_status_t car_can_bottom_shell_lighting_status_unpack(car_can_bottom_shell_li
 
 /** Named raw values for BrakeOn; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_CLC_STATUS_BRAKE_ON_OFF = 0,
-    CAR_CAN_CLC_STATUS_BRAKE_ON_ON = 1,
-} car_can_clc_status_brake_on_choice_t;
+    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_BRAKE_ON_OFF = 0,
+    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_BRAKE_ON_ON = 1,
+} car_can_top_shell_lighting_status_brake_on_choice_t;
 /** Named raw values for LeftSignalOn; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_CLC_STATUS_LEFT_SIGNAL_ON_OFF = 0,
-    CAR_CAN_CLC_STATUS_LEFT_SIGNAL_ON_ON = 1,
-} car_can_clc_status_left_signal_on_choice_t;
+    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_OFF = 0,
+    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_ON = 1,
+} car_can_top_shell_lighting_status_left_signal_on_choice_t;
 /** Named raw values for RightSignalOn; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_CLC_STATUS_RIGHT_SIGNAL_ON_OFF = 0,
-    CAR_CAN_CLC_STATUS_RIGHT_SIGNAL_ON_ON = 1,
-} car_can_clc_status_right_signal_on_choice_t;
+    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_OFF = 0,
+    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_ON = 1,
+} car_can_top_shell_lighting_status_right_signal_on_choice_t;
 /** 2027 team-defined layout; physical values use the shared scaling conventions. */
 typedef struct {
     /** BrakeOn; unit=none; physical=raw*1+0; raw=[0,1]. BrakeOn */
@@ -1545,14 +1545,14 @@ typedef struct {
     uint8_t left_signal_on;
     /** RightSignalOn; unit=none; physical=raw*1+0; raw=[0,1]. RightSignalOn */
     uint8_t right_signal_on;
-} car_can_clc_status_t;
+} car_can_top_shell_lighting_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t car_can_clc_status_pack(can_frame_t* dst, const car_can_clc_status_t* src);
+can_status_t car_can_top_shell_lighting_status_pack(can_frame_t* dst, const car_can_top_shell_lighting_status_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t car_can_clc_status_unpack(car_can_clc_status_t* dst, const can_frame_t* src);
+can_status_t car_can_top_shell_lighting_status_unpack(car_can_top_shell_lighting_status_t* dst, const can_frame_t* src);
 
 /** Named raw values for WarningTemperature; unknown values remain integers. */
 typedef enum {
@@ -2718,7 +2718,7 @@ typedef struct {
 } car_can_bps_t;
 
 typedef struct {
-    car_can_clc_status_t clc_status;
+    car_can_top_shell_lighting_status_t top_shell_lighting_status;
 } car_can_clc_t;
 
 typedef struct {
@@ -2756,7 +2756,7 @@ typedef struct {
 } car_can_pdu_t;
 
 typedef struct {
-    car_can_pps_status_t pps_status;
+    car_can_pedal_box_status_t pedal_box_status;
 } car_can_pps_t;
 
 typedef struct {
@@ -2778,7 +2778,7 @@ typedef struct {
         can_message_info_t bps_balancing_status;
     } bps;
     struct {
-        can_message_info_t clc_status;
+        can_message_info_t top_shell_lighting_status;
     } clc;
     struct {
         can_message_info_t cm5_status;
@@ -2810,7 +2810,7 @@ typedef struct {
         can_message_info_t pdu_over_current_snapshot;
     } pdu;
     struct {
-        can_message_info_t pps_status;
+        can_message_info_t pedal_box_status;
     } pps;
     struct {
         can_message_info_t vcu_status;

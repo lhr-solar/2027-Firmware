@@ -135,7 +135,7 @@ BO_ 96 BPSStatus: 16 BPS
  SG_ BatteryFanTach2 : 88|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
  SG_ BPSFanTach : 100|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
 
-BO_ 97 PPSStatus: 6 PPS
+BO_ 97 PedalBoxStatus: 6 PPS
  SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultNoAccelerator : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningMainAcceleratorDisconnect : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -409,7 +409,7 @@ BO_ 128 BottomShellLightingStatus: 1 DEI
  SG_ RightSignalOn : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ HeadlightsOn : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 129 CLCStatus: 1 CLC
+BO_ 129 TopShellLightingStatus: 1 CLC
  SG_ BrakeOn : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ LeftSignalOn : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ RightSignalOn : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX

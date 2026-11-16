@@ -40,7 +40,7 @@ The telemetry/sensor bus is **DAqCAN**, using the formerly empty DAqCAN.dbc
 scaffold. TelemetryCAN.dbc is removed at the user's request. The empty
 bootloading.dbc scaffold remains. TCP-only definitions use TelemetryLink.dbc. Lighting
 messages live on **CarCAN**: DEI transmits BottomShellLightingStatus at
-**0x080**, and CLC transmits CLCStatus at **0x081**.
+**0x080**, and CLC transmits TopShellLightingStatus at **0x081**.
 Their IDs and payload layouts are retained. Bottom-shell circuitry is on DEI,
 not a separate CAN node. CLC is attached to CarCAN. DEI is attached to
 CarCAN and COTSCAN. CM5 is the combined HMI
