@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: Blackbody1 Blackbody2 Blackbody3 ChassisIMU CM5 StrainGaugeFront StrainGaugeRear SuspensionFL SuspensionFR SuspensionRear UprightFL UprightFR UprightRear
+BU_: Blackbody1 Blackbody2 Blackbody3 ChassisIMU CM5 SuspensionFL SuspensionFR SuspensionRear UprightFL UprightFR UprightRear
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
@@ -248,9 +248,7 @@ BO_ 1665 Blackbody2Data: 0 Blackbody2
 
 BO_ 1666 Blackbody3Data: 0 Blackbody3
 
-BO_ 1680 StrainGaugeFrontData: 0 StrainGaugeFront
-
-BO_ 1681 StrainGaugeRearData: 0 StrainGaugeRear
+BO_ 1680 StrainGaugeFrontData: 0 SuspensionFL
 
 
 
@@ -418,7 +416,6 @@ CM_ BO_ 1664 "PLACEHOLDER: signals and payload length are not defined; zero DLC 
 CM_ BO_ 1665 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
 CM_ BO_ 1666 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
 CM_ BO_ 1680 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
-CM_ BO_ 1681 "PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. ";
 BA_DEF_ SG_  "ValueTable" STRING ;
 BA_DEF_ BO_  "LayoutPending" INT 0 1;
 BA_DEF_ BO_  "ProtocolSource" STRING ;
@@ -558,10 +555,4 @@ BA_ "VFrameFormat" BO_ 1680 14;
 BA_ "GenMsgSendType" BO_ 1680 0;
 BA_ "GenMsgCycleTime" BO_ 1680 10;
 BA_ "CANFD_BRS" BO_ 1680 0;
-BA_ "LayoutPending" BO_ 1681 1;
-BA_ "ProtocolSource" BO_ 1681 "2027 allocation draft";
-BA_ "VFrameFormat" BO_ 1681 14;
-BA_ "GenMsgSendType" BO_ 1681 0;
-BA_ "GenMsgCycleTime" BO_ 1681 10;
-BA_ "CANFD_BRS" BO_ 1681 0;
 VAL_ 1568 PreviousTimestampValid 0 "Invalid" 1 "Valid" ;

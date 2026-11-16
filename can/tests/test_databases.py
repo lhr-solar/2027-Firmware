@@ -149,7 +149,7 @@ class DatabaseTests(unittest.TestCase):
                     self.assertEqual(message.length, 0)
                     self.assertIn("PLACEHOLDER", message.comment)
                     placeholders.append((bus, message.frame_id))
-        self.assertEqual(len(placeholders), 18)
+        self.assertEqual(len(placeholders), 17)
         self.assertFalse(
             self.message("CarCAN", 0x54).dbc.attributes["LayoutPending"].value
         )
@@ -252,10 +252,11 @@ class DatabaseTests(unittest.TestCase):
             self.assertEqual(message.dbc.attributes["GenMsgSendType"].value, 1)
 
     def test_corrected_strain_ids_and_gps(self):
-        for identifier, location in [(0x690, "Front"), (0x691, "Rear")]:
-            message = self.message("DAqCAN", identifier)
-            self.assertEqual(message.senders, [f"StrainGauge{location}"])
-            self.assertEqual(message.name, f"StrainGauge{location}Data")
+        message = self.message("DAqCAN", 0x690)
+        self.assertEqual(message.senders, ["SuspensionFL"])
+        self.assertEqual(message.name, "StrainGaugeFrontData")
+        self.assertNotIn(0x691, {m.frame_id for m in self.databases["DAqCAN"].messages})
+        self.assertFalse({"StrainGaugeFront", "StrainGaugeRear"} & {n.name for n in self.databases["DAqCAN"].nodes})
         identifiers = {
             message.frame_id for message in self.databases["DAqCAN"].messages
         }
@@ -532,7 +533,7 @@ class DatabaseTests(unittest.TestCase):
     def test_bootloader_board_coverage_and_addressing(self):
         allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
         boards = allocation["boards"]
-        self.assertEqual(len(boards), 19)
+        self.assertEqual(len(boards), 17)
         self.assertEqual(allocation["schema_version"], 1)
         self.assertEqual(int(allocation["addressing"]["host_can_id"], 0), 0)
         excluded = {
@@ -625,7 +626,7 @@ class DatabaseTests(unittest.TestCase):
             self.assertEqual(status.senders, ["BPS"])
         self.assertEqual(boards["DEI"]["node_id"], 7)
         self.assertEqual(boards["CLC"]["node_id"], 10)
-        self.assertEqual(boards["StrainGaugeRear"]["node_id"], 24)
+        self.assertTrue({23, 24}.issubset(allocation["reserved_node_ids"]))
         self.assertEqual(self.message("ChargerCAN", 0x600).senders, ["ElconInterface"])
 
     def test_lighting_bus_ownership(self):

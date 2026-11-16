@@ -22,14 +22,9 @@ const d_aq_can_metadata_t d_aq_can = {
         .chassis_acceleration_data = { .id = UINT32_C(1584), .payload_bytes = 24, .wire_bytes = 24, .dlc = 12, .is_extended = false, .is_fd = true },
         .chassis_gyro_data = { .id = UINT32_C(1585), .payload_bytes = 32, .wire_bytes = 32, .dlc = 13, .is_extended = false, .is_fd = true },
     },
-    .strain_gauge_front = {
-        .strain_gauge_front_data = { .id = UINT32_C(1680), .payload_bytes = 0, .wire_bytes = 0, .dlc = 0, .is_extended = false, .is_fd = true },
-    },
-    .strain_gauge_rear = {
-        .strain_gauge_rear_data = { .id = UINT32_C(1681), .payload_bytes = 0, .wire_bytes = 0, .dlc = 0, .is_extended = false, .is_fd = true },
-    },
     .suspension_fl = {
         .suspension_fl_data = { .id = UINT32_C(1649), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
+        .strain_gauge_front_data = { .id = UINT32_C(1680), .payload_bytes = 0, .wire_bytes = 0, .dlc = 0, .is_extended = false, .is_fd = true },
     },
     .suspension_fr = {
         .suspension_fr_data = { .id = UINT32_C(1648), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
@@ -2221,31 +2216,6 @@ can_status_t d_aq_can_strain_gauge_front_data_unpack(d_aq_can_strain_gauge_front
     struct d_aq_can_raw_strain_gauge_front_data_t raw = {0};
     if (d_aq_can_raw_strain_gauge_front_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
     d_aq_can_strain_gauge_front_data_t result = {0};
-    *dst = result;
-    return CAN_OK;
-}
-
-can_status_t d_aq_can_strain_gauge_rear_data_pack(can_frame_t* dst, const d_aq_can_strain_gauge_rear_data_t* src) {
-    if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct d_aq_can_raw_strain_gauge_rear_data_t raw = {0};
-    can_status_t status = CAN_OK;
-    can_frame_t result = { .id = UINT32_C(1681),
-        .len = 0, .is_extended = false,
-        .is_fd = true };
-    if (d_aq_can_raw_strain_gauge_rear_data_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
-    *dst = result;
-    return status;
-}
-
-can_status_t d_aq_can_strain_gauge_rear_data_unpack(d_aq_can_strain_gauge_rear_data_t* dst, const can_frame_t* src) {
-    if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(1681) || src->len != 0 ||
-        src->is_extended != false ||
-        src->is_fd != true ||
-        (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct d_aq_can_raw_strain_gauge_rear_data_t raw = {0};
-    if (d_aq_can_raw_strain_gauge_rear_data_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    d_aq_can_strain_gauge_rear_data_t result = {0};
     *dst = result;
     return CAN_OK;
 }

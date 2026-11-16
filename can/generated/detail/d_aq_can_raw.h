@@ -64,7 +64,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_BLACKBODY2_DATA_FRAME_ID (0x681u)
 #define D_AQ_CAN_RAW_BLACKBODY3_DATA_FRAME_ID (0x682u)
 #define D_AQ_CAN_RAW_STRAIN_GAUGE_FRONT_DATA_FRAME_ID (0x690u)
-#define D_AQ_CAN_RAW_STRAIN_GAUGE_REAR_DATA_FRAME_ID (0x691u)
 
 /* Frame lengths in bytes. */
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_LENGTH (5u)
@@ -86,7 +85,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_BLACKBODY2_DATA_LENGTH (0u)
 #define D_AQ_CAN_RAW_BLACKBODY3_DATA_LENGTH (0u)
 #define D_AQ_CAN_RAW_STRAIN_GAUGE_FRONT_DATA_LENGTH (0u)
-#define D_AQ_CAN_RAW_STRAIN_GAUGE_REAR_DATA_LENGTH (0u)
 
 /* Extended or standard frame types. */
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_IS_EXTENDED (0)
@@ -108,7 +106,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_BLACKBODY2_DATA_IS_EXTENDED (0)
 #define D_AQ_CAN_RAW_BLACKBODY3_DATA_IS_EXTENDED (0)
 #define D_AQ_CAN_RAW_STRAIN_GAUGE_FRONT_DATA_IS_EXTENDED (0)
-#define D_AQ_CAN_RAW_STRAIN_GAUGE_REAR_DATA_IS_EXTENDED (0)
 
 /* Frame cycle times in milliseconds. */
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_CYCLE_TIME_MS (100u)
@@ -130,7 +127,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_BLACKBODY2_DATA_CYCLE_TIME_MS (100u)
 #define D_AQ_CAN_RAW_BLACKBODY3_DATA_CYCLE_TIME_MS (100u)
 #define D_AQ_CAN_RAW_STRAIN_GAUGE_FRONT_DATA_CYCLE_TIME_MS (10u)
-#define D_AQ_CAN_RAW_STRAIN_GAUGE_REAR_DATA_CYCLE_TIME_MS (10u)
 
 /* Signal choices. */
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_PREVIOUS_TIMESTAMP_VALID_INVALID_CHOICE (0u)
@@ -156,7 +152,6 @@ extern "C" {
 #define D_AQ_CAN_RAW_BLACKBODY2_DATA_NAME "Blackbody2Data"
 #define D_AQ_CAN_RAW_BLACKBODY3_DATA_NAME "Blackbody3Data"
 #define D_AQ_CAN_RAW_STRAIN_GAUGE_FRONT_DATA_NAME "StrainGaugeFrontData"
-#define D_AQ_CAN_RAW_STRAIN_GAUGE_REAR_DATA_NAME "StrainGaugeRearData"
 
 /* Signal Names. */
 #define D_AQ_CAN_RAW_TIMESTAMP_SYNC_SEQUENCE_NAME "Sequence"
@@ -1785,20 +1780,6 @@ struct d_aq_can_raw_blackbody3_data_t {
  * All signal values are as on the CAN bus.
  */
 struct d_aq_can_raw_strain_gauge_front_data_t {
-    /**
-     * Dummy signal in empty message.
-     */
-    uint8_t dummy;
-};
-
-/**
- * Signals in message StrainGaugeRearData.
- *
- * PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout.
- *
- * All signal values are as on the CAN bus.
- */
-struct d_aq_can_raw_strain_gauge_rear_data_t {
     /**
      * Dummy signal in empty message.
      */
@@ -3803,43 +3784,6 @@ int d_aq_can_raw_strain_gauge_front_data_unpack(
  * @return zero(0) on success or (-1) in case of nullptr argument.
  */
 int d_aq_can_raw_strain_gauge_front_data_init(struct d_aq_can_raw_strain_gauge_front_data_t *msg_p);
-
-/**
- * Pack message StrainGaugeRearData.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int d_aq_can_raw_strain_gauge_rear_data_pack(
-    uint8_t *dst_p,
-    const struct d_aq_can_raw_strain_gauge_rear_data_t *src_p,
-    size_t size);
-
-/**
- * Unpack message StrainGaugeRearData.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int d_aq_can_raw_strain_gauge_rear_data_unpack(
-    struct d_aq_can_raw_strain_gauge_rear_data_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from StrainGaugeRearData.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int d_aq_can_raw_strain_gauge_rear_data_init(struct d_aq_can_raw_strain_gauge_rear_data_t *msg_p);
 
 
 #ifdef __cplusplus

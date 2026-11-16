@@ -14,7 +14,7 @@ not wire-compatible with the old vehicle's team-defined messages.
 | COTSCAN | WS22, LWS, and three SEC-B175-7A MPPTs; VCU and DEI commands | 54 | 12 |
 | ChargerCAN | BPSChargeData and ElconInterface status | 2 | 0 |
 | ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
-| DAqCAN | CM5 timestamp and sensor-board traffic | 19 | 5 |
+| DAqCAN | CM5 timestamp and sensor-board traffic | 18 | 4 |
 | TelemetryLink | CM5 TCP-native telemetry and test messages | 6 | 0 |
 
 Every message has exactly one declared transmitter. `EXT` is the command
@@ -200,9 +200,9 @@ consumer subscriptions and gateway behavior belong in firmware configuration.
 
 ## Bootloader IDs
 
-`../bootloader_ids.json` allocates **20 eligible custom CAN boards**, with one
+`../bootloader_ids.json` allocates **17 eligible custom CAN boards**, with one
 global, stable node ID per board even when it connects to multiple buses.
-Node IDs **5, 9, 11, 12 and 25–40** are reserved; remaining assignments retain
+Node IDs **4, 5, 9, 11, 12 and 23–40** are reserved; remaining assignments retain
 their original IDs. Standard 11-bit arbitration IDs follow the supplied scheme:
 
 - Reserved BootloaderHost ID: **0x000** (payload/host protocol not defined here).
@@ -243,7 +243,7 @@ not permission to transmit an empty frame. Owners must define the layout before
 using these messages:
 
 - CarCAN 0x073 SMDStatus: four SMB bitmaps are mentioned, but no widths/bit meanings.
-- Five telemetry placeholders: three blackbody boards and two strain boards.
+- Four telemetry placeholders: three blackbody boards and front strain data.
 - MPPT offsets 0x05–0x08: reserved here as empty placeholders for variable-length
   configuration-buffer protocols; they are not ordinary fixed-layout commands.
 
@@ -258,7 +258,7 @@ bootloader transport, message layouts and gateway behavior are not defined here.
 
 ## Corrections and provenance
 
-- There are **two strain boards**: Front at **0x690**, Rear at **0x691**.
+- Front strain data at **0x690** is transmitted by SuspensionFL; rear strain data was removed.
   Telemetry IDs are grouped by board within 0x630–0x6DF.
 - GPS **longitude is −180..180**, latitude **−90..90**. The draft interchanged them.
 - TPEE SetMode/Sweep/VoltageLimit/CurrentLimit offsets are **0x09/0x0A/0x0B/0x0C**,
@@ -323,7 +323,7 @@ their vendor-defined layouts.
 | 0x660–0x662 | Rear upright acceleration, gyro, wheel speed |
 | 0x670–0x672 | Front-right, front-left, rear suspension linpots |
 | 0x680–0x682 | Blackbody boards 1–3 |
-| 0x690–0x691 | Front and rear strain gauges |
+| 0x690 | Front strain gauge, sent by SuspensionFL |
 
 Other slots in 0x630–0x6DF remain unallocated. Infrastructure retains
 TimestampSync 0x620 on DAqCAN; TelemetryStatus 0x610, GPSData 0x611 and BoardHealth 0x612 are TCP-only.

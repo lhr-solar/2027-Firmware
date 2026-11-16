@@ -2859,27 +2859,3 @@ int d_aq_can_raw_strain_gauge_front_data_unpack(
 
     return (0);
 }
-
-int d_aq_can_raw_strain_gauge_rear_data_pack(
-    uint8_t *dst_p,
-    const struct d_aq_can_raw_strain_gauge_rear_data_t *src_p,
-    size_t size)
-{
-    (void)dst_p;
-    (void)src_p;
-    (void)size;
-
-    return (0);
-}
-
-int d_aq_can_raw_strain_gauge_rear_data_unpack(
-    struct d_aq_can_raw_strain_gauge_rear_data_t *dst_p,
-    const uint8_t *src_p,
-    size_t size)
-{
-    (void)dst_p;
-    (void)src_p;
-    (void)size;
-
-    return (0);
-}

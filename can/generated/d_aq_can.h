@@ -513,18 +513,6 @@ can_status_t d_aq_can_strain_gauge_front_data_pack(can_frame_t* dst, const d_aq_
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t d_aq_can_strain_gauge_front_data_unpack(d_aq_can_strain_gauge_front_data_t* dst, const can_frame_t* src);
 
-/** PLACEHOLDER: signals and payload length are not defined; zero DLC is a drafting marker, not an approved transmit layout. */
-typedef struct {
-    uint8_t reserved; /**< Empty payload placeholder; ignored by codec. */
-} d_aq_can_strain_gauge_rear_data_t;
-
-/** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
- * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t d_aq_can_strain_gauge_rear_data_pack(can_frame_t* dst, const d_aq_can_strain_gauge_rear_data_t* src);
-/** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
- * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t d_aq_can_strain_gauge_rear_data_unpack(d_aq_can_strain_gauge_rear_data_t* dst, const can_frame_t* src);
-
 typedef struct {
     d_aq_can_blackbody1_data_t blackbody1_data;
 } d_aq_can_blackbody1_t;
@@ -547,15 +535,8 @@ typedef struct {
 } d_aq_can_chassis_imu_t;
 
 typedef struct {
-    d_aq_can_strain_gauge_front_data_t strain_gauge_front_data;
-} d_aq_can_strain_gauge_front_t;
-
-typedef struct {
-    d_aq_can_strain_gauge_rear_data_t strain_gauge_rear_data;
-} d_aq_can_strain_gauge_rear_t;
-
-typedef struct {
     d_aq_can_suspension_fl_data_t suspension_fl_data;
+    d_aq_can_strain_gauge_front_data_t strain_gauge_front_data;
 } d_aq_can_suspension_fl_t;
 
 typedef struct {
@@ -603,13 +584,8 @@ typedef struct {
         can_message_info_t chassis_gyro_data;
     } chassis_imu;
     struct {
-        can_message_info_t strain_gauge_front_data;
-    } strain_gauge_front;
-    struct {
-        can_message_info_t strain_gauge_rear_data;
-    } strain_gauge_rear;
-    struct {
         can_message_info_t suspension_fl_data;
+        can_message_info_t strain_gauge_front_data;
     } suspension_fl;
     struct {
         can_message_info_t suspension_fr_data;
