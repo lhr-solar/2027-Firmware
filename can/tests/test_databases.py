@@ -412,7 +412,7 @@ class DatabaseTests(unittest.TestCase):
         command = self.message("CarCAN", 0x55)
         status = self.message("CarCAN", 0x78)
         self.assertEqual((command.name, command.senders, command.length),
-                         ("BPSBalancingCommand", ["External"], 5))
+                         ("BPSBalancingCommand", ["EXT"], 5))
         self.assertEqual(command.dbc.attributes["GenMsgSendType"].value, 1)
         self.assertIsNone(command.cycle_time)
         self.assertEqual((status.name, status.senders, status.length, status.cycle_time),
@@ -536,7 +536,7 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(allocation["schema_version"], 1)
         self.assertEqual(int(allocation["addressing"]["host_can_id"], 0), 0)
         excluded = {
-            "External",
+            "EXT",
             "WS22",
             "LWS",
             "Elcon",
@@ -624,16 +624,16 @@ class DatabaseTests(unittest.TestCase):
             self.assertEqual(status.name, name)
             self.assertEqual(status.senders, ["BPS"])
         self.assertEqual(boards["DEI"]["node_id"], 7)
-        self.assertEqual(boards["TopShellLighting"]["node_id"], 10)
+        self.assertEqual(boards["CLC"]["node_id"], 10)
         self.assertEqual(boards["StrainGaugeRear"]["node_id"], 24)
         self.assertEqual(self.message("ChargerCAN", 0x600).senders, ["ElconInterface"])
 
     def test_lighting_bus_ownership(self):
         car = self.databases["CarCAN"]
-        self.assertIn("TopShellLighting", {node.name for node in car.nodes})
+        self.assertIn("CLC", {node.name for node in car.nodes})
         self.assertTrue({0x80, 0x81, 0x64}.issubset({message.frame_id for message in car.messages}))
         self.assertEqual(self.message("CarCAN", 0x80).senders, ["DEI"])
-        self.assertEqual(self.message("CarCAN", 0x81).senders, ["TopShellLighting"])
+        self.assertEqual(self.message("CarCAN", 0x81).senders, ["CLC"])
         self.assertTrue(all(not self.message("CarCAN", identifier).is_fd for identifier in (0x80, 0x81, 0x64)))
         self.assertEqual(
             self.message("CarCAN", 0x80).encode(
@@ -658,8 +658,8 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(command.decode(frame, decode_choices=False), values)
         allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
         boards = {board["name"]: board for board in allocation["boards"]}
-        self.assertEqual(boards["TopShellLighting"]["can_buses"], ["CarCAN"])
-        self.assertEqual(boards["TopShellLighting"]["node_id"], 10)
+        self.assertEqual(boards["CLC"]["can_buses"], ["CarCAN"])
+        self.assertEqual(boards["CLC"]["node_id"], 10)
         self.assertEqual(
             boards["DEI"]["can_buses"], ["CarCAN", "COTSCAN"]
         )

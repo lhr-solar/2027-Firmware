@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: BPS DEI External LVC CM5 PDU Pedals VCU TopShellLighting
+BU_: BPS DEI EXT LVC CM5 PDU Pedals VCU CLC
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
@@ -68,23 +68,23 @@ VAL_TABLE_ ElconControl 1 "Disable" 0 "Charge" ;
 VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
 
 
-BO_ 81 BPSCommand: 12 External
+BO_ 81 BPSCommand: 12 EXT
  SG_ Mode : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ MPPTChargeScheme : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ VoltageOverrideMask : 2|32@1+ (1,0) [0.0|4294967295.0] "" Vector__XXX
  SG_ TemperatureOverrideMask : 34|32@1+ (1,0) [0.0|4294967295.0] "" Vector__XXX
  SG_ CurrentOverride : 66|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 82 PDUCommand: 1 External
+BO_ 82 PDUCommand: 1 EXT
  SG_ ChannelIndex : 0|4@1+ (1,0) [0|11] "" Vector__XXX
  SG_ Enable : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 83 MotorControllerCommand: 1 External
+BO_ 83 MotorControllerCommand: 1 EXT
  SG_ CommandSource : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 84 SweepMPPTs: 0 External
+BO_ 84 SweepMPPTs: 0 EXT
 
-BO_ 85 BPSBalancingCommand: 5 External
+BO_ 85 BPSBalancingCommand: 5 EXT
  SG_ BalancingMode : 0|2@1+ (1,0) [0|2] "" Vector__XXX
  SG_ ManualCellMask : 2|32@1+ (1,0) [0|4294967295] "" Vector__XXX
 
@@ -409,7 +409,7 @@ BO_ 128 BottomShellLightingStatus: 1 DEI
  SG_ RightSignalOn : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ HeadlightsOn : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 129 TopShellLightingStatus: 1 TopShellLighting
+BO_ 129 CLCStatus: 1 CLC
  SG_ BrakeOn : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ LeftSignalOn : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ RightSignalOn : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX

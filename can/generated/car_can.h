@@ -1524,19 +1524,19 @@ can_status_t car_can_bottom_shell_lighting_status_unpack(car_can_bottom_shell_li
 
 /** Named raw values for BrakeOn; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_BRAKE_ON_OFF = 0,
-    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_BRAKE_ON_ON = 1,
-} car_can_top_shell_lighting_status_brake_on_choice_t;
+    CAR_CAN_CLC_STATUS_BRAKE_ON_OFF = 0,
+    CAR_CAN_CLC_STATUS_BRAKE_ON_ON = 1,
+} car_can_clc_status_brake_on_choice_t;
 /** Named raw values for LeftSignalOn; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_OFF = 0,
-    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_ON = 1,
-} car_can_top_shell_lighting_status_left_signal_on_choice_t;
+    CAR_CAN_CLC_STATUS_LEFT_SIGNAL_ON_OFF = 0,
+    CAR_CAN_CLC_STATUS_LEFT_SIGNAL_ON_ON = 1,
+} car_can_clc_status_left_signal_on_choice_t;
 /** Named raw values for RightSignalOn; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_OFF = 0,
-    CAR_CAN_TOP_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_ON = 1,
-} car_can_top_shell_lighting_status_right_signal_on_choice_t;
+    CAR_CAN_CLC_STATUS_RIGHT_SIGNAL_ON_OFF = 0,
+    CAR_CAN_CLC_STATUS_RIGHT_SIGNAL_ON_ON = 1,
+} car_can_clc_status_right_signal_on_choice_t;
 /** 2027 team-defined layout; physical values use the shared scaling conventions. */
 typedef struct {
     /** BrakeOn; unit=none; physical=raw*1+0; raw=[0,1]. BrakeOn */
@@ -1545,14 +1545,14 @@ typedef struct {
     uint8_t left_signal_on;
     /** RightSignalOn; unit=none; physical=raw*1+0; raw=[0,1]. RightSignalOn */
     uint8_t right_signal_on;
-} car_can_top_shell_lighting_status_t;
+} car_can_clc_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t car_can_top_shell_lighting_status_pack(can_frame_t* dst, const car_can_top_shell_lighting_status_t* src);
+can_status_t car_can_clc_status_pack(can_frame_t* dst, const car_can_clc_status_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t car_can_top_shell_lighting_status_unpack(car_can_top_shell_lighting_status_t* dst, const can_frame_t* src);
+can_status_t car_can_clc_status_unpack(car_can_clc_status_t* dst, const can_frame_t* src);
 
 /** Named raw values for WarningTemperature; unknown values remain integers. */
 typedef enum {
@@ -2718,6 +2718,10 @@ typedef struct {
 } car_can_bps_t;
 
 typedef struct {
+    car_can_clc_status_t clc_status;
+} car_can_clc_t;
+
+typedef struct {
     car_can_cm5_status_t cm5_status;
 } car_can_cm5_t;
 
@@ -2733,7 +2737,7 @@ typedef struct {
     car_can_motor_controller_command_t motor_controller_command;
     car_can_sweep_mpp_ts_t sweep_mpp_ts;
     car_can_bps_balancing_command_t bps_balancing_command;
-} car_can_external_t;
+} car_can_ext_t;
 
 typedef struct {
     car_can_lvc_status_t lvc_status;
@@ -2756,10 +2760,6 @@ typedef struct {
 } car_can_pedals_t;
 
 typedef struct {
-    car_can_top_shell_lighting_status_t top_shell_lighting_status;
-} car_can_top_shell_lighting_t;
-
-typedef struct {
     car_can_vcu_status_t vcu_status;
 } car_can_vcu_t;
 
@@ -2778,6 +2778,9 @@ typedef struct {
         can_message_info_t bps_balancing_status;
     } bps;
     struct {
+        can_message_info_t clc_status;
+    } clc;
+    struct {
         can_message_info_t cm5_status;
     } cm5;
     struct {
@@ -2791,7 +2794,7 @@ typedef struct {
         can_message_info_t motor_controller_command;
         can_message_info_t sweep_mpp_ts;
         can_message_info_t bps_balancing_command;
-    } external;
+    } ext;
     struct {
         can_message_info_t lvc_status;
         can_message_info_t lvc_current_data;
@@ -2809,9 +2812,6 @@ typedef struct {
     struct {
         can_message_info_t pedals_status;
     } pedals;
-    struct {
-        can_message_info_t top_shell_lighting_status;
-    } top_shell_lighting;
     struct {
         can_message_info_t vcu_status;
     } vcu;

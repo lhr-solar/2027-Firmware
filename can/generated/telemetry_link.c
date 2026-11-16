@@ -9,7 +9,7 @@ const telemetry_link_metadata_t telemetry_link = {
     .cm5 = {
         .telemetry_status = { .id = UINT32_C(1552), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
         .gps_data = { .id = UINT32_C(1553), .payload_bytes = 16, .wire_bytes = 16, .dlc = 10, .is_extended = false, .is_fd = true },
-        .on_board_watchdog = { .id = UINT32_C(1554), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
+        .board_health = { .id = UINT32_C(1554), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
         .sig_wave = { .id = UINT32_C(2045), .payload_bytes = 8, .wire_bytes = 8, .dlc = 8, .is_extended = false, .is_fd = false },
         .max_message_classical = { .id = UINT32_C(2046), .payload_bytes = 8, .wire_bytes = 8, .dlc = 8, .is_extended = false, .is_fd = false },
         .max_message_fd = { .id = UINT32_C(2047), .payload_bytes = 64, .wire_bytes = 64, .dlc = 15, .is_extended = false, .is_fd = true },
@@ -226,9 +226,9 @@ can_status_t telemetry_link_gps_data_unpack(telemetry_link_gps_data_t* dst, cons
     return CAN_OK;
 }
 
-can_status_t telemetry_link_on_board_watchdog_pack(can_frame_t* dst, const telemetry_link_on_board_watchdog_t* src) {
+can_status_t telemetry_link_board_health_pack(can_frame_t* dst, const telemetry_link_board_health_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct telemetry_link_raw_on_board_watchdog_t raw = {0};
+    struct telemetry_link_raw_board_health_t raw = {0};
     can_status_t status = CAN_OK;
     {
         uint8_t value = src->bps_watchdog;
@@ -275,20 +275,20 @@ can_status_t telemetry_link_on_board_watchdog_pack(can_frame_t* dst, const telem
     can_frame_t result = { .id = UINT32_C(1554),
         .len = 1, .is_extended = false,
         .is_fd = true };
-    if (telemetry_link_raw_on_board_watchdog_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (telemetry_link_raw_board_health_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t telemetry_link_on_board_watchdog_unpack(telemetry_link_on_board_watchdog_t* dst, const can_frame_t* src) {
+can_status_t telemetry_link_board_health_unpack(telemetry_link_board_health_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(1554) || src->len != 1 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct telemetry_link_raw_on_board_watchdog_t raw = {0};
-    if (telemetry_link_raw_on_board_watchdog_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    telemetry_link_on_board_watchdog_t result = {0};
+    struct telemetry_link_raw_board_health_t raw = {0};
+    if (telemetry_link_raw_board_health_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    telemetry_link_board_health_t result = {0};
     if (raw.bps_watchdog > INT64_C(1)) return CAN_RANGE;
     result.bps_watchdog = (uint8_t)raw.bps_watchdog;
     if (raw.vcu_watchdog > INT64_C(1)) return CAN_RANGE;

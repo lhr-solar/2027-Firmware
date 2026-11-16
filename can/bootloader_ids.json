@@ -117,7 +117,7 @@
       ]
     },
     {
-      "name": "TopShellLighting",
+      "name": "CLC",
       "subteam": "controls",
       "node_id": 10,
       "rx_can_id": "0x00A",

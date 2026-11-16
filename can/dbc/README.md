@@ -17,7 +17,7 @@ not wire-compatible with the old vehicle's team-defined messages.
 | DAqCAN | CM5 timestamp and sensor-board traffic | 19 | 5 |
 | TelemetryLink | CM5 TCP-native telemetry and test messages | 6 | 0 |
 
-Every message has exactly one declared transmitter. `External` is the command
+Every message has exactly one declared transmitter. `EXT` is the command
 injection tool/node for IDs 0x051–0x055. VCU receives BPSStatus
 on **CarCAN** and produces MPPT commands on **COTSCAN**; BPS is not a transmitter
 on that bus. DEI transmits all LWS configuration traffic; LWS remains
@@ -40,12 +40,12 @@ The telemetry/sensor bus is **DAqCAN**, using the formerly empty DAqCAN.dbc
 scaffold. TelemetryCAN.dbc is removed at the user's request. The empty
 bootloading.dbc scaffold remains. TCP-only definitions use TelemetryLink.dbc. Lighting
 messages live on **CarCAN**: DEI transmits BottomShellLightingStatus at
-**0x080**, and TopShellLighting transmits TopShellLightingStatus at **0x081**.
+**0x080**, and CLC transmits CLCStatus at **0x081**.
 Their IDs and payload layouts are retained. Bottom-shell circuitry is on DEI,
-not a separate CAN node. TopShellLighting is attached to CarCAN. DEI is attached to
+not a separate CAN node. CLC is attached to CarCAN. DEI is attached to
 CarCAN and COTSCAN. CM5 is the combined HMI
 and telemetry board: it transmits CM5Status (0x082) on CarCAN and
-TimestampSync on DAqCAN; TelemetryStatus, GPSData, and OnBoardWatchdog are TCP-only. Its former
+TimestampSync on DAqCAN; TelemetryStatus, GPSData, and BoardHealth are TCP-only. Its former
 self-watchdog bit is reserved rather than monitoring a second board identity.
 
 ## Shared encodings
@@ -326,7 +326,7 @@ their vendor-defined layouts.
 | 0x690–0x691 | Front and rear strain gauges |
 
 Other slots in 0x630–0x6DF remain unallocated. Infrastructure retains
-TimestampSync 0x620 on DAqCAN; TelemetryStatus 0x610, GPSData 0x611 and OnBoardWatchdog 0x612 are TCP-only.
+TimestampSync 0x620 on DAqCAN; TelemetryStatus 0x610, GPSData 0x611 and BoardHealth 0x612 are TCP-only.
 Bootloader node IDs are independent and unchanged.
 
 Chassis acceleration and gyro sample at 208 Hz and send four samples per axis

@@ -47,7 +47,7 @@ extern "C" {
 /* Frame ids. */
 #define TELEMETRY_LINK_RAW_TELEMETRY_STATUS_FRAME_ID (0x610u)
 #define TELEMETRY_LINK_RAW_GPS_DATA_FRAME_ID (0x611u)
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_FRAME_ID (0x612u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_FRAME_ID (0x612u)
 #define TELEMETRY_LINK_RAW_SIG_WAVE_FRAME_ID (0x7fdu)
 #define TELEMETRY_LINK_RAW_MAX_MESSAGE_CLASSICAL_FRAME_ID (0x7feu)
 #define TELEMETRY_LINK_RAW_MAX_MESSAGE_FD_FRAME_ID (0x7ffu)
@@ -55,7 +55,7 @@ extern "C" {
 /* Frame lengths in bytes. */
 #define TELEMETRY_LINK_RAW_TELEMETRY_STATUS_LENGTH (5u)
 #define TELEMETRY_LINK_RAW_GPS_DATA_LENGTH (16u)
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_LENGTH (1u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_LENGTH (1u)
 #define TELEMETRY_LINK_RAW_SIG_WAVE_LENGTH (8u)
 #define TELEMETRY_LINK_RAW_MAX_MESSAGE_CLASSICAL_LENGTH (8u)
 #define TELEMETRY_LINK_RAW_MAX_MESSAGE_FD_LENGTH (64u)
@@ -63,7 +63,7 @@ extern "C" {
 /* Extended or standard frame types. */
 #define TELEMETRY_LINK_RAW_TELEMETRY_STATUS_IS_EXTENDED (0)
 #define TELEMETRY_LINK_RAW_GPS_DATA_IS_EXTENDED (0)
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_IS_EXTENDED (0)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_IS_EXTENDED (0)
 #define TELEMETRY_LINK_RAW_SIG_WAVE_IS_EXTENDED (0)
 #define TELEMETRY_LINK_RAW_MAX_MESSAGE_CLASSICAL_IS_EXTENDED (0)
 #define TELEMETRY_LINK_RAW_MAX_MESSAGE_FD_IS_EXTENDED (0)
@@ -71,7 +71,7 @@ extern "C" {
 /* Frame cycle times in milliseconds. */
 #define TELEMETRY_LINK_RAW_TELEMETRY_STATUS_CYCLE_TIME_MS (500u)
 #define TELEMETRY_LINK_RAW_GPS_DATA_CYCLE_TIME_MS (200u)
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_CYCLE_TIME_MS (100u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_CYCLE_TIME_MS (100u)
 
 /* Signal choices. */
 #define TELEMETRY_LINK_RAW_TELEMETRY_STATUS_CELLULAR_CONNECTED_DISCONNECTED_CHOICE (0u)
@@ -101,28 +101,28 @@ extern "C" {
 #define TELEMETRY_LINK_RAW_GPS_DATA_GPS_FIX_FIX2_D_CHOICE (1u)
 #define TELEMETRY_LINK_RAW_GPS_DATA_GPS_FIX_FIX3_D_CHOICE (2u)
 
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_BPS_WATCHDOG_ALIVE_CHOICE (0u)
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_BPS_WATCHDOG_TIMED_OUT_CHOICE (1u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_BPS_WATCHDOG_ALIVE_CHOICE (0u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_BPS_WATCHDOG_TIMED_OUT_CHOICE (1u)
 
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_VCU_WATCHDOG_ALIVE_CHOICE (0u)
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_VCU_WATCHDOG_TIMED_OUT_CHOICE (1u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_VCU_WATCHDOG_ALIVE_CHOICE (0u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_VCU_WATCHDOG_TIMED_OUT_CHOICE (1u)
 
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_DEI_WATCHDOG_ALIVE_CHOICE (0u)
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_DEI_WATCHDOG_TIMED_OUT_CHOICE (1u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_DEI_WATCHDOG_ALIVE_CHOICE (0u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_DEI_WATCHDOG_TIMED_OUT_CHOICE (1u)
 
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_ALIVE_CHOICE (0u)
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_TIMED_OUT_CHOICE (1u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_PEDALS_WATCHDOG_ALIVE_CHOICE (0u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_PEDALS_WATCHDOG_TIMED_OUT_CHOICE (1u)
 
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_PDU_WATCHDOG_ALIVE_CHOICE (0u)
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_PDU_WATCHDOG_TIMED_OUT_CHOICE (1u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_PDU_WATCHDOG_ALIVE_CHOICE (0u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_PDU_WATCHDOG_TIMED_OUT_CHOICE (1u)
 
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_LVC_WATCHDOG_ALIVE_CHOICE (0u)
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_LVC_WATCHDOG_TIMED_OUT_CHOICE (1u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_LVC_WATCHDOG_ALIVE_CHOICE (0u)
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_LVC_WATCHDOG_TIMED_OUT_CHOICE (1u)
 
 /* Frame Names. */
 #define TELEMETRY_LINK_RAW_TELEMETRY_STATUS_NAME "TelemetryStatus"
 #define TELEMETRY_LINK_RAW_GPS_DATA_NAME "GPSData"
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_NAME "OnBoardWatchdog"
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_NAME "BoardHealth"
 #define TELEMETRY_LINK_RAW_SIG_WAVE_NAME "Sig_Wave"
 #define TELEMETRY_LINK_RAW_MAX_MESSAGE_CLASSICAL_NAME "max_message_classical"
 #define TELEMETRY_LINK_RAW_MAX_MESSAGE_FD_NAME "max_message_fd"
@@ -145,12 +145,12 @@ extern "C" {
 #define TELEMETRY_LINK_RAW_GPS_DATA_GPS_HEADING_NAME "GPSHeading"
 #define TELEMETRY_LINK_RAW_GPS_DATA_GPS_ALTITUDE_NAME "GPSAltitude"
 #define TELEMETRY_LINK_RAW_GPS_DATA_SATELLITES_IN_USE_NAME "SatellitesInUse"
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_BPS_WATCHDOG_NAME "BPSWatchdog"
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_VCU_WATCHDOG_NAME "VCUWatchdog"
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_DEI_WATCHDOG_NAME "DEIWatchdog"
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_NAME "PedalsWatchdog"
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_PDU_WATCHDOG_NAME "PDUWatchdog"
-#define TELEMETRY_LINK_RAW_ON_BOARD_WATCHDOG_LVC_WATCHDOG_NAME "LVCWatchdog"
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_BPS_WATCHDOG_NAME "BPSWatchdog"
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_VCU_WATCHDOG_NAME "VCUWatchdog"
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_DEI_WATCHDOG_NAME "DEIWatchdog"
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_PEDALS_WATCHDOG_NAME "PedalsWatchdog"
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_PDU_WATCHDOG_NAME "PDUWatchdog"
+#define TELEMETRY_LINK_RAW_BOARD_HEALTH_LVC_WATCHDOG_NAME "LVCWatchdog"
 #define TELEMETRY_LINK_RAW_SIG_WAVE_SINE_NAME "Sine"
 #define TELEMETRY_LINK_RAW_SIG_WAVE_COSINE_NAME "Cosine"
 #define TELEMETRY_LINK_RAW_MAX_MESSAGE_CLASSICAL_SG0_NAME "sg0"
@@ -398,13 +398,13 @@ struct telemetry_link_raw_gps_data_t {
 };
 
 /**
- * Signals in message OnBoardWatchdog.
+ * Signals in message BoardHealth.
  *
  * CM5 reports watchdog state of other boards: 0 alive, 1 timed out. Former CM5 self-watchdog removed; bit 7 is reserved.
  *
  * All signal values are as on the CAN bus.
  */
-struct telemetry_link_raw_on_board_watchdog_t {
+struct telemetry_link_raw_board_health_t {
     /**
      * BPSWatchdog
      *
@@ -1233,7 +1233,7 @@ bool telemetry_link_raw_gps_data_gps_altitude_is_in_range(int16_t value);
 bool telemetry_link_raw_gps_data_satellites_in_use_is_in_range(uint8_t value);
 
 /**
- * Pack message OnBoardWatchdog.
+ * Pack message BoardHealth.
  *
  * @param[out] dst_p Buffer to pack the message into.
  * @param[in] src_p Data to pack.
@@ -1241,13 +1241,13 @@ bool telemetry_link_raw_gps_data_satellites_in_use_is_in_range(uint8_t value);
  *
  * @return Size of packed data, or negative error code.
  */
-int telemetry_link_raw_on_board_watchdog_pack(
+int telemetry_link_raw_board_health_pack(
     uint8_t *dst_p,
-    const struct telemetry_link_raw_on_board_watchdog_t *src_p,
+    const struct telemetry_link_raw_board_health_t *src_p,
     size_t size);
 
 /**
- * Unpack message OnBoardWatchdog.
+ * Unpack message BoardHealth.
  *
  * @param[out] dst_p Object to unpack the message into.
  * @param[in] src_p Message to unpack.
@@ -1255,19 +1255,19 @@ int telemetry_link_raw_on_board_watchdog_pack(
  *
  * @return zero(0) or negative error code.
  */
-int telemetry_link_raw_on_board_watchdog_unpack(
-    struct telemetry_link_raw_on_board_watchdog_t *dst_p,
+int telemetry_link_raw_board_health_unpack(
+    struct telemetry_link_raw_board_health_t *dst_p,
     const uint8_t *src_p,
     size_t size);
 
 /**
- * Init message fields to default values from OnBoardWatchdog.
+ * Init message fields to default values from BoardHealth.
  *
  * @param[in] msg_p Message to init.
  *
  * @return zero(0) on success or (-1) in case of nullptr argument.
  */
-int telemetry_link_raw_on_board_watchdog_init(struct telemetry_link_raw_on_board_watchdog_t *msg_p);
+int telemetry_link_raw_board_health_init(struct telemetry_link_raw_board_health_t *msg_p);
 
 /**
  * Check that given signal is in allowed range.
@@ -1276,7 +1276,7 @@ int telemetry_link_raw_on_board_watchdog_init(struct telemetry_link_raw_on_board
  *
  * @return true if in range, false otherwise.
  */
-bool telemetry_link_raw_on_board_watchdog_bps_watchdog_is_in_range(uint8_t value);
+bool telemetry_link_raw_board_health_bps_watchdog_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1285,7 +1285,7 @@ bool telemetry_link_raw_on_board_watchdog_bps_watchdog_is_in_range(uint8_t value
  *
  * @return true if in range, false otherwise.
  */
-bool telemetry_link_raw_on_board_watchdog_vcu_watchdog_is_in_range(uint8_t value);
+bool telemetry_link_raw_board_health_vcu_watchdog_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1294,7 +1294,7 @@ bool telemetry_link_raw_on_board_watchdog_vcu_watchdog_is_in_range(uint8_t value
  *
  * @return true if in range, false otherwise.
  */
-bool telemetry_link_raw_on_board_watchdog_dei_watchdog_is_in_range(uint8_t value);
+bool telemetry_link_raw_board_health_dei_watchdog_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1303,7 +1303,7 @@ bool telemetry_link_raw_on_board_watchdog_dei_watchdog_is_in_range(uint8_t value
  *
  * @return true if in range, false otherwise.
  */
-bool telemetry_link_raw_on_board_watchdog_pedals_watchdog_is_in_range(uint8_t value);
+bool telemetry_link_raw_board_health_pedals_watchdog_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1312,7 +1312,7 @@ bool telemetry_link_raw_on_board_watchdog_pedals_watchdog_is_in_range(uint8_t va
  *
  * @return true if in range, false otherwise.
  */
-bool telemetry_link_raw_on_board_watchdog_pdu_watchdog_is_in_range(uint8_t value);
+bool telemetry_link_raw_board_health_pdu_watchdog_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1321,7 +1321,7 @@ bool telemetry_link_raw_on_board_watchdog_pdu_watchdog_is_in_range(uint8_t value
  *
  * @return true if in range, false otherwise.
  */
-bool telemetry_link_raw_on_board_watchdog_lvc_watchdog_is_in_range(uint8_t value);
+bool telemetry_link_raw_board_health_lvc_watchdog_is_in_range(uint8_t value);
 
 /**
  * Pack message Sig_Wave.

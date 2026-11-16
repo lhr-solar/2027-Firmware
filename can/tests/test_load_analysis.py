@@ -148,7 +148,7 @@ class LoadAnalysisTests(unittest.TestCase):
         self.assertIn("LWS_Standard", {row["name"] for row in car})
         self.assertIn("MPPTAStatus", {row["name"] for row in car})
         self.assertFalse(any(row["name"] == "TimestampSync" for row in tcp))
-        for name in ("TelemetryStatus", "GPSData", "OnBoardWatchdog"):
+        for name in ("TelemetryStatus", "GPSData", "BoardHealth"):
             self.assertIn(name, {row["name"] for row in tcp})
             self.assertNotIn(name, {m.name for m in self.databases["DAqCAN"].messages})
         self.assertIn("DAqCAN", report["native_buses"])

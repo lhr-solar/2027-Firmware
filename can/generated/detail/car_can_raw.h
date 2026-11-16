@@ -65,7 +65,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_FRAME_ID (0x77u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_FRAME_ID (0x78u)
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_FRAME_ID (0x80u)
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_FRAME_ID (0x81u)
+#define CAR_CAN_RAW_CLC_STATUS_FRAME_ID (0x81u)
 #define CAR_CAN_RAW_CM5_STATUS_FRAME_ID (0x82u)
 #define CAR_CAN_RAW_LVC_STATUS_FRAME_ID (0x90u)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_FRAME_ID (0x91u)
@@ -99,7 +99,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_LENGTH (48u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_LENGTH (6u)
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_LENGTH (1u)
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_LENGTH (1u)
+#define CAR_CAN_RAW_CLC_STATUS_LENGTH (1u)
 #define CAR_CAN_RAW_CM5_STATUS_LENGTH (5u)
 #define CAR_CAN_RAW_LVC_STATUS_LENGTH (2u)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_LENGTH (7u)
@@ -133,7 +133,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_IS_EXTENDED (0)
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_IS_EXTENDED (0)
+#define CAR_CAN_RAW_CLC_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_CM5_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_LVC_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_IS_EXTENDED (0)
@@ -162,7 +162,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_CYCLE_TIME_MS (1000u)
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_CYCLE_TIME_MS (1000u)
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_CYCLE_TIME_MS (200u)
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_CYCLE_TIME_MS (200u)
+#define CAR_CAN_RAW_CLC_STATUS_CYCLE_TIME_MS (200u)
 #define CAR_CAN_RAW_CM5_STATUS_CYCLE_TIME_MS (500u)
 #define CAR_CAN_RAW_LVC_STATUS_CYCLE_TIME_MS (100u)
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_CYCLE_TIME_MS (100u)
@@ -603,14 +603,14 @@ extern "C" {
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_HEADLIGHTS_ON_OFF_CHOICE (0u)
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_HEADLIGHTS_ON_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_BRAKE_ON_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_BRAKE_ON_ON_CHOICE (1u)
+#define CAR_CAN_RAW_CLC_STATUS_BRAKE_ON_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_CLC_STATUS_BRAKE_ON_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_ON_CHOICE (1u)
+#define CAR_CAN_RAW_CLC_STATUS_LEFT_SIGNAL_ON_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_CLC_STATUS_LEFT_SIGNAL_ON_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_ON_CHOICE (1u)
+#define CAR_CAN_RAW_CLC_STATUS_RIGHT_SIGNAL_ON_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_CLC_STATUS_RIGHT_SIGNAL_ON_ON_CHOICE (1u)
 
 #define CAR_CAN_RAW_CM5_STATUS_WARNING_TEMPERATURE_NO_WARNING_CHOICE (0u)
 #define CAR_CAN_RAW_CM5_STATUS_WARNING_TEMPERATURE_WARNING_CHOICE (1u)
@@ -1026,7 +1026,7 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_FAULT_TEMPERATURE_SNAPSHOT_NAME "BPSFaultTemperatureSnapshot"
 #define CAR_CAN_RAW_BPS_BALANCING_STATUS_NAME "BPSBalancingStatus"
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_NAME "BottomShellLightingStatus"
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_NAME "TopShellLightingStatus"
+#define CAR_CAN_RAW_CLC_STATUS_NAME "CLCStatus"
 #define CAR_CAN_RAW_CM5_STATUS_NAME "CM5Status"
 #define CAR_CAN_RAW_LVC_STATUS_NAME "LVCStatus"
 #define CAR_CAN_RAW_LVC_CURRENT_DATA_NAME "LVCCurrentData"
@@ -1341,9 +1341,9 @@ extern "C" {
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_NAME "LeftSignalOn"
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_NAME "RightSignalOn"
 #define CAR_CAN_RAW_BOTTOM_SHELL_LIGHTING_STATUS_HEADLIGHTS_ON_NAME "HeadlightsOn"
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_BRAKE_ON_NAME "BrakeOn"
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_LEFT_SIGNAL_ON_NAME "LeftSignalOn"
-#define CAR_CAN_RAW_TOP_SHELL_LIGHTING_STATUS_RIGHT_SIGNAL_ON_NAME "RightSignalOn"
+#define CAR_CAN_RAW_CLC_STATUS_BRAKE_ON_NAME "BrakeOn"
+#define CAR_CAN_RAW_CLC_STATUS_LEFT_SIGNAL_ON_NAME "LeftSignalOn"
+#define CAR_CAN_RAW_CLC_STATUS_RIGHT_SIGNAL_ON_NAME "RightSignalOn"
 #define CAR_CAN_RAW_CM5_STATUS_WARNING_TEMPERATURE_NAME "WarningTemperature"
 #define CAR_CAN_RAW_CM5_STATUS_WARNING_OVER_TEMPERATURE_NAME "WarningOverTemperature"
 #define CAR_CAN_RAW_CM5_STATUS_WARNING_DISPLAY_DISCONNECTED_NAME "WarningDisplayDisconnected"
@@ -4430,13 +4430,13 @@ struct car_can_raw_bottom_shell_lighting_status_t {
 };
 
 /**
- * Signals in message TopShellLightingStatus.
+ * Signals in message CLCStatus.
  *
  * 2027 team-defined layout; physical values use the shared scaling conventions.
  *
  * All signal values are as on the CAN bus.
  */
-struct car_can_raw_top_shell_lighting_status_t {
+struct car_can_raw_clc_status_t {
     /**
      * BrakeOn
      *
@@ -9697,7 +9697,7 @@ bool car_can_raw_bottom_shell_lighting_status_right_signal_on_is_in_range(uint8_
 bool car_can_raw_bottom_shell_lighting_status_headlights_on_is_in_range(uint8_t value);
 
 /**
- * Pack message TopShellLightingStatus.
+ * Pack message CLCStatus.
  *
  * @param[out] dst_p Buffer to pack the message into.
  * @param[in] src_p Data to pack.
@@ -9705,13 +9705,13 @@ bool car_can_raw_bottom_shell_lighting_status_headlights_on_is_in_range(uint8_t 
  *
  * @return Size of packed data, or negative error code.
  */
-int car_can_raw_top_shell_lighting_status_pack(
+int car_can_raw_clc_status_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_top_shell_lighting_status_t *src_p,
+    const struct car_can_raw_clc_status_t *src_p,
     size_t size);
 
 /**
- * Unpack message TopShellLightingStatus.
+ * Unpack message CLCStatus.
  *
  * @param[out] dst_p Object to unpack the message into.
  * @param[in] src_p Message to unpack.
@@ -9719,19 +9719,19 @@ int car_can_raw_top_shell_lighting_status_pack(
  *
  * @return zero(0) or negative error code.
  */
-int car_can_raw_top_shell_lighting_status_unpack(
-    struct car_can_raw_top_shell_lighting_status_t *dst_p,
+int car_can_raw_clc_status_unpack(
+    struct car_can_raw_clc_status_t *dst_p,
     const uint8_t *src_p,
     size_t size);
 
 /**
- * Init message fields to default values from TopShellLightingStatus.
+ * Init message fields to default values from CLCStatus.
  *
  * @param[in] msg_p Message to init.
  *
  * @return zero(0) on success or (-1) in case of nullptr argument.
  */
-int car_can_raw_top_shell_lighting_status_init(struct car_can_raw_top_shell_lighting_status_t *msg_p);
+int car_can_raw_clc_status_init(struct car_can_raw_clc_status_t *msg_p);
 
 /**
  * Check that given signal is in allowed range.
@@ -9740,7 +9740,7 @@ int car_can_raw_top_shell_lighting_status_init(struct car_can_raw_top_shell_ligh
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_top_shell_lighting_status_brake_on_is_in_range(uint8_t value);
+bool car_can_raw_clc_status_brake_on_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9749,7 +9749,7 @@ bool car_can_raw_top_shell_lighting_status_brake_on_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_top_shell_lighting_status_left_signal_on_is_in_range(uint8_t value);
+bool car_can_raw_clc_status_left_signal_on_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -9758,7 +9758,7 @@ bool car_can_raw_top_shell_lighting_status_left_signal_on_is_in_range(uint8_t va
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_top_shell_lighting_status_right_signal_on_is_in_range(uint8_t value);
+bool car_can_raw_clc_status_right_signal_on_is_in_range(uint8_t value);
 
 /**
  * Pack message CM5Status.

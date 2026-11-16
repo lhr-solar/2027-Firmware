@@ -106,34 +106,34 @@ can_status_t telemetry_link_gps_data_unpack(telemetry_link_gps_data_t* dst, cons
 
 /** Named raw values for BPSWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_BPS_WATCHDOG_ALIVE = 0,
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_BPS_WATCHDOG_TIMED_OUT = 1,
-} telemetry_link_on_board_watchdog_bps_watchdog_choice_t;
+    TELEMETRY_LINK_BOARD_HEALTH_BPS_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_BOARD_HEALTH_BPS_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_board_health_bps_watchdog_choice_t;
 /** Named raw values for VCUWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_VCU_WATCHDOG_ALIVE = 0,
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_VCU_WATCHDOG_TIMED_OUT = 1,
-} telemetry_link_on_board_watchdog_vcu_watchdog_choice_t;
+    TELEMETRY_LINK_BOARD_HEALTH_VCU_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_BOARD_HEALTH_VCU_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_board_health_vcu_watchdog_choice_t;
 /** Named raw values for DEIWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_DEI_WATCHDOG_ALIVE = 0,
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_DEI_WATCHDOG_TIMED_OUT = 1,
-} telemetry_link_on_board_watchdog_dei_watchdog_choice_t;
+    TELEMETRY_LINK_BOARD_HEALTH_DEI_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_BOARD_HEALTH_DEI_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_board_health_dei_watchdog_choice_t;
 /** Named raw values for PedalsWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_ALIVE = 0,
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_PEDALS_WATCHDOG_TIMED_OUT = 1,
-} telemetry_link_on_board_watchdog_pedals_watchdog_choice_t;
+    TELEMETRY_LINK_BOARD_HEALTH_PEDALS_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_BOARD_HEALTH_PEDALS_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_board_health_pedals_watchdog_choice_t;
 /** Named raw values for PDUWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_PDU_WATCHDOG_ALIVE = 0,
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_PDU_WATCHDOG_TIMED_OUT = 1,
-} telemetry_link_on_board_watchdog_pdu_watchdog_choice_t;
+    TELEMETRY_LINK_BOARD_HEALTH_PDU_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_BOARD_HEALTH_PDU_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_board_health_pdu_watchdog_choice_t;
 /** Named raw values for LVCWatchdog; unknown values remain integers. */
 typedef enum {
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_LVC_WATCHDOG_ALIVE = 0,
-    TELEMETRY_LINK_ON_BOARD_WATCHDOG_LVC_WATCHDOG_TIMED_OUT = 1,
-} telemetry_link_on_board_watchdog_lvc_watchdog_choice_t;
+    TELEMETRY_LINK_BOARD_HEALTH_LVC_WATCHDOG_ALIVE = 0,
+    TELEMETRY_LINK_BOARD_HEALTH_LVC_WATCHDOG_TIMED_OUT = 1,
+} telemetry_link_board_health_lvc_watchdog_choice_t;
 /** CM5 reports watchdog state of other boards: 0 alive, 1 timed out. Former CM5 self-watchdog removed; bit 7 is reserved. */
 typedef struct {
     /** BPSWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. BPSWatchdog */
@@ -148,14 +148,14 @@ typedef struct {
     uint8_t pdu_watchdog;
     /** LVCWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. LVCWatchdog */
     uint8_t lvc_watchdog;
-} telemetry_link_on_board_watchdog_t;
+} telemetry_link_board_health_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t telemetry_link_on_board_watchdog_pack(can_frame_t* dst, const telemetry_link_on_board_watchdog_t* src);
+can_status_t telemetry_link_board_health_pack(can_frame_t* dst, const telemetry_link_board_health_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t telemetry_link_on_board_watchdog_unpack(telemetry_link_on_board_watchdog_t* dst, const can_frame_t* src);
+can_status_t telemetry_link_board_health_unpack(telemetry_link_board_health_t* dst, const can_frame_t* src);
 
 /** On-demand telemetry test frame; no assumed periodic rate. */
 typedef struct {
@@ -341,7 +341,7 @@ can_status_t telemetry_link_max_message_fd_unpack(telemetry_link_max_message_fd_
 typedef struct {
     telemetry_link_telemetry_status_t telemetry_status;
     telemetry_link_gps_data_t gps_data;
-    telemetry_link_on_board_watchdog_t on_board_watchdog;
+    telemetry_link_board_health_t board_health;
     telemetry_link_sig_wave_t sig_wave;
     telemetry_link_max_message_classical_t max_message_classical;
     telemetry_link_max_message_fd_t max_message_fd;
@@ -352,7 +352,7 @@ typedef struct {
     struct {
         can_message_info_t telemetry_status;
         can_message_info_t gps_data;
-        can_message_info_t on_board_watchdog;
+        can_message_info_t board_health;
         can_message_info_t sig_wave;
         can_message_info_t max_message_classical;
         can_message_info_t max_message_fd;

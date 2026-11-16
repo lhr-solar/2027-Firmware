@@ -18,6 +18,9 @@ const car_can_metadata_t car_can = {
         .bps_fault_temperature_snapshot = { .id = UINT32_C(119), .payload_bytes = 48, .wire_bytes = 48, .dlc = 14, .is_extended = false, .is_fd = true },
         .bps_balancing_status = { .id = UINT32_C(120), .payload_bytes = 6, .wire_bytes = 6, .dlc = 6, .is_extended = false, .is_fd = true },
     },
+    .clc = {
+        .clc_status = { .id = UINT32_C(129), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = false },
+    },
     .cm5 = {
         .cm5_status = { .id = UINT32_C(130), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
     },
@@ -26,7 +29,7 @@ const car_can_metadata_t car_can = {
         .lighting_command = { .id = UINT32_C(100), .payload_bytes = 4, .wire_bytes = 4, .dlc = 4, .is_extended = false, .is_fd = false },
         .bottom_shell_lighting_status = { .id = UINT32_C(128), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = false },
     },
-    .external = {
+    .ext = {
         .bps_command = { .id = UINT32_C(81), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
         .pdu_command = { .id = UINT32_C(82), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
         .motor_controller_command = { .id = UINT32_C(83), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
@@ -49,9 +52,6 @@ const car_can_metadata_t car_can = {
     },
     .pedals = {
         .pedals_status = { .id = UINT32_C(97), .payload_bytes = 6, .wire_bytes = 6, .dlc = 6, .is_extended = false, .is_fd = true },
-    },
-    .top_shell_lighting = {
-        .top_shell_lighting_status = { .id = UINT32_C(129), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = false },
     },
     .vcu = {
         .vcu_status = { .id = UINT32_C(99), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
@@ -3664,9 +3664,9 @@ can_status_t car_can_bottom_shell_lighting_status_unpack(car_can_bottom_shell_li
     return CAN_OK;
 }
 
-can_status_t car_can_top_shell_lighting_status_pack(can_frame_t* dst, const car_can_top_shell_lighting_status_t* src) {
+can_status_t car_can_clc_status_pack(can_frame_t* dst, const car_can_clc_status_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct car_can_raw_top_shell_lighting_status_t raw = {0};
+    struct car_can_raw_clc_status_t raw = {0};
     can_status_t status = CAN_OK;
     {
         uint8_t value = src->brake_on;
@@ -3692,20 +3692,20 @@ can_status_t car_can_top_shell_lighting_status_pack(can_frame_t* dst, const car_
     can_frame_t result = { .id = UINT32_C(129),
         .len = 1, .is_extended = false,
         .is_fd = false };
-    if (car_can_raw_top_shell_lighting_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (car_can_raw_clc_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t car_can_top_shell_lighting_status_unpack(car_can_top_shell_lighting_status_t* dst, const can_frame_t* src) {
+can_status_t car_can_clc_status_unpack(car_can_clc_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(129) || src->len != 1 ||
         src->is_extended != false ||
         src->is_fd != false ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct car_can_raw_top_shell_lighting_status_t raw = {0};
-    if (car_can_raw_top_shell_lighting_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    car_can_top_shell_lighting_status_t result = {0};
+    struct car_can_raw_clc_status_t raw = {0};
+    if (car_can_raw_clc_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    car_can_clc_status_t result = {0};
     if (raw.brake_on > INT64_C(1)) return CAN_RANGE;
     result.brake_on = (uint8_t)raw.brake_on;
     if (raw.left_signal_on > INT64_C(1)) return CAN_RANGE;

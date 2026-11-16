@@ -412,9 +412,9 @@ bool telemetry_link_raw_gps_data_satellites_in_use_is_in_range(uint8_t value)
     return (true);
 }
 
-int telemetry_link_raw_on_board_watchdog_pack(
+int telemetry_link_raw_board_health_pack(
     uint8_t *dst_p,
-    const struct telemetry_link_raw_on_board_watchdog_t *src_p,
+    const struct telemetry_link_raw_board_health_t *src_p,
     size_t size)
 {
     if (size < 1u) {
@@ -433,8 +433,8 @@ int telemetry_link_raw_on_board_watchdog_pack(
     return (1);
 }
 
-int telemetry_link_raw_on_board_watchdog_unpack(
-    struct telemetry_link_raw_on_board_watchdog_t *dst_p,
+int telemetry_link_raw_board_health_unpack(
+    struct telemetry_link_raw_board_health_t *dst_p,
     const uint8_t *src_p,
     size_t size)
 {
@@ -452,41 +452,41 @@ int telemetry_link_raw_on_board_watchdog_unpack(
     return (0);
 }
 
-int telemetry_link_raw_on_board_watchdog_init(struct telemetry_link_raw_on_board_watchdog_t *msg_p)
+int telemetry_link_raw_board_health_init(struct telemetry_link_raw_board_health_t *msg_p)
 {
     if (msg_p == NULL) return -1;
 
-    memset(msg_p, 0, sizeof(struct telemetry_link_raw_on_board_watchdog_t));
+    memset(msg_p, 0, sizeof(struct telemetry_link_raw_board_health_t));
 
     return 0;
 }
 
-bool telemetry_link_raw_on_board_watchdog_bps_watchdog_is_in_range(uint8_t value)
+bool telemetry_link_raw_board_health_bps_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool telemetry_link_raw_on_board_watchdog_vcu_watchdog_is_in_range(uint8_t value)
+bool telemetry_link_raw_board_health_vcu_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool telemetry_link_raw_on_board_watchdog_dei_watchdog_is_in_range(uint8_t value)
+bool telemetry_link_raw_board_health_dei_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool telemetry_link_raw_on_board_watchdog_pedals_watchdog_is_in_range(uint8_t value)
+bool telemetry_link_raw_board_health_pedals_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool telemetry_link_raw_on_board_watchdog_pdu_watchdog_is_in_range(uint8_t value)
+bool telemetry_link_raw_board_health_pdu_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool telemetry_link_raw_on_board_watchdog_lvc_watchdog_is_in_range(uint8_t value)
+bool telemetry_link_raw_board_health_lvc_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }

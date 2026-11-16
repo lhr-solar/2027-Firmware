@@ -89,7 +89,7 @@ BO_ 1553 GPSData: 16 CM5
  SG_ GPSAltitude : 100|16@1- (0.1,0) [-3276.8|3276.7] "m" Vector__XXX
  SG_ SatellitesInUse : 116|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
 
-BO_ 1554 OnBoardWatchdog: 1 CM5
+BO_ 1554 BoardHealth: 1 CM5
  SG_ BPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ VCUWatchdog : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ DEIWatchdog : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
