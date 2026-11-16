@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: BPS DEI EXT LVC CM5 PDU Pedals VCU CLC
+BU_: BPS DEI EXT LVC CM5 PDU PPS VCU CLC
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
@@ -135,7 +135,7 @@ BO_ 96 BPSStatus: 16 BPS
  SG_ BatteryFanTach2 : 88|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
  SG_ BPSFanTach : 100|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
 
-BO_ 97 PedalsStatus: 6 Pedals
+BO_ 97 PPSStatus: 6 PPS
  SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultNoAccelerator : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningMainAcceleratorDisconnect : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -167,11 +167,11 @@ BO_ 99 VCUStatus: 12 VCU
  SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultMotor : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultBPS : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultPedals : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultPPS : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultMotorControllerWatchdog : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultBPSWatchdog : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultDriverInputWatchdog : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultPedalsWatchdog : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultPPSWatchdog : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningTipping : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningDirectionChangeLockout : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningMotorControllerFan : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -739,11 +739,11 @@ CM_ SG_ 99 WarningMotorFan "WarningMotorFan";
 CM_ SG_ 99 WarningMotorControllerFan "WarningMotorControllerFan";
 CM_ SG_ 99 WarningDirectionChangeLockout "WarningDirectionChangeLockout";
 CM_ SG_ 99 WarningTipping "WarningTipping";
-CM_ SG_ 99 FaultPedalsWatchdog "FaultPedalsWatchdog";
+CM_ SG_ 99 FaultPPSWatchdog "FaultPPSWatchdog";
 CM_ SG_ 99 FaultDriverInputWatchdog "FaultDriverInputWatchdog";
 CM_ SG_ 99 FaultBPSWatchdog "FaultBPSWatchdog";
 CM_ SG_ 99 FaultMotorControllerWatchdog "FaultMotorControllerWatchdog";
-CM_ SG_ 99 FaultPedals "FaultPedals";
+CM_ SG_ 99 FaultPPS "FaultPPS";
 CM_ SG_ 99 FaultBPS "FaultBPS";
 CM_ SG_ 99 FaultMotor "FaultMotor";
 CM_ SG_ 99 Status "Status";
@@ -1315,11 +1315,11 @@ BA_ "ValueTable" SG_ 99 WarningMotorFan "WarningState";
 BA_ "ValueTable" SG_ 99 WarningMotorControllerFan "WarningState";
 BA_ "ValueTable" SG_ 99 WarningDirectionChangeLockout "WarningState";
 BA_ "ValueTable" SG_ 99 WarningTipping "WarningState";
-BA_ "ValueTable" SG_ 99 FaultPedalsWatchdog "FaultState";
+BA_ "ValueTable" SG_ 99 FaultPPSWatchdog "FaultState";
 BA_ "ValueTable" SG_ 99 FaultDriverInputWatchdog "FaultState";
 BA_ "ValueTable" SG_ 99 FaultBPSWatchdog "FaultState";
 BA_ "ValueTable" SG_ 99 FaultMotorControllerWatchdog "FaultState";
-BA_ "ValueTable" SG_ 99 FaultPedals "FaultState";
+BA_ "ValueTable" SG_ 99 FaultPPS "FaultState";
 BA_ "ValueTable" SG_ 99 FaultBPS "FaultState";
 BA_ "ValueTable" SG_ 99 FaultMotor "FaultState";
 BA_ "ValueTable" SG_ 99 Status "FaultState";
@@ -1725,11 +1725,11 @@ VAL_ 99 WarningMotorFan 0 "NoWarning" 1 "Warning" ;
 VAL_ 99 WarningMotorControllerFan 0 "NoWarning" 1 "Warning" ;
 VAL_ 99 WarningDirectionChangeLockout 0 "NoWarning" 1 "Warning" ;
 VAL_ 99 WarningTipping 0 "NoWarning" 1 "Warning" ;
-VAL_ 99 FaultPedalsWatchdog 0 "OK" 1 "Fault" ;
+VAL_ 99 FaultPPSWatchdog 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultDriverInputWatchdog 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultBPSWatchdog 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultMotorControllerWatchdog 0 "OK" 1 "Fault" ;
-VAL_ 99 FaultPedals 0 "OK" 1 "Fault" ;
+VAL_ 99 FaultPPS 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultBPS 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultMotor 0 "OK" 1 "Fault" ;
 VAL_ 99 Status 0 "OK" 1 "Fault" ;

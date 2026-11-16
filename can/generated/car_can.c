@@ -50,8 +50,8 @@ const car_can_metadata_t car_can = {
         .pdu_temperature_data = { .id = UINT32_C(163), .payload_bytes = 20, .wire_bytes = 20, .dlc = 11, .is_extended = false, .is_fd = true },
         .pdu_over_current_snapshot = { .id = UINT32_C(164), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
     },
-    .pedals = {
-        .pedals_status = { .id = UINT32_C(97), .payload_bytes = 6, .wire_bytes = 6, .dlc = 6, .is_extended = false, .is_fd = true },
+    .pps = {
+        .pps_status = { .id = UINT32_C(97), .payload_bytes = 6, .wire_bytes = 6, .dlc = 6, .is_extended = false, .is_fd = true },
     },
     .vcu = {
         .vcu_status = { .id = UINT32_C(99), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
@@ -706,9 +706,9 @@ can_status_t car_can_bps_status_unpack(car_can_bps_status_t* dst, const can_fram
     return CAN_OK;
 }
 
-can_status_t car_can_pedals_status_pack(can_frame_t* dst, const car_can_pedals_status_t* src) {
+can_status_t car_can_pps_status_pack(can_frame_t* dst, const car_can_pps_status_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct car_can_raw_pedals_status_t raw = {0};
+    struct car_can_raw_pps_status_t raw = {0};
     can_status_t status = CAN_OK;
     {
         uint8_t value = src->status;
@@ -803,20 +803,20 @@ can_status_t car_can_pedals_status_pack(can_frame_t* dst, const car_can_pedals_s
     can_frame_t result = { .id = UINT32_C(97),
         .len = 6, .is_extended = false,
         .is_fd = true };
-    if (car_can_raw_pedals_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (car_can_raw_pps_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t car_can_pedals_status_unpack(car_can_pedals_status_t* dst, const can_frame_t* src) {
+can_status_t car_can_pps_status_unpack(car_can_pps_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(97) || src->len != 6 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct car_can_raw_pedals_status_t raw = {0};
-    if (car_can_raw_pedals_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    car_can_pedals_status_t result = {0};
+    struct car_can_raw_pps_status_t raw = {0};
+    if (car_can_raw_pps_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    car_can_pps_status_t result = {0};
     if (raw.status > INT64_C(1)) return CAN_RANGE;
     result.status = (uint8_t)raw.status;
     if (raw.fault_no_accelerator > INT64_C(1)) return CAN_RANGE;
@@ -1002,11 +1002,11 @@ can_status_t car_can_vcu_status_pack(can_frame_t* dst, const car_can_vcu_status_
         raw.fault_bps = (uint8_t)value;
     }
     {
-        uint8_t value = src->fault_pedals;
+        uint8_t value = src->fault_pps;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.fault_pedals = (uint8_t)value;
+        raw.fault_pps = (uint8_t)value;
     }
     {
         uint8_t value = src->fault_motor_controller_watchdog;
@@ -1030,11 +1030,11 @@ can_status_t car_can_vcu_status_pack(can_frame_t* dst, const car_can_vcu_status_
         raw.fault_driver_input_watchdog = (uint8_t)value;
     }
     {
-        uint8_t value = src->fault_pedals_watchdog;
+        uint8_t value = src->fault_pps_watchdog;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.fault_pedals_watchdog = (uint8_t)value;
+        raw.fault_pps_watchdog = (uint8_t)value;
     }
     {
         uint8_t value = src->warning_tipping;
@@ -1243,16 +1243,16 @@ can_status_t car_can_vcu_status_unpack(car_can_vcu_status_t* dst, const can_fram
     result.fault_motor = (uint8_t)raw.fault_motor;
     if (raw.fault_bps > INT64_C(1)) return CAN_RANGE;
     result.fault_bps = (uint8_t)raw.fault_bps;
-    if (raw.fault_pedals > INT64_C(1)) return CAN_RANGE;
-    result.fault_pedals = (uint8_t)raw.fault_pedals;
+    if (raw.fault_pps > INT64_C(1)) return CAN_RANGE;
+    result.fault_pps = (uint8_t)raw.fault_pps;
     if (raw.fault_motor_controller_watchdog > INT64_C(1)) return CAN_RANGE;
     result.fault_motor_controller_watchdog = (uint8_t)raw.fault_motor_controller_watchdog;
     if (raw.fault_bps_watchdog > INT64_C(1)) return CAN_RANGE;
     result.fault_bps_watchdog = (uint8_t)raw.fault_bps_watchdog;
     if (raw.fault_driver_input_watchdog > INT64_C(1)) return CAN_RANGE;
     result.fault_driver_input_watchdog = (uint8_t)raw.fault_driver_input_watchdog;
-    if (raw.fault_pedals_watchdog > INT64_C(1)) return CAN_RANGE;
-    result.fault_pedals_watchdog = (uint8_t)raw.fault_pedals_watchdog;
+    if (raw.fault_pps_watchdog > INT64_C(1)) return CAN_RANGE;
+    result.fault_pps_watchdog = (uint8_t)raw.fault_pps_watchdog;
     if (raw.warning_tipping > INT64_C(1)) return CAN_RANGE;
     result.warning_tipping = (uint8_t)raw.warning_tipping;
     if (raw.warning_direction_change_lockout > INT64_C(1)) return CAN_RANGE;

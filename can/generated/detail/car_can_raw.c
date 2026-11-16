@@ -771,9 +771,9 @@ bool car_can_raw_bps_status_bps_fan_tach_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
-int car_can_raw_pedals_status_pack(
+int car_can_raw_pps_status_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_pedals_status_t *src_p,
+    const struct car_can_raw_pps_status_t *src_p,
     size_t size)
 {
     if (size < 6u) {
@@ -800,8 +800,8 @@ int car_can_raw_pedals_status_pack(
     return (6);
 }
 
-int car_can_raw_pedals_status_unpack(
-    struct car_can_raw_pedals_status_t *dst_p,
+int car_can_raw_pps_status_unpack(
+    struct car_can_raw_pps_status_t *dst_p,
     const uint8_t *src_p,
     size_t size)
 {
@@ -827,75 +827,75 @@ int car_can_raw_pedals_status_unpack(
     return (0);
 }
 
-int car_can_raw_pedals_status_init(struct car_can_raw_pedals_status_t *msg_p)
+int car_can_raw_pps_status_init(struct car_can_raw_pps_status_t *msg_p)
 {
     if (msg_p == NULL) return -1;
 
-    memset(msg_p, 0, sizeof(struct car_can_raw_pedals_status_t));
+    memset(msg_p, 0, sizeof(struct car_can_raw_pps_status_t));
 
     return 0;
 }
 
-bool car_can_raw_pedals_status_status_is_in_range(uint8_t value)
+bool car_can_raw_pps_status_status_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedals_status_fault_no_accelerator_is_in_range(uint8_t value)
+bool car_can_raw_pps_status_fault_no_accelerator_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedals_status_warning_main_accelerator_disconnected_is_in_range(uint8_t value)
+bool car_can_raw_pps_status_warning_main_accelerator_disconnected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedals_status_warning_redundant_accelerator_disconnected_is_in_range(uint8_t value)
+bool car_can_raw_pps_status_warning_redundant_accelerator_disconnected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedals_status_warning_pressure_switch_mismatch_is_in_range(uint8_t value)
+bool car_can_raw_pps_status_warning_pressure_switch_mismatch_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedals_status_brake_active_is_in_range(uint8_t value)
+bool car_can_raw_pps_status_brake_active_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedals_status_front_pressure_switch_is_in_range(uint8_t value)
+bool car_can_raw_pps_status_front_pressure_switch_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedals_status_handbrake_pressure_switch_is_in_range(uint8_t value)
+bool car_can_raw_pps_status_handbrake_pressure_switch_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedals_status_accelerator_main_position_is_in_range(uint8_t value)
+bool car_can_raw_pps_status_accelerator_main_position_is_in_range(uint8_t value)
 {
     (void)value;
 
     return (true);
 }
 
-bool car_can_raw_pedals_status_accelerator_redundant_position_is_in_range(uint8_t value)
+bool car_can_raw_pps_status_accelerator_redundant_position_is_in_range(uint8_t value)
 {
     (void)value;
 
     return (true);
 }
 
-bool car_can_raw_pedals_status_front_pressure_is_in_range(uint16_t value)
+bool car_can_raw_pps_status_front_pressure_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
 }
 
-bool car_can_raw_pedals_status_rear_pressure_is_in_range(uint16_t value)
+bool car_can_raw_pps_status_rear_pressure_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
 }
@@ -1035,11 +1035,11 @@ int car_can_raw_vcu_status_pack(
     dst_p[0] |= pack_left_shift_u8(src_p->status, 0u, 0x01u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_motor, 1u, 0x02u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_bps, 2u, 0x04u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_pedals, 3u, 0x08u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_pps, 3u, 0x08u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_motor_controller_watchdog, 4u, 0x10u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_bps_watchdog, 5u, 0x20u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_driver_input_watchdog, 6u, 0x40u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_pedals_watchdog, 7u, 0x80u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_pps_watchdog, 7u, 0x80u);
     dst_p[1] |= pack_left_shift_u8(src_p->warning_tipping, 0u, 0x01u);
     dst_p[1] |= pack_left_shift_u8(src_p->warning_direction_change_lockout, 1u, 0x02u);
     dst_p[1] |= pack_left_shift_u8(src_p->warning_motor_controller_fan, 2u, 0x04u);
@@ -1086,11 +1086,11 @@ int car_can_raw_vcu_status_unpack(
     dst_p->status = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
     dst_p->fault_motor = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
     dst_p->fault_bps = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
-    dst_p->fault_pedals = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
+    dst_p->fault_pps = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
     dst_p->fault_motor_controller_watchdog = unpack_right_shift_u8(src_p[0], 4u, 0x10u);
     dst_p->fault_bps_watchdog = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
     dst_p->fault_driver_input_watchdog = unpack_right_shift_u8(src_p[0], 6u, 0x40u);
-    dst_p->fault_pedals_watchdog = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
+    dst_p->fault_pps_watchdog = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
     dst_p->warning_tipping = unpack_right_shift_u8(src_p[1], 0u, 0x01u);
     dst_p->warning_direction_change_lockout = unpack_right_shift_u8(src_p[1], 1u, 0x02u);
     dst_p->warning_motor_controller_fan = unpack_right_shift_u8(src_p[1], 2u, 0x04u);
@@ -1149,7 +1149,7 @@ bool car_can_raw_vcu_status_fault_bps_is_in_range(uint8_t value)
     return (value <= 1u);
 }
 
-bool car_can_raw_vcu_status_fault_pedals_is_in_range(uint8_t value)
+bool car_can_raw_vcu_status_fault_pps_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
@@ -1169,7 +1169,7 @@ bool car_can_raw_vcu_status_fault_driver_input_watchdog_is_in_range(uint8_t valu
     return (value <= 1u);
 }
 
-bool car_can_raw_vcu_status_fault_pedals_watchdog_is_in_range(uint8_t value)
+bool car_can_raw_vcu_status_fault_pps_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }

@@ -426,7 +426,7 @@ int telemetry_link_raw_board_health_pack(
     dst_p[0] |= pack_left_shift_u8(src_p->bps_watchdog, 0u, 0x01u);
     dst_p[0] |= pack_left_shift_u8(src_p->vcu_watchdog, 1u, 0x02u);
     dst_p[0] |= pack_left_shift_u8(src_p->dei_watchdog, 2u, 0x04u);
-    dst_p[0] |= pack_left_shift_u8(src_p->pedals_watchdog, 3u, 0x08u);
+    dst_p[0] |= pack_left_shift_u8(src_p->pps_watchdog, 3u, 0x08u);
     dst_p[0] |= pack_left_shift_u8(src_p->pdu_watchdog, 4u, 0x10u);
     dst_p[0] |= pack_left_shift_u8(src_p->lvc_watchdog, 5u, 0x20u);
 
@@ -445,7 +445,7 @@ int telemetry_link_raw_board_health_unpack(
     dst_p->bps_watchdog = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
     dst_p->vcu_watchdog = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
     dst_p->dei_watchdog = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
-    dst_p->pedals_watchdog = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
+    dst_p->pps_watchdog = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
     dst_p->pdu_watchdog = unpack_right_shift_u8(src_p[0], 4u, 0x10u);
     dst_p->lvc_watchdog = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
 
@@ -476,7 +476,7 @@ bool telemetry_link_raw_board_health_dei_watchdog_is_in_range(uint8_t value)
     return (value <= 1u);
 }
 
-bool telemetry_link_raw_board_health_pedals_watchdog_is_in_range(uint8_t value)
+bool telemetry_link_raw_board_health_pps_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }

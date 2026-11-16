@@ -423,44 +423,44 @@ can_status_t car_can_bps_status_unpack(car_can_bps_status_t* dst, const can_fram
 
 /** Named raw values for Status; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PEDALS_STATUS_STATUS_OK = 0,
-    CAR_CAN_PEDALS_STATUS_STATUS_FAULT = 1,
-} car_can_pedals_status_status_choice_t;
+    CAR_CAN_PPS_STATUS_STATUS_OK = 0,
+    CAR_CAN_PPS_STATUS_STATUS_FAULT = 1,
+} car_can_pps_status_status_choice_t;
 /** Named raw values for FaultNoAccelerator; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PEDALS_STATUS_FAULT_NO_ACCELERATOR_OK = 0,
-    CAR_CAN_PEDALS_STATUS_FAULT_NO_ACCELERATOR_FAULT = 1,
-} car_can_pedals_status_fault_no_accelerator_choice_t;
+    CAR_CAN_PPS_STATUS_FAULT_NO_ACCELERATOR_OK = 0,
+    CAR_CAN_PPS_STATUS_FAULT_NO_ACCELERATOR_FAULT = 1,
+} car_can_pps_status_fault_no_accelerator_choice_t;
 /** Named raw values for WarningMainAcceleratorDisconnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PEDALS_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_NO_WARNING = 0,
-    CAR_CAN_PEDALS_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_WARNING = 1,
-} car_can_pedals_status_warning_main_accelerator_disconnected_choice_t;
+    CAR_CAN_PPS_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_NO_WARNING = 0,
+    CAR_CAN_PPS_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_WARNING = 1,
+} car_can_pps_status_warning_main_accelerator_disconnected_choice_t;
 /** Named raw values for WarningRedundantAcceleratorDisconnected; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PEDALS_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_NO_WARNING = 0,
-    CAR_CAN_PEDALS_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_WARNING = 1,
-} car_can_pedals_status_warning_redundant_accelerator_disconnected_choice_t;
+    CAR_CAN_PPS_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_NO_WARNING = 0,
+    CAR_CAN_PPS_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_WARNING = 1,
+} car_can_pps_status_warning_redundant_accelerator_disconnected_choice_t;
 /** Named raw values for WarningPressureSwitchMismatch; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PEDALS_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_NO_WARNING = 0,
-    CAR_CAN_PEDALS_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_WARNING = 1,
-} car_can_pedals_status_warning_pressure_switch_mismatch_choice_t;
+    CAR_CAN_PPS_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_NO_WARNING = 0,
+    CAR_CAN_PPS_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_WARNING = 1,
+} car_can_pps_status_warning_pressure_switch_mismatch_choice_t;
 /** Named raw values for BrakeActive; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PEDALS_STATUS_BRAKE_ACTIVE_OFF = 0,
-    CAR_CAN_PEDALS_STATUS_BRAKE_ACTIVE_ON = 1,
-} car_can_pedals_status_brake_active_choice_t;
+    CAR_CAN_PPS_STATUS_BRAKE_ACTIVE_OFF = 0,
+    CAR_CAN_PPS_STATUS_BRAKE_ACTIVE_ON = 1,
+} car_can_pps_status_brake_active_choice_t;
 /** Named raw values for FrontPressureSwitch; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PEDALS_STATUS_FRONT_PRESSURE_SWITCH_OFF = 0,
-    CAR_CAN_PEDALS_STATUS_FRONT_PRESSURE_SWITCH_ON = 1,
-} car_can_pedals_status_front_pressure_switch_choice_t;
+    CAR_CAN_PPS_STATUS_FRONT_PRESSURE_SWITCH_OFF = 0,
+    CAR_CAN_PPS_STATUS_FRONT_PRESSURE_SWITCH_ON = 1,
+} car_can_pps_status_front_pressure_switch_choice_t;
 /** Named raw values for HandbrakePressureSwitch; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_PEDALS_STATUS_HANDBRAKE_PRESSURE_SWITCH_OFF = 0,
-    CAR_CAN_PEDALS_STATUS_HANDBRAKE_PRESSURE_SWITCH_ON = 1,
-} car_can_pedals_status_handbrake_pressure_switch_choice_t;
+    CAR_CAN_PPS_STATUS_HANDBRAKE_PRESSURE_SWITCH_OFF = 0,
+    CAR_CAN_PPS_STATUS_HANDBRAKE_PRESSURE_SWITCH_ON = 1,
+} car_can_pps_status_handbrake_pressure_switch_choice_t;
 /** 2027 team-defined layout; physical values use the shared scaling conventions. */
 typedef struct {
     /** Status; unit=none; physical=raw*1+0; raw=[0,1]. Status */
@@ -487,14 +487,14 @@ typedef struct {
     uint16_t front_pressure;
     /** RearPressure; unit=PSI; physical=raw*1+0; raw=[0,3000]. RearPressure */
     uint16_t rear_pressure;
-} car_can_pedals_status_t;
+} car_can_pps_status_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t car_can_pedals_status_pack(can_frame_t* dst, const car_can_pedals_status_t* src);
+can_status_t car_can_pps_status_pack(can_frame_t* dst, const car_can_pps_status_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t car_can_pedals_status_unpack(car_can_pedals_status_t* dst, const can_frame_t* src);
+can_status_t car_can_pps_status_unpack(car_can_pps_status_t* dst, const can_frame_t* src);
 
 /** Named raw values for IgnitionLV; unknown values remain integers. */
 typedef enum {
@@ -608,11 +608,11 @@ typedef enum {
     CAR_CAN_VCU_STATUS_FAULT_BPS_OK = 0,
     CAR_CAN_VCU_STATUS_FAULT_BPS_FAULT = 1,
 } car_can_vcu_status_fault_bps_choice_t;
-/** Named raw values for FaultPedals; unknown values remain integers. */
+/** Named raw values for FaultPPS; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_VCU_STATUS_FAULT_PEDALS_OK = 0,
-    CAR_CAN_VCU_STATUS_FAULT_PEDALS_FAULT = 1,
-} car_can_vcu_status_fault_pedals_choice_t;
+    CAR_CAN_VCU_STATUS_FAULT_PPS_OK = 0,
+    CAR_CAN_VCU_STATUS_FAULT_PPS_FAULT = 1,
+} car_can_vcu_status_fault_pps_choice_t;
 /** Named raw values for FaultMotorControllerWatchdog; unknown values remain integers. */
 typedef enum {
     CAR_CAN_VCU_STATUS_FAULT_MOTOR_CONTROLLER_WATCHDOG_OK = 0,
@@ -628,11 +628,11 @@ typedef enum {
     CAR_CAN_VCU_STATUS_FAULT_DRIVER_INPUT_WATCHDOG_OK = 0,
     CAR_CAN_VCU_STATUS_FAULT_DRIVER_INPUT_WATCHDOG_FAULT = 1,
 } car_can_vcu_status_fault_driver_input_watchdog_choice_t;
-/** Named raw values for FaultPedalsWatchdog; unknown values remain integers. */
+/** Named raw values for FaultPPSWatchdog; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_VCU_STATUS_FAULT_PEDALS_WATCHDOG_OK = 0,
-    CAR_CAN_VCU_STATUS_FAULT_PEDALS_WATCHDOG_FAULT = 1,
-} car_can_vcu_status_fault_pedals_watchdog_choice_t;
+    CAR_CAN_VCU_STATUS_FAULT_PPS_WATCHDOG_OK = 0,
+    CAR_CAN_VCU_STATUS_FAULT_PPS_WATCHDOG_FAULT = 1,
+} car_can_vcu_status_fault_pps_watchdog_choice_t;
 /** Named raw values for WarningTipping; unknown values remain integers. */
 typedef enum {
     CAR_CAN_VCU_STATUS_WARNING_TIPPING_NO_WARNING = 0,
@@ -760,16 +760,16 @@ typedef struct {
     uint8_t fault_motor;
     /** FaultBPS; unit=none; physical=raw*1+0; raw=[0,1]. FaultBPS */
     uint8_t fault_bps;
-    /** FaultPedals; unit=none; physical=raw*1+0; raw=[0,1]. FaultPedals */
-    uint8_t fault_pedals;
+    /** FaultPPS; unit=none; physical=raw*1+0; raw=[0,1]. FaultPPS */
+    uint8_t fault_pps;
     /** FaultMotorControllerWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. FaultMotorControllerWatchdog */
     uint8_t fault_motor_controller_watchdog;
     /** FaultBPSWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. FaultBPSWatchdog */
     uint8_t fault_bps_watchdog;
     /** FaultDriverInputWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. FaultDriverInputWatchdog */
     uint8_t fault_driver_input_watchdog;
-    /** FaultPedalsWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. FaultPedalsWatchdog */
-    uint8_t fault_pedals_watchdog;
+    /** FaultPPSWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. FaultPPSWatchdog */
+    uint8_t fault_pps_watchdog;
     /** WarningTipping; unit=none; physical=raw*1+0; raw=[0,1]. WarningTipping */
     uint8_t warning_tipping;
     /** WarningDirectionChangeLockout; unit=none; physical=raw*1+0; raw=[0,1]. WarningDirectionChangeLockout */
@@ -2756,8 +2756,8 @@ typedef struct {
 } car_can_pdu_t;
 
 typedef struct {
-    car_can_pedals_status_t pedals_status;
-} car_can_pedals_t;
+    car_can_pps_status_t pps_status;
+} car_can_pps_t;
 
 typedef struct {
     car_can_vcu_status_t vcu_status;
@@ -2810,8 +2810,8 @@ typedef struct {
         can_message_info_t pdu_over_current_snapshot;
     } pdu;
     struct {
-        can_message_info_t pedals_status;
-    } pedals;
+        can_message_info_t pps_status;
+    } pps;
     struct {
         can_message_info_t vcu_status;
     } vcu;

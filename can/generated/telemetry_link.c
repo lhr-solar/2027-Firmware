@@ -252,11 +252,11 @@ can_status_t telemetry_link_board_health_pack(can_frame_t* dst, const telemetry_
         raw.dei_watchdog = (uint8_t)value;
     }
     {
-        uint8_t value = src->pedals_watchdog;
+        uint8_t value = src->pps_watchdog;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.pedals_watchdog = (uint8_t)value;
+        raw.pps_watchdog = (uint8_t)value;
     }
     {
         uint8_t value = src->pdu_watchdog;
@@ -295,8 +295,8 @@ can_status_t telemetry_link_board_health_unpack(telemetry_link_board_health_t* d
     result.vcu_watchdog = (uint8_t)raw.vcu_watchdog;
     if (raw.dei_watchdog > INT64_C(1)) return CAN_RANGE;
     result.dei_watchdog = (uint8_t)raw.dei_watchdog;
-    if (raw.pedals_watchdog > INT64_C(1)) return CAN_RANGE;
-    result.pedals_watchdog = (uint8_t)raw.pedals_watchdog;
+    if (raw.pps_watchdog > INT64_C(1)) return CAN_RANGE;
+    result.pps_watchdog = (uint8_t)raw.pps_watchdog;
     if (raw.pdu_watchdog > INT64_C(1)) return CAN_RANGE;
     result.pdu_watchdog = (uint8_t)raw.pdu_watchdog;
     if (raw.lvc_watchdog > INT64_C(1)) return CAN_RANGE;

@@ -110,7 +110,7 @@
       ]
     },
     {
-      "name": "Pedals",
+      "name": "PPS",
       "subteam": "controls",
       "node_id": 8,
       "rx_can_id": "0x008",
