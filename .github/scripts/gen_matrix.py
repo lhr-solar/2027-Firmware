@@ -3,15 +3,17 @@
 Generate the GitHub Actions board build matrix.
 
 Boards are firmware/<subteam>/<BOARD>/ directories, marked by a Board.cmake.
-Each board gets exactly two jobs, both owner-defined make targets:
+Each board gets exactly two jobs:
 
   prod   -> make prod-all
   tests  -> make test-all
 
-The board owner controls what those do, so boards with several production
-variants need no change here. A rule mentioned only in .PHONY does not count
-as defined; a board missing either target has that one job fail with an
-explanation, while its other job still runs.
+Both targets come from firmware/platform/board_rules.mk, which a board's
+Makefile includes; they build every variant in the board's BOARD_VARIANTS, so
+boards with variants need no change here. Old-style boards that don't include
+board_rules.mk must define both targets themselves -- a rule mentioned only in
+.PHONY does not count. A board missing either target has that one job fail
+with an explanation, while its other job still runs.
 
 The platform builds all its tests in a single job and needs no matrix, so it
 is not handled here -- see .github/workflows/build-platform.yml.
@@ -31,7 +33,10 @@ PROD_TARGET = "prod-all"
 TEST_TARGET = "test-all"
 ENTRY_POINTS = ((PROD_TARGET, "prod", "production firmware"),
                 (TEST_TARGET, "tests", "all tests"))
+# shared rules that define both targets for every new-style board
+SHARED_RULES = "board_rules.mk"
 # board-local test script, made executable before the tests job runs
+# TODO: remove once BPSL (and any other old-style board) moves to the board_rules.mk stub
 TEST_SCRIPT = "build_all_tests.sh"
 
 
@@ -79,13 +84,19 @@ def boards_matrix(root: Path) -> list[dict]:
         makefile = board_dir / "Makefile"
         text = read(makefile) if makefile.is_file() else None
 
+        shared = text is not None and re.search(
+            rf"^\s*-?include\s+\S*\b{re.escape(SHARED_RULES)}\s*$", text, re.MULTILINE)
+
         for target, label, desc in ENTRY_POINTS:
-            if text is None:
+            if shared:
+                blocked = ""
+            elif text is None:
                 blocked = (f"{board} has no Makefile -- CI builds {desc} with "
                            f"'make {target}' (see firmware/psys/LVC/Makefile)")
             elif not re.search(rf"^{re.escape(target)}\s*:(?!=)", text, re.MULTILINE):
-                blocked = (f"{board}/Makefile defines no '{target}' target -- CI "
-                           f"builds {desc} with it (see firmware/psys/LVC/Makefile)")
+                blocked = (f"{board}/Makefile neither includes {SHARED_RULES} nor "
+                           f"defines a '{target}' target -- CI builds {desc} with it "
+                           f"(see firmware/psys/LVC/Makefile)")
             else:
                 blocked = ""
             cmd = f"make -C {rel} {target}"

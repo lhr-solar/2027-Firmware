@@ -35,7 +35,7 @@ stub for working code, and do not describe stubs as implemented.
 | `can/canspec-viewer/` | Real React/Vite source; depends on DBCs that do not exist yet. |
 | `.github/workflows/*.yml` | Jobs exist but bodies are `echo "TODO: ..."`. |
 | `flake.nix` | 0 bytes. |
-| CMake build | **Real.** `firmware/platform/` and each board are separate CMake projects; boards share `platform/cmake/board_build.cmake` + `platform/board.mk`. See §5. |
+| CMake build | **Real.** `firmware/platform/` and each board are separate CMake projects; boards share `platform/cmake/board_build.cmake` + `platform/board_rules.mk`. See §5. |
 
 If a task depends on one of these, say so plainly rather than inventing the
 missing piece. Building the missing piece is fine when that *is* the task.
@@ -207,10 +207,12 @@ shared, so changing it changes every board at once:
 | File | Holds |
 |---|---|
 | `<board>/CMakeLists.txt` | Stub: the `project()` block (name, version, description) |
-| `<board>/Board.cmake` | Sources, include dirs, `BOARD_SKIP_TESTS`, `BOARD_COMPILE_DEFINITIONS`, `BOARD_VARIANTS` |
-| `<board>/Makefile` | Stub: `prod-all` and `test-all`, the two targets CI runs |
+| `<board>/Board.cmake` | Sources, include dirs, `BOARD_COMPILE_DEFINITIONS`, `BOARD_VARIANTS` |
+| `<board>/Makefile` | Stub: one `include` of `platform/board_rules.mk`; boards add no targets |
 | `platform/cmake/board_build.cmake` | The shared CMake build every board includes |
-| `platform/board.mk` | The shared make targets every board includes |
+| `platform/board_rules.mk` | Every make target, including `prod-all`/`test-all` (what CI runs) |
+| `platform/build_board_all.sh` | The per-variant loop behind `prod-all` and `test-all` |
+| `platform/cmake/board_query.cmake` | Reads a `Board.cmake` setting (e.g. `BOARD_VARIANTS`) for shell scripts |
 
 Create a board with `python3 firmware/new_board.py`, which renders
 `firmware/templates/`.
@@ -220,9 +222,9 @@ From a board directory:
 ```bash
 make                          # production firmware: build/<BOARD>.{elf,bin,hex}
 make TEST=<test>              # tests/Src/<test>_test.c instead
-make VARIANT=<name>           # one entry of BOARD_VARIANTS, into build/<name>/
+make VARIANT=<name>           # one entry of BOARD_VARIANTS, into build/<name>/ (required if the board has variants)
 make prod-all                 # production firmware for every variant (CI)
-make test-all                 # every test for every variant, minus BOARD_SKIP_TESTS (CI)
+make test-all                 # every test for every variant (CI)
 make VARIANT=<name> test-all  # prod-all and test-all limited to one variant
 make flash                    # st-flash the existing build; VARIANT=<name> picks which
 make dump-symbols             # objdump -x the existing build -- confirm what actually linked
@@ -235,14 +237,17 @@ From `firmware/platform/`, `make TEST=<test>` builds a platform test (default
 `blinky`) into `build/App.{elf,bin,hex}`, and `make test-all` builds all of them.
 
 Only `make` itself configures and builds (`format` and `format-check` also
-configure). `flash`, `flash-usb`, `erase`, `dump-symbols` and `dump_size` work on
-the existing build and fail if there isn't one, so build first.
+configure, in `build/_format/`, and need no `VARIANT`). `flash`, `flash-usb`,
+`erase`, `dump-symbols` and `dump_size` work on the existing build and fail if
+there isn't one, so build first.
 
 **Debugging whether something actually linked:** `make dump-symbols` runs
 `objdump -x` on the ELF — check it for the symbol/object file you expect. For
 more detail, `build/<BOARD>.map` (generated every build) is the full linker map.
 "Unknown TEST" and "Unknown VARIANT" errors at configure time mean the test source
-file doesn't exist, or the name isn't in `BOARD_VARIANTS`.
+file doesn't exist, or the name isn't in `BOARD_VARIANTS`. "This board has
+variants -- pick one" means the board lists `BOARD_VARIANTS` and none was given:
+there is deliberately no default variant.
 
 ### What *can* be run today
 

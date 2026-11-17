@@ -10,12 +10,6 @@ include(${CMAKE_CURRENT_LIST_DIR}/custom_commands.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/lint.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/Board.cmake)
 
-# check if test is skipped for this board
-list(FIND BOARD_SKIP_TESTS "${TEST}" TEST_DISABLED_INDEX)
-if(NOT TEST_DISABLED_INDEX EQUAL -1)
-    message(FATAL_ERROR "TEST '${TEST}' is disabled on this board -- see BOARD_SKIP_TESTS in Board.cmake.")
-endif()
-
 ### Variants -- one build per instance of the board on the car, see BOARD_VARIANTS in Board.cmake
 set(VARIANT "" CACHE STRING "Board variant to build, empty for none")
 
@@ -26,21 +20,20 @@ foreach(NAME IN LISTS BOARD_VARIANTS)
     endif()
 endforeach()
 
-# a typo in BOARD_VARIANT_<name>_DEFINITIONS would otherwise silently drop its definitions
-get_cmake_property(ALL_VARIABLES VARIABLES)
-foreach(VAR IN LISTS ALL_VARIABLES)
-    if(VAR MATCHES "^BOARD_VARIANT_(.+)_DEFINITIONS$")
-        if(NOT CMAKE_MATCH_1 IN_LIST BOARD_VARIANTS)
-            message(FATAL_ERROR "${VAR} is set in Board.cmake, but '${CMAKE_MATCH_1}' is not in BOARD_VARIANTS.")
-        endif()
-    endif()
-endforeach()
+# set only by `make format` / `make format-check`: formatting doesn't depend on the variant,
+# so their configure (in its own build folder) may skip choosing one
+option(BOARD_FORMAT_ONLY "Configure for format targets only; VARIANT may be empty" OFF)
 
-if(NOT "${VARIANT}" STREQUAL "" AND NOT VARIANT IN_LIST BOARD_VARIANTS)
+string(REPLACE ";" ", " VARIANT_CHOICES "${BOARD_VARIANTS}")
+if("${VARIANT}" STREQUAL "")
+    # no default variant: an image built for no particular instance must never be flashed
+    if(NOT "${BOARD_VARIANTS}" STREQUAL "" AND NOT BOARD_FORMAT_ONLY)
+        message(FATAL_ERROR "This board has variants -- pick one with `make VARIANT=<name>`: ${VARIANT_CHOICES} (or `make prod-all` for all of them).")
+    endif()
+elseif(NOT VARIANT IN_LIST BOARD_VARIANTS)
     if("${BOARD_VARIANTS}" STREQUAL "")
         message(FATAL_ERROR "Unknown VARIANT '${VARIANT}' -- this board has no variants (see BOARD_VARIANTS in Board.cmake).")
     endif()
-    string(REPLACE ";" ", " VARIANT_CHOICES "${BOARD_VARIANTS}")
     message(FATAL_ERROR "Unknown VARIANT '${VARIANT}' -- choose one of: ${VARIANT_CHOICES} (see BOARD_VARIANTS in Board.cmake).")
 endif()
 
@@ -73,14 +66,12 @@ add_executable(${PROJECT_NAME}
 )
 target_include_directories(${PROJECT_NAME} PUBLIC ${PLATFORM_INCLUDE_DIRS} ${BOARD_INCLUDE_DIRS})
 
-# conditional compilation: board-wide definitions, then the chosen variant's
+# conditional compilation: board-wide definitions, plus BOARD_VARIANT_<NAME> for the chosen
+# variant -- per-variant values belong in a config/Inc header behind #if defined(BOARD_VARIANT_<NAME>)
 target_compile_definitions(${PROJECT_NAME} PRIVATE ${BOARD_COMPILE_DEFINITIONS})
 if(NOT "${VARIANT}" STREQUAL "")
     string(TOUPPER "${VARIANT}" VARIANT_UPPER)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE
-        BOARD_VARIANT_${VARIANT_UPPER}
-        ${BOARD_VARIANT_${VARIANT}_DEFINITIONS}
-    )
+    target_compile_definitions(${PROJECT_NAME} PRIVATE BOARD_VARIANT_${VARIANT_UPPER})
     message(STATUS "Variant: ${VARIANT}")
 endif()
 

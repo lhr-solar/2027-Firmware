@@ -1,5 +1,6 @@
 #include "stm32xx_hal.h"
 #include "pinDefs.h"
+#include "variant.h"
 #include "fake.h"
 
 int main() {
@@ -17,7 +18,7 @@ int main() {
 
     while (1) {
         HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
-        HAL_Delay(500);
+        HAL_Delay(BLINK_PERIOD_MS);
     }
 
     return 0;

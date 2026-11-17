@@ -47,10 +47,12 @@ task + semaphore pool), `WS2812B` (addressable LEDs), `SevenSegment`, `sdcard`,
 
 **`utils/`** — `movingAverage` (header-only), `slcanFormat` (SLCAN serial-line CAN framing).
 
-**Shared board build** — `cmake/board_build.cmake` and `board.mk` are the build logic every
-board includes from its stubs, and `build_board_tests.sh`, `build_board_variants.sh` and
-`board_cmake_list.sh` are what `make test-all` and `make prod-all` run. A change here changes
-every board's build. See root `AGENTS.md` §5.
+**Shared board build** — `cmake/board_build.cmake` and `board_rules.mk` are the build logic every
+board includes from its stubs; `build_board_all.sh` (using `cmake/board_query.cmake` to read
+`BOARD_VARIANTS`) is what `make prod-all` and `make test-all` run. A change here changes every
+board's build. Board firmware work edits only that board's own `Board.cmake` (and the
+`project()` block of its `CMakeLists.txt`) — never these shared files, and never by adding
+targets or overrides to the board's `Makefile`. See root `AGENTS.md` §5.
 
 **`common/`** — `stm32g4xx_hal_init.c`, `FreeRTOSConfig.h`,
 `stm32g4xx_hal_conf.h`, and newlib `syscalls.c` / `sysmem.c` / `stubs.c`.

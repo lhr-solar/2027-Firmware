@@ -25,17 +25,14 @@ set(BOARD_INCLUDE_DIRS
     ${CMAKE_CURRENT_LIST_DIR}/tests/Inc
 )
 
-# Tests to skip: names without _test.c, separated by spaces or newlines, no quotes
-# e.g. hella_slow can_isr  -- leave as "" to build every test
-set(BOARD_SKIP_TESTS "")
-
 # Preprocessor definitions for every build of this board, e.g. USE_IMU SD_LOGGING=1
 set(BOARD_COMPILE_DEFINITIONS "")
 
-# Variants: one build per instance of this board on the car, picked with `make VARIANT=<name>`.
-# A variant gets BOARD_VARIANT_<NAME> defined, plus its own definitions, e.g.
-#   set(BOARD_VARIANTS front rear)
-#   set(BOARD_VARIANT_front_DEFINITIONS WHEEL_POSITION=0)
+# Variants: one build per instance of this board on the car, picked with `make VARIANT=<name>`,
+# e.g. set(BOARD_VARIANTS front rear). Each build gets BOARD_VARIANT_<NAME> defined (here
+# BOARD_VARIANT_FRONT or BOARD_VARIANT_REAR); put per-variant values in a config/Inc header
+# behind #if defined(BOARD_VARIANT_FRONT). With variants, plain `make` must be given one.
 # `make prod-all` and `make test-all` build every variant into build/<name>/ -- leave as "" for a single build
+# TODO: drop the demo variants when real LVC firmware lands
 # LVC is the build demo board: two identical instances, so CI exercises multi-variant builds
 set(BOARD_VARIANTS build1 build2)

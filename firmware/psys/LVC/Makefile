@@ -1,10 +1,5 @@
 # LVC board build
-# every target except the two below comes from platform/board.mk
+# every target comes from platform/board_rules.mk -- nothing to edit here;
+# this board's settings are in Board.cmake
 
-include ../../platform/board.mk
-
-# For CI - builds the production firmware (every variant in BOARD_VARIANTS)
-prod-all: variants
-
-# For CI - builds all tests for this board (for every variant in BOARD_VARIANTS)
-test-all: tests
+include ../../platform/board_rules.mk
