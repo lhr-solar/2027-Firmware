@@ -510,9 +510,8 @@ bool cdcd_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_
   }
 
   /* custom callback added for when enough space is freed */
-  if (cdc_slots_needed[itf] > 0 && tud_cdc_n_write_available(itf) >= cdc_slots_needed[itf]) {
-    cdc_space_available_cb(itf);
-  }
+  cdc_space_available_cb(itf);
+
 
   // Sent notification to host
   if (ep_addr == p_cdc->ep_notify) {

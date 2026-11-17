@@ -15,13 +15,14 @@
 // thank you ramesh
 typedef enum {
     L_ERROR = 0,
-    L_WARN = 1,
-    L_INFO = 2,
-    L_DEBUG = 3,
-} LoggingLevel;
+    L_WARN,
+    L_INFO,
+    L_DEBUG,
+    NUM_LOGGING_LEVELS
+} loggingLevel_t;
 
 // sends "[LEVEL] <message>" to a CDC port
-int LOG(uint8_t port, LoggingLevel level, const char* fmt, ...);
+int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...);
 int snprintf(char* buffer, size_t bufsz, char const* fmt, ...);
 
 bool log_init(void);
