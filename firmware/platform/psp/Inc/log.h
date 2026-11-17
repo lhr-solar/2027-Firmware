@@ -1,0 +1,43 @@
+#pragma once
+
+#define NANOPRINTF_USE_FIELD_WIDTH_FORMAT_SPECIFIERS 1
+#define NANOPRINTF_USE_PRECISION_FORMAT_SPECIFIERS   1
+#define NANOPRINTF_USE_LARGE_FORMAT_SPECIFIERS       1
+#define NANOPRINTF_USE_SMALL_FORMAT_SPECIFIERS       1
+#define NANOPRINTF_USE_FLOAT_FORMAT_SPECIFIERS       1
+#define NANOPRINTF_USE_BINARY_FORMAT_SPECIFIERS      1
+#define NANOPRINTF_USE_WRITEBACK_FORMAT_SPECIFIERS   0
+
+#include <stdbool.h>
+#include "UART.h"
+#include "tusb_port.h"
+
+// thank you ramesh
+typedef enum {
+    L_ERROR = 0,
+    L_WARN = 1,
+    L_INFO = 2,
+    L_DEBUG = 3,
+} LoggingLevel;
+
+static inline const char* log_level_name(LoggingLevel level) {
+    switch (level) {
+        case L_DEBUG:
+            return "DEBUG";
+        case L_INFO:
+            return "INFO";
+        case L_WARN:
+            return "WARN";
+        case L_ERROR:
+            return "ERROR";
+    }
+    /* Should be unreachable */
+    return NULL;
+}
+
+// sends "[LEVEL] <message>" to a CDC port
+int LOG(uint8_t port, LoggingLevel level, const char* fmt, ...);
+int snprintf(char* buffer, size_t bufsz, char const* fmt, ...);
+// char* uart_fgets(char* buffer, size_t maxsz);
+
+bool log_init(void);

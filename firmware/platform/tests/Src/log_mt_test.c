@@ -2,8 +2,7 @@
 #include <string.h>
 #include <math.h>
 #include "stm32xx_hal.h"
-#include "tusb_port.h"
-#include "printf.h"
+#include "log.h"
 
 StaticTask_t initTaskBuffer;
 StackType_t initTaskStack[configMINIMAL_STACK_SIZE];
@@ -18,6 +17,7 @@ static void poll_events(void* argument) {
     }
 }
 
+#define LOG_PORT     0
 #define THREAD_COUNT 4
 #define DUMP_SIZE    100
 
@@ -49,7 +49,7 @@ void TxTask(void* argument) {
 
     for (int i = 0; i < DUMP_SIZE; i++) {
         volatile uint32_t time_before = DWT->CYCCNT;
-        printf(messages[((int)argument % (sizeof(messages) / sizeof(char*)))]);
+        LOG(LOG_PORT, L_DEBUG, messages[((int)argument % (sizeof(messages) / sizeof(char*)))]);
         //uart_send(husart2, (const uint8_t *)messages[((int)argument % (sizeof(messages)/sizeof(char*)))], strlen(messages[((int)argument % (sizeof(messages)/sizeof(char*)))]), portMAX_DELAY);
         volatile uint32_t time_after = DWT->CYCCNT;
         uint32_t time_elapsed = (time_after - time_before);
@@ -73,11 +73,6 @@ void DWT_Init(void) {
 }
 
 void InitTask(void* argument) {
-    // output is dropped until a terminal opens the port, so wait before timing
-    while (!tud_cdc_n_connected(0)) {
-        vTaskDelay(pdMS_TO_TICKS(10));
-    }
-
     DWT_Init();
 
     for (int i = 0; i < THREAD_COUNT; i++) {
@@ -113,10 +108,11 @@ void InitTask(void* argument) {
                 float t_min = 1e30f, t_max = 0.0f;
                 float t_sum = 0.0f, t_sum_sq = 0.0f;
 
-                printf("Times for TID %d (msg idx %d, len %d):\n\r", i, i % num_messages, msg_len);
+                LOG(LOG_PORT, L_INFO, "Times for TID %d (msg idx %d, len %d):\n\r", i,
+                    i % num_messages, msg_len);
                 for (int j = 0; j < DUMP_SIZE; j++) {
                     float t = time_dump[i][j] / (SystemCoreClock / 1000.0f);
-                    // printf("\t%f ms\n\r", t);
+                    // LOG(LOG_PORT, L_DEBUG, "\t%f ms\n\r", t);
 
                     if (t < t_min)
                         t_min = t;
@@ -132,15 +128,15 @@ void InitTask(void* argument) {
                 float mean = t_sum / DUMP_SIZE;
                 float stddev = sqrtf((t_sum_sq / DUMP_SIZE) - (mean * mean));
 
-                printf("  Msg:    \"%s\"\n\r", msg);
-                printf("  Min:    %f ms\n\r", t_min);
-                printf("  Max:    %f ms\n\r", t_max);
-                printf("  Mean:   %f ms\n\r", mean);
-                printf("  Jitter: %f ms  (peak-to-peak)\n\r", t_max - t_min);
-                printf("  Stddev: %f ms\n\r", stddev);
+                LOG(LOG_PORT, L_INFO, "  Msg:    \"%s\"\n\r", msg);
+                LOG(LOG_PORT, L_INFO, "  Min:    %f ms\n\r", t_min);
+                LOG(LOG_PORT, L_INFO, "  Max:    %f ms\n\r", t_max);
+                LOG(LOG_PORT, L_INFO, "  Mean:   %f ms\n\r", mean);
+                LOG(LOG_PORT, L_INFO, "  Jitter: %f ms  (peak-to-peak)\n\r", t_max - t_min);
+                LOG(LOG_PORT, L_INFO, "  Stddev: %f ms\n\r", stddev);
             }
 
-            printf("Global max: %f ms\n\r", global_max);
+            LOG(LOG_PORT, L_INFO, "Global max: %f ms\n\r", global_max);
             break;
         }
     }
@@ -155,7 +151,7 @@ int main(void) {
     MX_USB_PCD_Init();
 
     // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
-    printf_init();
+    log_init();
 
     // clang-format off
     xTaskCreateStatic(

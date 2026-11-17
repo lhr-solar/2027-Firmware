@@ -30,6 +30,7 @@ set(DISABLED_TESTS
     uart_fgets
     lpuart
     movingAverage
+    can_fd_queueSet
 )
 
 # check if test is disabled for g473

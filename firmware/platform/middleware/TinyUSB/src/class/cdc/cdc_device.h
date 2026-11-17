@@ -269,6 +269,11 @@ void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts);
 // Invoked when line coding is change via SET_LINE_CODING
 void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding);
 
+// WE ADDED THIS IN:
+// invoked when enough space is cleared in the Tx FIFO for LOG()
+void cdc_space_available_cb(uint8_t itf);
+extern uint16_t cdc_slots_needed[CFG_TUD_CDC];
+
 // Invoked when received send break
 // \param[in]  itf  interface for which send break was received.
 // \param[in]  duration_ms  the length of time, in milliseconds, of the break signal. If a value of FFFFh, then the

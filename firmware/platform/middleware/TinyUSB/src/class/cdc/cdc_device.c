@@ -93,6 +93,11 @@ TU_ATTR_WEAK void tud_cdc_send_break_cb(uint8_t itf, uint16_t duration_ms) {
   (void)duration_ms;
 }
 
+TU_ATTR_WEAK uint16_t cdc_slots_needed[CFG_TUD_CDC];
+TU_ATTR_WEAK void cdc_space_available_cb(uint8_t itf) {
+  (void)itf; 
+}
+
 //--------------------------------------------------------------------+
 // INTERNAL OBJECT & FUNCTION DECLARATION
 //--------------------------------------------------------------------+
@@ -502,6 +507,11 @@ bool cdcd_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_
       // If there is no data left, a ZLP should be sent if needed
       tu_edpt_stream_write_zlp_if_needed(stream_tx, xferred_bytes);
     }
+  }
+
+  /* custom callback added for when enough space is freed */
+  if (cdc_slots_needed[itf] > 0 && tud_cdc_n_write_available(itf) >= cdc_slots_needed[itf]) {
+    cdc_space_available_cb(itf);
   }
 
   // Sent notification to host
