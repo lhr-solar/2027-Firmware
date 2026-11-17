@@ -23,8 +23,8 @@
           # Base packages (common to all)
           basePackages = [
             pkgs.gcc
-            pkgs.clang
-            pkgs.clang-tools
+            pkgs.llvmPackages_22.clang
+            pkgs.llvmPackages_22.clang-tools
             pkgs.lld
             pkgs.bear
             pkgs.cmake

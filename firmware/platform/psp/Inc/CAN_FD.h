@@ -5,7 +5,7 @@
 #include "stm32xx_hal.h"
 
 #if !defined(FDCAN1)
-#error "[CONFIG] CAN FD not enabled on this chip."
+    #error "[CONFIG] CAN FD not enabled on this chip."
 #endif /* FDCAN1 */
 
 // fdcan handlers
@@ -24,46 +24,46 @@ extern FDCAN_HandleTypeDef* hfdcan3;
 /**
  * A macro to convert a length into the encoding used by fdcan
  */
-#define FDCAN_DLC_BYTES(len) \
-((len) == 0  ? FDCAN_DLC_BYTES_0  : \
- (len) == 1  ? FDCAN_DLC_BYTES_1  : \
- (len) == 2  ? FDCAN_DLC_BYTES_2  : \
- (len) == 3  ? FDCAN_DLC_BYTES_3  : \
- (len) == 4  ? FDCAN_DLC_BYTES_4  : \
- (len) == 5  ? FDCAN_DLC_BYTES_5  : \
- (len) == 6  ? FDCAN_DLC_BYTES_6  : \
- (len) == 7  ? FDCAN_DLC_BYTES_7  : \
- (len) == 8  ? FDCAN_DLC_BYTES_8  : \
- (len) == 12 ? FDCAN_DLC_BYTES_12 : \
- (len) == 16 ? FDCAN_DLC_BYTES_16 : \
- (len) == 20 ? FDCAN_DLC_BYTES_20 : \
- (len) == 24 ? FDCAN_DLC_BYTES_24 : \
- (len) == 32 ? FDCAN_DLC_BYTES_32 : \
- (len) == 48 ? FDCAN_DLC_BYTES_48 : \
- (len) == 64 ? FDCAN_DLC_BYTES_64 : \
- FDCAN_DLC_BYTES_0)
+#define FDCAN_DLC_BYTES(len)            \
+    ((len) == 0  ? FDCAN_DLC_BYTES_0 :  \
+     (len) == 1  ? FDCAN_DLC_BYTES_1 :  \
+     (len) == 2  ? FDCAN_DLC_BYTES_2 :  \
+     (len) == 3  ? FDCAN_DLC_BYTES_3 :  \
+     (len) == 4  ? FDCAN_DLC_BYTES_4 :  \
+     (len) == 5  ? FDCAN_DLC_BYTES_5 :  \
+     (len) == 6  ? FDCAN_DLC_BYTES_6 :  \
+     (len) == 7  ? FDCAN_DLC_BYTES_7 :  \
+     (len) == 8  ? FDCAN_DLC_BYTES_8 :  \
+     (len) == 12 ? FDCAN_DLC_BYTES_12 : \
+     (len) == 16 ? FDCAN_DLC_BYTES_16 : \
+     (len) == 20 ? FDCAN_DLC_BYTES_20 : \
+     (len) == 24 ? FDCAN_DLC_BYTES_24 : \
+     (len) == 32 ? FDCAN_DLC_BYTES_32 : \
+     (len) == 48 ? FDCAN_DLC_BYTES_48 : \
+     (len) == 64 ? FDCAN_DLC_BYTES_64 : \
+                   FDCAN_DLC_BYTES_0)
 
 /**
  * A macro to convert an fdcan dlc to length
  */
-#define FDCAN_BYTES_FROM_DLC(dlc) \
-((dlc) == FDCAN_DLC_BYTES_0  ? 0  : \
- (dlc) == FDCAN_DLC_BYTES_1  ? 1  : \
- (dlc) == FDCAN_DLC_BYTES_2  ? 2  : \
- (dlc) == FDCAN_DLC_BYTES_3  ? 3  : \
- (dlc) == FDCAN_DLC_BYTES_4  ? 4  : \
- (dlc) == FDCAN_DLC_BYTES_5  ? 5  : \
- (dlc) == FDCAN_DLC_BYTES_6  ? 6  : \
- (dlc) == FDCAN_DLC_BYTES_7  ? 7  : \
- (dlc) == FDCAN_DLC_BYTES_8  ? 8  : \
- (dlc) == FDCAN_DLC_BYTES_12 ? 12 : \
- (dlc) == FDCAN_DLC_BYTES_16 ? 16 : \
- (dlc) == FDCAN_DLC_BYTES_20 ? 20 : \
- (dlc) == FDCAN_DLC_BYTES_24 ? 24 : \
- (dlc) == FDCAN_DLC_BYTES_32 ? 32 : \
- (dlc) == FDCAN_DLC_BYTES_48 ? 48 : \
- (dlc) == FDCAN_DLC_BYTES_64 ? 64 : \
- 0)
+#define FDCAN_BYTES_FROM_DLC(dlc)       \
+    ((dlc) == FDCAN_DLC_BYTES_0  ? 0 :  \
+     (dlc) == FDCAN_DLC_BYTES_1  ? 1 :  \
+     (dlc) == FDCAN_DLC_BYTES_2  ? 2 :  \
+     (dlc) == FDCAN_DLC_BYTES_3  ? 3 :  \
+     (dlc) == FDCAN_DLC_BYTES_4  ? 4 :  \
+     (dlc) == FDCAN_DLC_BYTES_5  ? 5 :  \
+     (dlc) == FDCAN_DLC_BYTES_6  ? 6 :  \
+     (dlc) == FDCAN_DLC_BYTES_7  ? 7 :  \
+     (dlc) == FDCAN_DLC_BYTES_8  ? 8 :  \
+     (dlc) == FDCAN_DLC_BYTES_12 ? 12 : \
+     (dlc) == FDCAN_DLC_BYTES_16 ? 16 : \
+     (dlc) == FDCAN_DLC_BYTES_20 ? 20 : \
+     (dlc) == FDCAN_DLC_BYTES_24 ? 24 : \
+     (dlc) == FDCAN_DLC_BYTES_32 ? 32 : \
+     (dlc) == FDCAN_DLC_BYTES_48 ? 48 : \
+     (dlc) == FDCAN_DLC_BYTES_64 ? 64 : \
+                                   0)
 
 /**
  * @brief Initializes the FDCAN peripheral.
@@ -130,7 +130,7 @@ can_status_t can_fd_send(FDCAN_HandleTypeDef* handle, FDCAN_TxHeaderTypeDef* hea
  * @return can_status_t Returns CAN_OK if message was successfully sent or queued,
  *                      CAN_ERR on failure.
  */
-can_status_t can_fd_send_isr(FDCAN_HandleTypeDef* handle, FDCAN_TxHeaderTypeDef* header, 
+can_status_t can_fd_send_isr(FDCAN_HandleTypeDef* handle, FDCAN_TxHeaderTypeDef* header,
                              uint8_t data[], BaseType_t* higherPriorityTaskWoken);
 
 /**
@@ -186,5 +186,5 @@ void can_fd_tx_callback_hook(FDCAN_HandleTypeDef* hfdcan, const can_tx_payload_t
 
 void can_fd_rx_callback_hook(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo0ITs,
                              can_rx_payload_t recv_payload);
-                             
+
 void can_fd_error_callback_hook(FDCAN_HandleTypeDef* hfdcan, uint32_t ErrorStatusITs);

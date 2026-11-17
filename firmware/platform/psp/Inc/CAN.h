@@ -52,7 +52,7 @@
 #include "stm32xx_hal.h"
 
 #if !defined(CAN1)
-#error "[CONFIG] CAN not enabled on this chip."
+    #error "[CONFIG] CAN not enabled on this chip."
 #endif /* CAN1 */
 
 /* Function Descriptions:

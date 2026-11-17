@@ -1,5 +1,3 @@
-NOTE TO HUMAN AND AGENT REVIEWERS - DO NOT REVIEW UNLESS THE FOLLOWING HAS BEEN FILLED OUT
-
 ## What & why
 
 <!-- What changes, and what problem it solves. Link the issue if there is one. -->
@@ -75,3 +73,5 @@ NOTE TO HUMAN AND AGENT REVIEWERS - DO NOT REVIEW UNLESS THE FOLLOWING HAS BEEN 
 
 <!-- If an AI agent wrote part of this PR, say which parts and what was
      human-verified. -->
+     
+NOTE TO HUMAN AND AGENT REVIEWERS - DO NOT REVIEW UNLESS THE ABOVE CHECKLIST HAS BEEN FILLED OUT

@@ -3,20 +3,20 @@
 #include "stm32xx_hal.h"
 
 #if !defined(CAN1) && !defined(FDCAN1)
-#error "[CONFIG] CAN not enabled on this chip."
+    #error "[CONFIG] CAN not enabled on this chip."
 #endif
 
 // Default statically allocated size per can payload
 // If you want longer messages, redefine this macro
 #ifndef MAX_CAN_DATA_SIZE
-#define MAX_CAN_DATA_SIZE (8)
+    #define MAX_CAN_DATA_SIZE (8)
 #endif
 
 // return code for can driver
 typedef enum {
-    CAN_ERR,  // unsuccessful operation
+    CAN_ERR, // unsuccessful operation
     CAN_OK,
-    CAN_EMPTY,  // recieved nothing with no errors
+    CAN_EMPTY, // recieved nothing with no errors
 } can_status_t;
 
 #if (configUSE_QUEUE_SETS == 1)

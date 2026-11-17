@@ -10,18 +10,18 @@
 #define DEFAULT_DEV_ADDR 0x4D
 
 // LED pins for PSOM
-#define STATUS_LED_PORT GPIOA
+#define STATUS_LED_PORT  GPIOA
 #define STATUS_LED_PIN_1 GPIO_PIN_7
 #define STATUS_LED_PIN_2 GPIO_PIN_8
 #define STATUS_LED_PIN_3 GPIO_PIN_15
 
 // USART pins for PSOM
-#define USART_PORT GPIOA
+#define USART_PORT   GPIOA
 #define USART_TX_PIN GPIO_PIN_9
 #define USART_RX_PIN GPIO_PIN_10
 
 // I2C pins for PSOM
-#define I2C_PORT GPIOB
+#define I2C_PORT    GPIOB
 #define I2C_SCL_PIN GPIO_PIN_6
 #define I2C_SDA_PIN GPIO_PIN_7
 
@@ -41,13 +41,12 @@ StackType_t emc2305TaskStack_2[configMINIMAL_STACK_SIZE];
  * @retval None
  */
 void SystemClock_Config(void) {
-    RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
     /** Configure the main internal regulator output voltage
     */
-    if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK)
-    {
+    if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK) {
         Error_Handler();
     }
 
@@ -63,22 +62,20 @@ void SystemClock_Config(void) {
     RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
     RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
     RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-    {
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
         Error_Handler();
     }
 
     /** Initializes the CPU, AHB and APB buses clocks
     */
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-        | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.ClockType =
+        RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
-    {
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK) {
         Error_Handler();
     }
 }
@@ -111,17 +108,16 @@ void I2C1_ER_IRQHandler(void) {
 #endif
 
 void mx_uart_init(void) {
-#ifdef STM32L431xx
+    #ifdef STM32L431xx
     // UART init
-    GPIO_InitTypeDef InitStruct = { 0 };
-    RCC_PeriphCLKInitTypeDef PeriphClkInit = { 0 };
+    GPIO_InitTypeDef InitStruct = {0};
+    RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
     /** Initializes the peripherals clock
     */
     PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1;
     PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
-    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-    {
+    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
         Error_Handler();
     }
 
@@ -139,14 +135,14 @@ void mx_uart_init(void) {
     InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     InitStruct.Alternate = GPIO_AF7_USART1;
     HAL_GPIO_Init(USART_PORT, &InitStruct);
-#endif
+    #endif
 }
 
 void mx_i2c_init(void) {
-#ifdef STM32L431xx
+    #ifdef STM32L431xx
     // initialize I2C pins on PSOM
-    GPIO_InitTypeDef GPIO_InitStruct = { 0 };
-    RCC_PeriphCLKInitTypeDef ClkInit = { 0 };
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    RCC_PeriphCLKInitTypeDef ClkInit = {0};
     /* USER CODE BEGIN I2C1_MspInit 0 */
 
     /* USER CODE END I2C1_MspInit 0 */
@@ -155,8 +151,7 @@ void mx_i2c_init(void) {
     */
     ClkInit.PeriphClockSelection = RCC_PERIPHCLK_I2C1;
     ClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
-    if (HAL_RCCEx_PeriphCLKConfig(&ClkInit) != HAL_OK)
-    {
+    if (HAL_RCCEx_PeriphCLKConfig(&ClkInit) != HAL_OK) {
         Error_Handler();
     }
 
@@ -191,29 +186,26 @@ void mx_i2c_init(void) {
     hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
     hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
     hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-    if (HAL_I2C_Init(&hi2c1) != HAL_OK)
-    {
+    if (HAL_I2C_Init(&hi2c1) != HAL_OK) {
         Error_Handler();
     }
 
     /** Configure Analogue filter
     */
-    if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
-    {
+    if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK) {
         Error_Handler();
     }
 
     /** Configure Digital filter
     */
-    if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
-    {
+    if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK) {
         Error_Handler();
     }
-#endif
+    #endif
 }
 
 void mx_led_init(void) {
-#ifdef STM32L431xx
+    #ifdef STM32L431xx
     /* Peripheral clock enable */
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
@@ -233,7 +225,7 @@ void mx_led_init(void) {
         .Pin = GPIO_PIN_11,
     };
     HAL_GPIO_Init(GPIOB, &hb_init);
-#endif
+    #endif
 }
 
 // Initialize UART and EMC2305
@@ -268,7 +260,7 @@ void EMC2305_Task_1(void* argument) {
     printf("Task 1: EMC2305 Initialized\r\n");
 
     // Set global config
-    EMC2305_Global_Config config = { 0 };
+    EMC2305_Global_Config config = {0};
     config.watchdog_enable = true;
     if (EMC2305_SetGlobalConfig(&chip, &config) != EMC2305_OK) {
         Error_Handler();
@@ -277,11 +269,13 @@ void EMC2305_Task_1(void* argument) {
     printf("Task 1: Global Config Set\r\n");
 
     // Set config1 and config2
-    EMC2305_Fan_Config1 config1 = { 0 };
-    config1.enable_closed_loop = false; // Set this to true if using FSC (Closed Loop RPM Control). False for using PWM directly
-    config1.edges = EMC2305_EDG_5; // 5 edges is default for 2 pole fans
+    EMC2305_Fan_Config1 config1 = {0};
+    // Set this to true if using FSC (Closed Loop RPM Control). False for using PWM directly
+    config1.enable_closed_loop = false;
+    // 5 edges is default for 2 pole fans
+    config1.edges = EMC2305_EDG_5;
     config1.range = EMC2305_RNG_2000;
-    EMC2305_Fan_Config2 config2 = { 0 };
+    EMC2305_Fan_Config2 config2 = {0};
     config2.enable_ramp_rate_ctl = true;
     config2.enable_glitch_filter = true;
     config2.error_window = EMC2305_ERG_200RPM;
@@ -301,7 +295,8 @@ void EMC2305_Task_1(void* argument) {
 
     // Set minimum drive to 0%
     // FUCK MICROCHIP THEY NEED TO KILL THEMSELVES
-    if (EMC2305_WriteReg(&chip, EMC2305_FAN_REG_ADDR(EMC2305_FAN2, EMC2305_REG_FAN1_MIN_DRIVE), 0x00) != EMC2305_OK) {
+    if (EMC2305_WriteReg(&chip, EMC2305_FAN_REG_ADDR(EMC2305_FAN2, EMC2305_REG_FAN1_MIN_DRIVE),
+                         0x00) != EMC2305_OK) {
         Error_Handler();
     };
 
@@ -309,7 +304,8 @@ void EMC2305_Task_1(void* argument) {
 
     // Set PID Gain to lowest (1x)
     // I HATE THESE BOZOS WHY IS THIS NOT THE DEFAULT
-    if (EMC2305_WriteReg(&chip, EMC2305_FAN_REG_ADDR(EMC2305_FAN2, EMC2305_REG_GAIN1), 0x00) != EMC2305_OK) {
+    if (EMC2305_WriteReg(&chip, EMC2305_FAN_REG_ADDR(EMC2305_FAN2, EMC2305_REG_GAIN1), 0x00) !=
+        EMC2305_OK) {
         Error_Handler();
     };
 
@@ -359,7 +355,7 @@ void EMC2305_Task_2(void* argument) {
     HAL_GPIO_TogglePin(STATUS_LED_PORT, STATUS_LED_PIN_2);
 
     // Set global config
-    EMC2305_Global_Config config = { 0 };
+    EMC2305_Global_Config config = {0};
     config.watchdog_enable = true;
     if (EMC2305_SetGlobalConfig(&chip, &config) != EMC2305_OK) {
         Error_Handler();
@@ -368,11 +364,13 @@ void EMC2305_Task_2(void* argument) {
     printf("Task 2: Global Config Set\r\n");
 
     // Set config1 and config2
-    EMC2305_Fan_Config1 config1 = { 0 };
-    config1.enable_closed_loop = false; // Set this to true if using FSC (Closed Loop RPM Control). False for using PWM directly
-    config1.edges = EMC2305_EDG_5; // 5 edges is default for 2 pole fans
+    EMC2305_Fan_Config1 config1 = {0};
+    // Set this to true if using FSC (Closed Loop RPM Control). False for using PWM directly
+    config1.enable_closed_loop = false;
+    // 5 edges is default for 2 pole fans
+    config1.edges = EMC2305_EDG_5;
     config1.range = EMC2305_RNG_2000;
-    EMC2305_Fan_Config2 config2 = { 0 };
+    EMC2305_Fan_Config2 config2 = {0};
     config2.enable_ramp_rate_ctl = true;
     config2.enable_glitch_filter = true;
     config2.error_window = EMC2305_ERG_200RPM;
@@ -392,7 +390,8 @@ void EMC2305_Task_2(void* argument) {
 
     // Set minimum drive to 0%
     // FUCK MICROCHIP THEY NEED TO KILL THEMSELVES
-    if (EMC2305_WriteReg(&chip, EMC2305_FAN_REG_ADDR(EMC2305_FAN2, EMC2305_REG_FAN1_MIN_DRIVE), 0x00) != EMC2305_OK) {
+    if (EMC2305_WriteReg(&chip, EMC2305_FAN_REG_ADDR(EMC2305_FAN2, EMC2305_REG_FAN1_MIN_DRIVE),
+                         0x00) != EMC2305_OK) {
         Error_Handler();
     };
 
@@ -400,7 +399,8 @@ void EMC2305_Task_2(void* argument) {
 
     // Set PID Gain to lowest (1x)
     // I HATE THESE BOZOS WHY IS THIS NOT THE DEFAULT
-    if (EMC2305_WriteReg(&chip, EMC2305_FAN_REG_ADDR(EMC2305_FAN2, EMC2305_REG_GAIN1), 0x00) != EMC2305_OK) {
+    if (EMC2305_WriteReg(&chip, EMC2305_FAN_REG_ADDR(EMC2305_FAN2, EMC2305_REG_GAIN1), 0x00) !=
+        EMC2305_OK) {
         Error_Handler();
     };
 
@@ -444,9 +444,10 @@ void EMC2305_Task_2(void* argument) {
 }
 
 int main(void) {
-#ifdef STM32L431xx
+    #ifdef STM32L431xx
     // initialize the HAL and system clock
-    if (HAL_Init() != HAL_OK) Error_Handler();
+    if (HAL_Init() != HAL_OK)
+        Error_Handler();
     SystemClock_Config();
     __HAL_RCC_SYSCFG_CLK_ENABLE();
     __HAL_RCC_PWR_CLK_ENABLE();
@@ -455,34 +456,43 @@ int main(void) {
     mx_uart_init();
     mx_i2c_init();
     mx_led_init();
-#endif
+    #endif
 
     HAL_GPIO_TogglePin(STATUS_LED_PORT, STATUS_LED_PIN_1);
     printf("Task 2: EMC2305 Initialized\r\n");
 
-    xTaskCreateStatic(Init_Task,
+    // clang-format off
+    xTaskCreateStatic(
+        Init_Task,
         "Init Task",
         configMINIMAL_STACK_SIZE,
         NULL,
         tskIDLE_PRIORITY + 1,
         initTaskStack,
         &initTaskBuffer);
+    // clang-format on
 
-    xTaskCreateStatic(EMC2305_Task_1,
+    // clang-format off
+    xTaskCreateStatic(
+        EMC2305_Task_1,
         "EMC2305 Task 1",
         configMINIMAL_STACK_SIZE,
         NULL,
         tskIDLE_PRIORITY + 2,
         emc2305TaskStack_1,
         &emc2305TaskBuffer_1);
+    // clang-format on
 
-    xTaskCreateStatic(EMC2305_Task_2,
+    // clang-format off
+    xTaskCreateStatic(
+        EMC2305_Task_2,
         "EMC2305 Task 2",
         configMINIMAL_STACK_SIZE,
         NULL,
         tskIDLE_PRIORITY + 5,
         emc2305TaskStack_2,
         &emc2305TaskBuffer_2);
+    // clang-format on
 
     vTaskStartScheduler();
 

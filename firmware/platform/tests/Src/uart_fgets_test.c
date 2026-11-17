@@ -11,42 +11,42 @@ StackType_t termTaskStack[configMINIMAL_STACK_SIZE];
 StaticTask_t initTaskBuffer;
 StackType_t initTaskStack[configMINIMAL_STACK_SIZE];
 
-void HAL_UART_MspGPIOInit(UART_HandleTypeDef *huart){
+void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
     GPIO_InitTypeDef init = {0};
     UNUSED(init);
 
-#ifdef STM32F4xx
+    #ifdef STM32F4xx
     __HAL_RCC_GPIOA_CLK_ENABLE();
 
     /* enable port A USART2 gpio
     PA2 -> USART2_TX
     PA3 -> USART2_RX
     */
-    init.Pin = GPIO_PIN_2|GPIO_PIN_3;
+    init.Pin = GPIO_PIN_2 | GPIO_PIN_3;
     init.Mode = GPIO_MODE_AF_PP;
     init.Pull = GPIO_NOPULL;
     init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     init.Alternate = GPIO_AF7_USART2;
     HAL_GPIO_Init(GPIOA, &init);
-#endif
+    #endif
 
-#ifdef STM32G4xx
+    #ifdef STM32G4xx
     __HAL_RCC_GPIOC_CLK_ENABLE();
 
     /* enable port C USART3 gpio
     PC10 -> USART3_TX
     PC11 -> USART3_RX
     */
-    init.Pin = GPIO_PIN_10|GPIO_PIN_11;
+    init.Pin = GPIO_PIN_10 | GPIO_PIN_11;
     init.Mode = GPIO_MODE_AF_PP;
     init.Pull = GPIO_NOPULL;
     init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     init.Alternate = GPIO_AF7_USART3;
     HAL_GPIO_Init(GPIOC, &init);
-#endif
+    #endif
 
-#ifdef STM32L4xx
- /* Peripheral clock enable */
+    #ifdef STM32L4xx
+    /* Peripheral clock enable */
     __HAL_RCC_USART1_CLK_ENABLE();
 
     __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -60,28 +60,28 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef *huart){
     init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     init.Alternate = GPIO_AF7_USART1;
     HAL_GPIO_Init(GPIOA, &init);
-#endif
+    #endif
 }
 
 static bool contactor_state = true;
-void TermTask(void *argument){
+void TermTask(void* argument) {
     static char buf[128];
 
-    while(1){
-        if(uart_fgets(buf, 128) == NULL){ // blocks; waiting for either 128 characters or a \n
+    while (1) {
+        if (uart_fgets(buf, 128) == NULL) { // blocks; waiting for either 128 characters or a \n
             printf("Error reading from UART!\n\r");
             continue;
         }
 
         printf("COMMAND: %s\n\r", buf);
 
-        if(strcmp(buf, "hello_world") == 0){
+        if (strcmp(buf, "hello_world") == 0) {
             printf("Hello World!");
-        } else if(strcmp(buf, "contactors_get") == 0){
-            printf(contactor_state?"CLOSED":"OPEN");
-        } else if(strcmp(buf, "contactors_toggle") == 0){
+        } else if (strcmp(buf, "contactors_get") == 0) {
+            printf(contactor_state ? "CLOSED" : "OPEN");
+        } else if (strcmp(buf, "contactors_toggle") == 0) {
             contactor_state = !contactor_state;
-            printf(contactor_state?"CLOSED":"OPEN");
+            printf(contactor_state ? "CLOSED" : "OPEN");
         }
         printf("\n\r");
 
@@ -89,8 +89,8 @@ void TermTask(void *argument){
     }
 }
 
-void InitTask(void *argument){
-#ifdef STM32F4xx
+void InitTask(void* argument) {
+    #ifdef STM32F4xx
     husart2->Init.BaudRate = 115200;
     husart2->Init.WordLength = UART_WORDLENGTH_8B;
     husart2->Init.StopBits = UART_STOPBITS_1;
@@ -99,9 +99,9 @@ void InitTask(void *argument){
     husart2->Init.HwFlowCtl = UART_HWCONTROL_NONE;
     husart2->Init.OverSampling = UART_OVERSAMPLING_16;
     printf_init(husart2);
-#endif
+    #endif
 
-#ifdef STM32G4xx
+    #ifdef STM32G4xx
     husart3->Init.BaudRate = 115200;
     husart3->Init.WordLength = UART_WORDLENGTH_8B;
     husart3->Init.StopBits = UART_STOPBITS_1;
@@ -110,9 +110,9 @@ void InitTask(void *argument){
     husart3->Init.HwFlowCtl = UART_HWCONTROL_NONE;
     husart3->Init.OverSampling = UART_OVERSAMPLING_16;
     printf_init(husart3);
-#endif
+    #endif
 
-#ifdef STM32L4xx
+    #ifdef STM32L4xx
     husart1->Init.BaudRate = 115200;
     husart1->Init.WordLength = UART_WORDLENGTH_8B;
     husart1->Init.StopBits = UART_STOPBITS_1;
@@ -122,17 +122,20 @@ void InitTask(void *argument){
     husart1->Init.OverSampling = UART_OVERSAMPLING_16;
 
     printf_init(husart1);
-#endif
+    #endif
 
-    xTaskCreateStatic(TermTask, 
-                     "TermTask",
-                     configMINIMAL_STACK_SIZE,
-                     NULL,
-                     tskIDLE_PRIORITY + 2,
-                     termTaskStack,
-                     &termTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        TermTask,
+        "TermTask",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        termTaskStack,
+        &termTaskBuffer);
+    // clang-format on
 
-    while(1){
+    while (1) {
         portYIELD();
     }
 }
@@ -141,60 +144,61 @@ int main(void) {
     HAL_Init();
     SystemClock_Config();
 
-    xTaskCreateStatic(InitTask, 
-                     "Init",
-                     configMINIMAL_STACK_SIZE,
-                     NULL,
-                     tskIDLE_PRIORITY + 2,
-                     initTaskStack,
-                     &initTaskBuffer);
+    // clang-format off
+    xTaskCreateStatic(
+        InitTask,
+        "Init",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        initTaskStack,
+        &initTaskBuffer);
+    // clang-format on
 
     vTaskStartScheduler();
 
-    while (1) {}
+    while (1) {
+    }
 }
 
 // autogenerated
 #ifdef STM32G4xx
-void SystemClock_Config(void)
-{
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+void SystemClock_Config(void) {
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  /** Configure the main internal regulator output voltage
+    /** Configure the main internal regulator output voltage
   */
-  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
+    HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-  /** Initializes the RCC Oscillators according to the specified parameters
+    /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV2;
-  RCC_OscInitStruct.PLL.PLLN = 20;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
-  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+    RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+    RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+    RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV2;
+    RCC_OscInitStruct.PLL.PLLN = 20;
+    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+    RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+        Error_Handler();
+    }
 
-  /** Initializes the CPU, AHB and APB buses clocks
+    /** Initializes the CPU, AHB and APB buses clocks
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+    RCC_ClkInitStruct.ClockType =
+        RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
+        Error_Handler();
+    }
 }
 #endif

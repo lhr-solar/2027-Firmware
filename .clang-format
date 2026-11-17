@@ -34,11 +34,16 @@ SpacesInContainerLiterals: false
 SpacesInCStyleCastParentheses: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
-IndentPPDirectives: BeforeHash
+IndentPPDirectives: Leave
 
 # register/pin #define tables read better aligned
 AlignConsecutiveMacros: Consecutive
 AlignTrailingComments: true
+# macro "\" just past the longest line, not out at the column limit
+AlignEscapedNewlines: Left
+
+# keep ":" at end of line so chained-ternary lookup macros read as a table
+BreakBeforeTernaryOperators: false
 
 SortIncludes: Never
 IncludeBlocks: Preserve
