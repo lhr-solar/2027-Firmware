@@ -20,21 +20,6 @@ typedef enum {
     L_DEBUG = 3,
 } LoggingLevel;
 
-static inline const char* log_level_name(LoggingLevel level) {
-    switch (level) {
-        case L_DEBUG:
-            return "DEBUG";
-        case L_INFO:
-            return "INFO";
-        case L_WARN:
-            return "WARN";
-        case L_ERROR:
-            return "ERROR";
-    }
-    /* Should be unreachable */
-    return NULL;
-}
-
 // sends "[LEVEL] <message>" to a CDC port
 int LOG(uint8_t port, LoggingLevel level, const char* fmt, ...);
 int snprintf(char* buffer, size_t bufsz, char const* fmt, ...);

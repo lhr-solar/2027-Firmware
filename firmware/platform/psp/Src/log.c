@@ -25,6 +25,21 @@
     #define LOG_TX_TIMEOUT (pdMS_TO_TICKS(250))
 #endif
 
+static const char* log_level_name(LoggingLevel level) {
+    switch (level) {
+        case L_DEBUG:
+            return "DEBUG";
+        case L_INFO:
+            return "INFO";
+        case L_WARN:
+            return "WARN";
+        case L_ERROR:
+            return "ERROR";
+    }
+    /* Should be unreachable */
+    return NULL;
+}
+
 typedef struct {
     char buffer[MAX_LOG_SIZE];
     SemaphoreHandle_t buffer_mtx;
