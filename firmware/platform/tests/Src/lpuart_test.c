@@ -5,9 +5,8 @@
 */
 #include "stm32xx_hal.h"
 #include "UART.h"
+#include "tusb_port.h"
 #include "printf.h" // only for debugging
-
-uint8_t printf_enabled = 0;
 
 void TxTask(void* argument);
 void RxTask(void* argument);
@@ -17,6 +16,16 @@ StaticTask_t txTaskBuffer;
 StaticTask_t rxTaskBuffer;
 StackType_t txTaskStack[configMINIMAL_STACK_SIZE];
 StackType_t rxTaskStack[configMINIMAL_STACK_SIZE];
+/* tusb polling task */
+StaticTask_t pollEventsTaskBuffer;
+StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
+
+static void poll_events(void* argument) {
+    while (1) {
+        // polls event queue
+        tud_task();
+    }
+}
 
 // Heartbeat pin on stm32l432kcu is PB3
 #if defined(STM32L432xx)
@@ -90,10 +99,10 @@ void RxTask(void* argument) {
         if (status == UART_OK) {
             rxCount++;
 
-            // Print received character
-            if (printf_enabled == 1) {
-                printf("RX[%lu]: %c\n\r", rxCount, rxBuffer);
-            }
+            // Print received character, printf drops what doesn't fit in the USB TX buffer
+            // so let it drain. The UART RX queue holds the rest of the message meanwhile
+            printf("RX[%lu]: %c\n\r", rxCount, rxBuffer);
+            vTaskDelay(pdMS_TO_TICKS(2));
         }
     }
 }
@@ -139,25 +148,22 @@ int main(void) {
     #endif
 
 
-    // This is tested using the LSOM
-    #ifdef USART3
-    // initialize printf (not needed for LPUART)
-    husart3->Init.BaudRate = 115200;
-    husart3->Init.WordLength = UART_WORDLENGTH_8B;
-    husart3->Init.StopBits = UART_STOPBITS_1;
-    husart3->Init.Parity = UART_PARITY_NONE;
-    husart3->Init.Mode = UART_MODE_TX_RX;
-    husart3->Init.HwFlowCtl = UART_HWCONTROL_NONE;
-    husart3->Init.OverSampling = UART_OVERSAMPLING_16;
-
-    printf_init(husart3);
-
-    printf_enabled = 1; // necessary for ports that don't use husart3
-
-    #endif
-
+    MX_USB_PCD_Init();
+    // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
+    printf_init();
 
     // Create the tasks statically
+    // clang-format off
+    xTaskCreateStatic(
+        poll_events,
+        "Poll Event Queue",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        tskIDLE_PRIORITY + 3,
+        pollEventsStack,
+        &pollEventsTaskBuffer);
+    // clang-format on
+
     // clang-format off
     xTaskCreateStatic(
         TxTask,
@@ -206,22 +212,6 @@ void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
         GPIO_InitStruct.Alternate = GPIO_AF8_LPUART1;
         HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    }
-    #endif
-
-    #ifdef USART3
-    if (huart->Instance == USART3) {
-        __HAL_RCC_GPIOC_CLK_ENABLE();
-        /**USART3 GPIO Configuration
-        PC10     ------> USART3_TX
-        PC11     ------> USART3_RX
-        */
-        GPIO_InitStruct.Pin = GPIO_PIN_10 | GPIO_PIN_11;
-        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-        GPIO_InitStruct.Pull = GPIO_NOPULL;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-        GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
-        HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
     }
     #endif
 }
