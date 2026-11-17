@@ -1,0 +1,298 @@
+VERSION "2027-draft-2026-10-23"
+
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: CM5
+VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
+VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
+VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
+VAL_TABLE_ WarningState 1 "Warning" 0 "NoWarning" ;
+VAL_TABLE_ DeviceStatus 2 "Waiting" 1 "Fault" 0 "OK" ;
+VAL_TABLE_ Permission 1 "Allowed" 0 "NotAllowed" ;
+VAL_TABLE_ Connection 1 "Connected" 0 "Disconnected" ;
+VAL_TABLE_ BalancingMode 2 "Manual" 1 "Automatic" 0 "Off" ;
+VAL_TABLE_ BalancingState 4 "BlockedOrFault" 3 "Complete" 2 "Paused" 1 "Balancing" 0 "Off" ;
+VAL_TABLE_ BalancingBlockReason 7 "Other" 6 "BPSFault" 5 "Communication" 4 "VehicleState" 3 "CellVoltage" 2 "ChipTemperature" 1 "CellTemperature" 0 "None" ;
+VAL_TABLE_ ServerConnection 1 "Connected" 0 "Disconnected/Retrying" ;
+VAL_TABLE_ Pressed 1 "Pressed" 0 "NotPressed" ;
+VAL_TABLE_ Validity 1 "Valid" 0 "Invalid" ;
+VAL_TABLE_ Watchdog 1 "TimedOut" 0 "Alive" ;
+VAL_TABLE_ NormalAdvanced 1 "Advanced" 0 "Normal" ;
+VAL_TABLE_ MotorCommandSource 1 "External" 0 "VCU" ;
+VAL_TABLE_ Gear 3 "Invalid" 2 "Reverse" 1 "Forward" 0 "Neutral" ;
+VAL_TABLE_ BPSFaultSummary 5 "SMBFault" 4 "PrechargeFault" 3 "ContactorRelayFault" 2 "EmergencyStop" 1 "SetpointFault" 0 "OK" ;
+VAL_TABLE_ VCUState 7 "VehicleNotReady" 6 "Disabled" 5 "CruiseControl" 4 "Regen" 3 "ReverseDrive" 2 "NeutralDrive" 1 "ForwardDrive" 0 "Init" ;
+VAL_TABLE_ ChargeState 2 "Charging" 1 "Standby" 0 "Disabled" ;
+VAL_TABLE_ EVSEState 5 "F_EVSEFault" 4 "E_Fault" 3 "D_VentilationRequired" 2 "C_ChargingReady" 1 "B_Connected" 0 "A_Disconnected" ;
+VAL_TABLE_ GPSAntennaState 3 "Unknown" 2 "ShortCircuit" 1 "OpenCircuit" 0 "OK" ;
+VAL_TABLE_ GPSFix 2 "Fix3D" 1 "Fix2D" 0 "NoFix" ;
+VAL_TABLE_ CellularTechnology 4 "Other" 3 "NB_IoT" 2 "LTE_M" 1 "LTE" 0 "None" ;
+VAL_TABLE_ TPEEControlMode 2 "ConstantInputVoltage" 1 "PerturbAndObserve" 0 "Disabled" ;
+VAL_TABLE_ TPEEOperatingMode 7 "Fault" 6 "MinimumInputVoltage" 5 "TemperatureDerating" 4 "ConstantOutputCurrent" 3 "ConstantOutputVoltage" 2 "MinimumInputCurrent" 1 "ConstantInputCurrent" 0 "ConstantInputVoltage" ;
+VAL_TABLE_ TPEEFault 8 "Fault" 7 "PhaseOverCurrent" 6 "InputUnderCurrent" 5 "InputOverCurrent" 4 "OutputOverCurrent" 3 "OutputOverVoltage" 2 "InputOverVoltage" 1 "ConfigurationError" 0 "OK" ;
+VAL_TABLE_ LWSCalibration 1 "Calibrated" 0 "NotCalibrated" ;
+VAL_TABLE_ LWSTrim 1 "Trimmed" 0 "NotTrimmed" ;
+VAL_TABLE_ LWSCommand 5 "ResetCalibration" 3 "SetAngleZero" ;
+VAL_TABLE_ ElconControl 1 "Disable" 0 "Charge" ;
+VAL_TABLE_ ElconMuxPage 5 "Page5" 4 "Page4" 3 "Page3" 2 "Page2" 1 "Page1" ;
+
+
+BO_ 1552 TelemetryStatus: 5 CM5
+ SG_ CellularConnected : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ CellularTechnology : 1|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
+ SG_ Roaming : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ InternetConnected : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ ServerConnected : 6|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ RSSI : 7|8@1- (1,0) [-128.0|127.0] "dBm" Vector__XXX
+ SG_ RSRP : 15|8@1- (1,0) [-128.0|127.0] "dBm" Vector__XXX
+ SG_ RSRQ : 23|8@1- (0.5,0) [-64.0|63.5] "dB" Vector__XXX
+ SG_ SINR : 31|8@1- (0.5,0) [-64.0|63.5] "dB" Vector__XXX
+
+BO_ 1553 GPSData: 16 CM5
+ SG_ GPSAntennaState : 0|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ GPSFix : 2|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ GPSLongitude : 4|32@1- (1e-06,0) [-180|180] "deg" Vector__XXX
+ SG_ GPSLatitude : 36|32@1- (1e-06,0) [-90|90] "deg" Vector__XXX
+ SG_ GPSSpeed : 68|16@1+ (0.01,0) [0.0|655.35] "m/s" Vector__XXX
+ SG_ GPSHeading : 84|16@1+ (0.01,0) [0|359.99] "deg" Vector__XXX
+ SG_ GPSAltitude : 100|16@1- (0.1,0) [-3276.8|3276.7] "m" Vector__XXX
+ SG_ SatellitesInUse : 116|8@1+ (1,0) [0.0|255.0] "" Vector__XXX
+
+BO_ 1554 OnBoardWatchdog: 1 CM5
+ SG_ BPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ VCUWatchdog : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ DEIWatchdog : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ PedalsWatchdog : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ PDUWatchdog : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ LVCWatchdog : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MSVWatchdog : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+
+BO_ 2045 Sig_Wave: 8 CM5
+ SG_ Sine : 0|32@1+ (1,0) [-1|1] "" Vector__XXX
+ SG_ Cosine : 32|32@1+ (1,0) [-1|1] "" Vector__XXX
+
+BO_ 2046 max_message_classical: 8 CM5
+ SG_ sg0 : 0|8@1+ (1,0) [0|1] "unit" Vector__XXX
+ SG_ sg1 : 8|8@1+ (1,0) [0|1] "unit" Vector__XXX
+ SG_ sg2 : 16|8@1+ (1,0) [0|1] "unit" Vector__XXX
+ SG_ sg3 : 24|8@1+ (1,0) [0|1] "unit" Vector__XXX
+ SG_ sg4 : 32|8@1+ (1,0) [0|1] "unit" Vector__XXX
+ SG_ sg5 : 40|8@1+ (1,0) [0|1] "unit" Vector__XXX
+ SG_ sg6 : 48|8@1+ (1,0) [0|1] "unit" Vector__XXX
+ SG_ sg7 : 56|8@1+ (1,0) [0|1] "unit" Vector__XXX
+
+BO_ 2047 max_message_fd: 64 CM5
+ SG_ sg0 : 0|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg1 : 8|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg2 : 16|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg3 : 24|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg4 : 32|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg5 : 40|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg6 : 48|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg7 : 56|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg8 : 64|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg9 : 72|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg10 : 80|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg11 : 88|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg12 : 96|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg13 : 104|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg14 : 112|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg15 : 120|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg16 : 128|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg17 : 136|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg18 : 144|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg19 : 152|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg20 : 160|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg21 : 168|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg22 : 176|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg23 : 184|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg24 : 192|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg25 : 200|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg26 : 208|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg27 : 216|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg28 : 224|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg29 : 232|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg30 : 240|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg31 : 248|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg32 : 256|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg33 : 264|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg34 : 272|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg35 : 280|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg36 : 288|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg37 : 296|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg38 : 304|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg39 : 312|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg40 : 320|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg41 : 328|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg42 : 336|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg43 : 344|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg44 : 352|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg45 : 360|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg46 : 368|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg47 : 376|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg48 : 384|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg49 : 392|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg50 : 400|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg51 : 408|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg52 : 416|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg53 : 424|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg54 : 432|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg55 : 440|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg56 : 448|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg57 : 456|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg58 : 464|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg59 : 472|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg60 : 480|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg61 : 488|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg62 : 496|8@1+ (1,0) [0|255] "unit" Vector__XXX
+ SG_ sg63 : 504|8@1+ (1,0) [0|255] "unit" Vector__XXX
+
+
+
+
+CM_ BO_ 1552 "2027 team-defined layout; physical values use the shared scaling conventions.";
+CM_ SG_ 1552 SINR "SINR";
+CM_ SG_ 1552 RSRQ "RSRQ";
+CM_ SG_ 1552 RSRP "RSRP";
+CM_ SG_ 1552 RSSI "RSSI";
+CM_ SG_ 1552 ServerConnected "Connection to the telemetry server; independent of internet connectivity.";
+CM_ SG_ 1552 InternetConnected "InternetConnected";
+CM_ SG_ 1552 Roaming "Roaming";
+CM_ SG_ 1552 CellularTechnology "CellularTechnology";
+CM_ SG_ 1552 CellularConnected "CellularConnected";
+CM_ BO_ 1553 "GPS receiver state and measurements.";
+CM_ SG_ 1553 SatellitesInUse "SatellitesInUse";
+CM_ SG_ 1553 GPSAltitude "GPSAltitude";
+CM_ SG_ 1553 GPSHeading "GPSHeading";
+CM_ SG_ 1553 GPSSpeed "GPSSpeed";
+CM_ SG_ 1553 GPSLatitude "GPSLatitude";
+CM_ SG_ 1553 GPSLongitude "Longitude range corrected from swapped draft coordinates.";
+CM_ SG_ 1553 GPSFix "GPSFix";
+CM_ SG_ 1553 GPSAntennaState "GPSAntennaState";
+CM_ BO_ 1554 "CM5 reports watchdog state of other boards: 0 alive, 1 timed out. Former CM5 self-watchdog removed; bit 7 is reserved.";
+CM_ SG_ 1554 MSVWatchdog "MSVWatchdog";
+CM_ SG_ 1554 LVCWatchdog "LVCWatchdog";
+CM_ SG_ 1554 PDUWatchdog "PDUWatchdog";
+CM_ SG_ 1554 PedalsWatchdog "PedalsWatchdog";
+CM_ SG_ 1554 DEIWatchdog "DEIWatchdog";
+CM_ SG_ 1554 VCUWatchdog "VCUWatchdog";
+CM_ SG_ 1554 BPSWatchdog "BPSWatchdog";
+CM_ BO_ 2045 "On-demand telemetry test frame; no assumed periodic rate.";
+CM_ BO_ 2046 "On-demand telemetry test frame; no assumed periodic rate.";
+CM_ BO_ 2047 "On-demand telemetry test frame; no assumed periodic rate.";
+BA_DEF_ SG_  "ValueTable" STRING ;
+BA_DEF_ BO_  "LayoutPending" INT 0 1;
+BA_DEF_ BO_  "ProtocolSource" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ BO_  "CANFD_BRS" ENUM  "0","1";
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","Triggered","None";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;
+BA_DEF_  "Baudrate" INT 1 10000000;
+BA_DEF_  "DataBaudrate" INT 1 10000000;
+BA_DEF_DEF_  "ValueTable" "";
+BA_DEF_DEF_  "LayoutPending" 0;
+BA_DEF_DEF_  "ProtocolSource" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
+BA_DEF_DEF_  "CANFD_BRS" "0";
+BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_ "BusType" "TCP";
+BA_ "DBName" "TelemetryLink";
+BA_ "LayoutPending" BO_ 1552 0;
+BA_ "ProtocolSource" BO_ 1552 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1552 14;
+BA_ "GenMsgSendType" BO_ 1552 0;
+BA_ "GenMsgCycleTime" BO_ 1552 500;
+BA_ "CANFD_BRS" BO_ 1552 0;
+BA_ "ValueTable" SG_ 1552 ServerConnected "ServerConnection";
+BA_ "ValueTable" SG_ 1552 InternetConnected "Connection";
+BA_ "ValueTable" SG_ 1552 Roaming "OnOff";
+BA_ "ValueTable" SG_ 1552 CellularTechnology "CellularTechnology";
+BA_ "ValueTable" SG_ 1552 CellularConnected "Connection";
+BA_ "LayoutPending" BO_ 1553 0;
+BA_ "ProtocolSource" BO_ 1553 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1553 14;
+BA_ "GenMsgSendType" BO_ 1553 0;
+BA_ "GenMsgCycleTime" BO_ 1553 200;
+BA_ "CANFD_BRS" BO_ 1553 0;
+BA_ "ValueTable" SG_ 1553 GPSFix "GPSFix";
+BA_ "ValueTable" SG_ 1553 GPSAntennaState "GPSAntennaState";
+BA_ "LayoutPending" BO_ 1554 0;
+BA_ "ProtocolSource" BO_ 1554 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 1554 14;
+BA_ "GenMsgSendType" BO_ 1554 0;
+BA_ "GenMsgCycleTime" BO_ 1554 100;
+BA_ "CANFD_BRS" BO_ 1554 0;
+BA_ "ValueTable" SG_ 1554 MSVWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 LVCWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 PDUWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 PedalsWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 DEIWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 VCUWatchdog "Watchdog";
+BA_ "ValueTable" SG_ 1554 BPSWatchdog "Watchdog";
+BA_ "LayoutPending" BO_ 2045 0;
+BA_ "ProtocolSource" BO_ 2045 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 2045 0;
+BA_ "GenMsgSendType" BO_ 2045 1;
+BA_ "CANFD_BRS" BO_ 2045 0;
+BA_ "LayoutPending" BO_ 2046 0;
+BA_ "ProtocolSource" BO_ 2046 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 2046 0;
+BA_ "GenMsgSendType" BO_ 2046 1;
+BA_ "CANFD_BRS" BO_ 2046 0;
+BA_ "LayoutPending" BO_ 2047 0;
+BA_ "ProtocolSource" BO_ 2047 "2027 allocation draft";
+BA_ "VFrameFormat" BO_ 2047 14;
+BA_ "GenMsgSendType" BO_ 2047 1;
+BA_ "CANFD_BRS" BO_ 2047 0;
+VAL_ 1552 ServerConnected 0 "Disconnected/Retrying" 1 "Connected" ;
+VAL_ 1552 InternetConnected 0 "Disconnected" 1 "Connected" ;
+VAL_ 1552 Roaming 0 "Off" 1 "On" ;
+VAL_ 1552 CellularTechnology 0 "None" 1 "LTE" 2 "LTE_M" 3 "NB_IoT" 4 "Other" ;
+VAL_ 1552 CellularConnected 0 "Disconnected" 1 "Connected" ;
+VAL_ 1553 GPSFix 0 "NoFix" 1 "Fix2D" 2 "Fix3D" ;
+VAL_ 1553 GPSAntennaState 0 "OK" 1 "OpenCircuit" 2 "ShortCircuit" 3 "Unknown" ;
+VAL_ 1554 MSVWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 LVCWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 PDUWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 PedalsWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 DEIWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 VCUWatchdog 0 "Alive" 1 "TimedOut" ;
+VAL_ 1554 BPSWatchdog 0 "Alive" 1 "TimedOut" ;
+SIG_VALTYPE_ 2045 Sine : 1;
+SIG_VALTYPE_ 2045 Cosine : 1;

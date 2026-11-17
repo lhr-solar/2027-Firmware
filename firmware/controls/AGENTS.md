@@ -11,7 +11,7 @@ sources, no build. Everything below describes intent.
 | Board | Role |
 |---|---|
 | **VCU** | Vehicle Control Unit — top-level vehicle state and coordination |
-| **MIKA** | Driver interface / instrumentation |
+| **CM5** | Driver interface / instrumentation |
 | **Pedals** | Pedal box — accelerator and brake sensing |
 
 ## This tree governs vehicle motion

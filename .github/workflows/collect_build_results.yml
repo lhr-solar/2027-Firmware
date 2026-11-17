@@ -26,7 +26,9 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           EVENT: ${{ github.event_name }}
           TIMEOUT_MINUTES: 120
+          REQUIRED_WORKFLOWS: validate-can.yml
           WORKFLOWS: |
+            validate-can.yml
             build_boards.yml
             build_platform.yml
             validate_macos_naming.yml

@@ -1,0 +1,105 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: BPS
+
+
+BO_ 2566869221 CellStatus: 64 BPS
+ SG_ Tail : 504|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ State : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Temperature : 16|12@1+ (0.5,-40) [-40|150] "degC" Vector__XXX
+ SG_ CellVoltageMv : 0|12@1+ (1,2000) [2000|4500] "mV" Vector__XXX
+
+BO_ 291 SignedBig: 8 BPS
+ SG_ NegativeScale : 16|8@1+ (-2,10) [-100|10] "" Vector__XXX
+ SG_ Current : 7|12@0- (0.5,-10) [0|0] "" Vector__XXX
+
+BO_ 292 Counter: 8 BPS
+ SG_ Value : 0|64@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 293 SignedCounter: 8 BPS
+ SG_ Value : 0|64@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 294 Padded: 9 BPS
+ SG_ Tail : 64|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 295 Mux: 8 BPS
+ SG_ Second m1 : 8|8@1+ (0.5,0) [0|0] "" Vector__XXX
+ SG_ First m0 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Mode M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 2147483939 ExtendedSmall: 1 BPS
+ SG_ Value : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+
+
+
+
+
+
+
+VAL_ 2566869221 State 0 "Normal" 1 "Fault" ;
+
+
+
+
+BA_DEF_ BO_ "VFrameFormat" ENUM "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_ "VFrameFormat" BO_ 2566869221 15;
+BA_ "VFrameFormat" BO_ 294 14;
+
+BO_ 297 Nested: 8 BPS
+ SG_ Mode M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ SubMode m0M : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Value m1 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Other m1 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+
+SG_MUL_VAL_ 297 SubMode Mode 0-0;
+SG_MUL_VAL_ 297 Value SubMode 1-1;
+SG_MUL_VAL_ 297 Other Mode 1-1;
+
+BO_ 296 SmallFD: 8 BPS
+ SG_ Value : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+BA_ "VFrameFormat" BO_ 296 14;
+
+BO_ 2684354559 MaxId: 1 BPS
+ SG_ Value : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 298 Empty: 0 BPS
+
+BO_ 299 Wide: 8 BPS
+ SG_ Value : 0|63@1+ (1,0) [1|9223372036854775807] "" Vector__XXX
+
+BO_ 300 Narrow: 1 BPS
+ SG_ Value : 0|8@1- (1,0) [0|100] "" Vector__XXX

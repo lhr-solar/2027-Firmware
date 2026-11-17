@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'firmware/**'
+      - 'can/generated/**'
+      - 'can/CMakeLists.txt'
       - 'flake.nix'
       - 'flake.lock'
       - '.github/workflows/build_boards.yml'
@@ -13,6 +15,8 @@ on:
   pull_request:
     paths:
       - 'firmware/**'
+      - 'can/generated/**'
+      - 'can/CMakeLists.txt'
       - 'flake.nix'
       - 'flake.lock'
       - '.github/workflows/build_boards.yml'

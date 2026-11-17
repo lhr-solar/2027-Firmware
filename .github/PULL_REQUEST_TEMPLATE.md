@@ -8,7 +8,7 @@
 
 - [ ] `firmware/platform/` — shared platform (**affects every board**)
 - [ ] `firmware/psys/` — LV / HV / BPS
-- [ ] `firmware/controls/` — VCU / MIKA / Pedals
+- [ ] `firmware/controls/` — VCU / CM5 / Pedals
 - [ ] `firmware/telemetry/` — sensor board
 - [ ] `can/` — DBCs, codegen, or spec viewer
 - [ ] CI / tooling / docs
