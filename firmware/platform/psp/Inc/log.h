@@ -13,13 +13,7 @@
 #include "tusb_port.h"
 
 // thank you ramesh
-typedef enum {
-    L_ERROR = 0,
-    L_WARN,
-    L_INFO,
-    L_DEBUG,
-    NUM_LOGGING_LEVELS
-} loggingLevel_t;
+typedef enum { L_ERROR = 0, L_WARN, L_INFO, L_DEBUG, NUM_LOGGING_LEVELS } loggingLevel_t;
 
 // sends "[LEVEL] <message>" to a CDC port
 int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...);
