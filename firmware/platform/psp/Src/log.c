@@ -91,7 +91,7 @@ void cdc_space_available_cb(uint8_t itf) {
     // give sem for that specific CDC port (itf)
     if (cdc_tx_sem[itf] != NULL)
         // not an ISR
-        xSemaphoreGive(cdc_tx_sem[itf]); 
+        xSemaphoreGive(cdc_tx_sem[itf]);
 }
 
 // Print to a buffer
