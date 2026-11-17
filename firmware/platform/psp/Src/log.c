@@ -48,19 +48,21 @@ typedef struct {
     StaticSemaphore_t buffer_mtx_buffer;
 } log_buffer_t;
 
-log_buffer_t log_pool[NUM_LOG_BUFFERS];
-uint8_t log_pool_next = 0;
+typedef struct {
+    // pool of buffers for tasks logging to this port, one handed out per task
+    log_buffer_t cdc_pool[NUM_LOG_BUFFERS];
+    uint8_t cdc_pool_next;
+    SemaphoreHandle_t cdc_pool_mtx;
+    StaticSemaphore_t cdc_pool_mtx_buf;
+    // mutex on calling tusb write to FIFO, per CDC port
+    SemaphoreHandle_t cdc_port_mtx;
+    StaticSemaphore_t cdc_port_mtx_buf;
+    // semaphore given on tx complete callback, per CDC port
+    SemaphoreHandle_t cdc_tx_sem;
+    StaticSemaphore_t cdc_tx_sem_buf;
+} cdc_port_t;
 
-SemaphoreHandle_t log_pool_mtx;
-StaticSemaphore_t log_pool_mtx_buf;
-
-// mutex on calling tusb write to FIFO, per CDC port
-SemaphoreHandle_t cdc_port_mtx[NUM_CDC_INSTANCES];
-StaticSemaphore_t cdc_port_mtx_buf[NUM_CDC_INSTANCES];
-
-// semaphore given on tx complete callback, per CDC port
-SemaphoreHandle_t cdc_tx_sem[NUM_CDC_INSTANCES];
-StaticSemaphore_t cdc_tx_sem_buf[NUM_CDC_INSTANCES];
+cdc_port_t cdc_ports[NUM_CDC_INSTANCES];
 
 // defaults
 uint16_t cdc_slots_needed[NUM_CDC_INSTANCES] = {0};
@@ -70,15 +72,15 @@ uint16_t cdc_slots_needed[NUM_CDC_INSTANCES] = {0};
  * @return bool true if success
  */
 bool log_init(void) {
-    log_pool_mtx = xSemaphoreCreateMutexStatic(&log_pool_mtx_buf);
-
-    for (int i = 0; i < NUM_LOG_BUFFERS; i++) {
-        log_pool[i].buffer_mtx = xSemaphoreCreateMutexStatic(&log_pool[i].buffer_mtx_buffer);
-    }
-
     for (int i = 0; i < NUM_CDC_INSTANCES; i++) {
-        cdc_port_mtx[i] = xSemaphoreCreateMutexStatic(&cdc_port_mtx_buf[i]);
-        cdc_tx_sem[i] = xSemaphoreCreateBinaryStatic(&cdc_tx_sem_buf[i]);
+        cdc_port_t* p = &cdc_ports[i];
+        for (int j = 0; j < NUM_LOG_BUFFERS; j++) {
+            p->cdc_pool[j].buffer_mtx =
+                xSemaphoreCreateMutexStatic(&p->cdc_pool[j].buffer_mtx_buffer);
+        }
+        p->cdc_pool_mtx = xSemaphoreCreateMutexStatic(&p->cdc_pool_mtx_buf);
+        p->cdc_port_mtx = xSemaphoreCreateMutexStatic(&p->cdc_port_mtx_buf);
+        p->cdc_tx_sem = xSemaphoreCreateBinaryStatic(&p->cdc_tx_sem_buf);
     }
 
     tusb_rhport_init_t dev_init = {
@@ -92,11 +94,11 @@ bool log_init(void) {
 void cdc_space_available_cb(uint8_t itf) {
     if (cdc_slots_needed[itf] > 0 && tud_cdc_n_write_available(itf) >= cdc_slots_needed[itf]) {
         // give sem for that specific CDC port (itf)
-        if (cdc_tx_sem[itf] != NULL) {
+        if (cdc_ports[itf].cdc_tx_sem != NULL) {
             // not an ISR
-            xSemaphoreGive(cdc_tx_sem[itf]);
+            xSemaphoreGive(cdc_ports[itf].cdc_tx_sem);
             // reset so semaphore doesn't give when not needed
-            cdc_slots_needed[port] = 0;
+            cdc_slots_needed[itf] = 0;
         }
     }
 }
@@ -113,21 +115,28 @@ int snprintf(char* buffer, size_t bufsz, char const* fmt, ...) {
 // formatted log to a CDC port
 int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
     // exit early if port specified greater than num cdc ports
-    if (port > NUM_CDC_INSTANCES - 1 || log_pool_mtx == NULL || !tud_cdc_n_connected(port))
+    if (port > NUM_CDC_INSTANCES - 1 || !tud_cdc_n_connected(port) ||
+        cdc_ports[port].cdc_pool_mtx == NULL)
         return -1;
 
-    log_buffer_t* pbuf = pvTaskGetThreadLocalStoragePointer(xTaskGetCurrentTaskHandle(), 0);
-    if (pbuf == NULL) {
-        // only if this task is not assigned a buffer, assign it a buffer
-        // we must use a separate lock here for the "next pool entry" variable
-        if (xSemaphoreTake(log_pool_mtx, LOG_MTX_DELAY_TICKS) != pdTRUE)
-            return -1;
-        vTaskSetThreadLocalStoragePointer(xTaskGetCurrentTaskHandle(), 0,
-                                          (void*)(&log_pool[log_pool_next]));
+    // "[LEVEL] " prefix, then the message after it
+    const char* name = log_level_name(level);
+    // if invalid log level passed, checked before taking any lock
+    if (name == NULL)
+        return -1;
 
-        pbuf = &log_pool[log_pool_next];
-        log_pool_next = (log_pool_next + 1) % NUM_LOG_BUFFERS;
-        xSemaphoreGive(log_pool_mtx);
+    cdc_port_t* cdc = &cdc_ports[port];
+
+    log_buffer_t* pbuf = pvTaskGetThreadLocalStoragePointer(NULL, port);
+    if (pbuf == NULL) {
+        // only if this task has no buffer for this port yet, assign it one from the port's pool
+        // we must use a separate lock here for the "next pool entry" variable
+        if (xSemaphoreTake(cdc->cdc_pool_mtx, LOG_MTX_DELAY_TICKS) != pdTRUE)
+            return -1;
+        pbuf = &cdc->cdc_pool[cdc->cdc_pool_next];
+        vTaskSetThreadLocalStoragePointer(NULL, port, (void*)pbuf);
+        cdc->cdc_pool_next = (cdc->cdc_pool_next + 1) % NUM_LOG_BUFFERS;
+        xSemaphoreGive(cdc->cdc_pool_mtx);
     }
 
     va_list val;
@@ -137,14 +146,8 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
         va_end(val);
         return -1;
     }
-    // "[LEVEL] " prefix, then the message after it
-    const char* name = log_level_name(level);
-    // if invalid log level passed
-    if (name == NULL) 
-        return -1;
 
-    int const prefix =
-        npf_snprintf(pbuf->buffer, MAX_LOG_SIZE, "[%s] ", (name != NULL) ? name : "?");
+    int const prefix = npf_snprintf(pbuf->buffer, MAX_LOG_SIZE, "[%s] ", name);
     int const body = npf_vsnprintf(pbuf->buffer + prefix, MAX_LOG_SIZE - prefix, fmt, val);
     va_end(val);
     if (body < 0) {
@@ -154,7 +157,7 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
     int const rv = prefix + body;
 
     // claim access to port hw
-    if (xSemaphoreTake(cdc_port_mtx[port], LOG_MTX_DELAY_TICKS) != pdTRUE) {
+    if (xSemaphoreTake(cdc->cdc_port_mtx, LOG_MTX_DELAY_TICKS) != pdTRUE) {
         xSemaphoreGive(pbuf->buffer_mtx);
         return -1;
     }
@@ -167,12 +170,12 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
     // happens for any serial terminals that claim a COM port
     if (tud_cdc_n_connected(port)) {
         // clear any leftover semphr give if happened after previous calls timeout
-        xSemaphoreTake(cdc_tx_sem[port], 0);
+        xSemaphoreTake(cdc->cdc_tx_sem, 0);
         cdc_slots_needed[port] = count;
-        BaseType_t semphr_passed = pdTrue; 
+        BaseType_t semphr_passed = pdTRUE;
         if (tud_cdc_n_write_available(port) < count) {
             // pend on slots available
-            semphr_passed = xSemaphoreTake(cdc_tx_sem[port], LOG_TX_TIMEOUT_TICKS);
+            semphr_passed = xSemaphoreTake(cdc->cdc_tx_sem, LOG_TX_TIMEOUT_TICKS);
             // space is now available on that CDC's Tx FIFO
         }
 
@@ -185,6 +188,6 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
     }
 
     xSemaphoreGive(pbuf->buffer_mtx);
-    xSemaphoreGive(cdc_port_mtx[port]);
+    xSemaphoreGive(cdc->cdc_port_mtx);
     return rv;
 }
