@@ -272,9 +272,9 @@ bool car_can_raw_pdu_command_enable_is_in_range(uint8_t value)
     return (value <= 1u);
 }
 
-int car_can_raw_motor_controller_command_pack(
+int car_can_raw_vcu_command_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_motor_controller_command_t *src_p,
+    const struct car_can_raw_vcu_command_t *src_p,
     size_t size)
 {
     if (size < 1u) {
@@ -283,13 +283,14 @@ int car_can_raw_motor_controller_command_pack(
 
     memset(&dst_p[0], 0, 1);
 
-    dst_p[0] |= pack_left_shift_u8(src_p->command_source, 0u, 0x01u);
+    dst_p[0] |= pack_left_shift_u8(src_p->mc_command_source, 0u, 0x01u);
+    dst_p[0] |= pack_left_shift_u8(src_p->mppt_command_source, 1u, 0x02u);
 
     return (1);
 }
 
-int car_can_raw_motor_controller_command_unpack(
-    struct car_can_raw_motor_controller_command_t *dst_p,
+int car_can_raw_vcu_command_unpack(
+    struct car_can_raw_vcu_command_t *dst_p,
     const uint8_t *src_p,
     size_t size)
 {
@@ -297,21 +298,27 @@ int car_can_raw_motor_controller_command_unpack(
         return (-EINVAL);
     }
 
-    dst_p->command_source = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
+    dst_p->mc_command_source = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
+    dst_p->mppt_command_source = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
 
     return (0);
 }
 
-int car_can_raw_motor_controller_command_init(struct car_can_raw_motor_controller_command_t *msg_p)
+int car_can_raw_vcu_command_init(struct car_can_raw_vcu_command_t *msg_p)
 {
     if (msg_p == NULL) return -1;
 
-    memset(msg_p, 0, sizeof(struct car_can_raw_motor_controller_command_t));
+    memset(msg_p, 0, sizeof(struct car_can_raw_vcu_command_t));
 
     return 0;
 }
 
-bool car_can_raw_motor_controller_command_command_source_is_in_range(uint8_t value)
+bool car_can_raw_vcu_command_mc_command_source_is_in_range(uint8_t value)
+{
+    return (value <= 1u);
+}
+
+bool car_can_raw_vcu_command_mppt_command_source_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }

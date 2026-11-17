@@ -79,8 +79,9 @@ BO_ 82 PDUCommand: 1 EXT
  SG_ ChannelIndex : 0|4@1+ (1,0) [0|11] "" Vector__XXX
  SG_ Enable : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
-BO_ 83 MotorControllerCommand: 1 EXT
- SG_ CommandSource : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+BO_ 83 VCUCommand: 1 EXT
+ SG_ MC_Command_Source : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MPPT_Command_Source : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 84 SweepMPPTs: 0 EXT
 
@@ -636,7 +637,8 @@ CM_ BO_ 82 "2027 team-defined layout; physical values use the shared scaling con
 CM_ SG_ 82 Enable "Enable";
 CM_ SG_ 82 ChannelIndex "Zero-based channel index: 0 selects Channel0; 11 selects Channel11.";
 CM_ BO_ 83 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 83 CommandSource "CommandSource";
+CM_ SG_ 83 MPPT_Command_Source "MPPT command source";
+CM_ SG_ 83 MC_Command_Source "Motor controller command source";
 CM_ BO_ 84 "Defined empty trigger: request a sweep from all MPPTs through VCU. Zero-byte CAN-FD payload.";
 CM_ BO_ 85 "Triggered balancing request. BPS evaluates safety conditions independently; manual selection does not bypass protection.";
 CM_ SG_ 85 ManualCellMask "Manual mode only: bit 0 selects cell 00; bit 31 selects cell 31.";
@@ -1195,7 +1197,8 @@ BA_ "ProtocolSource" BO_ 83 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 83 14;
 BA_ "GenMsgSendType" BO_ 83 1;
 BA_ "CANFD_BRS" BO_ 83 0;
-BA_ "ValueTable" SG_ 83 CommandSource "MotorCommandSource";
+BA_ "ValueTable" SG_ 83 MPPT_Command_Source "MotorCommandSource";
+BA_ "ValueTable" SG_ 83 MC_Command_Source "MotorCommandSource";
 BA_ "LayoutPending" BO_ 84 0;
 BA_ "ProtocolSource" BO_ 84 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 84 14;
@@ -1641,7 +1644,8 @@ VAL_ 81 CurrentOverride 0 "Disabled" 1 "Enabled" ;
 VAL_ 81 MPPTChargeScheme 0 "Normal" 1 "Advanced" ;
 VAL_ 81 Mode 0 "Normal" 1 "Advanced" ;
 VAL_ 82 Enable 0 "Disabled" 1 "Enabled" ;
-VAL_ 83 CommandSource 0 "VCU" 1 "External" ;
+VAL_ 83 MPPT_Command_Source 0 "VCU" 1 "External" ;
+VAL_ 83 MC_Command_Source 0 "VCU" 1 "External" ;
 VAL_ 85 BalancingMode 0 "Off" 1 "Automatic" 2 "Manual" ;
 VAL_ 96 BalancingActive 0 "Off" 1 "On" ;
 VAL_ 96 MotorPrechargeRelay 0 "Off" 1 "On" ;

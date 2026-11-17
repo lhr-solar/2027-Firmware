@@ -63,23 +63,30 @@ can_status_t car_can_pdu_command_pack(can_frame_t* dst, const car_can_pdu_comman
  * Negative status preserves dst; unknown value-table entries remain numeric. */
 can_status_t car_can_pdu_command_unpack(car_can_pdu_command_t* dst, const can_frame_t* src);
 
-/** Named raw values for CommandSource; unknown values remain integers. */
+/** Named raw values for MC_Command_Source; unknown values remain integers. */
 typedef enum {
-    CAR_CAN_MOTOR_CONTROLLER_COMMAND_COMMAND_SOURCE_VCU = 0,
-    CAR_CAN_MOTOR_CONTROLLER_COMMAND_COMMAND_SOURCE_EXTERNAL = 1,
-} car_can_motor_controller_command_command_source_choice_t;
+    CAR_CAN_VCU_COMMAND_MC_COMMAND_SOURCE_VCU = 0,
+    CAR_CAN_VCU_COMMAND_MC_COMMAND_SOURCE_EXTERNAL = 1,
+} car_can_vcu_command_mc_command_source_choice_t;
+/** Named raw values for MPPT_Command_Source; unknown values remain integers. */
+typedef enum {
+    CAR_CAN_VCU_COMMAND_MPPT_COMMAND_SOURCE_VCU = 0,
+    CAR_CAN_VCU_COMMAND_MPPT_COMMAND_SOURCE_EXTERNAL = 1,
+} car_can_vcu_command_mppt_command_source_choice_t;
 /** 2027 team-defined layout; physical values use the shared scaling conventions. */
 typedef struct {
-    /** CommandSource; unit=none; physical=raw*1+0; raw=[0,1]. CommandSource */
-    uint8_t command_source;
-} car_can_motor_controller_command_t;
+    /** MC_Command_Source; unit=none; physical=raw*1+0; raw=[0,1]. Motor controller command source */
+    uint8_t mc_command_source;
+    /** MPPT_Command_Source; unit=none; physical=raw*1+0; raw=[0,1]. MPPT command source */
+    uint8_t mppt_command_source;
+} car_can_vcu_command_t;
 
 /** Physical src -> frame. Nearest raw step, ties away from zero; finite inputs clamp.
  * Negative status preserves dst; CAN_CLAMPED still produces a sendable frame. */
-can_status_t car_can_motor_controller_command_pack(can_frame_t* dst, const car_can_motor_controller_command_t* src);
+can_status_t car_can_vcu_command_pack(can_frame_t* dst, const car_can_vcu_command_t* src);
 /** Matching frame -> physical dst. Checks ID, frame type, length and active signal ranges.
  * Negative status preserves dst; unknown value-table entries remain numeric. */
-can_status_t car_can_motor_controller_command_unpack(car_can_motor_controller_command_t* dst, const can_frame_t* src);
+can_status_t car_can_vcu_command_unpack(car_can_vcu_command_t* dst, const can_frame_t* src);
 
 /** Defined empty trigger: request a sweep from all MPPTs through VCU. Zero-byte CAN-FD payload. */
 typedef struct {
@@ -2734,7 +2741,7 @@ typedef struct {
 typedef struct {
     car_can_bps_command_t bps_command;
     car_can_pdu_command_t pdu_command;
-    car_can_motor_controller_command_t motor_controller_command;
+    car_can_vcu_command_t vcu_command;
     car_can_sweep_mpp_ts_t sweep_mpp_ts;
     car_can_bps_balancing_command_t bps_balancing_command;
 } car_can_ext_t;
@@ -2791,7 +2798,7 @@ typedef struct {
     struct {
         can_message_info_t bps_command;
         can_message_info_t pdu_command;
-        can_message_info_t motor_controller_command;
+        can_message_info_t vcu_command;
         can_message_info_t sweep_mpp_ts;
         can_message_info_t bps_balancing_command;
     } ext;

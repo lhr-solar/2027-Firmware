@@ -47,7 +47,7 @@ extern "C" {
 /* Frame ids. */
 #define CAR_CAN_RAW_BPS_COMMAND_FRAME_ID (0x51u)
 #define CAR_CAN_RAW_PDU_COMMAND_FRAME_ID (0x52u)
-#define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_FRAME_ID (0x53u)
+#define CAR_CAN_RAW_VCU_COMMAND_FRAME_ID (0x53u)
 #define CAR_CAN_RAW_SWEEP_MPP_TS_FRAME_ID (0x54u)
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_FRAME_ID (0x55u)
 #define CAR_CAN_RAW_BPS_STATUS_FRAME_ID (0x60u)
@@ -81,7 +81,7 @@ extern "C" {
 /* Frame lengths in bytes. */
 #define CAR_CAN_RAW_BPS_COMMAND_LENGTH (12u)
 #define CAR_CAN_RAW_PDU_COMMAND_LENGTH (1u)
-#define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_LENGTH (1u)
+#define CAR_CAN_RAW_VCU_COMMAND_LENGTH (1u)
 #define CAR_CAN_RAW_SWEEP_MPP_TS_LENGTH (0u)
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_LENGTH (5u)
 #define CAR_CAN_RAW_BPS_STATUS_LENGTH (16u)
@@ -115,7 +115,7 @@ extern "C" {
 /* Extended or standard frame types. */
 #define CAR_CAN_RAW_BPS_COMMAND_IS_EXTENDED (0)
 #define CAR_CAN_RAW_PDU_COMMAND_IS_EXTENDED (0)
-#define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_IS_EXTENDED (0)
+#define CAR_CAN_RAW_VCU_COMMAND_IS_EXTENDED (0)
 #define CAR_CAN_RAW_SWEEP_MPP_TS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_STATUS_IS_EXTENDED (0)
@@ -188,8 +188,11 @@ extern "C" {
 #define CAR_CAN_RAW_PDU_COMMAND_ENABLE_DISABLED_CHOICE (0u)
 #define CAR_CAN_RAW_PDU_COMMAND_ENABLE_ENABLED_CHOICE (1u)
 
-#define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_COMMAND_SOURCE_VCU_CHOICE (0u)
-#define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_COMMAND_SOURCE_EXTERNAL_CHOICE (1u)
+#define CAR_CAN_RAW_VCU_COMMAND_MC_COMMAND_SOURCE_VCU_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_COMMAND_MC_COMMAND_SOURCE_EXTERNAL_CHOICE (1u)
+
+#define CAR_CAN_RAW_VCU_COMMAND_MPPT_COMMAND_SOURCE_VCU_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_COMMAND_MPPT_COMMAND_SOURCE_EXTERNAL_CHOICE (1u)
 
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_BALANCING_MODE_OFF_CHOICE (0u)
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_BALANCING_MODE_AUTOMATIC_CHOICE (1u)
@@ -1008,7 +1011,7 @@ extern "C" {
 /* Frame Names. */
 #define CAR_CAN_RAW_BPS_COMMAND_NAME "BPSCommand"
 #define CAR_CAN_RAW_PDU_COMMAND_NAME "PDUCommand"
-#define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_NAME "MotorControllerCommand"
+#define CAR_CAN_RAW_VCU_COMMAND_NAME "VCUCommand"
 #define CAR_CAN_RAW_SWEEP_MPP_TS_NAME "SweepMPPTs"
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_NAME "BPSBalancingCommand"
 #define CAR_CAN_RAW_BPS_STATUS_NAME "BPSStatus"
@@ -1047,7 +1050,8 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_COMMAND_CURRENT_OVERRIDE_NAME "CurrentOverride"
 #define CAR_CAN_RAW_PDU_COMMAND_CHANNEL_INDEX_NAME "ChannelIndex"
 #define CAR_CAN_RAW_PDU_COMMAND_ENABLE_NAME "Enable"
-#define CAR_CAN_RAW_MOTOR_CONTROLLER_COMMAND_COMMAND_SOURCE_NAME "CommandSource"
+#define CAR_CAN_RAW_VCU_COMMAND_MC_COMMAND_SOURCE_NAME "MC_Command_Source"
+#define CAR_CAN_RAW_VCU_COMMAND_MPPT_COMMAND_SOURCE_NAME "MPPT_Command_Source"
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_BALANCING_MODE_NAME "BalancingMode"
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_MANUAL_CELL_MASK_NAME "ManualCellMask"
 #define CAR_CAN_RAW_BPS_STATUS_STATUS_NAME "Status"
@@ -1614,21 +1618,30 @@ struct car_can_raw_pdu_command_t {
 };
 
 /**
- * Signals in message MotorControllerCommand.
+ * Signals in message VCUCommand.
  *
  * 2027 team-defined layout; physical values use the shared scaling conventions.
  *
  * All signal values are as on the CAN bus.
  */
-struct car_can_raw_motor_controller_command_t {
+struct car_can_raw_vcu_command_t {
     /**
-     * CommandSource
+     * Motor controller command source
      *
      * Range: -
      * Scale: 1
      * Offset: 0
      */
-    uint8_t command_source;
+    uint8_t mc_command_source;
+
+    /**
+     * MPPT command source
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t mppt_command_source;
 };
 
 /**
@@ -6385,7 +6398,7 @@ bool car_can_raw_pdu_command_channel_index_is_in_range(uint8_t value);
 bool car_can_raw_pdu_command_enable_is_in_range(uint8_t value);
 
 /**
- * Pack message MotorControllerCommand.
+ * Pack message VCUCommand.
  *
  * @param[out] dst_p Buffer to pack the message into.
  * @param[in] src_p Data to pack.
@@ -6393,13 +6406,13 @@ bool car_can_raw_pdu_command_enable_is_in_range(uint8_t value);
  *
  * @return Size of packed data, or negative error code.
  */
-int car_can_raw_motor_controller_command_pack(
+int car_can_raw_vcu_command_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_motor_controller_command_t *src_p,
+    const struct car_can_raw_vcu_command_t *src_p,
     size_t size);
 
 /**
- * Unpack message MotorControllerCommand.
+ * Unpack message VCUCommand.
  *
  * @param[out] dst_p Object to unpack the message into.
  * @param[in] src_p Message to unpack.
@@ -6407,19 +6420,19 @@ int car_can_raw_motor_controller_command_pack(
  *
  * @return zero(0) or negative error code.
  */
-int car_can_raw_motor_controller_command_unpack(
-    struct car_can_raw_motor_controller_command_t *dst_p,
+int car_can_raw_vcu_command_unpack(
+    struct car_can_raw_vcu_command_t *dst_p,
     const uint8_t *src_p,
     size_t size);
 
 /**
- * Init message fields to default values from MotorControllerCommand.
+ * Init message fields to default values from VCUCommand.
  *
  * @param[in] msg_p Message to init.
  *
  * @return zero(0) on success or (-1) in case of nullptr argument.
  */
-int car_can_raw_motor_controller_command_init(struct car_can_raw_motor_controller_command_t *msg_p);
+int car_can_raw_vcu_command_init(struct car_can_raw_vcu_command_t *msg_p);
 
 /**
  * Check that given signal is in allowed range.
@@ -6428,7 +6441,16 @@ int car_can_raw_motor_controller_command_init(struct car_can_raw_motor_controlle
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_motor_controller_command_command_source_is_in_range(uint8_t value);
+bool car_can_raw_vcu_command_mc_command_source_is_in_range(uint8_t value);
+
+/**
+ * Check that given signal is in allowed range.
+ *
+ * @param[in] value Signal to check.
+ *
+ * @return true if in range, false otherwise.
+ */
+bool car_can_raw_vcu_command_mppt_command_source_is_in_range(uint8_t value);
 
 /**
  * Pack message SweepMPPTs.

@@ -32,7 +32,7 @@ const car_can_metadata_t car_can = {
     .ext = {
         .bps_command = { .id = UINT32_C(81), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
         .pdu_command = { .id = UINT32_C(82), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
-        .motor_controller_command = { .id = UINT32_C(83), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
+        .vcu_command = { .id = UINT32_C(83), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = true },
         .sweep_mpp_ts = { .id = UINT32_C(84), .payload_bytes = 0, .wire_bytes = 0, .dlc = 0, .is_extended = false, .is_fd = true },
         .bps_balancing_command = { .id = UINT32_C(85), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
     },
@@ -163,36 +163,45 @@ can_status_t car_can_pdu_command_unpack(car_can_pdu_command_t* dst, const can_fr
     return CAN_OK;
 }
 
-can_status_t car_can_motor_controller_command_pack(can_frame_t* dst, const car_can_motor_controller_command_t* src) {
+can_status_t car_can_vcu_command_pack(can_frame_t* dst, const car_can_vcu_command_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct car_can_raw_motor_controller_command_t raw = {0};
+    struct car_can_raw_vcu_command_t raw = {0};
     can_status_t status = CAN_OK;
     {
-        uint8_t value = src->command_source;
+        uint8_t value = src->mc_command_source;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.command_source = (uint8_t)value;
+        raw.mc_command_source = (uint8_t)value;
+    }
+    {
+        uint8_t value = src->mppt_command_source;
+        if (value > INT64_C(1)) {
+            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
+        }
+        raw.mppt_command_source = (uint8_t)value;
     }
     can_frame_t result = { .id = UINT32_C(83),
         .len = 1, .is_extended = false,
         .is_fd = true };
-    if (car_can_raw_motor_controller_command_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (car_can_raw_vcu_command_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t car_can_motor_controller_command_unpack(car_can_motor_controller_command_t* dst, const can_frame_t* src) {
+can_status_t car_can_vcu_command_unpack(car_can_vcu_command_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
     if (src->id != UINT32_C(83) || src->len != 1 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct car_can_raw_motor_controller_command_t raw = {0};
-    if (car_can_raw_motor_controller_command_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    car_can_motor_controller_command_t result = {0};
-    if (raw.command_source > INT64_C(1)) return CAN_RANGE;
-    result.command_source = (uint8_t)raw.command_source;
+    struct car_can_raw_vcu_command_t raw = {0};
+    if (car_can_raw_vcu_command_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    car_can_vcu_command_t result = {0};
+    if (raw.mc_command_source > INT64_C(1)) return CAN_RANGE;
+    result.mc_command_source = (uint8_t)raw.mc_command_source;
+    if (raw.mppt_command_source > INT64_C(1)) return CAN_RANGE;
+    result.mppt_command_source = (uint8_t)raw.mppt_command_source;
     *dst = result;
     return CAN_OK;
 }
