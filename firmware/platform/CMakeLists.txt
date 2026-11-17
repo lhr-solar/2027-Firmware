@@ -25,12 +25,6 @@ set(DISABLED_TESTS
     can_mt
     can_queueSet
     emc2305
-    uart_tx_rx
-    ws2812b
-    uart_fgets
-    lpuart
-    movingAverage
-    can_fd_queueSet
 )
 
 # check if test is disabled for g473

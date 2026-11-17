@@ -23,6 +23,5 @@ typedef enum {
 // sends "[LEVEL] <message>" to a CDC port
 int LOG(uint8_t port, LoggingLevel level, const char* fmt, ...);
 int snprintf(char* buffer, size_t bufsz, char const* fmt, ...);
-// char* uart_fgets(char* buffer, size_t maxsz);
 
 bool log_init(void);

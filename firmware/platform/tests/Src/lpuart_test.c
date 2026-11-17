@@ -5,9 +5,7 @@
 */
 #include "stm32xx_hal.h"
 #include "UART.h"
-#include "printf.h" // only for debugging
-
-uint8_t printf_enabled = 0;
+#include "log.h"
 
 void TxTask(void* argument);
 void RxTask(void* argument);
@@ -17,6 +15,17 @@ StaticTask_t txTaskBuffer;
 StaticTask_t rxTaskBuffer;
 StackType_t txTaskStack[configMINIMAL_STACK_SIZE];
 StackType_t rxTaskStack[configMINIMAL_STACK_SIZE];
+/* tusb polling task */
+StaticTask_t pollEventsTaskBuffer;
+StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
+
+#define SERIAL_PORT 0
+
+static void poll_events(void* argument) {
+    while (1) {
+        tud_task();
+    }
+}
 
 // Heartbeat pin on stm32l432kcu is PB3
 #if defined(STM32L432xx)
@@ -69,7 +78,7 @@ void TxTask(void* argument) {
             txCount++;
             // Toggle LED to indicate successful transmission
             HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
-            // printf("sucesfully transmitted!\n\r");
+            // LOG(SERIAL_PORT, L_INFO, "sucesfully transmitted!\n\r");
         }
 
         vTaskDelay(xDelay);
@@ -91,9 +100,7 @@ void RxTask(void* argument) {
             rxCount++;
 
             // Print received character
-            if (printf_enabled == 1) {
-                printf("RX[%lu]: %c\n\r", rxCount, rxBuffer);
-            }
+            LOG(SERIAL_PORT, L_INFO, "RX[%lu]: %c\n\r", rxCount, rxBuffer);
         }
     }
 }
@@ -139,25 +146,14 @@ int main(void) {
     #endif
 
 
-    // This is tested using the LSOM
-    #ifdef USART3
-    // initialize printf (not needed for LPUART)
-    husart3->Init.BaudRate = 115200;
-    husart3->Init.WordLength = UART_WORDLENGTH_8B;
-    husart3->Init.StopBits = UART_STOPBITS_1;
-    husart3->Init.Parity = UART_PARITY_NONE;
-    husart3->Init.Mode = UART_MODE_TX_RX;
-    husart3->Init.HwFlowCtl = UART_HWCONTROL_NONE;
-    husart3->Init.OverSampling = UART_OVERSAMPLING_16;
-
-    printf_init(husart3);
-
-    printf_enabled = 1; // necessary for ports that don't use husart3
-
-    #endif
-
+    MX_USB_PCD_Init();
+    // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
+    log_init();
 
     // Create the tasks statically
+    xTaskCreateStatic(poll_events, "Poll Event Queue", configMINIMAL_STACK_SIZE, NULL,
+                      tskIDLE_PRIORITY + 3, pollEventsStack, &pollEventsTaskBuffer);
+
     // clang-format off
     xTaskCreateStatic(
         TxTask,
