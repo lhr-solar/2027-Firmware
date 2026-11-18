@@ -298,6 +298,27 @@ class DatabaseTests(unittest.TestCase):
             min(signal.start for signal in continuous),
         )
 
+    def test_dashboard_includes_pedal_box_on_dei(self):
+        car = self.databases["CarCAN"]
+        message = car.get_message_by_name("DashboardStatus")
+        self.assertEqual((message.frame_id, message.senders, message.length, message.cycle_time),
+                         (0x62, ["DEI"], 8, 50))
+        self.assertNotIn("PPS", {node.name for node in car.nodes})
+        self.assertNotIn(0x61, {item.frame_id for item in car.messages})
+        self.assertTrue({"FaultNoAccelerator", "BrakeActive", "AcceleratorMainPosition",
+                         "AcceleratorRedundantPosition", "FrontPressure", "RearPressure",
+                         "IgnitionLV", "Gear", "Headlights"}.issubset(
+                             {signal.name for signal in message.signals}))
+        raw = {signal.name: 0 for signal in message.signals}
+        raw.update(AcceleratorMainPosition=128, FrontPressure=1024, IgnitionDrive=1)
+        self.assertEqual(message.decode(message.encode(raw, scaling=False),
+                                        decode_choices=False, scaling=False), raw)
+        self.assertNotIn("PPSWatchdog", {signal.name for signal in
+                         self.message("TelemetryLink", 0x612).signals})
+        allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
+        self.assertIn(8, allocation["reserved_node_ids"])
+        self.assertNotIn("PPS", {board["name"] for board in allocation["boards"]})
+
     def test_bps_cell_sum_precedes_precharge_voltages(self):
         message = self.message("CarCAN", 0x70)
         voltages = [signal for signal in message.signals if signal.unit == "V"]
@@ -533,7 +554,7 @@ class DatabaseTests(unittest.TestCase):
     def test_bootloader_board_coverage_and_addressing(self):
         allocation = json.loads((ROOT.parent / "bootloader_ids.json").read_text())
         boards = allocation["boards"]
-        self.assertEqual(len(boards), 17)
+        self.assertEqual(len(boards), 16)
         self.assertEqual(allocation["schema_version"], 1)
         self.assertEqual(int(allocation["addressing"]["host_can_id"], 0), 0)
         excluded = {

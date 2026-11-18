@@ -60,7 +60,7 @@ class LoadAnalysisTests(unittest.TestCase):
     def test_strict_schedule_and_selected_csv_values(self):
         car = self.databases["CarCAN"]
         self.assertEqual(car.get_message_by_name("BPSStatus").cycle_time, 200)
-        self.assertEqual(car.get_message_by_name("PedalBoxStatus").cycle_time, 100)
+        self.assertEqual(car.get_message_by_name("DashboardStatus").cycle_time, 50)
         self.assertEqual(car.get_message_by_name("BPSPackData").cycle_time, 50)
         self.assertEqual(
             self.databases["DAqCAN"].get_message_by_name("TimestampSync").cycle_time, 100

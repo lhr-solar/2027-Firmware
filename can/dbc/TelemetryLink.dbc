@@ -93,9 +93,8 @@ BO_ 1554 BoardHealth: 1 CM5
  SG_ BPSWatchdog : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ VCUWatchdog : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ DEIWatchdog : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ PPSWatchdog : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ PDUWatchdog : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ LVCWatchdog : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ PDUWatchdog : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ LVCWatchdog : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 2045 Sig_Wave: 8 CM5
  SG_ Sine : 0|32@1+ (1,0) [-1|1] "" Vector__XXX
@@ -202,7 +201,6 @@ CM_ SG_ 1553 GPSAntennaState "GPSAntennaState";
 CM_ BO_ 1554 "CM5 reports watchdog state of other boards: 0 alive, 1 timed out. Former CM5 self-watchdog removed; bit 7 is reserved.";
 CM_ SG_ 1554 LVCWatchdog "LVCWatchdog";
 CM_ SG_ 1554 PDUWatchdog "PDUWatchdog";
-CM_ SG_ 1554 PPSWatchdog "PPSWatchdog";
 CM_ SG_ 1554 DEIWatchdog "DEIWatchdog";
 CM_ SG_ 1554 VCUWatchdog "VCUWatchdog";
 CM_ SG_ 1554 BPSWatchdog "BPSWatchdog";
@@ -258,7 +256,6 @@ BA_ "GenMsgCycleTime" BO_ 1554 100;
 BA_ "CANFD_BRS" BO_ 1554 0;
 BA_ "ValueTable" SG_ 1554 LVCWatchdog "Watchdog";
 BA_ "ValueTable" SG_ 1554 PDUWatchdog "Watchdog";
-BA_ "ValueTable" SG_ 1554 PPSWatchdog "Watchdog";
 BA_ "ValueTable" SG_ 1554 DEIWatchdog "Watchdog";
 BA_ "ValueTable" SG_ 1554 VCUWatchdog "Watchdog";
 BA_ "ValueTable" SG_ 1554 BPSWatchdog "Watchdog";
@@ -286,7 +283,6 @@ VAL_ 1553 GPSFix 0 "NoFix" 1 "Fix2D" 2 "Fix3D" ;
 VAL_ 1553 GPSAntennaState 0 "OK" 1 "OpenCircuit" 2 "ShortCircuit" 3 "Unknown" ;
 VAL_ 1554 LVCWatchdog 0 "Alive" 1 "TimedOut" ;
 VAL_ 1554 PDUWatchdog 0 "Alive" 1 "TimedOut" ;
-VAL_ 1554 PPSWatchdog 0 "Alive" 1 "TimedOut" ;
 VAL_ 1554 DEIWatchdog 0 "Alive" 1 "TimedOut" ;
 VAL_ 1554 VCUWatchdog 0 "Alive" 1 "TimedOut" ;
 VAL_ 1554 BPSWatchdog 0 "Alive" 1 "TimedOut" ;

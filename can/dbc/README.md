@@ -10,12 +10,14 @@ not wire-compatible with the old vehicle's team-defined messages.
 
 | Database | Contents | Frames | Empty placeholders |
 |---|---|---:|---:|
-| CarCAN | Team critical/control, power, battery, HMI and lighting | 32 | 2 |
+| CarCAN | Team critical/control, power, battery, HMI and lighting | 31 | 2 |
 | COTSCAN | WS22, LWS, and three SEC-B175-7A MPPTs; VCU and DEI commands | 54 | 12 |
 | ChargerCAN | BPSChargeData and ElconInterface status | 2 | 0 |
 | ElconCAN | ElconInterface commands and Elcon charger responses | 3 | 0 |
 | DAqCAN | CM5 timestamp and sensor-board traffic | 18 | 4 |
 | TelemetryLink | CM5 TCP-native telemetry and test messages | 6 | 0 |
+
+DashboardStatus (0x062) is transmitted by DEI every 50 ms and includes pedal-box and dashboard signals. The former PedalBoxStatus ID 0x061 is unused. PPS is no longer a separate node.
 
 Every message has exactly one declared transmitter. `EXT` is the command
 injection tool/node for IDs 0x051–0x055. VCU receives BPSStatus

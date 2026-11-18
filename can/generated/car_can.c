@@ -25,7 +25,7 @@ const car_can_metadata_t car_can = {
         .cm5_status = { .id = UINT32_C(130), .payload_bytes = 5, .wire_bytes = 5, .dlc = 5, .is_extended = false, .is_fd = true },
     },
     .dei = {
-        .dei_status = { .id = UINT32_C(98), .payload_bytes = 2, .wire_bytes = 2, .dlc = 2, .is_extended = false, .is_fd = true },
+        .dashboard_status = { .id = UINT32_C(98), .payload_bytes = 8, .wire_bytes = 8, .dlc = 8, .is_extended = false, .is_fd = true },
         .lighting_command = { .id = UINT32_C(100), .payload_bytes = 4, .wire_bytes = 4, .dlc = 4, .is_extended = false, .is_fd = false },
         .bottom_shell_lighting_status = { .id = UINT32_C(128), .payload_bytes = 1, .wire_bytes = 1, .dlc = 1, .is_extended = false, .is_fd = false },
     },
@@ -49,9 +49,6 @@ const car_can_metadata_t car_can = {
         .pdu_voltage_data = { .id = UINT32_C(162), .payload_bytes = 20, .wire_bytes = 20, .dlc = 11, .is_extended = false, .is_fd = true },
         .pdu_temperature_data = { .id = UINT32_C(163), .payload_bytes = 20, .wire_bytes = 20, .dlc = 11, .is_extended = false, .is_fd = true },
         .pdu_over_current_snapshot = { .id = UINT32_C(164), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
-    },
-    .pps = {
-        .pedal_box_status = { .id = UINT32_C(97), .payload_bytes = 6, .wire_bytes = 6, .dlc = 6, .is_extended = false, .is_fd = true },
     },
     .vcu = {
         .vcu_status = { .id = UINT32_C(99), .payload_bytes = 12, .wire_bytes = 12, .dlc = 9, .is_extended = false, .is_fd = true },
@@ -715,9 +712,9 @@ can_status_t car_can_bps_status_unpack(car_can_bps_status_t* dst, const can_fram
     return CAN_OK;
 }
 
-can_status_t car_can_pedal_box_status_pack(can_frame_t* dst, const car_can_pedal_box_status_t* src) {
+can_status_t car_can_dashboard_status_pack(can_frame_t* dst, const car_can_dashboard_status_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct car_can_raw_pedal_box_status_t raw = {0};
+    struct car_can_raw_dashboard_status_t raw = {0};
     can_status_t status = CAN_OK;
     {
         uint8_t value = src->status;
@@ -775,87 +772,6 @@ can_status_t car_can_pedal_box_status_pack(can_frame_t* dst, const car_can_pedal
         }
         raw.handbrake_pressure_switch = (uint8_t)value;
     }
-    {
-        double value = (double)src->accelerator_main_position;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 100.0) { value = 100.0; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.39215686274509803);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 255.0) encoded = 255.0;
-        raw.accelerator_main_position = (uint8_t)encoded;
-    }
-    {
-        double value = (double)src->accelerator_redundant_position;
-        if (!isfinite(value)) return CAN_INVALID;
-        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
-        if (value > 100.0) { value = 100.0; status = CAN_CLAMPED; }
-        double encoded = round((value - 0.0) / 0.39215686274509803);
-        if (encoded < 0.0) encoded = 0.0;
-        if (encoded > 255.0) encoded = 255.0;
-        raw.accelerator_redundant_position = (uint8_t)encoded;
-    }
-    {
-        uint16_t value = src->front_pressure;
-        if (value > INT64_C(3000)) {
-            value = (uint16_t)INT64_C(3000); status = CAN_CLAMPED;
-        }
-        raw.front_pressure = (uint16_t)value;
-    }
-    {
-        uint16_t value = src->rear_pressure;
-        if (value > INT64_C(3000)) {
-            value = (uint16_t)INT64_C(3000); status = CAN_CLAMPED;
-        }
-        raw.rear_pressure = (uint16_t)value;
-    }
-    can_frame_t result = { .id = UINT32_C(97),
-        .len = 6, .is_extended = false,
-        .is_fd = true };
-    if (car_can_raw_pedal_box_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
-    *dst = result;
-    return status;
-}
-
-can_status_t car_can_pedal_box_status_unpack(car_can_pedal_box_status_t* dst, const can_frame_t* src) {
-    if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(97) || src->len != 6 ||
-        src->is_extended != false ||
-        src->is_fd != true ||
-        (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct car_can_raw_pedal_box_status_t raw = {0};
-    if (car_can_raw_pedal_box_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    car_can_pedal_box_status_t result = {0};
-    if (raw.status > INT64_C(1)) return CAN_RANGE;
-    result.status = (uint8_t)raw.status;
-    if (raw.fault_no_accelerator > INT64_C(1)) return CAN_RANGE;
-    result.fault_no_accelerator = (uint8_t)raw.fault_no_accelerator;
-    if (raw.warning_main_accelerator_disconnected > INT64_C(1)) return CAN_RANGE;
-    result.warning_main_accelerator_disconnected = (uint8_t)raw.warning_main_accelerator_disconnected;
-    if (raw.warning_redundant_accelerator_disconnected > INT64_C(1)) return CAN_RANGE;
-    result.warning_redundant_accelerator_disconnected = (uint8_t)raw.warning_redundant_accelerator_disconnected;
-    if (raw.warning_pressure_switch_mismatch > INT64_C(1)) return CAN_RANGE;
-    result.warning_pressure_switch_mismatch = (uint8_t)raw.warning_pressure_switch_mismatch;
-    if (raw.brake_active > INT64_C(1)) return CAN_RANGE;
-    result.brake_active = (uint8_t)raw.brake_active;
-    if (raw.front_pressure_switch > INT64_C(1)) return CAN_RANGE;
-    result.front_pressure_switch = (uint8_t)raw.front_pressure_switch;
-    if (raw.handbrake_pressure_switch > INT64_C(1)) return CAN_RANGE;
-    result.handbrake_pressure_switch = (uint8_t)raw.handbrake_pressure_switch;
-    result.accelerator_main_position = (double)((double)raw.accelerator_main_position * 0.39215686274509803 + 0.0);
-    result.accelerator_redundant_position = (double)((double)raw.accelerator_redundant_position * 0.39215686274509803 + 0.0);
-    if (raw.front_pressure > INT64_C(3000)) return CAN_RANGE;
-    result.front_pressure = (uint16_t)raw.front_pressure;
-    if (raw.rear_pressure > INT64_C(3000)) return CAN_RANGE;
-    result.rear_pressure = (uint16_t)raw.rear_pressure;
-    *dst = result;
-    return CAN_OK;
-}
-
-can_status_t car_can_dei_status_pack(can_frame_t* dst, const car_can_dei_status_t* src) {
-    if (dst == NULL || src == NULL) return CAN_INVALID;
-    struct car_can_raw_dei_status_t raw = {0};
-    can_status_t status = CAN_OK;
     {
         uint8_t value = src->ignition_lv;
         if (value > INT64_C(1)) {
@@ -940,23 +856,73 @@ can_status_t car_can_dei_status_pack(can_frame_t* dst, const car_can_dei_status_
         }
         raw.headlights = (uint8_t)value;
     }
+    {
+        double value = (double)src->accelerator_main_position;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
+        if (value > 100.0) { value = 100.0; status = CAN_CLAMPED; }
+        double encoded = round((value - 0.0) / 0.39215686274509803);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 255.0) encoded = 255.0;
+        raw.accelerator_main_position = (uint8_t)encoded;
+    }
+    {
+        double value = (double)src->accelerator_redundant_position;
+        if (!isfinite(value)) return CAN_INVALID;
+        if (value < 0.0) { value = 0.0; status = CAN_CLAMPED; }
+        if (value > 100.0) { value = 100.0; status = CAN_CLAMPED; }
+        double encoded = round((value - 0.0) / 0.39215686274509803);
+        if (encoded < 0.0) encoded = 0.0;
+        if (encoded > 255.0) encoded = 255.0;
+        raw.accelerator_redundant_position = (uint8_t)encoded;
+    }
+    {
+        uint16_t value = src->front_pressure;
+        if (value > INT64_C(3000)) {
+            value = (uint16_t)INT64_C(3000); status = CAN_CLAMPED;
+        }
+        raw.front_pressure = (uint16_t)value;
+    }
+    {
+        uint16_t value = src->rear_pressure;
+        if (value > INT64_C(3000)) {
+            value = (uint16_t)INT64_C(3000); status = CAN_CLAMPED;
+        }
+        raw.rear_pressure = (uint16_t)value;
+    }
     can_frame_t result = { .id = UINT32_C(98),
-        .len = 2, .is_extended = false,
+        .len = 8, .is_extended = false,
         .is_fd = true };
-    if (car_can_raw_dei_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
+    if (car_can_raw_dashboard_status_pack(result.data, &raw, sizeof(result.data)) < 0) return CAN_INVALID;
     *dst = result;
     return status;
 }
 
-can_status_t car_can_dei_status_unpack(car_can_dei_status_t* dst, const can_frame_t* src) {
+can_status_t car_can_dashboard_status_unpack(car_can_dashboard_status_t* dst, const can_frame_t* src) {
     if (dst == NULL || src == NULL) return CAN_INVALID;
-    if (src->id != UINT32_C(98) || src->len != 2 ||
+    if (src->id != UINT32_C(98) || src->len != 8 ||
         src->is_extended != false ||
         src->is_fd != true ||
         (!src->is_fd && src->bitrate_switch)) return CAN_INVALID;
-    struct car_can_raw_dei_status_t raw = {0};
-    if (car_can_raw_dei_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
-    car_can_dei_status_t result = {0};
+    struct car_can_raw_dashboard_status_t raw = {0};
+    if (car_can_raw_dashboard_status_unpack(&raw, src->data, src->len) < 0) return CAN_INVALID;
+    car_can_dashboard_status_t result = {0};
+    if (raw.status > INT64_C(1)) return CAN_RANGE;
+    result.status = (uint8_t)raw.status;
+    if (raw.fault_no_accelerator > INT64_C(1)) return CAN_RANGE;
+    result.fault_no_accelerator = (uint8_t)raw.fault_no_accelerator;
+    if (raw.warning_main_accelerator_disconnected > INT64_C(1)) return CAN_RANGE;
+    result.warning_main_accelerator_disconnected = (uint8_t)raw.warning_main_accelerator_disconnected;
+    if (raw.warning_redundant_accelerator_disconnected > INT64_C(1)) return CAN_RANGE;
+    result.warning_redundant_accelerator_disconnected = (uint8_t)raw.warning_redundant_accelerator_disconnected;
+    if (raw.warning_pressure_switch_mismatch > INT64_C(1)) return CAN_RANGE;
+    result.warning_pressure_switch_mismatch = (uint8_t)raw.warning_pressure_switch_mismatch;
+    if (raw.brake_active > INT64_C(1)) return CAN_RANGE;
+    result.brake_active = (uint8_t)raw.brake_active;
+    if (raw.front_pressure_switch > INT64_C(1)) return CAN_RANGE;
+    result.front_pressure_switch = (uint8_t)raw.front_pressure_switch;
+    if (raw.handbrake_pressure_switch > INT64_C(1)) return CAN_RANGE;
+    result.handbrake_pressure_switch = (uint8_t)raw.handbrake_pressure_switch;
     if (raw.ignition_lv > INT64_C(1)) return CAN_RANGE;
     result.ignition_lv = (uint8_t)raw.ignition_lv;
     if (raw.ignition_charge > INT64_C(1)) return CAN_RANGE;
@@ -981,6 +947,12 @@ can_status_t car_can_dei_status_unpack(car_can_dei_status_t* dst, const can_fram
     result.push_to_talk = (uint8_t)raw.push_to_talk;
     if (raw.headlights > INT64_C(1)) return CAN_RANGE;
     result.headlights = (uint8_t)raw.headlights;
+    result.accelerator_main_position = (double)((double)raw.accelerator_main_position * 0.39215686274509803 + 0.0);
+    result.accelerator_redundant_position = (double)((double)raw.accelerator_redundant_position * 0.39215686274509803 + 0.0);
+    if (raw.front_pressure > INT64_C(3000)) return CAN_RANGE;
+    result.front_pressure = (uint16_t)raw.front_pressure;
+    if (raw.rear_pressure > INT64_C(3000)) return CAN_RANGE;
+    result.rear_pressure = (uint16_t)raw.rear_pressure;
     *dst = result;
     return CAN_OK;
 }
@@ -1011,11 +983,11 @@ can_status_t car_can_vcu_status_pack(can_frame_t* dst, const car_can_vcu_status_
         raw.fault_bps = (uint8_t)value;
     }
     {
-        uint8_t value = src->fault_pps;
+        uint8_t value = src->fault_pedal_box;
         if (value > INT64_C(1)) {
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
-        raw.fault_pps = (uint8_t)value;
+        raw.fault_pedal_box = (uint8_t)value;
     }
     {
         uint8_t value = src->fault_motor_controller_watchdog;
@@ -1037,13 +1009,6 @@ can_status_t car_can_vcu_status_pack(can_frame_t* dst, const car_can_vcu_status_
             value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
         }
         raw.fault_driver_input_watchdog = (uint8_t)value;
-    }
-    {
-        uint8_t value = src->fault_pps_watchdog;
-        if (value > INT64_C(1)) {
-            value = (uint8_t)INT64_C(1); status = CAN_CLAMPED;
-        }
-        raw.fault_pps_watchdog = (uint8_t)value;
     }
     {
         uint8_t value = src->warning_tipping;
@@ -1252,16 +1217,14 @@ can_status_t car_can_vcu_status_unpack(car_can_vcu_status_t* dst, const can_fram
     result.fault_motor = (uint8_t)raw.fault_motor;
     if (raw.fault_bps > INT64_C(1)) return CAN_RANGE;
     result.fault_bps = (uint8_t)raw.fault_bps;
-    if (raw.fault_pps > INT64_C(1)) return CAN_RANGE;
-    result.fault_pps = (uint8_t)raw.fault_pps;
+    if (raw.fault_pedal_box > INT64_C(1)) return CAN_RANGE;
+    result.fault_pedal_box = (uint8_t)raw.fault_pedal_box;
     if (raw.fault_motor_controller_watchdog > INT64_C(1)) return CAN_RANGE;
     result.fault_motor_controller_watchdog = (uint8_t)raw.fault_motor_controller_watchdog;
     if (raw.fault_bps_watchdog > INT64_C(1)) return CAN_RANGE;
     result.fault_bps_watchdog = (uint8_t)raw.fault_bps_watchdog;
     if (raw.fault_driver_input_watchdog > INT64_C(1)) return CAN_RANGE;
     result.fault_driver_input_watchdog = (uint8_t)raw.fault_driver_input_watchdog;
-    if (raw.fault_pps_watchdog > INT64_C(1)) return CAN_RANGE;
-    result.fault_pps_watchdog = (uint8_t)raw.fault_pps_watchdog;
     if (raw.warning_tipping > INT64_C(1)) return CAN_RANGE;
     result.warning_tipping = (uint8_t)raw.warning_tipping;
     if (raw.warning_direction_change_lockout > INT64_C(1)) return CAN_RANGE;

@@ -129,10 +129,10 @@ create the first one, follow §5 and flag the naming choice for human review.
 | Subteam | Boards | Meaning |
 |---|---|---|
 | `firmware/psys/` | LV, HV, BPS | Low-voltage distribution, high-voltage, battery protection system |
-| `firmware/controls/` | VCU, CM5, PPS | Vehicle control unit, CM5, pedal box |
+| `firmware/controls/` | VCU, CM5, DEI | Vehicle control unit, CM5, dashboard and pedal box |
 | `firmware/telemetry/` | Sensor board | Telemetry / sensor acquisition |
 
-**Safety-critical:** BPS and HV govern a high-voltage pack; VCU and PPS
+**Safety-critical:** BPS and HV govern a high-voltage pack; VCU and DEI
 govern vehicle motion. Changes in `psys/` and `controls/` are not routine
 refactors. Never weaken a fault path, watchdog, timeout, or bounds check in
 those trees as a side effect of another change, and never disable a safety check

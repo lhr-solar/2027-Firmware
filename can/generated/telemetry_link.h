@@ -119,11 +119,6 @@ typedef enum {
     TELEMETRY_LINK_BOARD_HEALTH_DEI_WATCHDOG_ALIVE = 0,
     TELEMETRY_LINK_BOARD_HEALTH_DEI_WATCHDOG_TIMED_OUT = 1,
 } telemetry_link_board_health_dei_watchdog_choice_t;
-/** Named raw values for PPSWatchdog; unknown values remain integers. */
-typedef enum {
-    TELEMETRY_LINK_BOARD_HEALTH_PPS_WATCHDOG_ALIVE = 0,
-    TELEMETRY_LINK_BOARD_HEALTH_PPS_WATCHDOG_TIMED_OUT = 1,
-} telemetry_link_board_health_pps_watchdog_choice_t;
 /** Named raw values for PDUWatchdog; unknown values remain integers. */
 typedef enum {
     TELEMETRY_LINK_BOARD_HEALTH_PDU_WATCHDOG_ALIVE = 0,
@@ -142,8 +137,6 @@ typedef struct {
     uint8_t vcu_watchdog;
     /** DEIWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. DEIWatchdog */
     uint8_t dei_watchdog;
-    /** PPSWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. PPSWatchdog */
-    uint8_t pps_watchdog;
     /** PDUWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. PDUWatchdog */
     uint8_t pdu_watchdog;
     /** LVCWatchdog; unit=none; physical=raw*1+0; raw=[0,1]. LVCWatchdog */

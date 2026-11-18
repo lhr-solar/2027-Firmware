@@ -778,16 +778,16 @@ bool car_can_raw_bps_status_bps_fan_tach_is_in_range(uint16_t value)
     return (value <= 4095u);
 }
 
-int car_can_raw_pedal_box_status_pack(
+int car_can_raw_dashboard_status_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_pedal_box_status_t *src_p,
+    const struct car_can_raw_dashboard_status_t *src_p,
     size_t size)
 {
-    if (size < 6u) {
+    if (size < 8u) {
         return (-EINVAL);
     }
 
-    memset(&dst_p[0], 0, 6);
+    memset(&dst_p[0], 0, 8);
 
     dst_p[0] |= pack_left_shift_u8(src_p->status, 0u, 0x01u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_no_accelerator, 1u, 0x02u);
@@ -797,22 +797,37 @@ int car_can_raw_pedal_box_status_pack(
     dst_p[0] |= pack_left_shift_u8(src_p->brake_active, 5u, 0x20u);
     dst_p[0] |= pack_left_shift_u8(src_p->front_pressure_switch, 6u, 0x40u);
     dst_p[0] |= pack_left_shift_u8(src_p->handbrake_pressure_switch, 7u, 0x80u);
-    dst_p[1] |= pack_left_shift_u8(src_p->accelerator_main_position, 0u, 0xffu);
-    dst_p[2] |= pack_left_shift_u8(src_p->accelerator_redundant_position, 0u, 0xffu);
-    dst_p[3] |= pack_left_shift_u16(src_p->front_pressure, 0u, 0xffu);
-    dst_p[4] |= pack_right_shift_u16(src_p->front_pressure, 8u, 0x0fu);
-    dst_p[4] |= pack_left_shift_u16(src_p->rear_pressure, 4u, 0xf0u);
-    dst_p[5] |= pack_right_shift_u16(src_p->rear_pressure, 4u, 0xffu);
+    dst_p[1] |= pack_left_shift_u8(src_p->ignition_lv, 0u, 0x01u);
+    dst_p[1] |= pack_left_shift_u8(src_p->ignition_charge, 1u, 0x02u);
+    dst_p[1] |= pack_left_shift_u8(src_p->ignition_drive, 2u, 0x04u);
+    dst_p[1] |= pack_left_shift_u8(src_p->gear, 3u, 0x18u);
+    dst_p[1] |= pack_left_shift_u8(src_p->hazards, 5u, 0x20u);
+    dst_p[1] |= pack_left_shift_u8(src_p->left_turn_signal, 6u, 0x40u);
+    dst_p[1] |= pack_left_shift_u8(src_p->right_turn_signal, 7u, 0x80u);
+    dst_p[2] |= pack_left_shift_u8(src_p->regen_enable, 0u, 0x01u);
+    dst_p[2] |= pack_left_shift_u8(src_p->regen_activate, 1u, 0x02u);
+    dst_p[2] |= pack_left_shift_u8(src_p->horn, 2u, 0x04u);
+    dst_p[2] |= pack_left_shift_u8(src_p->push_to_talk, 3u, 0x08u);
+    dst_p[2] |= pack_left_shift_u8(src_p->headlights, 4u, 0x10u);
+    dst_p[2] |= pack_left_shift_u8(src_p->accelerator_main_position, 5u, 0xe0u);
+    dst_p[3] |= pack_right_shift_u8(src_p->accelerator_main_position, 3u, 0x1fu);
+    dst_p[3] |= pack_left_shift_u8(src_p->accelerator_redundant_position, 5u, 0xe0u);
+    dst_p[4] |= pack_right_shift_u8(src_p->accelerator_redundant_position, 3u, 0x1fu);
+    dst_p[4] |= pack_left_shift_u16(src_p->front_pressure, 5u, 0xe0u);
+    dst_p[5] |= pack_right_shift_u16(src_p->front_pressure, 3u, 0xffu);
+    dst_p[6] |= pack_right_shift_u16(src_p->front_pressure, 11u, 0x01u);
+    dst_p[6] |= pack_left_shift_u16(src_p->rear_pressure, 1u, 0xfeu);
+    dst_p[7] |= pack_right_shift_u16(src_p->rear_pressure, 7u, 0x1fu);
 
-    return (6);
+    return (8);
 }
 
-int car_can_raw_pedal_box_status_unpack(
-    struct car_can_raw_pedal_box_status_t *dst_p,
+int car_can_raw_dashboard_status_unpack(
+    struct car_can_raw_dashboard_status_t *dst_p,
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 6u) {
+    if (size < 8u) {
         return (-EINVAL);
     }
 
@@ -824,208 +839,162 @@ int car_can_raw_pedal_box_status_unpack(
     dst_p->brake_active = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
     dst_p->front_pressure_switch = unpack_right_shift_u8(src_p[0], 6u, 0x40u);
     dst_p->handbrake_pressure_switch = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
-    dst_p->accelerator_main_position = unpack_right_shift_u8(src_p[1], 0u, 0xffu);
-    dst_p->accelerator_redundant_position = unpack_right_shift_u8(src_p[2], 0u, 0xffu);
-    dst_p->front_pressure = unpack_right_shift_u16(src_p[3], 0u, 0xffu);
-    dst_p->front_pressure |= unpack_left_shift_u16(src_p[4], 8u, 0x0fu);
-    dst_p->rear_pressure = unpack_right_shift_u16(src_p[4], 4u, 0xf0u);
-    dst_p->rear_pressure |= unpack_left_shift_u16(src_p[5], 4u, 0xffu);
+    dst_p->ignition_lv = unpack_right_shift_u8(src_p[1], 0u, 0x01u);
+    dst_p->ignition_charge = unpack_right_shift_u8(src_p[1], 1u, 0x02u);
+    dst_p->ignition_drive = unpack_right_shift_u8(src_p[1], 2u, 0x04u);
+    dst_p->gear = unpack_right_shift_u8(src_p[1], 3u, 0x18u);
+    dst_p->hazards = unpack_right_shift_u8(src_p[1], 5u, 0x20u);
+    dst_p->left_turn_signal = unpack_right_shift_u8(src_p[1], 6u, 0x40u);
+    dst_p->right_turn_signal = unpack_right_shift_u8(src_p[1], 7u, 0x80u);
+    dst_p->regen_enable = unpack_right_shift_u8(src_p[2], 0u, 0x01u);
+    dst_p->regen_activate = unpack_right_shift_u8(src_p[2], 1u, 0x02u);
+    dst_p->horn = unpack_right_shift_u8(src_p[2], 2u, 0x04u);
+    dst_p->push_to_talk = unpack_right_shift_u8(src_p[2], 3u, 0x08u);
+    dst_p->headlights = unpack_right_shift_u8(src_p[2], 4u, 0x10u);
+    dst_p->accelerator_main_position = unpack_right_shift_u8(src_p[2], 5u, 0xe0u);
+    dst_p->accelerator_main_position |= unpack_left_shift_u8(src_p[3], 3u, 0x1fu);
+    dst_p->accelerator_redundant_position = unpack_right_shift_u8(src_p[3], 5u, 0xe0u);
+    dst_p->accelerator_redundant_position |= unpack_left_shift_u8(src_p[4], 3u, 0x1fu);
+    dst_p->front_pressure = unpack_right_shift_u16(src_p[4], 5u, 0xe0u);
+    dst_p->front_pressure |= unpack_left_shift_u16(src_p[5], 3u, 0xffu);
+    dst_p->front_pressure |= unpack_left_shift_u16(src_p[6], 11u, 0x01u);
+    dst_p->rear_pressure = unpack_right_shift_u16(src_p[6], 1u, 0xfeu);
+    dst_p->rear_pressure |= unpack_left_shift_u16(src_p[7], 7u, 0x1fu);
 
     return (0);
 }
 
-int car_can_raw_pedal_box_status_init(struct car_can_raw_pedal_box_status_t *msg_p)
+int car_can_raw_dashboard_status_init(struct car_can_raw_dashboard_status_t *msg_p)
 {
     if (msg_p == NULL) return -1;
 
-    memset(msg_p, 0, sizeof(struct car_can_raw_pedal_box_status_t));
+    memset(msg_p, 0, sizeof(struct car_can_raw_dashboard_status_t));
 
     return 0;
 }
 
-bool car_can_raw_pedal_box_status_status_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_status_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedal_box_status_fault_no_accelerator_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_fault_no_accelerator_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedal_box_status_warning_main_accelerator_disconnected_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_warning_main_accelerator_disconnected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedal_box_status_warning_redundant_accelerator_disconnected_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_warning_redundant_accelerator_disconnected_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedal_box_status_warning_pressure_switch_mismatch_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_warning_pressure_switch_mismatch_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedal_box_status_brake_active_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_brake_active_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedal_box_status_front_pressure_switch_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_front_pressure_switch_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedal_box_status_handbrake_pressure_switch_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_handbrake_pressure_switch_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_pedal_box_status_accelerator_main_position_is_in_range(uint8_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pedal_box_status_accelerator_redundant_position_is_in_range(uint8_t value)
-{
-    (void)value;
-
-    return (true);
-}
-
-bool car_can_raw_pedal_box_status_front_pressure_is_in_range(uint16_t value)
-{
-    return (value <= 4095u);
-}
-
-bool car_can_raw_pedal_box_status_rear_pressure_is_in_range(uint16_t value)
-{
-    return (value <= 4095u);
-}
-
-int car_can_raw_dei_status_pack(
-    uint8_t *dst_p,
-    const struct car_can_raw_dei_status_t *src_p,
-    size_t size)
-{
-    if (size < 2u) {
-        return (-EINVAL);
-    }
-
-    memset(&dst_p[0], 0, 2);
-
-    dst_p[0] |= pack_left_shift_u8(src_p->ignition_lv, 0u, 0x01u);
-    dst_p[0] |= pack_left_shift_u8(src_p->ignition_charge, 1u, 0x02u);
-    dst_p[0] |= pack_left_shift_u8(src_p->ignition_drive, 2u, 0x04u);
-    dst_p[0] |= pack_left_shift_u8(src_p->gear, 3u, 0x18u);
-    dst_p[0] |= pack_left_shift_u8(src_p->hazards, 5u, 0x20u);
-    dst_p[0] |= pack_left_shift_u8(src_p->left_turn_signal, 6u, 0x40u);
-    dst_p[0] |= pack_left_shift_u8(src_p->right_turn_signal, 7u, 0x80u);
-    dst_p[1] |= pack_left_shift_u8(src_p->regen_enable, 0u, 0x01u);
-    dst_p[1] |= pack_left_shift_u8(src_p->regen_activate, 1u, 0x02u);
-    dst_p[1] |= pack_left_shift_u8(src_p->horn, 2u, 0x04u);
-    dst_p[1] |= pack_left_shift_u8(src_p->push_to_talk, 3u, 0x08u);
-    dst_p[1] |= pack_left_shift_u8(src_p->headlights, 4u, 0x10u);
-
-    return (2);
-}
-
-int car_can_raw_dei_status_unpack(
-    struct car_can_raw_dei_status_t *dst_p,
-    const uint8_t *src_p,
-    size_t size)
-{
-    if (size < 2u) {
-        return (-EINVAL);
-    }
-
-    dst_p->ignition_lv = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
-    dst_p->ignition_charge = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
-    dst_p->ignition_drive = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
-    dst_p->gear = unpack_right_shift_u8(src_p[0], 3u, 0x18u);
-    dst_p->hazards = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
-    dst_p->left_turn_signal = unpack_right_shift_u8(src_p[0], 6u, 0x40u);
-    dst_p->right_turn_signal = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
-    dst_p->regen_enable = unpack_right_shift_u8(src_p[1], 0u, 0x01u);
-    dst_p->regen_activate = unpack_right_shift_u8(src_p[1], 1u, 0x02u);
-    dst_p->horn = unpack_right_shift_u8(src_p[1], 2u, 0x04u);
-    dst_p->push_to_talk = unpack_right_shift_u8(src_p[1], 3u, 0x08u);
-    dst_p->headlights = unpack_right_shift_u8(src_p[1], 4u, 0x10u);
-
-    return (0);
-}
-
-int car_can_raw_dei_status_init(struct car_can_raw_dei_status_t *msg_p)
-{
-    if (msg_p == NULL) return -1;
-
-    memset(msg_p, 0, sizeof(struct car_can_raw_dei_status_t));
-
-    return 0;
-}
-
-bool car_can_raw_dei_status_ignition_lv_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_ignition_lv_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_dei_status_ignition_charge_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_ignition_charge_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_dei_status_ignition_drive_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_ignition_drive_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_dei_status_gear_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_gear_is_in_range(uint8_t value)
 {
     return (value <= 3u);
 }
 
-bool car_can_raw_dei_status_hazards_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_hazards_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_dei_status_left_turn_signal_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_left_turn_signal_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_dei_status_right_turn_signal_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_right_turn_signal_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_dei_status_regen_enable_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_regen_enable_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_dei_status_regen_activate_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_regen_activate_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_dei_status_horn_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_horn_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_dei_status_push_to_talk_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_push_to_talk_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-bool car_can_raw_dei_status_headlights_is_in_range(uint8_t value)
+bool car_can_raw_dashboard_status_headlights_is_in_range(uint8_t value)
 {
     return (value <= 1u);
+}
+
+bool car_can_raw_dashboard_status_accelerator_main_position_is_in_range(uint8_t value)
+{
+    (void)value;
+
+    return (true);
+}
+
+bool car_can_raw_dashboard_status_accelerator_redundant_position_is_in_range(uint8_t value)
+{
+    (void)value;
+
+    return (true);
+}
+
+bool car_can_raw_dashboard_status_front_pressure_is_in_range(uint16_t value)
+{
+    return (value <= 4095u);
+}
+
+bool car_can_raw_dashboard_status_rear_pressure_is_in_range(uint16_t value)
+{
+    return (value <= 4095u);
 }
 
 int car_can_raw_vcu_status_pack(
@@ -1042,41 +1011,39 @@ int car_can_raw_vcu_status_pack(
     dst_p[0] |= pack_left_shift_u8(src_p->status, 0u, 0x01u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_motor, 1u, 0x02u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_bps, 2u, 0x04u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_pps, 3u, 0x08u);
+    dst_p[0] |= pack_left_shift_u8(src_p->fault_pedal_box, 3u, 0x08u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_motor_controller_watchdog, 4u, 0x10u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_bps_watchdog, 5u, 0x20u);
     dst_p[0] |= pack_left_shift_u8(src_p->fault_driver_input_watchdog, 6u, 0x40u);
-    dst_p[0] |= pack_left_shift_u8(src_p->fault_pps_watchdog, 7u, 0x80u);
-    dst_p[1] |= pack_left_shift_u8(src_p->warning_tipping, 0u, 0x01u);
-    dst_p[1] |= pack_left_shift_u8(src_p->warning_direction_change_lockout, 1u, 0x02u);
-    dst_p[1] |= pack_left_shift_u8(src_p->warning_motor_controller_fan, 2u, 0x04u);
-    dst_p[1] |= pack_left_shift_u8(src_p->warning_motor_fan, 3u, 0x08u);
-    dst_p[1] |= pack_left_shift_u8(src_p->warning_bps_watchdog, 4u, 0x10u);
-    dst_p[1] |= pack_left_shift_u8(src_p->warning_mppta_watchdog, 5u, 0x20u);
-    dst_p[1] |= pack_left_shift_u8(src_p->warning_mpptb_watchdog, 6u, 0x40u);
-    dst_p[1] |= pack_left_shift_u8(src_p->warning_mpptc_watchdog, 7u, 0x80u);
-    dst_p[2] |= pack_left_shift_u8(src_p->warning_mppt_fan, 0u, 0x01u);
-    dst_p[2] |= pack_left_shift_u8(src_p->warning_lws_watchdog, 1u, 0x02u);
-    dst_p[2] |= pack_left_shift_u8(src_p->warning_lws_fault, 2u, 0x04u);
-    dst_p[2] |= pack_left_shift_u8(src_p->regen_enabled, 3u, 0x08u);
-    dst_p[2] |= pack_left_shift_u8(src_p->state, 4u, 0x70u);
-    dst_p[2] |= pack_left_shift_u8(src_p->fsm_brake, 7u, 0x80u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fsmbps_drive_ok, 0u, 0x01u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fsmbps_regen_ok, 1u, 0x02u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fsm_driver_regen_enable, 2u, 0x04u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fsm_driver_regen_request, 3u, 0x08u);
-    dst_p[3] |= pack_left_shift_u8(src_p->fsm_gear, 4u, 0x30u);
-    dst_p[3] |= pack_left_shift_u8(src_p->motor_command_source, 6u, 0x40u);
-    dst_p[3] |= pack_left_shift_u8(src_p->mppt_set_mode, 7u, 0x80u);
-    dst_p[4] |= pack_right_shift_u8(src_p->mppt_set_mode, 1u, 0x01u);
-    dst_p[4] |= pack_left_shift_u8(src_p->sweeping_active, 1u, 0x02u);
-    dst_p[4] |= pack_left_shift_u16(src_p->motor_controller_fan_tach, 2u, 0xfcu);
-    dst_p[5] |= pack_right_shift_u16(src_p->motor_controller_fan_tach, 6u, 0x3fu);
-    dst_p[5] |= pack_left_shift_u16(src_p->motor_fan_tach, 6u, 0xc0u);
-    dst_p[6] |= pack_right_shift_u16(src_p->motor_fan_tach, 2u, 0xffu);
-    dst_p[7] |= pack_right_shift_u16(src_p->motor_fan_tach, 10u, 0x03u);
-    dst_p[7] |= pack_left_shift_u16(src_p->mppt_fan_tach, 2u, 0xfcu);
-    dst_p[8] |= pack_right_shift_u16(src_p->mppt_fan_tach, 6u, 0x3fu);
+    dst_p[0] |= pack_left_shift_u8(src_p->warning_tipping, 7u, 0x80u);
+    dst_p[1] |= pack_left_shift_u8(src_p->warning_direction_change_lockout, 0u, 0x01u);
+    dst_p[1] |= pack_left_shift_u8(src_p->warning_motor_controller_fan, 1u, 0x02u);
+    dst_p[1] |= pack_left_shift_u8(src_p->warning_motor_fan, 2u, 0x04u);
+    dst_p[1] |= pack_left_shift_u8(src_p->warning_bps_watchdog, 3u, 0x08u);
+    dst_p[1] |= pack_left_shift_u8(src_p->warning_mppta_watchdog, 4u, 0x10u);
+    dst_p[1] |= pack_left_shift_u8(src_p->warning_mpptb_watchdog, 5u, 0x20u);
+    dst_p[1] |= pack_left_shift_u8(src_p->warning_mpptc_watchdog, 6u, 0x40u);
+    dst_p[1] |= pack_left_shift_u8(src_p->warning_mppt_fan, 7u, 0x80u);
+    dst_p[2] |= pack_left_shift_u8(src_p->warning_lws_watchdog, 0u, 0x01u);
+    dst_p[2] |= pack_left_shift_u8(src_p->warning_lws_fault, 1u, 0x02u);
+    dst_p[2] |= pack_left_shift_u8(src_p->regen_enabled, 2u, 0x04u);
+    dst_p[2] |= pack_left_shift_u8(src_p->state, 3u, 0x38u);
+    dst_p[2] |= pack_left_shift_u8(src_p->fsm_brake, 6u, 0x40u);
+    dst_p[2] |= pack_left_shift_u8(src_p->fsmbps_drive_ok, 7u, 0x80u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fsmbps_regen_ok, 0u, 0x01u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fsm_driver_regen_enable, 1u, 0x02u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fsm_driver_regen_request, 2u, 0x04u);
+    dst_p[3] |= pack_left_shift_u8(src_p->fsm_gear, 3u, 0x18u);
+    dst_p[3] |= pack_left_shift_u8(src_p->motor_command_source, 5u, 0x20u);
+    dst_p[3] |= pack_left_shift_u8(src_p->mppt_set_mode, 6u, 0xc0u);
+    dst_p[4] |= pack_left_shift_u8(src_p->sweeping_active, 0u, 0x01u);
+    dst_p[4] |= pack_left_shift_u16(src_p->motor_controller_fan_tach, 1u, 0xfeu);
+    dst_p[5] |= pack_right_shift_u16(src_p->motor_controller_fan_tach, 7u, 0x1fu);
+    dst_p[5] |= pack_left_shift_u16(src_p->motor_fan_tach, 5u, 0xe0u);
+    dst_p[6] |= pack_right_shift_u16(src_p->motor_fan_tach, 3u, 0xffu);
+    dst_p[7] |= pack_right_shift_u16(src_p->motor_fan_tach, 11u, 0x01u);
+    dst_p[7] |= pack_left_shift_u16(src_p->mppt_fan_tach, 1u, 0xfeu);
+    dst_p[8] |= pack_right_shift_u16(src_p->mppt_fan_tach, 7u, 0x1fu);
 
     return (12);
 }
@@ -1093,41 +1060,39 @@ int car_can_raw_vcu_status_unpack(
     dst_p->status = unpack_right_shift_u8(src_p[0], 0u, 0x01u);
     dst_p->fault_motor = unpack_right_shift_u8(src_p[0], 1u, 0x02u);
     dst_p->fault_bps = unpack_right_shift_u8(src_p[0], 2u, 0x04u);
-    dst_p->fault_pps = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
+    dst_p->fault_pedal_box = unpack_right_shift_u8(src_p[0], 3u, 0x08u);
     dst_p->fault_motor_controller_watchdog = unpack_right_shift_u8(src_p[0], 4u, 0x10u);
     dst_p->fault_bps_watchdog = unpack_right_shift_u8(src_p[0], 5u, 0x20u);
     dst_p->fault_driver_input_watchdog = unpack_right_shift_u8(src_p[0], 6u, 0x40u);
-    dst_p->fault_pps_watchdog = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
-    dst_p->warning_tipping = unpack_right_shift_u8(src_p[1], 0u, 0x01u);
-    dst_p->warning_direction_change_lockout = unpack_right_shift_u8(src_p[1], 1u, 0x02u);
-    dst_p->warning_motor_controller_fan = unpack_right_shift_u8(src_p[1], 2u, 0x04u);
-    dst_p->warning_motor_fan = unpack_right_shift_u8(src_p[1], 3u, 0x08u);
-    dst_p->warning_bps_watchdog = unpack_right_shift_u8(src_p[1], 4u, 0x10u);
-    dst_p->warning_mppta_watchdog = unpack_right_shift_u8(src_p[1], 5u, 0x20u);
-    dst_p->warning_mpptb_watchdog = unpack_right_shift_u8(src_p[1], 6u, 0x40u);
-    dst_p->warning_mpptc_watchdog = unpack_right_shift_u8(src_p[1], 7u, 0x80u);
-    dst_p->warning_mppt_fan = unpack_right_shift_u8(src_p[2], 0u, 0x01u);
-    dst_p->warning_lws_watchdog = unpack_right_shift_u8(src_p[2], 1u, 0x02u);
-    dst_p->warning_lws_fault = unpack_right_shift_u8(src_p[2], 2u, 0x04u);
-    dst_p->regen_enabled = unpack_right_shift_u8(src_p[2], 3u, 0x08u);
-    dst_p->state = unpack_right_shift_u8(src_p[2], 4u, 0x70u);
-    dst_p->fsm_brake = unpack_right_shift_u8(src_p[2], 7u, 0x80u);
-    dst_p->fsmbps_drive_ok = unpack_right_shift_u8(src_p[3], 0u, 0x01u);
-    dst_p->fsmbps_regen_ok = unpack_right_shift_u8(src_p[3], 1u, 0x02u);
-    dst_p->fsm_driver_regen_enable = unpack_right_shift_u8(src_p[3], 2u, 0x04u);
-    dst_p->fsm_driver_regen_request = unpack_right_shift_u8(src_p[3], 3u, 0x08u);
-    dst_p->fsm_gear = unpack_right_shift_u8(src_p[3], 4u, 0x30u);
-    dst_p->motor_command_source = unpack_right_shift_u8(src_p[3], 6u, 0x40u);
-    dst_p->mppt_set_mode = unpack_right_shift_u8(src_p[3], 7u, 0x80u);
-    dst_p->mppt_set_mode |= unpack_left_shift_u8(src_p[4], 1u, 0x01u);
-    dst_p->sweeping_active = unpack_right_shift_u8(src_p[4], 1u, 0x02u);
-    dst_p->motor_controller_fan_tach = unpack_right_shift_u16(src_p[4], 2u, 0xfcu);
-    dst_p->motor_controller_fan_tach |= unpack_left_shift_u16(src_p[5], 6u, 0x3fu);
-    dst_p->motor_fan_tach = unpack_right_shift_u16(src_p[5], 6u, 0xc0u);
-    dst_p->motor_fan_tach |= unpack_left_shift_u16(src_p[6], 2u, 0xffu);
-    dst_p->motor_fan_tach |= unpack_left_shift_u16(src_p[7], 10u, 0x03u);
-    dst_p->mppt_fan_tach = unpack_right_shift_u16(src_p[7], 2u, 0xfcu);
-    dst_p->mppt_fan_tach |= unpack_left_shift_u16(src_p[8], 6u, 0x3fu);
+    dst_p->warning_tipping = unpack_right_shift_u8(src_p[0], 7u, 0x80u);
+    dst_p->warning_direction_change_lockout = unpack_right_shift_u8(src_p[1], 0u, 0x01u);
+    dst_p->warning_motor_controller_fan = unpack_right_shift_u8(src_p[1], 1u, 0x02u);
+    dst_p->warning_motor_fan = unpack_right_shift_u8(src_p[1], 2u, 0x04u);
+    dst_p->warning_bps_watchdog = unpack_right_shift_u8(src_p[1], 3u, 0x08u);
+    dst_p->warning_mppta_watchdog = unpack_right_shift_u8(src_p[1], 4u, 0x10u);
+    dst_p->warning_mpptb_watchdog = unpack_right_shift_u8(src_p[1], 5u, 0x20u);
+    dst_p->warning_mpptc_watchdog = unpack_right_shift_u8(src_p[1], 6u, 0x40u);
+    dst_p->warning_mppt_fan = unpack_right_shift_u8(src_p[1], 7u, 0x80u);
+    dst_p->warning_lws_watchdog = unpack_right_shift_u8(src_p[2], 0u, 0x01u);
+    dst_p->warning_lws_fault = unpack_right_shift_u8(src_p[2], 1u, 0x02u);
+    dst_p->regen_enabled = unpack_right_shift_u8(src_p[2], 2u, 0x04u);
+    dst_p->state = unpack_right_shift_u8(src_p[2], 3u, 0x38u);
+    dst_p->fsm_brake = unpack_right_shift_u8(src_p[2], 6u, 0x40u);
+    dst_p->fsmbps_drive_ok = unpack_right_shift_u8(src_p[2], 7u, 0x80u);
+    dst_p->fsmbps_regen_ok = unpack_right_shift_u8(src_p[3], 0u, 0x01u);
+    dst_p->fsm_driver_regen_enable = unpack_right_shift_u8(src_p[3], 1u, 0x02u);
+    dst_p->fsm_driver_regen_request = unpack_right_shift_u8(src_p[3], 2u, 0x04u);
+    dst_p->fsm_gear = unpack_right_shift_u8(src_p[3], 3u, 0x18u);
+    dst_p->motor_command_source = unpack_right_shift_u8(src_p[3], 5u, 0x20u);
+    dst_p->mppt_set_mode = unpack_right_shift_u8(src_p[3], 6u, 0xc0u);
+    dst_p->sweeping_active = unpack_right_shift_u8(src_p[4], 0u, 0x01u);
+    dst_p->motor_controller_fan_tach = unpack_right_shift_u16(src_p[4], 1u, 0xfeu);
+    dst_p->motor_controller_fan_tach |= unpack_left_shift_u16(src_p[5], 7u, 0x1fu);
+    dst_p->motor_fan_tach = unpack_right_shift_u16(src_p[5], 5u, 0xe0u);
+    dst_p->motor_fan_tach |= unpack_left_shift_u16(src_p[6], 3u, 0xffu);
+    dst_p->motor_fan_tach |= unpack_left_shift_u16(src_p[7], 11u, 0x01u);
+    dst_p->mppt_fan_tach = unpack_right_shift_u16(src_p[7], 1u, 0xfeu);
+    dst_p->mppt_fan_tach |= unpack_left_shift_u16(src_p[8], 7u, 0x1fu);
 
     return (0);
 }
@@ -1156,7 +1121,7 @@ bool car_can_raw_vcu_status_fault_bps_is_in_range(uint8_t value)
     return (value <= 1u);
 }
 
-bool car_can_raw_vcu_status_fault_pps_is_in_range(uint8_t value)
+bool car_can_raw_vcu_status_fault_pedal_box_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
@@ -1172,11 +1137,6 @@ bool car_can_raw_vcu_status_fault_bps_watchdog_is_in_range(uint8_t value)
 }
 
 bool car_can_raw_vcu_status_fault_driver_input_watchdog_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-bool car_can_raw_vcu_status_fault_pps_watchdog_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }

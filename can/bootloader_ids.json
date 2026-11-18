@@ -28,11 +28,13 @@
     "CM5 and TelemetryLeader are one physical node, named CM5 in the DBCs; both names are excluded from this bootloader allocation.",
     "Removed node IDs 4, 5, 9, 11 and 12 remain reserved; all remaining board node/RX/TX IDs are unchanged.",
     "MSV was merged into VCU; node ID 4 stays reserved, and VCU retains node ID 6.",
-    "Removed strain gauge board node IDs 23 and 24 remain reserved; SuspensionFL sends front strain data."
+    "Removed strain gauge board node IDs 23 and 24 remain reserved; SuspensionFL sends front strain data.",
+    "PPS was merged into DEI; node ID 8 remains reserved."
   ],
   "reserved_node_ids": [
     4,
     5,
+    8,
     9,
     11,
     12,
@@ -107,16 +109,6 @@
       "can_buses": [
         "CarCAN",
         "COTSCAN"
-      ]
-    },
-    {
-      "name": "PPS",
-      "subteam": "controls",
-      "node_id": 8,
-      "rx_can_id": "0x008",
-      "tx_can_id": "0x030",
-      "can_buses": [
-        "CarCAN"
       ]
     },
     {

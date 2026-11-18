@@ -110,9 +110,6 @@ extern "C" {
 #define TELEMETRY_LINK_RAW_BOARD_HEALTH_DEI_WATCHDOG_ALIVE_CHOICE (0u)
 #define TELEMETRY_LINK_RAW_BOARD_HEALTH_DEI_WATCHDOG_TIMED_OUT_CHOICE (1u)
 
-#define TELEMETRY_LINK_RAW_BOARD_HEALTH_PPS_WATCHDOG_ALIVE_CHOICE (0u)
-#define TELEMETRY_LINK_RAW_BOARD_HEALTH_PPS_WATCHDOG_TIMED_OUT_CHOICE (1u)
-
 #define TELEMETRY_LINK_RAW_BOARD_HEALTH_PDU_WATCHDOG_ALIVE_CHOICE (0u)
 #define TELEMETRY_LINK_RAW_BOARD_HEALTH_PDU_WATCHDOG_TIMED_OUT_CHOICE (1u)
 
@@ -148,7 +145,6 @@ extern "C" {
 #define TELEMETRY_LINK_RAW_BOARD_HEALTH_BPS_WATCHDOG_NAME "BPSWatchdog"
 #define TELEMETRY_LINK_RAW_BOARD_HEALTH_VCU_WATCHDOG_NAME "VCUWatchdog"
 #define TELEMETRY_LINK_RAW_BOARD_HEALTH_DEI_WATCHDOG_NAME "DEIWatchdog"
-#define TELEMETRY_LINK_RAW_BOARD_HEALTH_PPS_WATCHDOG_NAME "PPSWatchdog"
 #define TELEMETRY_LINK_RAW_BOARD_HEALTH_PDU_WATCHDOG_NAME "PDUWatchdog"
 #define TELEMETRY_LINK_RAW_BOARD_HEALTH_LVC_WATCHDOG_NAME "LVCWatchdog"
 #define TELEMETRY_LINK_RAW_SIG_WAVE_SINE_NAME "Sine"
@@ -431,15 +427,6 @@ struct telemetry_link_raw_board_health_t {
      * Offset: 0
      */
     uint8_t dei_watchdog;
-
-    /**
-     * PPSWatchdog
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t pps_watchdog;
 
     /**
      * PDUWatchdog
@@ -1295,15 +1282,6 @@ bool telemetry_link_raw_board_health_vcu_watchdog_is_in_range(uint8_t value);
  * @return true if in range, false otherwise.
  */
 bool telemetry_link_raw_board_health_dei_watchdog_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool telemetry_link_raw_board_health_pps_watchdog_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.

@@ -33,7 +33,7 @@ NS_ :
 
 BS_:
 
-BU_: BPS DEI EXT LVC CM5 PDU PPS VCU CLC
+BU_: BPS DEI EXT LVC CM5 PDU VCU CLC
 VAL_TABLE_ EnableDisable 1 "Enabled" 0 "Disabled" ;
 VAL_TABLE_ OnOff 1 "On" 0 "Off" ;
 VAL_TABLE_ FaultState 1 "Fault" 0 "OK" ;
@@ -136,7 +136,7 @@ BO_ 96 BPSStatus: 16 BPS
  SG_ BatteryFanTach2 : 88|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
  SG_ BPSFanTach : 100|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
 
-BO_ 97 PedalBoxStatus: 6 PPS
+BO_ 98 DashboardStatus: 8 DEI
  SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultNoAccelerator : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ WarningMainAcceleratorDisconnect : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -145,59 +145,56 @@ BO_ 97 PedalBoxStatus: 6 PPS
  SG_ BrakeActive : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FrontPressureSwitch : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ HandbrakePressureSwitch : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ AcceleratorMainPosition : 8|8@1+ (0.39215686274509803,0) [0|100] "%" Vector__XXX
- SG_ AcceleratorRedundantPosition : 16|8@1+ (0.39215686274509803,0) [0|100] "%" Vector__XXX
- SG_ FrontPressure : 24|12@1+ (1,0) [0|3000] "PSI" Vector__XXX
- SG_ RearPressure : 36|12@1+ (1,0) [0|3000] "PSI" Vector__XXX
-
-BO_ 98 DEIStatus: 2 DEI
- SG_ IgnitionLV : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ IgnitionCharge : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ IgnitionDrive : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ Gear : 3|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ Hazards : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ LeftTurnSignal : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ RightTurnSignal : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ RegenEnable : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ RegenActivate : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ Horn : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ PushToTalk : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ Headlights : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ IgnitionLV : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ IgnitionCharge : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ IgnitionDrive : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Gear : 11|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ Hazards : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ LeftTurnSignal : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RightTurnSignal : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RegenEnable : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ RegenActivate : 17|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Horn : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ PushToTalk : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ Headlights : 20|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ AcceleratorMainPosition : 21|8@1+ (0.39215686274509803,0) [0|100] "%" Vector__XXX
+ SG_ AcceleratorRedundantPosition : 29|8@1+ (0.39215686274509803,0) [0|100] "%" Vector__XXX
+ SG_ FrontPressure : 37|12@1+ (1,0) [0|3000] "PSI" Vector__XXX
+ SG_ RearPressure : 49|12@1+ (1,0) [0|3000] "PSI" Vector__XXX
 
 BO_ 99 VCUStatus: 12 VCU
  SG_ Status : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultMotor : 1|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultBPS : 2|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultPPS : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FaultPedalBox : 3|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultMotorControllerWatchdog : 4|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultBPSWatchdog : 5|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
  SG_ FaultDriverInputWatchdog : 6|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FaultPPSWatchdog : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningTipping : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningDirectionChangeLockout : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningMotorControllerFan : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningMotorFan : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningBPSWatchdog : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningMPPTAWatchdog : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningMPPTBWatchdog : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningMPPTCWatchdog : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningMPPTFan : 16|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ WarningLWSWatchdog : 17|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ WarningLWSFault : 18|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ RegenEnabled : 19|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ State : 20|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
- SG_ FSMBrake : 23|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FSMBPSDriveOK : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FSMBPSRegenOK : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FSMDriverRegenEnable : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FSMDriverRegenRequest : 27|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ FSMGear : 28|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ MotorCommandSource : 30|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ MPPTSetMode : 31|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ SweepingActive : 33|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
- SG_ MotorControllerFanTach : 34|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
- SG_ MotorFanTach : 46|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
- SG_ MPPTFanTach : 58|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ WarningTipping : 7|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningDirectionChangeLockout : 8|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMotorControllerFan : 9|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMotorFan : 10|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningBPSWatchdog : 11|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMPPTAWatchdog : 12|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMPPTBWatchdog : 13|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMPPTCWatchdog : 14|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningMPPTFan : 15|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ WarningLWSWatchdog : 16|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ WarningLWSFault : 17|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ RegenEnabled : 18|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ State : 19|3@1+ (1,0) [0.0|7.0] "" Vector__XXX
+ SG_ FSMBrake : 22|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMBPSDriveOK : 23|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMBPSRegenOK : 24|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMDriverRegenEnable : 25|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMDriverRegenRequest : 26|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ FSMGear : 27|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ MotorCommandSource : 29|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MPPTSetMode : 30|2@1+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ SweepingActive : 32|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
+ SG_ MotorControllerFanTach : 33|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ MotorFanTach : 45|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
+ SG_ MPPTFanTach : 57|12@1+ (5,0) [0.0|20475.0] "rpm" Vector__XXX
 
 BO_ 100 LightingCommand: 4 DEI
  SG_ BlinkPhase : 0|1@1+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -689,20 +686,11 @@ CM_ SG_ 96 FaultOverVoltage "FaultOverVoltage";
 CM_ SG_ 96 FaultOverTemperature "FaultOverTemperature";
 CM_ SG_ 96 FaultSummary "FaultSummary";
 CM_ SG_ 96 Status "Status";
-CM_ BO_ 97 "2027 team-defined layout; physical values use the shared scaling conventions.";
-CM_ SG_ 97 RearPressure "RearPressure";
-CM_ SG_ 97 FrontPressure "FrontPressure";
-CM_ SG_ 97 AcceleratorRedundantPosition "AcceleratorRedundantPosition";
-CM_ SG_ 97 AcceleratorMainPosition "AcceleratorMainPosition";
-CM_ SG_ 97 HandbrakePressureSwitch "HandbrakePressureSwitch";
-CM_ SG_ 97 FrontPressureSwitch "FrontPressureSwitch";
-CM_ SG_ 97 BrakeActive "BrakeActive";
-CM_ SG_ 97 WarningPressureSwitchMismatch "WarningPressureSwitchMismatch";
-CM_ SG_ 97 WarningRedundantAcceleratorDisco "WarningRedundantAcceleratorDisconnected";
-CM_ SG_ 97 WarningMainAcceleratorDisconnect "WarningMainAcceleratorDisconnected";
-CM_ SG_ 97 FaultNoAccelerator "FaultNoAccelerator";
-CM_ SG_ 97 Status "Status";
 CM_ BO_ 98 "2027 team-defined layout; physical values use the shared scaling conventions.";
+CM_ SG_ 98 RearPressure "RearPressure";
+CM_ SG_ 98 FrontPressure "FrontPressure";
+CM_ SG_ 98 AcceleratorRedundantPosition "AcceleratorRedundantPosition";
+CM_ SG_ 98 AcceleratorMainPosition "AcceleratorMainPosition";
 CM_ SG_ 98 Headlights "Headlights";
 CM_ SG_ 98 PushToTalk "PushToTalk";
 CM_ SG_ 98 Horn "Horn";
@@ -715,6 +703,14 @@ CM_ SG_ 98 Gear "Gear";
 CM_ SG_ 98 IgnitionDrive "IgnitionDrive";
 CM_ SG_ 98 IgnitionCharge "IgnitionCharge";
 CM_ SG_ 98 IgnitionLV "IgnitionLV";
+CM_ SG_ 98 HandbrakePressureSwitch "HandbrakePressureSwitch";
+CM_ SG_ 98 FrontPressureSwitch "FrontPressureSwitch";
+CM_ SG_ 98 BrakeActive "BrakeActive";
+CM_ SG_ 98 WarningPressureSwitchMismatch "WarningPressureSwitchMismatch";
+CM_ SG_ 98 WarningRedundantAcceleratorDisco "WarningRedundantAcceleratorDisconnected";
+CM_ SG_ 98 WarningMainAcceleratorDisconnect "WarningMainAcceleratorDisconnected";
+CM_ SG_ 98 FaultNoAccelerator "FaultNoAccelerator";
+CM_ SG_ 98 Status "Status";
 CM_ BO_ 99 "2027 team-defined layout; physical values use the shared scaling conventions.";
 CM_ SG_ 99 MPPTFanTach "FanTach";
 CM_ SG_ 99 MotorFanTach "MotorFanTach";
@@ -741,11 +737,10 @@ CM_ SG_ 99 WarningMotorFan "WarningMotorFan";
 CM_ SG_ 99 WarningMotorControllerFan "WarningMotorControllerFan";
 CM_ SG_ 99 WarningDirectionChangeLockout "WarningDirectionChangeLockout";
 CM_ SG_ 99 WarningTipping "WarningTipping";
-CM_ SG_ 99 FaultPPSWatchdog "FaultPPSWatchdog";
 CM_ SG_ 99 FaultDriverInputWatchdog "FaultDriverInputWatchdog";
 CM_ SG_ 99 FaultBPSWatchdog "FaultBPSWatchdog";
 CM_ SG_ 99 FaultMotorControllerWatchdog "FaultMotorControllerWatchdog";
-CM_ SG_ 99 FaultPPS "FaultPPS";
+CM_ SG_ 99 FaultPedalBox "FaultPedalBox";
 CM_ SG_ 99 FaultBPS "FaultBPS";
 CM_ SG_ 99 FaultMotor "FaultMotor";
 CM_ SG_ 99 Status "Status";
@@ -1256,27 +1251,11 @@ BA_ "ValueTable" SG_ 96 FaultOverVoltage "FaultState";
 BA_ "ValueTable" SG_ 96 FaultOverTemperature "FaultState";
 BA_ "ValueTable" SG_ 96 FaultSummary "BPSFaultSummary";
 BA_ "ValueTable" SG_ 96 Status "DeviceStatus";
-BA_ "LayoutPending" BO_ 97 0;
-BA_ "ProtocolSource" BO_ 97 "2027 allocation draft";
-BA_ "VFrameFormat" BO_ 97 14;
-BA_ "GenMsgSendType" BO_ 97 0;
-BA_ "GenMsgCycleTime" BO_ 97 100;
-BA_ "CANFD_BRS" BO_ 97 0;
-BA_ "ValueTable" SG_ 97 HandbrakePressureSwitch "OnOff";
-BA_ "ValueTable" SG_ 97 FrontPressureSwitch "OnOff";
-BA_ "ValueTable" SG_ 97 BrakeActive "OnOff";
-BA_ "ValueTable" SG_ 97 WarningPressureSwitchMismatch "WarningState";
-BA_ "ValueTable" SG_ 97 WarningRedundantAcceleratorDisco "WarningState";
-BA_ "SystemSignalLongSymbol" SG_ 97 WarningRedundantAcceleratorDisco "WarningRedundantAcceleratorDisconnected";
-BA_ "ValueTable" SG_ 97 WarningMainAcceleratorDisconnect "WarningState";
-BA_ "SystemSignalLongSymbol" SG_ 97 WarningMainAcceleratorDisconnect "WarningMainAcceleratorDisconnected";
-BA_ "ValueTable" SG_ 97 FaultNoAccelerator "FaultState";
-BA_ "ValueTable" SG_ 97 Status "FaultState";
 BA_ "LayoutPending" BO_ 98 0;
 BA_ "ProtocolSource" BO_ 98 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 98 14;
 BA_ "GenMsgSendType" BO_ 98 0;
-BA_ "GenMsgCycleTime" BO_ 98 100;
+BA_ "GenMsgCycleTime" BO_ 98 50;
 BA_ "CANFD_BRS" BO_ 98 0;
 BA_ "ValueTable" SG_ 98 Headlights "OnOff";
 BA_ "ValueTable" SG_ 98 PushToTalk "Pressed";
@@ -1290,6 +1269,16 @@ BA_ "ValueTable" SG_ 98 Gear "Gear";
 BA_ "ValueTable" SG_ 98 IgnitionDrive "OnOff";
 BA_ "ValueTable" SG_ 98 IgnitionCharge "OnOff";
 BA_ "ValueTable" SG_ 98 IgnitionLV "OnOff";
+BA_ "ValueTable" SG_ 98 HandbrakePressureSwitch "OnOff";
+BA_ "ValueTable" SG_ 98 FrontPressureSwitch "OnOff";
+BA_ "ValueTable" SG_ 98 BrakeActive "OnOff";
+BA_ "ValueTable" SG_ 98 WarningPressureSwitchMismatch "WarningState";
+BA_ "ValueTable" SG_ 98 WarningRedundantAcceleratorDisco "WarningState";
+BA_ "SystemSignalLongSymbol" SG_ 98 WarningRedundantAcceleratorDisco "WarningRedundantAcceleratorDisconnected";
+BA_ "ValueTable" SG_ 98 WarningMainAcceleratorDisconnect "WarningState";
+BA_ "SystemSignalLongSymbol" SG_ 98 WarningMainAcceleratorDisconnect "WarningMainAcceleratorDisconnected";
+BA_ "ValueTable" SG_ 98 FaultNoAccelerator "FaultState";
+BA_ "ValueTable" SG_ 98 Status "FaultState";
 BA_ "LayoutPending" BO_ 99 0;
 BA_ "ProtocolSource" BO_ 99 "2027 allocation draft";
 BA_ "VFrameFormat" BO_ 99 14;
@@ -1318,11 +1307,10 @@ BA_ "ValueTable" SG_ 99 WarningMotorFan "WarningState";
 BA_ "ValueTable" SG_ 99 WarningMotorControllerFan "WarningState";
 BA_ "ValueTable" SG_ 99 WarningDirectionChangeLockout "WarningState";
 BA_ "ValueTable" SG_ 99 WarningTipping "WarningState";
-BA_ "ValueTable" SG_ 99 FaultPPSWatchdog "FaultState";
 BA_ "ValueTable" SG_ 99 FaultDriverInputWatchdog "FaultState";
 BA_ "ValueTable" SG_ 99 FaultBPSWatchdog "FaultState";
 BA_ "ValueTable" SG_ 99 FaultMotorControllerWatchdog "FaultState";
-BA_ "ValueTable" SG_ 99 FaultPPS "FaultState";
+BA_ "ValueTable" SG_ 99 FaultPedalBox "FaultState";
 BA_ "ValueTable" SG_ 99 FaultBPS "FaultState";
 BA_ "ValueTable" SG_ 99 FaultMotor "FaultState";
 BA_ "ValueTable" SG_ 99 Status "FaultState";
@@ -1687,14 +1675,6 @@ VAL_ 96 FaultOverVoltage 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultOverTemperature 0 "OK" 1 "Fault" ;
 VAL_ 96 FaultSummary 0 "OK" 1 "SetpointFault" 2 "EmergencyStop" 3 "ContactorRelayFault" 4 "PrechargeFault" 5 "SMBFault" ;
 VAL_ 96 Status 0 "OK" 1 "Fault" 2 "Waiting" ;
-VAL_ 97 HandbrakePressureSwitch 0 "Off" 1 "On" ;
-VAL_ 97 FrontPressureSwitch 0 "Off" 1 "On" ;
-VAL_ 97 BrakeActive 0 "Off" 1 "On" ;
-VAL_ 97 WarningPressureSwitchMismatch 0 "NoWarning" 1 "Warning" ;
-VAL_ 97 WarningRedundantAcceleratorDisco 0 "NoWarning" 1 "Warning" ;
-VAL_ 97 WarningMainAcceleratorDisconnect 0 "NoWarning" 1 "Warning" ;
-VAL_ 97 FaultNoAccelerator 0 "OK" 1 "Fault" ;
-VAL_ 97 Status 0 "OK" 1 "Fault" ;
 VAL_ 98 Headlights 0 "Off" 1 "On" ;
 VAL_ 98 PushToTalk 0 "NotPressed" 1 "Pressed" ;
 VAL_ 98 Horn 0 "Off" 1 "On" ;
@@ -1707,6 +1687,14 @@ VAL_ 98 Gear 0 "Neutral" 1 "Forward" 2 "Reverse" 3 "Invalid" ;
 VAL_ 98 IgnitionDrive 0 "Off" 1 "On" ;
 VAL_ 98 IgnitionCharge 0 "Off" 1 "On" ;
 VAL_ 98 IgnitionLV 0 "Off" 1 "On" ;
+VAL_ 98 HandbrakePressureSwitch 0 "Off" 1 "On" ;
+VAL_ 98 FrontPressureSwitch 0 "Off" 1 "On" ;
+VAL_ 98 BrakeActive 0 "Off" 1 "On" ;
+VAL_ 98 WarningPressureSwitchMismatch 0 "NoWarning" 1 "Warning" ;
+VAL_ 98 WarningRedundantAcceleratorDisco 0 "NoWarning" 1 "Warning" ;
+VAL_ 98 WarningMainAcceleratorDisconnect 0 "NoWarning" 1 "Warning" ;
+VAL_ 98 FaultNoAccelerator 0 "OK" 1 "Fault" ;
+VAL_ 98 Status 0 "OK" 1 "Fault" ;
 VAL_ 99 SweepingActive 0 "Off" 1 "On" ;
 VAL_ 99 MPPTSetMode 0 "Disabled" 1 "PerturbAndObserve" 2 "ConstantInputVoltage" ;
 VAL_ 99 MotorCommandSource 0 "VCU" 1 "External" ;
@@ -1729,11 +1717,10 @@ VAL_ 99 WarningMotorFan 0 "NoWarning" 1 "Warning" ;
 VAL_ 99 WarningMotorControllerFan 0 "NoWarning" 1 "Warning" ;
 VAL_ 99 WarningDirectionChangeLockout 0 "NoWarning" 1 "Warning" ;
 VAL_ 99 WarningTipping 0 "NoWarning" 1 "Warning" ;
-VAL_ 99 FaultPPSWatchdog 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultDriverInputWatchdog 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultBPSWatchdog 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultMotorControllerWatchdog 0 "OK" 1 "Fault" ;
-VAL_ 99 FaultPPS 0 "OK" 1 "Fault" ;
+VAL_ 99 FaultPedalBox 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultBPS 0 "OK" 1 "Fault" ;
 VAL_ 99 FaultMotor 0 "OK" 1 "Fault" ;
 VAL_ 99 Status 0 "OK" 1 "Fault" ;

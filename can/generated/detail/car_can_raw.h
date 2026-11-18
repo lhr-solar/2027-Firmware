@@ -51,8 +51,7 @@ extern "C" {
 #define CAR_CAN_RAW_SWEEP_MPP_TS_FRAME_ID (0x54u)
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_FRAME_ID (0x55u)
 #define CAR_CAN_RAW_BPS_STATUS_FRAME_ID (0x60u)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_FRAME_ID (0x61u)
-#define CAR_CAN_RAW_DEI_STATUS_FRAME_ID (0x62u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_FRAME_ID (0x62u)
 #define CAR_CAN_RAW_VCU_STATUS_FRAME_ID (0x63u)
 #define CAR_CAN_RAW_LIGHTING_COMMAND_FRAME_ID (0x64u)
 #define CAR_CAN_RAW_BPS_PACK_DATA_FRAME_ID (0x70u)
@@ -85,8 +84,7 @@ extern "C" {
 #define CAR_CAN_RAW_SWEEP_MPP_TS_LENGTH (0u)
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_LENGTH (5u)
 #define CAR_CAN_RAW_BPS_STATUS_LENGTH (16u)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_LENGTH (6u)
-#define CAR_CAN_RAW_DEI_STATUS_LENGTH (2u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_LENGTH (8u)
 #define CAR_CAN_RAW_VCU_STATUS_LENGTH (12u)
 #define CAR_CAN_RAW_LIGHTING_COMMAND_LENGTH (4u)
 #define CAR_CAN_RAW_BPS_PACK_DATA_LENGTH (12u)
@@ -119,8 +117,7 @@ extern "C" {
 #define CAR_CAN_RAW_SWEEP_MPP_TS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_STATUS_IS_EXTENDED (0)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_IS_EXTENDED (0)
-#define CAR_CAN_RAW_DEI_STATUS_IS_EXTENDED (0)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_VCU_STATUS_IS_EXTENDED (0)
 #define CAR_CAN_RAW_LIGHTING_COMMAND_IS_EXTENDED (0)
 #define CAR_CAN_RAW_BPS_PACK_DATA_IS_EXTENDED (0)
@@ -148,8 +145,7 @@ extern "C" {
 
 /* Frame cycle times in milliseconds. */
 #define CAR_CAN_RAW_BPS_STATUS_CYCLE_TIME_MS (200u)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_CYCLE_TIME_MS (100u)
-#define CAR_CAN_RAW_DEI_STATUS_CYCLE_TIME_MS (100u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_CYCLE_TIME_MS (50u)
 #define CAR_CAN_RAW_VCU_STATUS_CYCLE_TIME_MS (200u)
 #define CAR_CAN_RAW_LIGHTING_COMMAND_CYCLE_TIME_MS (200u)
 #define CAR_CAN_RAW_BPS_PACK_DATA_CYCLE_TIME_MS (50u)
@@ -324,67 +320,67 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_STATUS_BALANCING_ACTIVE_OFF_CHOICE (0u)
 #define CAR_CAN_RAW_BPS_STATUS_BALANCING_ACTIVE_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_STATUS_OK_CHOICE (0u)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_STATUS_FAULT_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_STATUS_OK_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_STATUS_FAULT_CHOICE (1u)
 
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_FAULT_NO_ACCELERATOR_OK_CHOICE (0u)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_FAULT_NO_ACCELERATOR_FAULT_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_FAULT_NO_ACCELERATOR_OK_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_FAULT_NO_ACCELERATOR_FAULT_CHOICE (1u)
 
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_NO_WARNING_CHOICE (0u)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_WARNING_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_NO_WARNING_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_WARNING_CHOICE (1u)
 
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_BRAKE_ACTIVE_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_BRAKE_ACTIVE_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_BRAKE_ACTIVE_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_BRAKE_ACTIVE_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_FRONT_PRESSURE_SWITCH_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_FRONT_PRESSURE_SWITCH_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_FRONT_PRESSURE_SWITCH_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_FRONT_PRESSURE_SWITCH_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_HANDBRAKE_PRESSURE_SWITCH_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_HANDBRAKE_PRESSURE_SWITCH_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HANDBRAKE_PRESSURE_SWITCH_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HANDBRAKE_PRESSURE_SWITCH_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_DEI_STATUS_IGNITION_LV_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_IGNITION_LV_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_IGNITION_LV_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_IGNITION_LV_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_DEI_STATUS_IGNITION_CHARGE_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_IGNITION_CHARGE_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_IGNITION_CHARGE_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_IGNITION_CHARGE_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_DEI_STATUS_IGNITION_DRIVE_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_IGNITION_DRIVE_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_IGNITION_DRIVE_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_IGNITION_DRIVE_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_DEI_STATUS_GEAR_NEUTRAL_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_GEAR_FORWARD_CHOICE (1u)
-#define CAR_CAN_RAW_DEI_STATUS_GEAR_REVERSE_CHOICE (2u)
-#define CAR_CAN_RAW_DEI_STATUS_GEAR_INVALID_CHOICE (3u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_GEAR_NEUTRAL_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_GEAR_FORWARD_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_GEAR_REVERSE_CHOICE (2u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_GEAR_INVALID_CHOICE (3u)
 
-#define CAR_CAN_RAW_DEI_STATUS_HAZARDS_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_HAZARDS_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HAZARDS_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HAZARDS_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_DEI_STATUS_LEFT_TURN_SIGNAL_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_LEFT_TURN_SIGNAL_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_LEFT_TURN_SIGNAL_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_LEFT_TURN_SIGNAL_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_DEI_STATUS_RIGHT_TURN_SIGNAL_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_RIGHT_TURN_SIGNAL_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_RIGHT_TURN_SIGNAL_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_RIGHT_TURN_SIGNAL_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_DEI_STATUS_REGEN_ENABLE_DISABLED_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_REGEN_ENABLE_ENABLED_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_REGEN_ENABLE_DISABLED_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_REGEN_ENABLE_ENABLED_CHOICE (1u)
 
-#define CAR_CAN_RAW_DEI_STATUS_REGEN_ACTIVATE_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_REGEN_ACTIVATE_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_REGEN_ACTIVATE_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_REGEN_ACTIVATE_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_DEI_STATUS_HORN_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_HORN_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HORN_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HORN_ON_CHOICE (1u)
 
-#define CAR_CAN_RAW_DEI_STATUS_PUSH_TO_TALK_NOT_PRESSED_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_PUSH_TO_TALK_PRESSED_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_PUSH_TO_TALK_NOT_PRESSED_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_PUSH_TO_TALK_PRESSED_CHOICE (1u)
 
-#define CAR_CAN_RAW_DEI_STATUS_HEADLIGHTS_OFF_CHOICE (0u)
-#define CAR_CAN_RAW_DEI_STATUS_HEADLIGHTS_ON_CHOICE (1u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HEADLIGHTS_OFF_CHOICE (0u)
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HEADLIGHTS_ON_CHOICE (1u)
 
 #define CAR_CAN_RAW_VCU_STATUS_STATUS_OK_CHOICE (0u)
 #define CAR_CAN_RAW_VCU_STATUS_STATUS_FAULT_CHOICE (1u)
@@ -395,8 +391,8 @@ extern "C" {
 #define CAR_CAN_RAW_VCU_STATUS_FAULT_BPS_OK_CHOICE (0u)
 #define CAR_CAN_RAW_VCU_STATUS_FAULT_BPS_FAULT_CHOICE (1u)
 
-#define CAR_CAN_RAW_VCU_STATUS_FAULT_PPS_OK_CHOICE (0u)
-#define CAR_CAN_RAW_VCU_STATUS_FAULT_PPS_FAULT_CHOICE (1u)
+#define CAR_CAN_RAW_VCU_STATUS_FAULT_PEDAL_BOX_OK_CHOICE (0u)
+#define CAR_CAN_RAW_VCU_STATUS_FAULT_PEDAL_BOX_FAULT_CHOICE (1u)
 
 #define CAR_CAN_RAW_VCU_STATUS_FAULT_MOTOR_CONTROLLER_WATCHDOG_OK_CHOICE (0u)
 #define CAR_CAN_RAW_VCU_STATUS_FAULT_MOTOR_CONTROLLER_WATCHDOG_FAULT_CHOICE (1u)
@@ -406,9 +402,6 @@ extern "C" {
 
 #define CAR_CAN_RAW_VCU_STATUS_FAULT_DRIVER_INPUT_WATCHDOG_OK_CHOICE (0u)
 #define CAR_CAN_RAW_VCU_STATUS_FAULT_DRIVER_INPUT_WATCHDOG_FAULT_CHOICE (1u)
-
-#define CAR_CAN_RAW_VCU_STATUS_FAULT_PPS_WATCHDOG_OK_CHOICE (0u)
-#define CAR_CAN_RAW_VCU_STATUS_FAULT_PPS_WATCHDOG_FAULT_CHOICE (1u)
 
 #define CAR_CAN_RAW_VCU_STATUS_WARNING_TIPPING_NO_WARNING_CHOICE (0u)
 #define CAR_CAN_RAW_VCU_STATUS_WARNING_TIPPING_WARNING_CHOICE (1u)
@@ -1015,8 +1008,7 @@ extern "C" {
 #define CAR_CAN_RAW_SWEEP_MPP_TS_NAME "SweepMPPTs"
 #define CAR_CAN_RAW_BPS_BALANCING_COMMAND_NAME "BPSBalancingCommand"
 #define CAR_CAN_RAW_BPS_STATUS_NAME "BPSStatus"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_NAME "PedalBoxStatus"
-#define CAR_CAN_RAW_DEI_STATUS_NAME "DEIStatus"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_NAME "DashboardStatus"
 #define CAR_CAN_RAW_VCU_STATUS_NAME "VCUStatus"
 #define CAR_CAN_RAW_LIGHTING_COMMAND_NAME "LightingCommand"
 #define CAR_CAN_RAW_BPS_PACK_DATA_NAME "BPSPackData"
@@ -1099,38 +1091,37 @@ extern "C" {
 #define CAR_CAN_RAW_BPS_STATUS_BATTERY_FAN_TACH1_NAME "BatteryFanTach1"
 #define CAR_CAN_RAW_BPS_STATUS_BATTERY_FAN_TACH2_NAME "BatteryFanTach2"
 #define CAR_CAN_RAW_BPS_STATUS_BPS_FAN_TACH_NAME "BPSFanTach"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_STATUS_NAME "Status"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_FAULT_NO_ACCELERATOR_NAME "FaultNoAccelerator"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_NAME "WarningMainAcceleratorDisconnected"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_NAME "WarningRedundantAcceleratorDisconnected"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_NAME "WarningPressureSwitchMismatch"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_BRAKE_ACTIVE_NAME "BrakeActive"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_FRONT_PRESSURE_SWITCH_NAME "FrontPressureSwitch"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_HANDBRAKE_PRESSURE_SWITCH_NAME "HandbrakePressureSwitch"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_ACCELERATOR_MAIN_POSITION_NAME "AcceleratorMainPosition"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_ACCELERATOR_REDUNDANT_POSITION_NAME "AcceleratorRedundantPosition"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_FRONT_PRESSURE_NAME "FrontPressure"
-#define CAR_CAN_RAW_PEDAL_BOX_STATUS_REAR_PRESSURE_NAME "RearPressure"
-#define CAR_CAN_RAW_DEI_STATUS_IGNITION_LV_NAME "IgnitionLV"
-#define CAR_CAN_RAW_DEI_STATUS_IGNITION_CHARGE_NAME "IgnitionCharge"
-#define CAR_CAN_RAW_DEI_STATUS_IGNITION_DRIVE_NAME "IgnitionDrive"
-#define CAR_CAN_RAW_DEI_STATUS_GEAR_NAME "Gear"
-#define CAR_CAN_RAW_DEI_STATUS_HAZARDS_NAME "Hazards"
-#define CAR_CAN_RAW_DEI_STATUS_LEFT_TURN_SIGNAL_NAME "LeftTurnSignal"
-#define CAR_CAN_RAW_DEI_STATUS_RIGHT_TURN_SIGNAL_NAME "RightTurnSignal"
-#define CAR_CAN_RAW_DEI_STATUS_REGEN_ENABLE_NAME "RegenEnable"
-#define CAR_CAN_RAW_DEI_STATUS_REGEN_ACTIVATE_NAME "RegenActivate"
-#define CAR_CAN_RAW_DEI_STATUS_HORN_NAME "Horn"
-#define CAR_CAN_RAW_DEI_STATUS_PUSH_TO_TALK_NAME "PushToTalk"
-#define CAR_CAN_RAW_DEI_STATUS_HEADLIGHTS_NAME "Headlights"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_STATUS_NAME "Status"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_FAULT_NO_ACCELERATOR_NAME "FaultNoAccelerator"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_WARNING_MAIN_ACCELERATOR_DISCONNECTED_NAME "WarningMainAcceleratorDisconnected"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_WARNING_REDUNDANT_ACCELERATOR_DISCONNECTED_NAME "WarningRedundantAcceleratorDisconnected"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_WARNING_PRESSURE_SWITCH_MISMATCH_NAME "WarningPressureSwitchMismatch"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_BRAKE_ACTIVE_NAME "BrakeActive"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_FRONT_PRESSURE_SWITCH_NAME "FrontPressureSwitch"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HANDBRAKE_PRESSURE_SWITCH_NAME "HandbrakePressureSwitch"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_IGNITION_LV_NAME "IgnitionLV"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_IGNITION_CHARGE_NAME "IgnitionCharge"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_IGNITION_DRIVE_NAME "IgnitionDrive"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_GEAR_NAME "Gear"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HAZARDS_NAME "Hazards"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_LEFT_TURN_SIGNAL_NAME "LeftTurnSignal"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_RIGHT_TURN_SIGNAL_NAME "RightTurnSignal"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_REGEN_ENABLE_NAME "RegenEnable"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_REGEN_ACTIVATE_NAME "RegenActivate"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HORN_NAME "Horn"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_PUSH_TO_TALK_NAME "PushToTalk"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_HEADLIGHTS_NAME "Headlights"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_ACCELERATOR_MAIN_POSITION_NAME "AcceleratorMainPosition"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_ACCELERATOR_REDUNDANT_POSITION_NAME "AcceleratorRedundantPosition"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_FRONT_PRESSURE_NAME "FrontPressure"
+#define CAR_CAN_RAW_DASHBOARD_STATUS_REAR_PRESSURE_NAME "RearPressure"
 #define CAR_CAN_RAW_VCU_STATUS_STATUS_NAME "Status"
 #define CAR_CAN_RAW_VCU_STATUS_FAULT_MOTOR_NAME "FaultMotor"
 #define CAR_CAN_RAW_VCU_STATUS_FAULT_BPS_NAME "FaultBPS"
-#define CAR_CAN_RAW_VCU_STATUS_FAULT_PPS_NAME "FaultPPS"
+#define CAR_CAN_RAW_VCU_STATUS_FAULT_PEDAL_BOX_NAME "FaultPedalBox"
 #define CAR_CAN_RAW_VCU_STATUS_FAULT_MOTOR_CONTROLLER_WATCHDOG_NAME "FaultMotorControllerWatchdog"
 #define CAR_CAN_RAW_VCU_STATUS_FAULT_BPS_WATCHDOG_NAME "FaultBPSWatchdog"
 #define CAR_CAN_RAW_VCU_STATUS_FAULT_DRIVER_INPUT_WATCHDOG_NAME "FaultDriverInputWatchdog"
-#define CAR_CAN_RAW_VCU_STATUS_FAULT_PPS_WATCHDOG_NAME "FaultPPSWatchdog"
 #define CAR_CAN_RAW_VCU_STATUS_WARNING_TIPPING_NAME "WarningTipping"
 #define CAR_CAN_RAW_VCU_STATUS_WARNING_DIRECTION_CHANGE_LOCKOUT_NAME "WarningDirectionChangeLockout"
 #define CAR_CAN_RAW_VCU_STATUS_WARNING_MOTOR_CONTROLLER_FAN_NAME "WarningMotorControllerFan"
@@ -2100,13 +2091,13 @@ struct car_can_raw_bps_status_t {
 };
 
 /**
- * Signals in message PedalBoxStatus.
+ * Signals in message DashboardStatus.
  *
  * 2027 team-defined layout; physical values use the shared scaling conventions.
  *
  * All signal values are as on the CAN bus.
  */
-struct car_can_raw_pedal_box_status_t {
+struct car_can_raw_dashboard_status_t {
     /**
      * Status
      *
@@ -2179,51 +2170,6 @@ struct car_can_raw_pedal_box_status_t {
      */
     uint8_t handbrake_pressure_switch;
 
-    /**
-     * AcceleratorMainPosition
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t accelerator_main_position;
-
-    /**
-     * AcceleratorRedundantPosition
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t accelerator_redundant_position;
-
-    /**
-     * FrontPressure
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t front_pressure;
-
-    /**
-     * RearPressure
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint16_t rear_pressure;
-};
-
-/**
- * Signals in message DEIStatus.
- *
- * 2027 team-defined layout; physical values use the shared scaling conventions.
- *
- * All signal values are as on the CAN bus.
- */
-struct car_can_raw_dei_status_t {
     /**
      * IgnitionLV
      *
@@ -2331,6 +2277,42 @@ struct car_can_raw_dei_status_t {
      * Offset: 0
      */
     uint8_t headlights;
+
+    /**
+     * AcceleratorMainPosition
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t accelerator_main_position;
+
+    /**
+     * AcceleratorRedundantPosition
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint8_t accelerator_redundant_position;
+
+    /**
+     * FrontPressure
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint16_t front_pressure;
+
+    /**
+     * RearPressure
+     *
+     * Range: -
+     * Scale: 1
+     * Offset: 0
+     */
+    uint16_t rear_pressure;
 };
 
 /**
@@ -2369,13 +2351,13 @@ struct car_can_raw_vcu_status_t {
     uint8_t fault_bps;
 
     /**
-     * FaultPPS
+     * FaultPedalBox
      *
      * Range: -
      * Scale: 1
      * Offset: 0
      */
-    uint8_t fault_pps;
+    uint8_t fault_pedal_box;
 
     /**
      * FaultMotorControllerWatchdog
@@ -2403,15 +2385,6 @@ struct car_can_raw_vcu_status_t {
      * Offset: 0
      */
     uint8_t fault_driver_input_watchdog;
-
-    /**
-     * FaultPPSWatchdog
-     *
-     * Range: -
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t fault_pps_watchdog;
 
     /**
      * WarningTipping
@@ -6987,7 +6960,7 @@ bool car_can_raw_bps_status_battery_fan_tach2_is_in_range(uint16_t value);
 bool car_can_raw_bps_status_bps_fan_tach_is_in_range(uint16_t value);
 
 /**
- * Pack message PedalBoxStatus.
+ * Pack message DashboardStatus.
  *
  * @param[out] dst_p Buffer to pack the message into.
  * @param[in] src_p Data to pack.
@@ -6995,13 +6968,13 @@ bool car_can_raw_bps_status_bps_fan_tach_is_in_range(uint16_t value);
  *
  * @return Size of packed data, or negative error code.
  */
-int car_can_raw_pedal_box_status_pack(
+int car_can_raw_dashboard_status_pack(
     uint8_t *dst_p,
-    const struct car_can_raw_pedal_box_status_t *src_p,
+    const struct car_can_raw_dashboard_status_t *src_p,
     size_t size);
 
 /**
- * Unpack message PedalBoxStatus.
+ * Unpack message DashboardStatus.
  *
  * @param[out] dst_p Object to unpack the message into.
  * @param[in] src_p Message to unpack.
@@ -7009,19 +6982,19 @@ int car_can_raw_pedal_box_status_pack(
  *
  * @return zero(0) or negative error code.
  */
-int car_can_raw_pedal_box_status_unpack(
-    struct car_can_raw_pedal_box_status_t *dst_p,
+int car_can_raw_dashboard_status_unpack(
+    struct car_can_raw_dashboard_status_t *dst_p,
     const uint8_t *src_p,
     size_t size);
 
 /**
- * Init message fields to default values from PedalBoxStatus.
+ * Init message fields to default values from DashboardStatus.
  *
  * @param[in] msg_p Message to init.
  *
  * @return zero(0) on success or (-1) in case of nullptr argument.
  */
-int car_can_raw_pedal_box_status_init(struct car_can_raw_pedal_box_status_t *msg_p);
+int car_can_raw_dashboard_status_init(struct car_can_raw_dashboard_status_t *msg_p);
 
 /**
  * Check that given signal is in allowed range.
@@ -7030,7 +7003,7 @@ int car_can_raw_pedal_box_status_init(struct car_can_raw_pedal_box_status_t *msg
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_status_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_status_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7039,7 +7012,7 @@ bool car_can_raw_pedal_box_status_status_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_fault_no_accelerator_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_fault_no_accelerator_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7048,7 +7021,7 @@ bool car_can_raw_pedal_box_status_fault_no_accelerator_is_in_range(uint8_t value
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_warning_main_accelerator_disconnected_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_warning_main_accelerator_disconnected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7057,7 +7030,7 @@ bool car_can_raw_pedal_box_status_warning_main_accelerator_disconnected_is_in_ra
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_warning_redundant_accelerator_disconnected_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_warning_redundant_accelerator_disconnected_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7066,7 +7039,7 @@ bool car_can_raw_pedal_box_status_warning_redundant_accelerator_disconnected_is_
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_warning_pressure_switch_mismatch_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_warning_pressure_switch_mismatch_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7075,7 +7048,7 @@ bool car_can_raw_pedal_box_status_warning_pressure_switch_mismatch_is_in_range(u
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_brake_active_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_brake_active_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7084,7 +7057,7 @@ bool car_can_raw_pedal_box_status_brake_active_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_front_pressure_switch_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_front_pressure_switch_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7093,7 +7066,7 @@ bool car_can_raw_pedal_box_status_front_pressure_switch_is_in_range(uint8_t valu
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_handbrake_pressure_switch_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_handbrake_pressure_switch_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7102,7 +7075,7 @@ bool car_can_raw_pedal_box_status_handbrake_pressure_switch_is_in_range(uint8_t 
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_accelerator_main_position_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_ignition_lv_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7111,7 +7084,7 @@ bool car_can_raw_pedal_box_status_accelerator_main_position_is_in_range(uint8_t 
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_accelerator_redundant_position_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_ignition_charge_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7120,7 +7093,7 @@ bool car_can_raw_pedal_box_status_accelerator_redundant_position_is_in_range(uin
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_front_pressure_is_in_range(uint16_t value);
+bool car_can_raw_dashboard_status_ignition_drive_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7129,44 +7102,7 @@ bool car_can_raw_pedal_box_status_front_pressure_is_in_range(uint16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_pedal_box_status_rear_pressure_is_in_range(uint16_t value);
-
-/**
- * Pack message DEIStatus.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int car_can_raw_dei_status_pack(
-    uint8_t *dst_p,
-    const struct car_can_raw_dei_status_t *src_p,
-    size_t size);
-
-/**
- * Unpack message DEIStatus.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int car_can_raw_dei_status_unpack(
-    struct car_can_raw_dei_status_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from DEIStatus.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int car_can_raw_dei_status_init(struct car_can_raw_dei_status_t *msg_p);
+bool car_can_raw_dashboard_status_gear_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7175,7 +7111,7 @@ int car_can_raw_dei_status_init(struct car_can_raw_dei_status_t *msg_p);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_ignition_lv_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_hazards_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7184,7 +7120,7 @@ bool car_can_raw_dei_status_ignition_lv_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_ignition_charge_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_left_turn_signal_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7193,7 +7129,7 @@ bool car_can_raw_dei_status_ignition_charge_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_ignition_drive_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_right_turn_signal_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7202,7 +7138,7 @@ bool car_can_raw_dei_status_ignition_drive_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_gear_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_regen_enable_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7211,7 +7147,7 @@ bool car_can_raw_dei_status_gear_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_hazards_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_regen_activate_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7220,7 +7156,7 @@ bool car_can_raw_dei_status_hazards_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_left_turn_signal_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_horn_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7229,7 +7165,7 @@ bool car_can_raw_dei_status_left_turn_signal_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_right_turn_signal_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_push_to_talk_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7238,7 +7174,7 @@ bool car_can_raw_dei_status_right_turn_signal_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_regen_enable_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_headlights_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7247,7 +7183,7 @@ bool car_can_raw_dei_status_regen_enable_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_regen_activate_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_accelerator_main_position_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7256,7 +7192,7 @@ bool car_can_raw_dei_status_regen_activate_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_horn_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_accelerator_redundant_position_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7265,7 +7201,7 @@ bool car_can_raw_dei_status_horn_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_push_to_talk_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_front_pressure_is_in_range(uint16_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7274,7 +7210,7 @@ bool car_can_raw_dei_status_push_to_talk_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_dei_status_headlights_is_in_range(uint8_t value);
+bool car_can_raw_dashboard_status_rear_pressure_is_in_range(uint16_t value);
 
 /**
  * Pack message VCUStatus.
@@ -7347,7 +7283,7 @@ bool car_can_raw_vcu_status_fault_bps_is_in_range(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool car_can_raw_vcu_status_fault_pps_is_in_range(uint8_t value);
+bool car_can_raw_vcu_status_fault_pedal_box_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -7375,15 +7311,6 @@ bool car_can_raw_vcu_status_fault_bps_watchdog_is_in_range(uint8_t value);
  * @return true if in range, false otherwise.
  */
 bool car_can_raw_vcu_status_fault_driver_input_watchdog_is_in_range(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool car_can_raw_vcu_status_fault_pps_watchdog_is_in_range(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.

@@ -12,11 +12,11 @@ sources, no build. Everything below describes intent.
 |---|---|
 | **VCU** | Vehicle Control Unit — top-level vehicle state and coordination |
 | **CM5** | Driver interface / instrumentation |
-| **PPS** | Pedal box — accelerator and brake sensing |
+| **DEI** | Dashboard and pedal box — driver controls, accelerator and brake sensing |
 
 ## This tree governs vehicle motion
 
-VCU and PPS decide whether and how hard the car moves. Treat them with the
+VCU and DEI decide whether and how hard the car moves. Treat them with the
 same discipline as `psys/`:
 
 1. **Plausibility and redundancy checks stay.** Dual-sensor agreement on the
@@ -32,7 +32,7 @@ same discipline as `psys/`:
    goes wrong.
 4. **Vehicle state transitions are explicit.** Model them as a state machine
    with defined entry conditions, not as scattered boolean flags.
-5. **Human review is mandatory** for VCU and PPS logic. Flag it in the PR.
+5. **Human review is mandatory** for VCU and DEI logic. Flag it in the PR.
 
 ## Getting started here
 
@@ -62,7 +62,7 @@ different pins, and picking the wrong one compiles fine and silently produces a
 dead peripheral. Root [`AGENTS.md`](../../AGENTS.md) §2 has the full procedure;
 it is mandatory, not advisory.
 
-For this tree specifically: a mis-muxed pin on PPS or VCU can mean a sensor
+For this tree specifically: a mis-muxed pin on DEI or VCU can mean a sensor
 that reads a floating input rather than the pedal. Vet the ADC and timer input
 pins with the same care as the fault paths.
 
