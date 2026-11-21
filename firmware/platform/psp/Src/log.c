@@ -67,7 +67,7 @@ cdc_port_t cdc_ports[NUM_CDC_INSTANCES];
 // defaults
 uint16_t cdc_slots_needed[NUM_CDC_INSTANCES] = {0};
 
-// signal completed init 
+// signal completed init
 static bool log_init_done = false;
 
 // bit n set -> level n prints, 0 -> nothing enabled, all levels print
@@ -89,7 +89,8 @@ bool log_enable(loggingLevel_t level) {
  * @return bool true if success
  */
 bool log_init(void) {
-    if (log_init_done) return false;
+    if (log_init_done)
+        return false;
 
     for (int i = 0; i < NUM_CDC_INSTANCES; i++) {
         cdc_port_t* p = &cdc_ports[i];
@@ -191,13 +192,13 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
     // "-1" for null char space
     uint32_t count = (rv >= MAX_LOG_SIZE) ? MAX_LOG_SIZE - 1 : rv;
 
-    int ret  = rv; // return val
+    int ret = rv; // return val
 
     // cdc_n_connected checks if a DTR bit was sent
     // happens for any serial terminals that claim a COM port
     if (tud_cdc_n_connected(port)) {
         // clear any leftover semphr give if previous call timeouts
-        // OR previous call wrote directly to the fifo 
+        // OR previous call wrote directly to the fifo
         xSemaphoreTake(cdc->cdc_tx_sem, 0);
         cdc_slots_needed[port] = count;
         BaseType_t fifo_space_available = pdTRUE;
@@ -205,7 +206,7 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
             // pend on slots available
             fifo_space_available = xSemaphoreTake(cdc->cdc_tx_sem, LOG_TX_TIMEOUT_TICKS);
             // space is now available on that CDC's Tx FIFO
-        } 
+        }
 
         if (fifo_space_available) {
             // write buff into tx fifo

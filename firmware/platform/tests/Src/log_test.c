@@ -36,7 +36,7 @@ int main(void) {
     MX_USB_PCD_Init();
     // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
     log_init();
-    
+
     // enable logging levels
     // not specifying will enable ALL :)
     log_enable(L_INFO);
