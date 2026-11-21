@@ -70,6 +70,20 @@ uint16_t cdc_slots_needed[NUM_CDC_INSTANCES] = {0};
 // signal completed init 
 static bool log_init_done = false;
 
+// bit n set -> level n prints, 0 -> nothing enabled, all levels print
+static uint8_t log_enabled_mask = 0;
+
+/**
+ * @brief Enables printing of a log level, may be called multiple times
+ * @return bool false if level is invalid
+ */
+bool log_enable(loggingLevel_t level) {
+    if (level >= NUM_LOGGING_LEVELS)
+        return false;
+    log_enabled_mask |= (1u << level);
+    return true;
+}
+
 /**
  * @brief Initializes logging over USB CDC
  * @return bool true if success
@@ -121,6 +135,11 @@ int snprintf(char* buffer, size_t bufsz, char const* fmt, ...) {
 
 // formatted log to a CDC port
 int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
+    // exit early if level is invalid or filtered out
+    if (level >= NUM_LOGGING_LEVELS ||
+        (log_enabled_mask != 0 && !(log_enabled_mask & (1u << level))))
+        return -1;
+
     // exit early if no init, cdc unconnected, or invalid port
     if (!log_init_done || port > NUM_CDC_INSTANCES - 1 || !tud_cdc_n_connected(port))
         return -1;
@@ -177,7 +196,8 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
     // cdc_n_connected checks if a DTR bit was sent
     // happens for any serial terminals that claim a COM port
     if (tud_cdc_n_connected(port)) {
-        // clear any leftover semphr give if happened after previous calls timeout
+        // clear any leftover semphr give if previous call timeouts
+        // OR previous call wrote directly to the fifo 
         xSemaphoreTake(cdc->cdc_tx_sem, 0);
         cdc_slots_needed[port] = count;
         BaseType_t fifo_space_available = pdTRUE;
@@ -185,7 +205,7 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
             // pend on slots available
             fifo_space_available = xSemaphoreTake(cdc->cdc_tx_sem, LOG_TX_TIMEOUT_TICKS);
             // space is now available on that CDC's Tx FIFO
-        }
+        } 
 
         if (fifo_space_available) {
             // write buff into tx fifo
@@ -194,10 +214,9 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
             tud_cdc_n_write_flush(port);
         } else {
             // cannot write, semphr timed out
-            ret = -1
+            ret = -1;
         }
     } else {
-        // cdc port unconnected
         ret = -1;
     }
 

@@ -25,6 +25,8 @@ void TxTask(void* argument) {
         vTaskDelay(pdMS_TO_TICKS(500));
         LOG(SERIAL_PORT_B, L_INFO, "again!\r\n");
         vTaskDelay(pdMS_TO_TICKS(500));
+        LOG(SERIAL_PORT_B, L_ERROR, "[REDACTED]\r\n");
+        vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
 
@@ -34,6 +36,10 @@ int main(void) {
     MX_USB_PCD_Init();
     // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
     log_init();
+    
+    // enable logging levels
+    // not specifying will enable ALL :)
+    log_enable(L_INFO);
 
     xTaskCreateStatic(poll_events, "Poll Event Queue", configMINIMAL_STACK_SIZE, NULL,
                       tskIDLE_PRIORITY + 3, pollEventsStack, &pollEventsTaskBuffer);
