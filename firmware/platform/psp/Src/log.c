@@ -67,11 +67,16 @@ cdc_port_t cdc_ports[NUM_CDC_INSTANCES];
 // defaults
 uint16_t cdc_slots_needed[NUM_CDC_INSTANCES] = {0};
 
+// signal completed init 
+static bool log_init_done = false;
+
 /**
  * @brief Initializes logging over USB CDC
  * @return bool true if success
  */
 bool log_init(void) {
+    if (log_init_done) return false;
+
     for (int i = 0; i < NUM_CDC_INSTANCES; i++) {
         cdc_port_t* p = &cdc_ports[i];
         for (int j = 0; j < NUM_LOG_BUFFERS; j++) {
@@ -87,7 +92,9 @@ bool log_init(void) {
         .role = TUSB_ROLE_DEVICE,
         .speed = TUSB_SPEED_AUTO,
     };
-    return tusb_init(BOARD_TUD_RHPORT, &dev_init);
+    log_init_done = tusb_init(BOARD_TUD_RHPORT, &dev_init);
+
+    return log_init_done;
 }
 
 // called by TinyUSB when cdc_slots_needed fits in the TX FIFO
@@ -114,9 +121,8 @@ int snprintf(char* buffer, size_t bufsz, char const* fmt, ...) {
 
 // formatted log to a CDC port
 int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
-    // exit early if port specified greater than num cdc ports
-    if (port > NUM_CDC_INSTANCES - 1 || !tud_cdc_n_connected(port) ||
-        cdc_ports[port].cdc_pool_mtx == NULL)
+    // exit early if no init, cdc unconnected, or invalid port
+    if (!log_init_done || port > NUM_CDC_INSTANCES - 1 || !tud_cdc_n_connected(port))
         return -1;
 
     // "[LEVEL] " prefix, then the message after it
@@ -166,28 +172,36 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
     // "-1" for null char space
     uint32_t count = (rv >= MAX_LOG_SIZE) ? MAX_LOG_SIZE - 1 : rv;
 
+    int ret  = rv; // return val
+
     // cdc_n_connected checks if a DTR bit was sent
     // happens for any serial terminals that claim a COM port
     if (tud_cdc_n_connected(port)) {
         // clear any leftover semphr give if happened after previous calls timeout
         xSemaphoreTake(cdc->cdc_tx_sem, 0);
         cdc_slots_needed[port] = count;
-        BaseType_t semphr_passed = pdTRUE;
+        BaseType_t fifo_space_available = pdTRUE;
         if (tud_cdc_n_write_available(port) < count) {
             // pend on slots available
-            semphr_passed = xSemaphoreTake(cdc->cdc_tx_sem, LOG_TX_TIMEOUT_TICKS);
+            fifo_space_available = xSemaphoreTake(cdc->cdc_tx_sem, LOG_TX_TIMEOUT_TICKS);
             // space is now available on that CDC's Tx FIFO
         }
 
-        if (semphr_passed) {
+        if (fifo_space_available) {
             // write buff into tx fifo
             tud_cdc_n_write(port, buf, count);
             // force fifo -> endpoint xfer if possible
             tud_cdc_n_write_flush(port);
+        } else {
+            // cannot write, semphr timed out
+            ret = -1
         }
+    } else {
+        // cdc port unconnected
+        ret = -1;
     }
 
     xSemaphoreGive(pbuf->buffer_mtx);
     xSemaphoreGive(cdc->cdc_port_mtx);
-    return rv;
+    return ret;
 }
