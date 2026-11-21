@@ -38,7 +38,7 @@ reason; they govern clock setup, the RTOS tick source, and memory layout.
 ## Contents
 
 **`psp/`** — on-chip peripherals: `ADC`, `CAN` (classic bxCAN), `CAN_FD`
-(FDCAN), `UART`, `printf` (nanoprintf shim). Classic CAN and CAN-FD are separate
+(FDCAN), `UART`, `log` (nanoprintf-based USB CDC logging). Classic CAN and CAN-FD are separate
 peripherals with separate drivers; they are not interchangeable.
 
 **`drivers/`** — `EMC2305` (Microchip PWM fan controller, I²C, FreeRTOS worker
