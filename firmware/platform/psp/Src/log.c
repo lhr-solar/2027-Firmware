@@ -197,17 +197,21 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
     // cdc_n_connected checks if a DTR bit was sent
     // happens for any serial terminals that claim a COM port
     if (tud_cdc_n_connected(port)) {
-        // clear any leftover semphr give if previous call timeouts
-        // OR previous call wrote directly to the fifo
+        // drain a give that landed after a previous call timed out
         xSemaphoreTake(cdc->cdc_tx_sem, 0);
-        cdc_slots_needed[port] = count;
+        // check + arm atomically
+        taskENTER_CRITICAL();
+        bool fifo_space_needed = tud_cdc_n_write_available(port) < count;
+        if (fifo_space_needed)
+            cdc_slots_needed[port] = count;
+        taskEXIT_CRITICAL();
         BaseType_t fifo_space_available = pdTRUE;
-        if (tud_cdc_n_write_available(port) < count) {
+        if (fifo_space_needed) {
             // pend on slots available
             fifo_space_available = xSemaphoreTake(cdc->cdc_tx_sem, LOG_TX_TIMEOUT_TICKS);
-            // space is now available on that CDC's Tx FIFO
+            // callback clears it on success, this covers the timeout
+            cdc_slots_needed[port] = 0;
         }
-
         if (fifo_space_available) {
             // write buff into tx fifo
             tud_cdc_n_write(port, buf, count);
