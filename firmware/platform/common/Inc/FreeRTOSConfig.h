@@ -40,7 +40,7 @@
  * See http://www.freertos.org/a00110.html
  *----------------------------------------------------------*/
 
-/* Section where include file can be added */
+#include "tusb_config.h" // CFG_TUD_CDC, sizes the TLS pointers below
 
 /* Ensure definitions are only used by the compiler, and not by the assembler. */
 #if defined(__ICCARM__) || defined(__CC_ARM) || defined(__GNUC__)
@@ -67,7 +67,10 @@
 #define configUSE_RECURSIVE_MUTEXES              1
 #define configUSE_COUNTING_SEMAPHORES            1
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION  1
-#define configNUM_THREAD_LOCAL_STORAGE_POINTERS  2 // one per CDC port
+#ifndef CFG_TUD_CDC
+  #error "CFG_TUD_CDC not defined, FreeRTOSConfig.h must include tusb_config.h"
+#endif
+#define configNUM_THREAD_LOCAL_STORAGE_POINTERS  CFG_TUD_CDC // one per CDC port, log.c buffer per task
 
 #ifndef __weak
 #define __weak __attribute__((weak))

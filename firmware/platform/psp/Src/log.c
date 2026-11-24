@@ -70,27 +70,18 @@ uint16_t cdc_slots_needed[NUM_CDC_INSTANCES] = {0};
 // signal completed init
 static bool log_init_done = false;
 
-// bit n set -> level n prints, 0 -> nothing enabled, all levels print
+// bit n set -> level n prints
 static uint8_t log_enabled_mask = 0;
-
-/**
- * @brief Enables printing of a log level, may be called multiple times
- * @return bool false if level is invalid
- */
-bool log_enable(loggingLevel_t level) {
-    if (level >= NUM_LOGGING_LEVELS)
-        return false;
-    log_enabled_mask |= (1u << level);
-    return true;
-}
 
 /**
  * @brief Initializes logging over USB CDC
  * @return bool true if success
  */
-bool log_init(void) {
+bool log_init(const log_init_t* init) {
     if (log_init_done)
         return false;
+
+    log_enabled_mask = (init != NULL) ? init->levels : 0;
 
     for (int i = 0; i < NUM_CDC_INSTANCES; i++) {
         cdc_port_t* p = &cdc_ports[i];
@@ -107,6 +98,16 @@ bool log_init(void) {
         .role = TUSB_ROLE_DEVICE,
         .speed = TUSB_SPEED_AUTO,
     };
+
+    // override existing usb descriptors
+    // char* truncated to 32 bytes
+    if (init != NULL) {
+        usb_set_product_name(init->board_name);
+        for (int itf = 0; itf < NUM_CDC_INSTANCES; itf++) {
+            usb_set_cdc_name(itf, init->port_names[itf]);
+        }
+    }
+
     log_init_done = tusb_init(BOARD_TUD_RHPORT, &dev_init);
 
     return log_init_done;
@@ -137,8 +138,7 @@ int snprintf(char* buffer, size_t bufsz, char const* fmt, ...) {
 // formatted log to a CDC port
 int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
     // exit early if level is invalid or filtered out
-    if (level >= NUM_LOGGING_LEVELS ||
-        (log_enabled_mask != 0 && !(log_enabled_mask & (1u << level))))
+    if (level >= NUM_LOGGING_LEVELS || !(log_enabled_mask & LOG_BIT(level)))
         return -1;
 
     // exit early if no init, cdc unconnected, or invalid port

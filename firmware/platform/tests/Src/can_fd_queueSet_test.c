@@ -180,7 +180,7 @@ int main(void) {
     Heartbeat_Init(); // enable LED for LED_PORT
     MX_USB_PCD_Init();
     // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
-    log_init();
+    log_init(&(log_init_t){.levels = LOG_BIT(L_INFO)});
 
     #ifdef FDCAN1
     hfdcan1->Instance = FDCAN1;

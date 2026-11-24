@@ -151,7 +151,7 @@ int main(void) {
     MX_USB_PCD_Init();
 
     // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
-    log_init();
+    log_init(&(log_init_t){.levels = LOG_BIT(L_INFO) | LOG_BIT(L_DEBUG)});
 
     // clang-format off
     xTaskCreateStatic(

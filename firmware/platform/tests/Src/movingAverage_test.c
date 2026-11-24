@@ -81,7 +81,7 @@ int main() {
     SystemClock_Config();
     MX_USB_PCD_Init();
     // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
-    log_init();
+    log_init(&(log_init_t){.levels = LOG_BIT(L_INFO)});
 
     xTaskCreateStatic(poll_events, "Poll Event Queue", configMINIMAL_STACK_SIZE, NULL,
                       tskIDLE_PRIORITY + 3, pollEventsStack, &pollEventsTaskBuffer);
