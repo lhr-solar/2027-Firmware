@@ -98,6 +98,8 @@
 #define CFG_TUD_MIDI              0
 #define CFG_TUD_VENDOR            0
 
+#define NUM_CDC_INSTANCES         CFG_TUD_CDC 
+
 // CDC FIFO size of TX and RX
 #define CFG_TUD_CDC_RX_BUFSIZE   (TUD_OPT_HIGH_SPEED ? 512 : 64)
 #define CFG_TUD_CDC_TX_BUFSIZE   512

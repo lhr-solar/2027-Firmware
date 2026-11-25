@@ -220,7 +220,7 @@ enum {
   STRID_MANUFACTURER,
   STRID_PRODUCT,
   STRID_SERIAL,
-  STRID_CDC_0, // one per CDC port, CDC n uses STRID_CDC_0 + n
+  STRID_CDC
 };
 
 // array of pointer to string descriptors
@@ -234,8 +234,6 @@ char const *string_desc_arr[] =
   "TinyUSB CDC 1",               // 5: CDC 1 Interface
 };
 
-TU_VERIFY_STATIC(STRID_CDC_0 + CFG_TUD_CDC <= TU_ARRAY_SIZE(string_desc_arr), "need a string per CDC port");
-
 // Overrides the product string, call before tusb_init(). NULL keeps the default
 void usb_set_product_name(const char *name) {
   if (name) string_desc_arr[STRID_PRODUCT] = name;
@@ -243,7 +241,7 @@ void usb_set_product_name(const char *name) {
 
 // Overrides CDC port's interface string, call before tusb_init(). NULL keeps the default
 void usb_set_cdc_name(uint8_t port, const char *name) {
-  if (name && port < CFG_TUD_CDC) string_desc_arr[STRID_CDC_0 + port] = name;
+  if (name && port < CFG_TUD_CDC) string_desc_arr[STRID_CDC + port] = name;
 }
 
 static uint16_t _desc_str[32 + 1];
