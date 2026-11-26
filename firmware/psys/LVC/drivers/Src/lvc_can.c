@@ -1,11 +1,4 @@
 #include "lvc_can.h"
-#include "CAN_FD.h"
-#include "stm32g4xx_hal_cortex.h"
-#include "stm32g4xx_hal_fdcan.h"
-#include "stm32g4xx_hal_gpio.h"
-#include "stm32g4xx_hal_gpio_ex.h"
-#include "stm32g4xx_hal_rcc.h"
-#include "stm32g4xx_hal_rcc_ex.h"
 
 void CAN_Init() {
     hfdcan2->Instance = FDCAN2;
