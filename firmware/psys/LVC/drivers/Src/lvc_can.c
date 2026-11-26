@@ -1,5 +1,6 @@
 #include "lvc_can.h"
 #include "CAN_FD.h"
+#include "stm32g4xx_hal_cortex.h"
 #include "stm32g4xx_hal_fdcan.h"
 #include "stm32g4xx_hal_gpio.h"
 #include "stm32g4xx_hal_gpio_ex.h"
@@ -74,9 +75,14 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef *hfdcan) {
     GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN2;
     HAL_GPIO_Init(CAN_TX_PORT, &GPIO_InitStruct);
 
-    HAL_NVIC_SetPriority()
+    HAL_NVIC_SetPriority(FDCAN2_IT0_IRQn, FDCAN_NVIC_PRIO, 0);
+    HAL_NVIC_EnableIRQ(FDCAN2_IT0_IRQn);
 }
 
 void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef *hfdcan) {
-    
+    __HAL_RCC_FDCAN_CLK_DISABLE();
+
+    HAL_GPIO_DeInit(CAN_TX_PORT, uint32_t CAN_TX_PIN | CAN_RX_PIN);
+
+    HAL_NVIC_DisableIRQ(FDCAN2_IT0_IRQn);
 }
