@@ -11,10 +11,12 @@ void CAN_Init() {
     hfdcan2->Init.AutoRetransmission = ENABLE;
     hfdcan2->Init.TransmitPause = DISABLE;
     hfdcan2->Init.ProtocolException = DISABLE;
+
     hfdcan2->Init.NominalPrescaler = 24;
     hfdcan2->Init.NominalSyncJumpWidth = 1;
     hfdcan2->Init.NominalTimeSeg1 = 13;
     hfdcan2->Init.NominalTimeSeg2 = 2;
+    
     hfdcan2->Init.DataPrescaler = 1;
     hfdcan2->Init.DataSyncJumpWidth = 1;
     hfdcan2->Init.DataTimeSeg1 = 1;
@@ -75,7 +77,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef *hfdcan) {
 void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef *hfdcan) {
     __HAL_RCC_FDCAN_CLK_DISABLE();
 
-    HAL_GPIO_DeInit(CAN_TX_PORT, uint32_t CAN_TX_PIN | CAN_RX_PIN);
+    HAL_GPIO_DeInit(CAN_TX_PORT, CAN_TX_PIN | CAN_RX_PIN);
 
     HAL_NVIC_DisableIRQ(FDCAN2_IT0_IRQn);
 }
