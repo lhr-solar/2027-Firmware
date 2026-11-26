@@ -72,7 +72,6 @@ firmware/psys/LVC
 ├── Board.cmake
 ├── CMakeLists.txt
 ├── Makefile
-├── build_all_tests.sh
 ├── config/
 ├── core/
 ├── drivers/
@@ -108,11 +107,46 @@ This will make more sense as you start to look at existing code and write your o
 
 Managing the process of building code is hard. What files get combined with what other files? How can you avoid rebuilding all your code if only a small change is made? To better manage this we use [CMake](https://cmake.org/about/).
 
-CMake is a build system generator. You'll see `CMakeLists.txt` and `Board.cmake` files in your board folders. If needed, you should only need to modify the `Board.cmake` file, as `CMakeLists.txt` statically describes how to include code from other parts of the codebase like `platform/` - **don't touch this file**.
+CMake is a build system generator. Your board folder has two CMake files, and `Board.cmake` is the one you'll actually work in. `CMakeLists.txt` is a short stub, and the only part of it you'd ever change is the `project()` block between the `USER EDIT` comments:
 
-`Board.cmake` is made to be easy to read and change. It tells the build system what files in your folder should be included in the build process. If you ever feel special and want to make your folders, you can add their relative paths to `BOARD_INCLUDE_DIRS` (for directories containing `.h` files) and `BOARD_OTHER_SOURCES` (for .c files).
+```cmake
+project(
+    LVC
+    VERSION 1.0.0
+    DESCRIPTION "LV Carrier"
+    LANGUAGES C ASM # asm for startup file
+)
+```
 
-You'll also see a `Makefile`. A [makefile](https://makefiletutorial.com/) contains recipes for performing commands. For example, to build a test you'd have to run `make TEST=<test>` or `make test-all` to build all tests. These commands call CMake build functions to actually compile and link your code.
+`Board.cmake` is made to be easy to read and change. It tells the build system what files in your folder should be included in the build process. If you ever feel special and want to make your folders, you can add their relative paths to `BOARD_INCLUDE_DIRS` (for directories containing `.h` files) and `BOARD_OTHER_SOURCES` (for .c files). `BOARD_COMPILE_DEFINITIONS` defines macros for every build of your board, e.g. `USE_IMU`.
+
+#### Variants: one board design, several copies on the car
+
+Some boards show up more than once on the car. Say there are four identical wheel sensor boards: they run the same code, but each one needs to know which wheel it's on so it sends its readings with the right CAN ID. Instead of keeping four copies of the code, you build the same code four ways. Each of those builds is a *variant*.
+
+List them in `Board.cmake`:
+
+```cmake
+set(BOARD_VARIANTS front_left front_right rear_left rear_right)
+```
+
+Each build gets a macro for its variant: `BOARD_VARIANT_FRONT_LEFT`, `BOARD_VARIANT_FRONT_RIGHT` and so on. Put whatever differs between them in a header in `config/Inc/`, so the rest of your code just uses the value:
+
+```c
+// config/Inc/variant.h
+#ifdef BOARD_VARIANT_FRONT_LEFT
+#define WHEEL_CAN_ID 0x210
+#elif defined(BOARD_VARIANT_FRONT_RIGHT)
+#define WHEEL_CAN_ID 0x211
+// ...
+#else
+#error "Unknown variant"
+#endif
+```
+
+A board with variants has no default, so you always say which one you mean: `make VARIANT=front_left` builds into `build/front_left/`, and `make VARIANT=front_left flash` flashes that build. `make prod-all` builds every variant and `make test-all` builds every test for every variant (that's what CI runs); add `VARIANT=<name>` to either to stick to one. `firmware/psys/LVC` is a working example.
+
+You'll also see a `Makefile`. A [makefile](https://makefiletutorial.com/) contains recipes for performing commands. For example, to build a test you'd have to run `make TEST=<test>` or `make test-all` to build all tests. These commands call CMake build functions to actually compile and link your code. Your board's `Makefile` is a single line that includes `platform/board_rules.mk`, where every target is defined, so there's nothing to edit in it.
 
 The default structure for a board folder contains `core/`, `config/`, `tests/`, and `drivers/`. 
 - `core/` contains your production code - this is the full application that is ultimately what is flashed onto the car. **Run with** `make`, `make all`, or `make prod-all` (for boards with multiple instances on the vehicle - common for sensor boards)
@@ -150,7 +184,7 @@ This calls STM's `st-flash` command under the hood and writes your code to addre
 
 Now, if you press the reset button on your board, your code starts running! Wow. Very cool.
 
-Note: for boards with multiple physical boards on the car (i.e. lighting or sensor boards) you will need to run `make flash BOARD_NUM=<number>` to specify which board's binary to flash. 
+Note: for boards with multiple physical boards on the car (i.e. lighting or sensor boards) you will need to run `make flash VARIANT=<name>` to specify which board's binary to flash. 
 
 #### Flashing via USB
 

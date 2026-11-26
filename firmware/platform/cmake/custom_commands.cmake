@@ -43,7 +43,7 @@ endfunction()
 ### add_dump_size_target(<target>)
 # dump ELF size (.text, .data, .bss, ...)
 function(add_dump_size_target TARGET_NAME)
-    add_custom_target(dump_size
+    add_custom_target(dump-size
         COMMAND ${CMAKE_OBJDUMP} -h ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.elf
         COMMENT "Section sizes for ${TARGET_NAME}"
     )
