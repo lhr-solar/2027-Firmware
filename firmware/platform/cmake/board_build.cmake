@@ -81,7 +81,7 @@ add_flash_usb_target(${PROJECT_NAME})
 add_dump_symbols_target(${PROJECT_NAME})
 add_dump_size_target(${PROJECT_NAME})
 add_erase_target()
-add_format_targets(${CMAKE_CURRENT_SOURCE_DIR})
+# no format targets: a board's `make format` / `make format-check` run clang-format directly
 
 # must have jolly good message
 string(ASCII 27 Esc)
