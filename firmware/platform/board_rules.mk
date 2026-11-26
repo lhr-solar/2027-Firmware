@@ -1,7 +1,7 @@
 # Shared board build rules -- the whole of every board's Makefile is an include of this file.
 # Boards don't add or override targets; a board's settings live in its Board.cmake.
-# only `make` configures and builds; flash, erase, dump-* work on the existing build and fail
-# if there isn't one; clean, format and format-check need no build at all
+# only `make` configures and builds (format and format-check also configure); flash, erase,
+# dump-* work on the existing build and fail if there isn't one; clean needs no build at all
 
 # absolute path to firmware/platform/, so it works from any board and under make -C
 # must be first: MAKEFILE_LIST ends with this file only until something else is included
@@ -19,8 +19,6 @@ BUILD_DIR ?= $(BUILD_ROOT)$(if $(VARIANT),/$(VARIANT))
 TEST ?=
 
 TIDY ?= OFF
-
-CLANG_FORMAT ?= clang-format
 
 # plain `make` builds all, whatever a board's Makefile might add after including this
 .DEFAULT_GOAL := all
@@ -76,23 +74,8 @@ clean:
 	rm -rf "$(BUILD_DIR)"
 
 # clang-format, see .clang-format at repo root
-# runs clang-format directly on this board's .c/.h files: no CMake, no build folder, no VARIANT.
-# Paths are absolute, as CI's lint job reads them back out of the output. Build folders are
-# skipped -- CMake writes its own .c files into them.
-FORMAT_SOURCES = find "$(CURDIR)" \( -name build -o -path "$(abspath $(BUILD_ROOT))" \) -prune \
-	-o -type f \( -name '*.c' -o -name '*.h' \) -exec $(CLANG_FORMAT)
+format: configure
+	cmake --build $(BUILD_DIR) --target format
 
-define require_clang_format
-@command -v $(CLANG_FORMAT) >/dev/null || { \
-    echo "error: $(CLANG_FORMAT) not found -- use the nix dev shell (see README)" >&2; exit 1; }
-endef
-
-format:
-	$(require_clang_format)
-	@echo "clang-format: rewriting $(notdir $(CURDIR)) sources in place"
-	@$(FORMAT_SOURCES) -i {} +
-
-format-check:
-	$(require_clang_format)
-	@echo "clang-format: checking $(notdir $(CURDIR)) sources"
-	@$(FORMAT_SOURCES) --dry-run --Werror {} +
+format-check: configure
+	cmake --build $(BUILD_DIR) --target format-check

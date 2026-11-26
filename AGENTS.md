@@ -236,12 +236,12 @@ make format                   # clang-format LHR sources in place; format-check 
 From `firmware/platform/`, `make TEST=<test>` builds a platform test (default
 `blinky`) into `build/App.{elf,bin,hex}`, and `make test-all` builds all of them.
 
-Only `make` itself configures and builds. `flash`, `flash-usb`, `erase`,
+Only `make` itself configures and builds (`format` and `format-check` also
+configure, so a board with variants needs `VARIANT=<name>` for them too). `flash`, `flash-usb`, `erase`,
 `dump-symbols` and `dump-size` work on the existing build and fail if there isn't
 one, so build first; on a board with variants they need `VARIANT=<name>` to find
 the build in `build/<name>/`. `clean` deletes the build folder (just that
-variant's with `VARIANT=<name>`). `format` and `format-check` run `clang-format`
-directly on the board's sources — no CMake, no build folder, no `VARIANT`.
+variant's with `VARIANT=<name>`).
 
 **Debugging whether something actually linked:** `make dump-symbols` runs
 `objdump -x` on the ELF — check it for the symbol/object file you expect. For
