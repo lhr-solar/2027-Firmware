@@ -20,14 +20,10 @@ foreach(NAME IN LISTS BOARD_VARIANTS)
     endif()
 endforeach()
 
-# set only by `make format` / `make format-check`: formatting doesn't depend on the variant,
-# so their configure (in its own build folder) may skip choosing one
-option(BOARD_FORMAT_ONLY "Configure for format targets only; VARIANT may be empty" OFF)
-
 string(REPLACE ";" ", " VARIANT_CHOICES "${BOARD_VARIANTS}")
 if("${VARIANT}" STREQUAL "")
     # no default variant: an image built for no particular instance must never be flashed
-    if(NOT "${BOARD_VARIANTS}" STREQUAL "" AND NOT BOARD_FORMAT_ONLY)
+    if(NOT "${BOARD_VARIANTS}" STREQUAL "")
         message(FATAL_ERROR "This board has variants -- pick one with `make VARIANT=<name>`: ${VARIANT_CHOICES} (or `make prod-all` for all of them).")
     endif()
 elseif(NOT VARIANT IN_LIST BOARD_VARIANTS)
@@ -85,7 +81,7 @@ add_flash_usb_target(${PROJECT_NAME})
 add_dump_symbols_target(${PROJECT_NAME})
 add_dump_size_target(${PROJECT_NAME})
 add_erase_target()
-add_format_targets(${CMAKE_CURRENT_SOURCE_DIR})
+# no format targets: a board's `make format` / `make format-check` run clang-format directly
 
 # must have jolly good message
 string(ASCII 27 Esc)

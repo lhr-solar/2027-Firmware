@@ -1,7 +1,7 @@
 # Shared board build rules -- the whole of every board's Makefile is an include of this file.
 # Boards don't add or override targets; a board's settings live in its Board.cmake.
-# only `make` configures and builds (format and format-check also configure); every other
-# target works on the existing build and fails if there isn't one
+# only `make` configures and builds; flash, erase, dump-* work on the existing build and fail
+# if there isn't one; clean, format and format-check need no build at all
 
 # absolute path to firmware/platform/, so it works from any board and under make -C
 # must be first: MAKEFILE_LIST ends with this file only until something else is included
@@ -20,10 +20,12 @@ TEST ?=
 
 TIDY ?= OFF
 
+CLANG_FORMAT ?= clang-format
+
 # plain `make` builds all, whatever a board's Makefile might add after including this
 .DEFAULT_GOAL := all
 
-.PHONY: all prod-all test-all configure flash flash-usb erase dump-symbols dump_size clean format format-check format-configure require-build
+.PHONY: all prod-all test-all configure flash flash-usb erase dump-symbols dump-size clean format format-check
 
 # a board's CMake project has one executable, so building everything builds the board
 all: configure
@@ -42,42 +44,79 @@ prod-all:
 test-all:
 	sh "$(PLATFORM_DIR)/build_board_all.sh" tests "$(CURDIR)" "$(BUILD_ROOT)" "$(VARIANT)"
 
-# targets on the existing build: say what to run instead of CMake's "not a build directory"
-# (on a board with variants that's usually a missing VARIANT=<name>)
-require-build:
-	@test -f "$(BUILD_DIR)/build.ninja" || { \
-		echo "error: nothing built in $(BUILD_DIR)/ -- run \`make$(if $(VARIANT), VARIANT=$(VARIANT))\` first; a board with variants needs VARIANT=<name>" >&2; \
-		exit 1; }
+# first line of every recipe that works on the existing build: if there isn't one, say what to
+# run instead of CMake's "not a build directory". A board with variants builds into
+# $(BUILD_ROOT)/<variant>/ (from `make VARIANT=<name>` or `make prod-all`), never $(BUILD_ROOT)/
+# itself, so without VARIANT list the variants that are built rather than claim nothing is.
+# It never picks one: an image built for no particular instance must never be flashed.
+define require_build
+@if [ ! -f "$(BUILD_DIR)/build.ninja" ]; then \
+    if [ -n "$(VARIANT)" ]; then \
+        echo "error: nothing built in $(BUILD_DIR)/ -- run \`make VARIANT=$(VARIANT)\` first" >&2; \
+        exit 1; \
+    fi; \
+    variants=$$(cmake -DBOARD_DIR="$(CURDIR)" -DQUERY=BOARD_VARIANTS -P "$(PLATFORM_DIR)/cmake/board_query.cmake") || exit 1; \
+    if [ -z "$$variants" ]; then \
+        echo "error: nothing built in $(BUILD_DIR)/ -- run \`make\` first" >&2; \
+        exit 1; \
+    fi; \
+    built=""; \
+    for v in $$variants; do \
+        if [ -f "$(BUILD_ROOT)/$$v/build.ninja" ]; then built="$$built $$v"; fi; \
+    done; \
+    if [ -n "$$built" ]; then \
+        echo "error: this board has variants -- pick a build with \`make $@ VARIANT=<name>\`; built:$$built" >&2; \
+    else \
+        echo "error: nothing built -- this board has variants, run \`make VARIANT=<name>\` (or \`make prod-all\`) first; variants: $$variants" >&2; \
+    fi; \
+    exit 1; \
+fi
+endef
 
-flash: require-build
+flash:
+	$(require_build)
 	cmake --build $(BUILD_DIR) --target flash
 
-flash-usb: require-build
+flash-usb:
+	$(require_build)
 	cmake --build $(BUILD_DIR) --target flash-usb
 
-erase: require-build
+erase:
+	$(require_build)
 	cmake --build $(BUILD_DIR) --target erase
 
-dump-symbols: require-build
+dump-symbols:
+	$(require_build)
 	cmake --build $(BUILD_DIR) --target dump-symbols
 
-dump_size: require-build
-	cmake --build $(BUILD_DIR) --target dump_size
+dump-size:
+	$(require_build)
+	cmake --build $(BUILD_DIR) --target dump-size
 
-clean: require-build
-	cmake --build $(BUILD_DIR) --target clean
+# deletes the build folder outright: just this variant's with VARIANT set, otherwise every build
+# of this board; works whether or not anything was built
+clean:
+	$(if $(strip $(BUILD_DIR)),,$(error BUILD_DIR is empty -- refusing to clean))
+	rm -rf -- "$(BUILD_DIR)"
 
 # clang-format, see .clang-format at repo root
-# configured in their own folder with BOARD_FORMAT_ONLY, so they work without a VARIANT
-# (and that cache setting never leaks into a real build folder); the leading _ means it
-# can't collide with a variant's build folder, as variant names start with a letter
-FORMAT_DIR := $(BUILD_ROOT)/_format
+# runs clang-format directly on this board's .c/.h files: no CMake, no build folder, no VARIANT.
+# Paths are absolute, as CI's lint job reads them back out of the output. Build folders are
+# skipped -- CMake writes its own .c files into them.
+FORMAT_SOURCES = find "$(CURDIR)" \( -name build -o -path "$(abspath $(BUILD_ROOT))" \) -prune \
+	-o -type f \( -name '*.c' -o -name '*.h' \) -exec $(CLANG_FORMAT)
 
-format-configure:
-	cmake -B $(FORMAT_DIR) -G Ninja "-DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN)" -DBOARD_FORMAT_ONLY=ON
+define require_clang_format
+@command -v $(CLANG_FORMAT) >/dev/null || { \
+    echo "error: $(CLANG_FORMAT) not found -- use the nix dev shell (see README)" >&2; exit 1; }
+endef
 
-format: format-configure
-	cmake --build $(FORMAT_DIR) --target format
+format:
+	$(require_clang_format)
+	@echo "clang-format: rewriting $(notdir $(CURDIR)) sources in place"
+	@$(FORMAT_SOURCES) -i {} +
 
-format-check: format-configure
-	cmake --build $(FORMAT_DIR) --target format-check
+format-check:
+	$(require_clang_format)
+	@echo "clang-format: checking $(notdir $(CURDIR)) sources"
+	@$(FORMAT_SOURCES) --dry-run --Werror {} +
