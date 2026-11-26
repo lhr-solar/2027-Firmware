@@ -238,8 +238,8 @@ From `firmware/platform/`, `make TEST=<test>` builds a platform test (default
 
 Only `make` itself configures and builds. `flash`, `flash-usb`, `erase`,
 `dump-symbols` and `dump-size` work on the existing build and fail if there isn't
-one, so build first; on a board with variants they need `VARIANT=<name>`, and the
-error lists which variants are built. `clean` deletes the build folder (just that
+one, so build first; on a board with variants they need `VARIANT=<name>` to find
+the build in `build/<name>/`. `clean` deletes the build folder (just that
 variant's with `VARIANT=<name>`). `format` and `format-check` run `clang-format`
 directly on the board's sources — no CMake, no build folder, no `VARIANT`.
 

@@ -44,34 +44,11 @@ prod-all:
 test-all:
 	sh "$(PLATFORM_DIR)/build_board_all.sh" tests "$(CURDIR)" "$(BUILD_ROOT)" "$(VARIANT)"
 
-# first line of every recipe that works on the existing build: if there isn't one, say what to
-# run instead of CMake's "not a build directory". A board with variants builds into
-# $(BUILD_ROOT)/<variant>/ (from `make VARIANT=<name>` or `make prod-all`), never $(BUILD_ROOT)/
-# itself, so without VARIANT list the variants that are built rather than claim nothing is.
-# It never picks one: an image built for no particular instance must never be flashed.
-define require_build
-@if [ ! -f "$(BUILD_DIR)/build.ninja" ]; then \
-    if [ -n "$(VARIANT)" ]; then \
-        echo "error: nothing built in $(BUILD_DIR)/ -- run \`make VARIANT=$(VARIANT)\` first" >&2; \
-        exit 1; \
-    fi; \
-    variants=$$(cmake -DBOARD_DIR="$(CURDIR)" -DQUERY=BOARD_VARIANTS -P "$(PLATFORM_DIR)/cmake/board_query.cmake") || exit 1; \
-    if [ -z "$$variants" ]; then \
-        echo "error: nothing built in $(BUILD_DIR)/ -- run \`make\` first" >&2; \
-        exit 1; \
-    fi; \
-    built=""; \
-    for v in $$variants; do \
-        if [ -f "$(BUILD_ROOT)/$$v/build.ninja" ]; then built="$$built $$v"; fi; \
-    done; \
-    if [ -n "$$built" ]; then \
-        echo "error: this board has variants -- pick a build with \`make $@ VARIANT=<name>\`; built:$$built" >&2; \
-    else \
-        echo "error: nothing built -- this board has variants, run \`make VARIANT=<name>\` (or \`make prod-all\`) first; variants: $$variants" >&2; \
-    fi; \
-    exit 1; \
-fi
-endef
+# first line of every recipe that works on the existing build: if this build folder isn't
+# configured, say what to run instead of CMake's "not a build directory". BUILD_DIR is
+# $(BUILD_ROOT)/<variant>/ with VARIANT set, so one check covers both kinds of board
+require_build = @test -f "$(BUILD_DIR)/build.ninja" || { \
+	echo "error: nothing built in $(BUILD_DIR)/ -- run \`make$(if $(VARIANT), VARIANT=$(VARIANT))\` first (boards with variants need VARIANT=<name>)" >&2; exit 1; }
 
 flash:
 	$(require_build)
@@ -96,8 +73,7 @@ dump-size:
 # deletes the build folder outright: just this variant's with VARIANT set, otherwise every build
 # of this board; works whether or not anything was built
 clean:
-	$(if $(strip $(BUILD_DIR)),,$(error BUILD_DIR is empty -- refusing to clean))
-	rm -rf -- "$(BUILD_DIR)"
+	rm -rf "$(BUILD_DIR)"
 
 # clang-format, see .clang-format at repo root
 # runs clang-format directly on this board's .c/.h files: no CMake, no build folder, no VARIANT.
