@@ -3,8 +3,8 @@
 
 #define FDCAN_MODE FDCAN_MODE_INTERNAL_LOOPBACK
 
-StaticTask_t can_task_buffer;
-StackType_t can_task_stack[512];
+static StaticTask_t can_task_buffer;
+static StackType_t can_task_stack[512];
 
 static void can_task(void* pvParameters) {
 
@@ -18,7 +18,7 @@ static void can_task(void* pvParameters) {
         .FDFormat = FDCAN_CLASSIC_CAN,
         .TxEventFifoControl = FDCAN_STORE_TX_EVENTS,       
     };
-    // send x1234 to 0x321
+    // send x1234 to 0x001
     uint8_t tx_data[8] = {0};
     tx_data[0] = 0x12;
     tx_data[1] = 0x34;
@@ -56,14 +56,14 @@ int main(void) {
 
     SystemClock_Config();
 
-    CAN_Init(FDCAN_MODE);
-
     LEDs_Init();
+
+    CAN_Init(FDCAN_MODE);
 
     xTaskCreateStatic(
         can_task,
         "Can_Task",
-        512,
+        sizeof(can_task_stack),
         NULL,
         tskIDLE_PRIORITY + 2,
         can_task_stack,
