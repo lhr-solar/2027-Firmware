@@ -1,13 +1,12 @@
 #include "lvc_can.h"
 
-void CAN_Init() {
+void CAN_Init(uint32_t mode) {
     hfdcan2->Instance = FDCAN2;
     hfdcan2->Init.ClockDivider = FDCAN_CLOCK_DIV1;
     hfdcan2->Init.FrameFormat = FDCAN_FRAME_CLASSIC;
 
     // internal loopback shorts the CAN RX and TX internally.
-    // In production, this should be set to FDCAN_MODE_NORMAL
-    hfdcan2->Init.Mode = FDCAN_MODE_NORMAL;
+    hfdcan2->Init.Mode = mode;
     hfdcan2->Init.AutoRetransmission = ENABLE;
     hfdcan2->Init.TransmitPause = DISABLE;
     hfdcan2->Init.ProtocolException = DISABLE;
@@ -16,7 +15,7 @@ void CAN_Init() {
     hfdcan2->Init.NominalSyncJumpWidth = 1;
     hfdcan2->Init.NominalTimeSeg1 = 13;
     hfdcan2->Init.NominalTimeSeg2 = 2;
-    
+
     hfdcan2->Init.DataPrescaler = 1;
     hfdcan2->Init.DataSyncJumpWidth = 1;
     hfdcan2->Init.DataTimeSeg1 = 1;
@@ -32,7 +31,7 @@ void CAN_Init() {
 
     // FDCAN2 Filter Config
 
-    FDCAN_FilterTypeDef sFilterConfig;
+    FDCAN_FilterTypeDef sFilterConfig = {0};
     sFilterConfig.IdType = FDCAN_STANDARD_ID;
     sFilterConfig.FilterIndex = 0;
     sFilterConfig.FilterType = FDCAN_FILTER_MASK;
