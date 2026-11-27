@@ -1,3 +1,3 @@
 // CAN_RECV_ENTRY(ID, SIZE, CIRCULAR)
-#define 
+
 CAN_RECV_ENTRY(0x001, 5, false)

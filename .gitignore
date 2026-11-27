@@ -32,3 +32,5 @@ can/dbc/**/*.ldb
 
 # Arduino-cli files
 .arduino*
+
+.cache/

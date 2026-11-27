@@ -1,6 +1,7 @@
+#include "led.h"
 #include "lvc_can.h"
 
-#define FDCAN_MODE FDCAN_MODE_INTERNAL_LOOPBACK;
+#define FDCAN_MODE FDCAN_MODE_INTERNAL_LOOPBACK
 
 StaticTask_t can_task_buffer;
 StackType_t can_task_stack[512];
@@ -8,14 +9,14 @@ StackType_t can_task_stack[512];
 static void can_task(void* pvParameters) {
 
     FDCAN_TxHeaderTypeDef tx_header = {
-        .Identifier = 0x001;
-        .IdType = FDCAN_STANDARD_ID;
-        TxFrameType = FDCAN_DATA_FRAME;
-        DataLength = FDCAN_DLC_BYTES_8;
+        .Identifier = 0x001,
+        .IdType = FDCAN_STANDARD_ID,
+        .TxFrameType = FDCAN_DATA_FRAME,
+        .DataLength = FDCAN_DLC_BYTES_8,
         // ErrorStateIndicator
-        BitRateSwitch = FDCAN_BRS_OFF;
-        FDFormat = FDCAN_CLASSIC_CAN;
-        TxEventFifoControl = FDCAN_STORE_TX_EVENTS;       
+        .BitRateSwitch = FDCAN_BRS_OFF,
+        .FDFormat = FDCAN_CLASSIC_CAN,
+        .TxEventFifoControl = FDCAN_STORE_TX_EVENTS,       
     };
     // send x1234 to 0x321
     uint8_t tx_data[8] = {0};
@@ -32,7 +33,7 @@ static void can_task(void* pvParameters) {
     uint8_t rx_data[8] = {0};
 
     while (1) {
-        if (can_fd_send(hfdcan2, &tx_header, tx_data. portMAX_DELAY) == CAN_ERR) {
+        if (can_fd_send(hfdcan2, &tx_header, tx_data, portMAX_DELAY) == CAN_ERR) {
             Error_Handler();
         }
 
@@ -52,8 +53,12 @@ static void can_task(void* pvParameters) {
 
 int main(void) {
     HAL_Init();
-    CAN_Init(FDCAN_MODE);
+
     SystemClock_Config();
+
+    CAN_Init(FDCAN_MODE);
+
+    LEDs_Init();
 
     xTaskCreateStatic(
         can_task,
