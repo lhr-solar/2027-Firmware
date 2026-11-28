@@ -1,4 +1,3 @@
-#include "led.h"
 #include "lvc_can.h"
 
 #define FDCAN_MODE FDCAN_MODE_INTERNAL_LOOPBACK
