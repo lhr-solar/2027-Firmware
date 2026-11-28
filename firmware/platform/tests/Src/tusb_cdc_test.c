@@ -6,9 +6,7 @@
 static void MX_GPIO_Init(void);
 void SystemClock_Config(void);
 
-StaticTask_t pollEventsTaskBuffer;
 StaticTask_t cdcTaskBuffer;
-StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
 StackType_t cdcStack[configMINIMAL_STACK_SIZE];
 
 // Echo chars on one part to the other
@@ -55,13 +53,6 @@ static void cdc_task(void* pvParameters) {
     }
 }
 
-static void poll_events(void* pvParameters) {
-    while (1) {
-        // polls event queue
-        tud_task();
-    }
-}
-
 int main() {
     HAL_Init();
     SystemClock_Config();
@@ -73,17 +64,7 @@ int main() {
         .speed = TUSB_SPEED_AUTO,
     };
     tusb_init(BOARD_TUD_RHPORT, &dev_init);
-
-    // clang-format off
-    xTaskCreateStatic(
-        poll_events,
-        "Poll Event Queue",
-        configMINIMAL_STACK_SIZE,
-        (void*)1,
-        tskIDLE_PRIORITY + 3,
-        pollEventsStack,
-        &pollEventsTaskBuffer);
-    // clang-format on
+    usb_poll_task_create();
 
     // clang-format off
     xTaskCreateStatic(

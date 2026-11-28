@@ -14,6 +14,29 @@ size_t board_get_unique_id(uint8_t id[], size_t max_len) {
   return len;
 }
 
+#define USB_POLL_PRIO       (tskIDLE_PRIORITY + 4)
+#define USB_POLL_STACK_SIZE configMINIMAL_STACK_SIZE
+
+static StaticTask_t usb_poll_tcb;
+static StackType_t usb_poll_stack[USB_POLL_STACK_SIZE];
+
+static bool usb_poll_task_created = false;
+
+// task to poll until USB events arrive
+static void usb_poll_task(void* argument) {
+    while (1) {
+        tud_task();
+    }
+}
+// helper init func to create USB poll task
+void usb_poll_task_create(void) {
+    // exit early if task exists
+    if (usb_poll_task_created) return;
+    usb_poll_task_created = true;
+    xTaskCreateStatic(usb_poll_task, "USB Poll", USB_POLL_STACK_SIZE, NULL, USB_POLL_PRIO,
+                      usb_poll_stack, &usb_poll_tcb);
+}
+
 // Forward USB interrupts to TinyUSB
 void USB_HP_IRQHandler(void) {
   tud_int_handler(0);

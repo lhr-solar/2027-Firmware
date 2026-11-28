@@ -11,17 +11,8 @@ StackType_t task_2_stack[512];
 
 StaticTask_t rx_task_buffer;
 StackType_t rx_task_stack[512];
-/* tusb polling task */
-StaticTask_t pollEventsTaskBuffer;
-StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
 
 #define SERIAL_PORT 0
-
-static void poll_events(void* argument) {
-    while (1) {
-        tud_task();
-    }
-}
 
 #define TEST_QUEUE_SET_ID_COUNT 2
 
@@ -179,7 +170,7 @@ int main(void) {
 
     Heartbeat_Init(); // enable LED for LED_PORT
     MX_USB_PCD_Init();
-    // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
+    // also starts the USB poll task
     log_init(&(log_init_t){.levels = LOG_BIT(L_INFO)});
 
     #ifdef FDCAN1
@@ -226,9 +217,6 @@ int main(void) {
         Error_Handler();
     }
     #endif
-
-    xTaskCreateStatic(poll_events, "Poll Event Queue", configMINIMAL_STACK_SIZE, NULL,
-                      tskIDLE_PRIORITY + 3, pollEventsStack, &pollEventsTaskBuffer);
 
     // you can only send CAN messages within a FreeRTOS task
     // clang-format off

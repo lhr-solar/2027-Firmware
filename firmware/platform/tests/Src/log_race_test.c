@@ -34,17 +34,6 @@ StaticTask_t smallTaskBuffer;
 StackType_t smallTaskStack[TX_STACK];
 StaticTask_t largeTaskBuffer;
 StackType_t largeTaskStack[TX_STACK];
-/* tusb polling task */
-StaticTask_t pollEventsTaskBuffer;
-StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
-
-
-static void poll_events(void* argument) {
-    while (1) {
-        // polls event queue
-        tud_task();
-    }
-}
 
 void SmallPayloadTask(void* argument) {
     // fill payload with buncha S's
@@ -70,11 +59,8 @@ int main(void) {
     HAL_Init();
     SystemClock_Config();
     MX_USB_PCD_Init();
-    // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
+    // also starts the USB poll task
     log_init(&(log_init_t){.levels = LOG_BIT(L_DEBUG)});
-
-    xTaskCreateStatic(poll_events, "Poll Event Queue", configMINIMAL_STACK_SIZE, NULL,
-                      tskIDLE_PRIORITY + 3, pollEventsStack, &pollEventsTaskBuffer);
 
     xTaskCreateStatic(SmallPayloadTask, "TX_S", TX_STACK, NULL, TX_PRIO, smallTaskStack,
                       &smallTaskBuffer);

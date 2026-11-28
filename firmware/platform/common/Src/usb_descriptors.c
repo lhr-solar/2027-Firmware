@@ -226,12 +226,12 @@ enum {
 // array of pointer to string descriptors
 char const *string_desc_arr[] =
 {
-  (const char[]) { 0x09, 0x04 }, // 0: is supported language is English (0x0409)
+  (const char[]) { 0x09, 0x04 },  // 0: is supported language is English (0x0409)
   "LHR",                          // 1: Manufacturer
-  "Board",                       // 2: Product
-  NULL,                          // 3: Serials will use unique ID if possible
-  "TinyUSB CDC 0",               // 4: CDC 0 Interface
-  "TinyUSB CDC 1",               // 5: CDC 1 Interface
+  "Board",                        // 2: Product
+  NULL,                           // 3: Serials will use unique ID if possible
+  "Serial Log",                   // 4: CDC 0 Interface
+  "SLCAN",                        // 5: CDC 1 Interface
 };
 
 // Overrides the product string, call before tusb_init(). NULL keeps the default

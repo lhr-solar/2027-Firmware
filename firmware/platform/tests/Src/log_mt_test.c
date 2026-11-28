@@ -6,16 +6,6 @@
 
 StaticTask_t initTaskBuffer;
 StackType_t initTaskStack[configMINIMAL_STACK_SIZE];
-/* tusb polling task */
-StaticTask_t pollEventsTaskBuffer;
-StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
-
-static void poll_events(void* argument) {
-    while (1) {
-        // blocks until there is a USB event
-        tud_task();
-    }
-}
 
 #define LOG_PORT     0
 #define THREAD_COUNT 4
@@ -50,7 +40,6 @@ void TxTask(void* argument) {
     for (int i = 0; i < DUMP_SIZE; i++) {
         volatile uint32_t time_before = DWT->CYCCNT;
         LOG(LOG_PORT, L_DEBUG, messages[((int)argument % (sizeof(messages) / sizeof(char*)))]);
-        //uart_send(husart2, (const uint8_t *)messages[((int)argument % (sizeof(messages)/sizeof(char*)))], strlen(messages[((int)argument % (sizeof(messages)/sizeof(char*)))]), portMAX_DELAY);
         volatile uint32_t time_after = DWT->CYCCNT;
         uint32_t time_elapsed = (time_after - time_before);
         time_dump[(int)argument][time_ind++] = time_elapsed;
@@ -150,19 +139,8 @@ int main(void) {
     SystemClock_Config();
     MX_USB_PCD_Init();
 
-    // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
+    // also starts the USB poll task
     log_init(&(log_init_t){.levels = LOG_BIT(L_INFO) | LOG_BIT(L_DEBUG)});
-
-    // clang-format off
-    xTaskCreateStatic(
-        poll_events,
-        "Poll Event Queue",
-        configMINIMAL_STACK_SIZE,
-        NULL,
-        tskIDLE_PRIORITY + 3,
-        pollEventsStack,
-        &pollEventsTaskBuffer);
-    // clang-format on
 
     // clang-format off
     xTaskCreateStatic(

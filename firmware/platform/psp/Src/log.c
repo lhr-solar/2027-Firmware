@@ -25,16 +25,17 @@
     #define LOG_TX_TIMEOUT_TICKS (pdMS_TO_TICKS(250))
 #endif
 
+// color log prefixes per level
 static const char* log_level_name(loggingLevel_t level) {
     switch (level) {
         case L_DEBUG:
-            return "DEBUG";
+            return "\x1b[37m[DEBUG]\x1b[0m"; // white
         case L_INFO:
-            return "INFO";
+            return "\x1b[34m[INFO]\x1b[0m"; // blue
         case L_WARN:
-            return "WARN";
+            return "\x1b[33m[WARN]\x1b[0m"; // yellow
         case L_ERROR:
-            return "ERROR";
+            return "\x1b[31m[ERROR]\x1b[0m"; // red
         default:
             return NULL;
     }
@@ -81,7 +82,8 @@ bool log_init(const log_init_t* init) {
     if (log_init_done)
         return false;
 
-    log_enabled_mask = (init != NULL) ? init->levels : 0;
+    // unset (0) or no config -> every level
+    log_enabled_mask = (init != NULL && init->levels != 0) ? init->levels : LOG_ALL;
 
     for (int i = 0; i < NUM_CDC_INSTANCES; i++) {
         cdc_port_t* p = &cdc_ports[i];
@@ -109,6 +111,9 @@ bool log_init(const log_init_t* init) {
     }
 
     log_init_done = tusb_init(BOARD_TUD_RHPORT, &dev_init);
+    if (log_init_done) {
+        usb_poll_task_create();
+    }
 
     return log_init_done;
 }
@@ -173,7 +178,7 @@ int LOG(uint8_t port, loggingLevel_t level, const char* fmt, ...) {
         return -1;
     }
 
-    int const prefix = npf_snprintf(pbuf->buffer, MAX_LOG_SIZE, "[%s] ", name);
+    int const prefix = npf_snprintf(pbuf->buffer, MAX_LOG_SIZE, "%s ", name);
     int const body = npf_vsnprintf(pbuf->buffer + prefix, MAX_LOG_SIZE - prefix, fmt, val);
     va_end(val);
     if (body < 0) {

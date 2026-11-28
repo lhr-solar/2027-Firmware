@@ -5,17 +5,8 @@
 
 StaticTask_t txTaskBuffer;
 StackType_t txTaskStack[configMINIMAL_STACK_SIZE];
-/* tusb polling task */
-StaticTask_t pollEventsTaskBuffer;
-StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
 
 #define SERIAL_PORT 0
-
-static void poll_events(void* argument) {
-    while (1) {
-        tud_task();
-    }
-}
 
 DEFINE_MOVING_AVG(MA_u16, uint16_t, uint32_t, 10)
 DEFINE_MOVING_AVG(MA_u32, uint32_t, uint64_t, 10)
@@ -80,11 +71,8 @@ int main() {
     HAL_Init();
     SystemClock_Config();
     MX_USB_PCD_Init();
-    // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
+    // also starts the USB poll task
     log_init(&(log_init_t){.levels = LOG_BIT(L_INFO)});
-
-    xTaskCreateStatic(poll_events, "Poll Event Queue", configMINIMAL_STACK_SIZE, NULL,
-                      tskIDLE_PRIORITY + 3, pollEventsStack, &pollEventsTaskBuffer);
 
     // clang-format off
     xTaskCreateStatic(

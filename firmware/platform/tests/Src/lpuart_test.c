@@ -15,17 +15,8 @@ StaticTask_t txTaskBuffer;
 StaticTask_t rxTaskBuffer;
 StackType_t txTaskStack[configMINIMAL_STACK_SIZE];
 StackType_t rxTaskStack[configMINIMAL_STACK_SIZE];
-/* tusb polling task */
-StaticTask_t pollEventsTaskBuffer;
-StackType_t pollEventsStack[configMINIMAL_STACK_SIZE];
 
 #define SERIAL_PORT 0
-
-static void poll_events(void* argument) {
-    while (1) {
-        tud_task();
-    }
-}
 
 // Heartbeat pin on stm32l432kcu is PB3
 #if defined(STM32L432xx)
@@ -147,13 +138,10 @@ int main(void) {
 
 
     MX_USB_PCD_Init();
-    // tusb must be up before the poll task runs, tud_task() returns immediately otherwise
+    // also starts the USB poll task
     log_init(&(log_init_t){.levels = LOG_BIT(L_INFO)});
 
     // Create the tasks statically
-    xTaskCreateStatic(poll_events, "Poll Event Queue", configMINIMAL_STACK_SIZE, NULL,
-                      tskIDLE_PRIORITY + 3, pollEventsStack, &pollEventsTaskBuffer);
-
     // clang-format off
     xTaskCreateStatic(
         TxTask,
