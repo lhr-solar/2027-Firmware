@@ -1,0 +1,133 @@
+name: Publish CAN viewer
+
+on:
+  push:
+    branches: ['**', '!gh-pages']
+    paths:
+      - 'can/dbc/**'
+      - 'can/topology.yaml'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - 'can/canspec-viewer/**'
+      - '.github/workflows/publish-can-viewer.yml'
+  pull_request:
+    paths:
+      - 'can/dbc/**'
+      - 'can/topology.yaml'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - 'can/canspec-viewer/**'
+      - '.github/workflows/publish-can-viewer.yml'
+  delete:
+  create:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+# Every run reconciles the latest refs, including main changes and branch deletions.
+concurrency:
+  # PR validation must not replace a queued manual deployment.
+  group: can-viewer-${{ github.event_name == 'pull_request' && github.ref || 'publication' }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    if: github.event_name == 'push' || github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      # Check the triggering commit/PR merge, not the default branch.
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: can/canspec-viewer/package-lock.json
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv sync --locked
+      - name: Test branch lifecycle
+        run: uv run --locked python -m unittest discover -s can/canspec-viewer/tests -v
+      - run: npm ci
+        working-directory: can/canspec-viewer
+      - run: npm test
+        working-directory: can/canspec-viewer
+      - run: npm run build-site
+        working-directory: can/canspec-viewer
+
+  publication-source:
+    if: github.event_name != 'pull_request' && ((github.event_name != 'create' && github.event_name != 'delete') || github.event.ref_type == 'branch')
+    runs-on: ubuntu-latest
+    outputs:
+      ready: ${{ steps.source.outputs.ready }}
+      commit: ${{ steps.source.outputs.commit }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Manual runs explicitly deploy the selected branch; automatic runs use main.
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.sha || github.event.repository.default_branch }}
+      - name: Check publication source
+        id: source
+        run: |
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          if test -f can/canspec-viewer/publish_branches.py; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Publication waits until the CAN viewer is merged into the default branch."
+          fi
+
+  build:
+    needs: [publication-source, validate]
+    if: always() && needs.publication-source.outputs.ready == 'true' && (needs.validate.result == 'success' || needs.validate.result == 'skipped')
+    runs-on: ubuntu-latest
+    steps:
+      # Use the resolved commit: selected branch for manual runs, main otherwise.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.publication-source.outputs.commit }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: can/canspec-viewer/package-lock.json
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv sync --locked
+      - name: Test branch lifecycle
+        run: uv run --locked python -m unittest discover -s can/canspec-viewer/tests -v
+      - run: npm ci
+        working-directory: can/canspec-viewer
+      - run: npm run build-site
+        working-directory: can/canspec-viewer
+      - name: Reconcile live branch DBCs
+        run: |
+          git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*'
+          uv run --locked python can/canspec-viewer/publish_branches.py --out can/canspec-viewer/dist
+          mkdir -p _site/canspec
+          cp -R can/canspec-viewer/dist/. _site/canspec/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

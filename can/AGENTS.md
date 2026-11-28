@@ -59,8 +59,8 @@ you find yourself editing generated C, you are fixing the wrong file.
 
 ```bash
 # Python side
-pip install -r canspec-viewer/requirements.txt      # cantools
-python3 canspec-viewer/export_canspec_json.py -o ./canspec-data.json
+uv sync --locked                                # from repository root
+uv run --locked python can/canspec-viewer/export_canspec_json.py -o ./canspec-data.json
 
 # Viewer (Node)
 cd canspec-viewer
