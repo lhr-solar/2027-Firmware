@@ -1,6 +1,6 @@
 #include "stm32xx_hal.h"
 #include "UART.h"
-#include "printf.h"
+#include "log.h"
 #include "CAN_FD.h"
 
 StaticTask_t task_1_buffer;
@@ -11,6 +11,8 @@ StackType_t task_2_stack[512];
 
 StaticTask_t rx_task_buffer;
 StackType_t rx_task_stack[512];
+
+#define SERIAL_PORT 0
 
 #define TEST_QUEUE_SET_ID_COUNT 2
 
@@ -38,9 +40,6 @@ configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY is the maximum FreeRTOS priority fo
 
 // Function definitions
 void Heartbeat_Init();
-void G474_SystemClockConfig();
-void G473_SystemClockConfig(void);
-void test_printf_init();
 
 void Error_Handler() {
     while (1) {
@@ -80,7 +79,7 @@ static void rx_task(void* pvParameters) {
         if (can_fd_recv_set(hfdcan1, &canQueueSetStruct, &id, portMAX_DELAY) == CAN_OK) {
             can_fd_recv(hfdcan1, id, &fdcan1_rx_header, fdcan1_rx_data, 0);
 
-            printf("Recieved Can message from id: %lu\n\r", id);
+            LOG(SERIAL_PORT, L_INFO, "Recieved Can message from id: %lu\n\r", id);
 
             HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
         }
@@ -167,22 +166,12 @@ int main(void) {
 
     __HAL_RCC_SYSCFG_CLK_ENABLE();
     __HAL_RCC_PWR_CLK_ENABLE();
-
-    // System clock config can change depending on the target MCU, since the clock tree can be different
-    // If you need to use a different MCU, go to cubemx and generate a new system clock config function with the system clock being 80 Mhz
-    // It especially varies with nucleo vs direct MCU
-    // G473_SystemClockConfig();
-    #ifdef STM32G474xx
-    G474_SystemClockConfig();
-    #elif defined(STM32G473xx)
-    G473_SystemClockConfig();
-    #else
     SystemClock_Config();
-    #endif
-
 
     Heartbeat_Init(); // enable LED for LED_PORT
-    test_printf_init();
+    MX_USB_PCD_Init();
+    // also starts the USB poll task
+    log_init(&(log_init_t){.levels = LOG_BIT(L_INFO)});
 
     #ifdef FDCAN1
     hfdcan1->Instance = FDCAN1;
@@ -195,6 +184,7 @@ int main(void) {
     hfdcan1->Init.AutoRetransmission = DISABLE;
     hfdcan1->Init.TransmitPause = DISABLE;
     hfdcan1->Init.ProtocolException = DISABLE;
+    // 96 MHz PCLK1 / 24 / 16 tq = 250 kbps
     hfdcan1->Init.NominalPrescaler = 24;
     hfdcan1->Init.NominalSyncJumpWidth = 1;
     hfdcan1->Init.NominalTimeSeg1 = 13;
@@ -468,117 +458,4 @@ void Heartbeat_Init() {
     }
 
     HAL_GPIO_Init(LED_PORT, &led_config);
-}
-
-void test_printf_init() {
-
-    #ifdef USART3
-    husart3->Init.BaudRate = 115200;
-    husart3->Init.WordLength = UART_WORDLENGTH_8B;
-    husart3->Init.StopBits = UART_STOPBITS_1;
-    husart3->Init.Parity = UART_PARITY_NONE;
-    husart3->Init.Mode = UART_MODE_TX_RX;
-    husart3->Init.HwFlowCtl = UART_HWCONTROL_NONE;
-    husart3->Init.OverSampling = UART_OVERSAMPLING_16;
-
-    printf_init(husart3);
-    #endif /*USART3*/
-}
-
-#ifdef USART3
-void HAL_UART_MspGPIOInit(UART_HandleTypeDef* huart) {
-    GPIO_InitTypeDef init = {0};
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-    /**USART3 GPIO Configuration
-    PC10     ------> USART3_TX
-    PC11     ------> USART3_RX
-    */
-    init.Pin = GPIO_PIN_10 | GPIO_PIN_11;
-    init.Mode = GPIO_MODE_AF_PP;
-    init.Pull = GPIO_NOPULL;
-    init.Speed = GPIO_SPEED_FREQ_LOW;
-    init.Alternate = GPIO_AF7_USART3;
-    HAL_GPIO_Init(GPIOC, &init);
-}
-
-#endif
-
-
-void G474_SystemClockConfig() {
-
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
-    /** Configure the main internal regulator output voltage
-  */
-    HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
-
-    /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-    RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-    RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-    RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV4;
-    RCC_OscInitStruct.PLL.PLLN = 40;
-    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
-    RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-        Error_Handler();
-    }
-
-    /** Initializes the CPU, AHB and APB buses clocks
-  */
-    RCC_ClkInitStruct.ClockType =
-        RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
-        Error_Handler();
-    }
-}
-
-void G473_SystemClockConfig(void) {
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
-    /** Configure the main internal regulator output voltage
-  */
-    HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
-
-    /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-    RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-    RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-    RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
-    RCC_OscInitStruct.PLL.PLLN = 10;
-    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
-    RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-        Error_Handler();
-    }
-
-    /** Initializes the CPU, AHB and APB buses clocks
-  */
-    RCC_ClkInitStruct.ClockType =
-        RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
-        Error_Handler();
-    }
 }

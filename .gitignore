@@ -1,6 +1,5 @@
 # VSCode settings
 .vscode/*
-!.vscode/c_cpp_properties.json
 compile_commands.json
 
 # Build Artifacts (platform and boards)

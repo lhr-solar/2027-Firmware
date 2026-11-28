@@ -139,7 +139,7 @@ uint8_t const desc_fs_configuration[] =
   TUD_CDC_DESCRIPTOR(ITF_NUM_CDC_0, 4, EPNUM_CDC_0_NOTIF, 8, EPNUM_CDC_0_OUT, EPNUM_CDC_0_IN, 64),
 
   // 2nd CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.
-  TUD_CDC_DESCRIPTOR(ITF_NUM_CDC_1, 4, EPNUM_CDC_1_NOTIF, 8, EPNUM_CDC_1_OUT, EPNUM_CDC_1_IN, 64),
+  TUD_CDC_DESCRIPTOR(ITF_NUM_CDC_1, 5, EPNUM_CDC_1_NOTIF, 8, EPNUM_CDC_1_OUT, EPNUM_CDC_1_IN, 64),
 };
 
 #if TUD_OPT_HIGH_SPEED
@@ -154,7 +154,7 @@ uint8_t const desc_hs_configuration[] =
   TUD_CDC_DESCRIPTOR(ITF_NUM_CDC_0, 4, EPNUM_CDC_0_NOTIF, 8, EPNUM_CDC_0_OUT, EPNUM_CDC_0_IN, 512),
 
   // 2nd CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.
-  TUD_CDC_DESCRIPTOR(ITF_NUM_CDC_1, 4, EPNUM_CDC_1_NOTIF, 8, EPNUM_CDC_1_OUT, EPNUM_CDC_1_IN, 512),
+  TUD_CDC_DESCRIPTOR(ITF_NUM_CDC_1, 5, EPNUM_CDC_1_NOTIF, 8, EPNUM_CDC_1_OUT, EPNUM_CDC_1_IN, 512),
 };
 
 // device qualifier is mostly similar to device descriptor since we don't change configuration based on speed
@@ -220,17 +220,29 @@ enum {
   STRID_MANUFACTURER,
   STRID_PRODUCT,
   STRID_SERIAL,
+  STRID_CDC
 };
 
 // array of pointer to string descriptors
 char const *string_desc_arr[] =
 {
-  (const char[]) { 0x09, 0x04 }, // 0: is supported language is English (0x0409)
-  "TinyUSB",                     // 1: Manufacturer
-  "TinyUSB Device",              // 2: Product
-  NULL,                          // 3: Serials will use unique ID if possible
-  "TinyUSB CDC",                 // 4: CDC Interface
+  (const char[]) { 0x09, 0x04 },  // 0: is supported language is English (0x0409)
+  "LHR",                          // 1: Manufacturer
+  "Board",                        // 2: Product
+  NULL,                           // 3: Serials will use unique ID if possible
+  "Serial Log",                   // 4: CDC 0 Interface
+  "SLCAN",                        // 5: CDC 1 Interface
 };
+
+// Overrides the product string, call before tusb_init(). NULL keeps the default
+void usb_set_product_name(const char *name) {
+  if (name) string_desc_arr[STRID_PRODUCT] = name;
+}
+
+// Overrides CDC port's interface string, call before tusb_init(). NULL keeps the default
+void usb_set_cdc_name(uint8_t port, const char *name) {
+  if (name && port < CFG_TUD_CDC) string_desc_arr[STRID_CDC + port] = name;
+}
 
 static uint16_t _desc_str[32 + 1];
 

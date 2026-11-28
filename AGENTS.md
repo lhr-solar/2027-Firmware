@@ -64,7 +64,7 @@ missing piece. Building the missing piece is fine when that *is* the task.
   peripherals with separate drivers on this part. Confirm which a board uses
   before writing message code — they are not interchangeable.
 - **Other middleware in-tree:** TinyUSB (CDC), FatFs (SD card logging),
-  `nanoprintf` (the `printf.h` shim in `psp/`).
+  `nanoprintf` (used by `log.h` in `psp/`).
 
 ### Pin and alternate-function vetting — mandatory
 
