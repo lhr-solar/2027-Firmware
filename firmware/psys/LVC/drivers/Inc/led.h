@@ -21,10 +21,7 @@ void Heartbeat_Clock_Init();
     SUPP_CHG_LED,
     LVC_OUT_LED,
     DCDC_EN_LED,
-    LV_EN_LED,
-    CHG_CC_LED,
-    CHG_PG_LED,
-    NUM_LEDS //11
+    NUM_LEDS //8
  } status_leds_t;
 
  typedef enum {
