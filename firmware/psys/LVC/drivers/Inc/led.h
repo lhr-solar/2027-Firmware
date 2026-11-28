@@ -3,14 +3,7 @@
 
 #include "pinDefs.h"
 #include "stm32xx_hal.h"
-#include "stdint.h"
-
-void Heartbeat_Clock_Init();
-
-/**
- * @brief Initializes all status LEDs
- * @note HEARTBEAT led should blink when called
- */
+#include <stdint.h>
 
  typedef enum {
     HEARTBEAT_LED,
